@@ -178,6 +178,7 @@ room = { id = "androidx.room", version.ref = "room" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+android-lint = { id = "com.android.lint", version.ref = "agp" }
 
 [bundles]
 koin-common = [
