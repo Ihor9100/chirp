@@ -60,16 +60,10 @@ kotlin {
     commonMain {
       dependencies {
         implementation(libs.kotlin.stdlib)
-        // Add KMP dependencies here
+
+        implementation(projects.core.domain)
       }
     }
-
-    commonTest {
-      dependencies {
-        implementation(libs.kotlin.test)
-      }
-    }
-
     androidMain {
       dependencies {
         // Add Android-specific dependencies here. Note that this source set depends on
@@ -77,15 +71,6 @@ kotlin {
         // dependencies declared in commonMain.
       }
     }
-
-    getByName("androidDeviceTest") {
-      dependencies {
-        implementation(libs.androidx.runner)
-        implementation(libs.androidx.test.core)
-        implementation(libs.androidx.junit)
-      }
-    }
-
     iosMain {
       dependencies {
         // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
@@ -96,5 +81,4 @@ kotlin {
       }
     }
   }
-
 }
