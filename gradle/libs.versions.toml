@@ -157,6 +157,9 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 
 [plugins]
 
+# build-logic
+build-logic-convention-android-application = { id = "build-logic.convention.android.application.convention.plugin", version = "unspecified" }
+
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
