@@ -15,6 +15,8 @@ val Project.libs: VersionCatalog
 
 fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
   with(commonExtension) {
+    configureKotlin()
+
     compileSdk = libs.findVersion("projectCompileSdkVersion").get().toString().toInt()
     defaultConfig.minSdk = libs.findVersion("projectMinSdkVersion").get().toString().toInt()
 
@@ -23,8 +25,6 @@ fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>)
       targetCompatibility = JavaVersion.VERSION_17
       isCoreLibraryDesugaringEnabled = true
     }
-
-    configureKotlin()
 
     dependencies {
       "coreLibraryDesugaring"(libs.findLibrary("android-desugarJdkLibs").get())
