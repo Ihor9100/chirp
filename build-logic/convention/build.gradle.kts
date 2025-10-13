@@ -37,5 +37,9 @@ gradlePlugin {
       id = "build-logic.convention.android.application.convention.plugin"
       implementationClass = "AndroidApplicationConventionPlugin"
     }
+    register("androidApplicationCompose") {
+      id = "build-logic.convention.android.application.compose.convention.plugin"
+      implementationClass = "AndroidApplicationComposeConventionPlugin"
+    }
   }
 }
