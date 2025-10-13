@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.plcoding.buildlogic.convention.configureCompose
+import com.plcoding.buildlogic.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

@@ -5,9 +5,11 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val Project.libs: VersionCatalog
@@ -53,6 +55,23 @@ fun Project.configureCompose(commonExtension: CommonExtension<*, *, *, *, *, *>)
       "testImplementation"(platform(bom))
       "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
       "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
+    }
+  }
+}
+
+fun Project.configureTargets() {
+  extensions.configure<KotlinMultiplatformExtension> {
+    androidTarget {
+      compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+      }
+    }
+
+    listOf(iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
+      iosTarget.binaries.framework {
+        baseName = "ComposeApp"
+        isStatic = true
+      }
     }
   }
 }
