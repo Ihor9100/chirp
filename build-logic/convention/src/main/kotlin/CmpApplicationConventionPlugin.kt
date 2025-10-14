@@ -6,16 +6,14 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
-class CmpApplicationConventionPlugin : Plugin<Project> {
+class CmpApplicationConventionPlugin : AndroidApplicationComposeConventionPlugin() {
 
   override fun apply(target: Project) {
+    super.apply(target)
+
     with(target) {
-      with(pluginManager) {
-        apply("build-logic.convention.android.application.compose.convention.plugin")
-        apply("org.jetbrains.kotlin.multiplatform")
-        apply("org.jetbrains.compose")
-        apply("org.jetbrains.kotlin.plugin.compose")
-      }
+      pluginManager.apply("org.jetbrains.kotlin.multiplatform")
+      pluginManager.apply("org.jetbrains.compose")
 
       configureTargets()
 

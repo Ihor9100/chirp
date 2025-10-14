@@ -4,11 +4,12 @@ import com.plcoding.buildlogic.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
+abstract class AndroidApplicationComposeConventionPlugin : AndroidApplicationConventionPlugin() {
 
   override fun apply(target: Project) {
+    super.apply(target)
+
     with(target) {
-      pluginManager.apply("build-logic.convention.android.application.convention.plugin")
       pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
       configureCompose(extensions.getByType(ApplicationExtension::class.java))
