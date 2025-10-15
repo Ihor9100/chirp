@@ -1,8 +1,6 @@
-import com.android.build.api.dsl.ApplicationExtension
-import com.plcoding.buildlogic.convention.configureCompose
-import com.plcoding.buildlogic.convention.configureTargets
+import com.plcoding.buildlogic.convention.configureAndroidTarget
+import com.plcoding.buildlogic.convention.configureIosTarget
 import com.plcoding.buildlogic.convention.libs
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
@@ -15,7 +13,8 @@ class CmpApplicationConventionPlugin : AndroidApplicationComposeConventionPlugin
       pluginManager.apply("org.jetbrains.kotlin.multiplatform")
       pluginManager.apply("org.jetbrains.compose")
 
-      configureTargets()
+      configureAndroidTarget()
+      configureIosTarget(baseName = "ComposeApp", isStatic = true)
 
       dependencies {
         "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())

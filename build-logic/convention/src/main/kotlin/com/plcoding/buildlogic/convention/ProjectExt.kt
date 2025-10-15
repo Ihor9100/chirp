@@ -1,6 +1,7 @@
 package com.plcoding.buildlogic.convention
 
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
@@ -60,18 +61,56 @@ fun Project.configureCompose(commonExtension: CommonExtension<*, *, *, *, *, *>)
 }
 
 fun Project.configureTargets() {
+  extensions.configure<LibraryExtension> {
+    namespace = getNamespace()
+  }
+
+  configureAndroidTarget()
+  configureIosTarget()
+
+  extensions.configure<KotlinMultiplatformExtension> {
+    compilerOptions {
+      freeCompilerArgs.add("-Xexpect-actual-classes")
+      freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+      freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
+    }
+  }
+}
+
+fun Project.configureAndroidTarget() {
   extensions.configure<KotlinMultiplatformExtension> {
     androidTarget {
       compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
       }
     }
+  }
+}
 
-    listOf(iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
-      iosTarget.binaries.framework {
-        baseName = "ComposeApp"
-        isStatic = true
+fun Project.configureIosTarget(
+  baseName: String? = null,
+  isStatic: Boolean = false,
+) {
+  extensions.configure<KotlinMultiplatformExtension> {
+    listOf(iosArm64(), iosX64(), iosSimulatorArm64()).forEach { target ->
+      target.binaries.framework {
+        this.baseName = baseName ?: getFrameworkName()
+        this.isStatic = isStatic
       }
     }
   }
+}
+
+fun Project.getNamespace(): String {
+  val modulePath = path.replace(":", ".").lowercase()
+  return "com.plcoding$modulePath"
+}
+
+fun Project.getResourcesPrefix(): String {
+  return path.replace(":", "_").lowercase().drop(1) + "_"
+}
+
+fun Project.getFrameworkName(): String {
+  return path.split(":", "_", "-", " ")
+    .joinToString { part -> part.replaceFirstChar { it.uppercase() } }
 }
