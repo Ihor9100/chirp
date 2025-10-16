@@ -12,6 +12,7 @@ androidTools = "31.13.0"
 # Compose
 compose-hot-reload = "1.0.0-rc01"
 compose-multiplatform = "1.9.0"
+compose-material-icons = "1.7.3"
 # Maintain compose multiplatform version aligned with navigation, cache error could happen
 compose-lifecycle = "2.9.4"
 navigation-compose = "2.9.0"
@@ -89,6 +90,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 # Compose
 jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose-multiplatform" }
 jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+jetbrains-compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "compose-material-icons" }
 
 # Koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -162,6 +164,8 @@ android-application-convention = { id = "build-logic.convention.android.applicat
 android-application-compose-convention = { id = "build-logic.convention.android.application.compose.convention.plugin", version = "unspecified" }
 cmp-application-convention = { id = "build-logic.convention.cmp.application.convention.plugin", version = "unspecified" }
 kmp-library-convention = { id = "build-logic.convention.kmp.library.convention.plugin", version = "unspecified" }
+cmp-library-convention = { id = "build-logic.convention.cmp.library.convention.plugin", version = "unspecified" }
+cmp-feature-convention = { id = "build-logic.convention.cmp.feature.convention.plugin", version = "unspecified" }
 
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }

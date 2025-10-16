@@ -1,5 +1,5 @@
 plugins {
-  alias(libs.plugins.kmp.library.convention)
+  alias(libs.plugins.cmp.feature.convention)
 }
 
 kotlin {
@@ -11,11 +11,6 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation(libs.kotlin.stdlib)
-
-        implementation(projects.core.domain)
-        implementation(projects.core.designsystem)
-
         implementation(projects.feature.auth.domain)
       }
     }

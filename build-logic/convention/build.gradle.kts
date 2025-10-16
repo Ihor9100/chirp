@@ -49,5 +49,13 @@ gradlePlugin {
       id = "build-logic.convention.kmp.library.convention.plugin"
       implementationClass = "KmpLibraryConventionPlugin"
     }
+    register("cmpLibrary") {
+      id = "build-logic.convention.cmp.library.convention.plugin"
+      implementationClass = "CmpLibraryConventionPlugin"
+    }
+    register("cmpFeature") {
+      id = "build-logic.convention.cmp.feature.convention.plugin"
+      implementationClass = "CmpFeatureConventionPlugin"
+    }
   }
 }
