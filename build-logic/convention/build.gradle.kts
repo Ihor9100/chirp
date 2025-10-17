@@ -22,6 +22,8 @@ dependencies {
   compileOnly(libs.android.tools.common)
   compileOnly(libs.kotlin.gradlePlugin)
   compileOnly(libs.compose.gradlePlugin)
+  implementation(libs.build.konfig.compiler)
+  implementation(libs.build.konfig.plugin)
 }
 
 tasks {
@@ -56,6 +58,10 @@ gradlePlugin {
     register("cmpFeature") {
       id = "build-logic.convention.cmp.feature.convention.plugin"
       implementationClass = "CmpFeatureConventionPlugin"
+    }
+    register("buildKonfig") {
+      id = "build-logic.convention.build.konfig.convention.plugin"
+      implementationClass = "BuildKonfigConventionPlugin"
     }
   }
 }

@@ -62,7 +62,7 @@ fun Project.configureCompose(commonExtension: CommonExtension<*, *, *, *, *, *>)
 
 fun Project.configureTargets() {
   extensions.configure<LibraryExtension> {
-    namespace = getNamespace()
+    namespace = getPackageName()
   }
 
   configureAndroidTarget()
@@ -101,7 +101,7 @@ fun Project.configureIosTarget(
   }
 }
 
-fun Project.getNamespace(): String {
+fun Project.getPackageName(): String {
   val modulePath = path.replace(":", ".").lowercase()
   return "com.plcoding$modulePath"
 }

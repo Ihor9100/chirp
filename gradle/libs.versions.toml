@@ -143,6 +143,8 @@ compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compile
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+build-konfig-compiler = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-compiler", version.ref = "buildkonfig" }
+build-konfig-plugin = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
 
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -166,6 +168,7 @@ cmp-application-convention = { id = "build-logic.convention.cmp.application.conv
 kmp-library-convention = { id = "build-logic.convention.kmp.library.convention.plugin", version = "unspecified" }
 cmp-library-convention = { id = "build-logic.convention.cmp.library.convention.plugin", version = "unspecified" }
 cmp-feature-convention = { id = "build-logic.convention.cmp.feature.convention.plugin", version = "unspecified" }
+build-konfig-convention = { id = "build-logic.convention.build.konfig.convention.plugin", version = "unspecified" }
 
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }
