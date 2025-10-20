@@ -169,6 +169,7 @@ kmp-library-convention = { id = "build-logic.convention.kmp.library.convention.p
 cmp-library-convention = { id = "build-logic.convention.cmp.library.convention.plugin", version = "unspecified" }
 cmp-feature-convention = { id = "build-logic.convention.cmp.feature.convention.plugin", version = "unspecified" }
 build-konfig-convention = { id = "build-logic.convention.build.konfig.convention.plugin", version = "unspecified" }
+room-convention = { id = "build-logic.convention.room.convention.plugin", version = "unspecified" }
 
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }
