@@ -15,7 +15,11 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
       }
 
       dependencies {
-        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-core").get())
+        "commonMainImplementation"(libs.findLibrary("kotlin-stdlib").get())
+
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-resources").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-extended").get())
       }
     }
   }

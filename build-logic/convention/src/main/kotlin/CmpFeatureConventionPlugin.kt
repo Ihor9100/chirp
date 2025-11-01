@@ -15,8 +15,6 @@ class CmpFeatureConventionPlugin : CmpLibraryConventionPlugin() {
         "commonMainImplementation"(project(":core:designsystem"))
         "commonMainImplementation"(project(":core:domain"))
         "commonMainImplementation"(project(":core:presentation"))
-
-        "commonMainImplementation"(libs.findLibrary("kotlin-stdlib").get())
       }
     }
   }
