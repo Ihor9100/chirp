@@ -22,8 +22,7 @@ open class KmpLibraryConventionPlugin : Plugin<Project> {
         resourcePrefix = getResourcesPrefix()
         configureAndroid(this)
 
-        // For iOS build
-        experimentalProperties["android. experimental.kmp.enableAndroidResources"] = "true"
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = "true"
       }
 
       configureTargets()
