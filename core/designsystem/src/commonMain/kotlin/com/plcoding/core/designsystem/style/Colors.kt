@@ -1,5 +1,10 @@
 package com.plcoding.core.designsystem.style
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 // Brand colors
@@ -68,3 +73,61 @@ val ChirpCakeDarkTeal = Color(0x26A0FFE0) // Muted teal (15% alpha)
 val ChirpCakeDarkPurple = Color(0x26CAADFF) // Muted purple (15% alpha)
 val ChirpCakeDarkRed = Color(0x26FF8A95) // Muted red (15% alpha)
 val ChirpCakeDarkMint = Color(0x26A6FFCC) // Muted mint (15% alpha)
+
+@Immutable
+data class ExtendedColorScheme(
+  // Button states
+  val primaryHover: Color,
+  val destructiveHover: Color,
+  val destructiveSecondaryOutline: Color,
+  val disabledOutline: Color,
+  val disabledFill: Color,
+  val successOutline: Color,
+  val success: Color,
+  val onSuccess: Color,
+  val secondaryFill: Color,
+
+  // Text variants
+  val textPrimary: Color,
+  val textTertiary: Color,
+  val textSecondary: Color,
+  val textPlaceholder: Color,
+  val textDisabled: Color,
+
+  // Surface variants
+  val surfaceLower: Color,
+  val surfaceHigher: Color,
+  val surfaceOutline: Color,
+  val overlay: Color,
+
+  // Accent colors
+  val accentBlue: Color,
+  val accentPurple: Color,
+  val accentViolet: Color,
+  val accentPink: Color,
+  val accentOrange: Color,
+  val accentYellow: Color,
+  val accentGreen: Color,
+  val accentTeal: Color,
+  val accentLightBlue: Color,
+  val accentGrey: Color,
+
+  // Cake colors for chat bubbles
+  val cakeViolet: Color,
+  val cakeGreen: Color,
+  val cakeBlue: Color,
+  val cakePink: Color,
+  val cakeOrange: Color,
+  val cakeYellow: Color,
+  val cakeTeal: Color,
+  val cakePurple: Color,
+  val cakeRed: Color,
+  val cakeMint: Color,
+)
+
+val LocalExtendedColorScheme = staticCompositionLocalOf { LightExtendedColorScheme }
+
+val ColorScheme.extended: ExtendedColorScheme
+  @ReadOnlyComposable
+  @Composable
+  get() = LocalExtendedColorScheme.current
