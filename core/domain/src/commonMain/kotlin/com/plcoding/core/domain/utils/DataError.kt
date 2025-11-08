@@ -11,6 +11,7 @@ sealed interface DataError : Error {
     CONFLICT,
     PAYLOAD_TOO_LARGE,
     TOO_MANY_REQUESTS,
+    NO_INTERNET,
     SERVER_ERROR,
     SERVER_UNAVAILABLE,
     UNKNOWN,
