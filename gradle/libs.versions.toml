@@ -10,21 +10,21 @@ projectVersionCode = "1"
 
 # Core
 agp = "8.13.0"
-composeBom = "2025.10.01"
+composeBom = "2025.11.00"
 kotlin = "2.2.21"
-ksp = "2.2.20-2.0.4"
+ksp = "2.2.21-2.0.4"
 google-services = "4.4.4"
 androidDesugarJdkLibs = "2.1.5"
 androidTools = "31.13.0"
 
 # Jetbrains Compose
-jetbrains-compose = "1.9.2"
+jetbrains-compose = "1.9.3"
 jetbrains-compose-hot-reload = "1.0.0-rc02"
 jetbrains-compose-material3 = "1.9.0"
 jetbrains-compose-material-icons-extended = "1.7.3"
 
 # Maintain compose multiplatform version aligned with navigation, cache error could happen
-compose-lifecycle = "2.9.5"
+compose-lifecycle = "2.9.6"
 navigation-compose = "2.9.1"
 jetbrains-core-bundle = "1.0.1"
 
@@ -36,7 +36,7 @@ androidx-test-ext = "1.2.1"
 androidx-runner = "1.6.2"
 androidx-test-core = "1.7.0"
 appcompatVersion = "1.7.1"
-core-splashscreen = "1.0.1"
+core-splashscreen = "1.2.0"
 
 # Kotlinx
 kotlinx-coroutines = "1.10.2"
@@ -45,13 +45,13 @@ kotlinx-datetime = "0.7.1"
 
 # Third party
 koin = "4.1.1"
-ktor = "3.3.1"
+ktor = "3.3.2"
 room = "2.8.3"
 sqlite = "2.6.1"
 datastore = "1.1.7"
 firebase-bom = "34.5.0"
 adaptive = "1.2.0"
-jetbrains-savedstate = "1.3.5"
+jetbrains-savedstate = "1.3.6"
 coil = "3.3.0"
 coil-network = "3.3.0"
 moko = "0.20.1"
@@ -60,6 +60,9 @@ buildkonfig = "0.17.1"
 # Desktop Version
 desktopPackageName = "Chirp"
 desktopPackageVersion = "1.0.0"
+
+# Logging
+kermit = "2.0.8"
 
 # Testing
 runner = "1.7.0"
@@ -154,6 +157,9 @@ jetbrains-lifecycle-compose = { group = "org.jetbrains.androidx.lifecycle", name
 jetbrains-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "compose-lifecycle" }
 jetbrains-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jetbrains-savedstate" }
 jetbrains-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "jetbrains-core-bundle" }
+
+# Logging
+touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 # Testing
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
