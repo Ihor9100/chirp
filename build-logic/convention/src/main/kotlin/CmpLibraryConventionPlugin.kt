@@ -24,6 +24,10 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-resources").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-extended").get())
+
+        "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
+        "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
+        "debugImplementation"(libs.findLibrary("jetbrains-compose-ui-tooling-preview").get())
       }
     }
   }

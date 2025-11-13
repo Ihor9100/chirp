@@ -14,7 +14,7 @@ kotlin {
         implementation(projects.core.domain)
         implementation(projects.core.designsystem)
 
-        implementation(libs.material3.adaptive)
+        implementation(libs.jetbrains.compose.material3.adaptive)
       }
     }
 

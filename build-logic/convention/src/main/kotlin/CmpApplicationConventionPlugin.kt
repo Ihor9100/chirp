@@ -15,10 +15,6 @@ class CmpApplicationConventionPlugin : AndroidApplicationComposeConventionPlugin
 
       configureAndroidTarget()
       configureIosTarget(baseName = "ComposeApp", isStatic = true)
-
-      dependencies {
-        "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
-      }
     }
   }
 }
