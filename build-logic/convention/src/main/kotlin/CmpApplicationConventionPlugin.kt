@@ -12,8 +12,9 @@ class CmpApplicationConventionPlugin : AndroidApplicationConventionPlugin() {
     super.apply(target)
 
     with(target) {
-      pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
       pluginManager.apply("org.jetbrains.kotlin.multiplatform")
+      pluginManager.apply("org.jetbrains.compose.hot-reload")
+      pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
       pluginManager.apply("org.jetbrains.compose")
 
       configureCompose(extensions.getByType(ApplicationExtension::class.java))

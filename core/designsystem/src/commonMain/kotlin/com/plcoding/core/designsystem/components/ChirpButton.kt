@@ -5,6 +5,8 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.plcoding.core.designsystem.style.ChirTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 enum class ChirpButtonStyle {
   TEXT,
@@ -31,5 +33,15 @@ fun ChirpButton(
     shape = RoundedCornerShape(8.dp)
   ) {
 
+  }
+}
+
+@Composable
+@Preview
+fun ChirpButtonPreview(){
+  ChirTheme {
+    ChirpButton(
+      text = "Hello World",
+    )
   }
 }

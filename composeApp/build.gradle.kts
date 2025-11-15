@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.cmp.application.convention)
-    alias(libs.plugins.compose.hot.reload)
 }
 
 kotlin {
