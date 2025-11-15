@@ -27,7 +27,6 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-components-ui-tooling-preview").get())
 
         "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
-        "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
       }
     }
   }
