@@ -7,14 +7,12 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +30,7 @@ import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpTextField(
+fun ChirpTextFieldPlain(
   modifier: Modifier = Modifier,
   topTitle: String,
   textFieldState: TextFieldState,
@@ -44,25 +42,14 @@ fun ChirpTextField(
   isSingleLineInput: Boolean = true,
   onFocusChanged: ((Boolean) -> Unit) = {},
 ) {
-  val interactionSource = remember { MutableInteractionSource() }
-  val isFocused by interactionSource.collectIsFocusedAsState()
-  LaunchedEffect(isFocused) { onFocusChanged(isFocused) }
-
-  Column(
+  ChirpTextFieldLayout(
     modifier = modifier,
-  ) {
-    if (topTitle.isNotBlank()) {
-      Text(
-        text = topTitle,
-        color = MaterialTheme.colorScheme.extended.textSecondary,
-        style = MaterialTheme.typography.labelSmall,
-      )
-      Spacer(
-        modifier = Modifier
-          .height(6.dp),
-      )
-    }
-
+      topTitle = topTitle,
+      bottomTitle = bottomTitle,
+      isError = isError,
+      isEnabled = isEnabled,
+      onFocusChanged = onFocusChanged,
+  ) { inputTextStyle, interactionSource, isFocused ->
     BasicTextField(
       state = textFieldState,
       modifier = Modifier
@@ -86,13 +73,7 @@ fun ChirpTextField(
         )
         .padding(12.dp),
       enabled = isEnabled,
-      textStyle = MaterialTheme.typography.bodyMedium.copy(
-        color = if (isEnabled) {
-          MaterialTheme.colorScheme.onSurface
-        } else {
-          MaterialTheme.colorScheme.extended.textPlaceholder
-        }
-      ),
+      textStyle = inputTextStyle,
       keyboardOptions = KeyboardOptions(
         keyboardType = keyboardType,
       ),
@@ -119,30 +100,14 @@ fun ChirpTextField(
         innerBox()
       }
     )
-
-    if (bottomTitle.isNotBlank()) {
-      Spacer(
-        modifier = Modifier
-          .height(4.dp),
-      )
-      Text(
-        text = bottomTitle,
-        color = if (isError) {
-          MaterialTheme.colorScheme.error
-        } else {
-          MaterialTheme.colorScheme.extended.textTertiary
-        },
-        style = MaterialTheme.typography.bodySmall,
-      )
-    }
   }
 }
 
 @Composable
 @Preview
-fun ChirpTextFieldEmptyPreview() {
+fun ChirpTextFieldPlainEmptyPreview() {
   ChirTheme {
-    ChirpTextField(
+    ChirpTextFieldPlain(
       topTitle = "Hello",
       textFieldState = TextFieldState(""),
       inputPlaceholder = "Wowww",
@@ -154,9 +119,9 @@ fun ChirpTextFieldEmptyPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldFilledPreview() {
+fun ChirpTextFieldPlainFilledPreview() {
   ChirTheme {
-    ChirpTextField(
+    ChirpTextFieldPlain(
       topTitle = "Hello",
       textFieldState = TextFieldState("How are you?"),
       inputPlaceholder = "Wowww",
@@ -168,9 +133,9 @@ fun ChirpTextFieldFilledPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldDisabledPreview() {
+fun ChirpTextFieldPlainDisabledPreview() {
   ChirTheme {
-    ChirpTextField(
+    ChirpTextFieldPlain(
       topTitle = "Hello",
       textFieldState = TextFieldState("How are you?"),
       inputPlaceholder = "Wowww",
@@ -183,9 +148,9 @@ fun ChirpTextFieldDisabledPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldErrorPreview() {
+fun ChirpTextFieldPlainErrorPreview() {
   ChirTheme {
-    ChirpTextField(
+    ChirpTextFieldPlain(
       topTitle = "Hello",
       textFieldState = TextFieldState("How are you?"),
       inputPlaceholder = "Wowww",
