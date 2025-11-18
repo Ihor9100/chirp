@@ -1,4 +1,4 @@
-package com.plcoding.core.designsystem.components
+package com.plcoding.core.designsystem.components.button
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.RoundedCornerShape

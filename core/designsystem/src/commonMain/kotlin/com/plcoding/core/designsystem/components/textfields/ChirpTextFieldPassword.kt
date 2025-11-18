@@ -1,10 +1,9 @@
-package com.plcoding.core.designsystem.components
+package com.plcoding.core.designsystem.components.textfields
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,7 +22,6 @@ import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -33,6 +30,7 @@ import chirp.core.designsystem.generated.resources.hide_password
 import chirp.core.designsystem.generated.resources.ic_eye_off
 import chirp.core.designsystem.generated.resources.ic_eye_on
 import chirp.core.designsystem.generated.resources.show_password
+import com.plcoding.core.designsystem.components.layout.ChirpTextFieldLayout
 import com.plcoding.core.designsystem.style.ChirTheme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.stringResource

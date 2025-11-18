@@ -1,11 +1,10 @@
-package com.plcoding.core.designsystem.components
+package com.plcoding.core.designsystem.components.layout
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,9 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.style.ChirTheme
 import com.plcoding.core.designsystem.style.extended
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ChirpTextFieldLayout(
