@@ -44,11 +44,11 @@ fun ChirpTextFieldPlain(
 ) {
   ChirpTextFieldLayout(
     modifier = modifier,
-      topTitle = topTitle,
-      bottomTitle = bottomTitle,
-      isError = isError,
-      isEnabled = isEnabled,
-      onFocusChanged = onFocusChanged,
+    topTitle = topTitle,
+    bottomTitle = bottomTitle,
+    isError = isError,
+    isEnabled = isEnabled,
+    onFocusChanged = onFocusChanged,
   ) { inputTextStyle, interactionSource, isFocused ->
     BasicTextField(
       state = textFieldState,
@@ -85,19 +85,19 @@ fun ChirpTextFieldPlain(
       interactionSource = interactionSource,
       cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
       decorator = { innerBox ->
-        if (textFieldState.text.isBlank() && inputPlaceholder.isNotBlank()) {
-          Box(
-            modifier = Modifier
-              .fillMaxWidth()
-          ) {
+        Box(
+          modifier = Modifier
+            .fillMaxWidth()
+        ) {
+          if (textFieldState.text.isBlank() && inputPlaceholder.isNotBlank()) {
             Text(
               text = inputPlaceholder,
               color = MaterialTheme.colorScheme.extended.textPlaceholder,
               style = MaterialTheme.typography.bodyMedium,
             )
           }
+          innerBox()
         }
-        innerBox()
       }
     )
   }

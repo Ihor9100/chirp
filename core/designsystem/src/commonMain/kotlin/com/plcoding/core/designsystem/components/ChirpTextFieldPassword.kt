@@ -4,11 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,9 +33,11 @@ import chirp.core.designsystem.generated.resources.hide_password
 import chirp.core.designsystem.generated.resources.ic_eye_off
 import chirp.core.designsystem.generated.resources.ic_eye_on
 import chirp.core.designsystem.generated.resources.show_password
+import com.plcoding.core.designsystem.style.ChirTheme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ChirpTextFieldPassword(
@@ -83,21 +89,23 @@ fun ChirpTextFieldPassword(
       cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
       decorator = { innerBox ->
         Row(
-          modifier = modifier
-            .fillMaxWidth()
+          modifier = modifier.fillMaxWidth(),
         ) {
-          if (textFieldState.text.isBlank() && inputPlaceholder.isNotBlank()) {
-            Box(
-              modifier = Modifier
-                .weight(1f),
-            ) {
+          Box(
+            modifier = Modifier
+              .weight(1f)
+          ) {
+            if (textFieldState.text.isBlank() && inputPlaceholder.isNotBlank()) {
               Text(
                 text = inputPlaceholder,
                 color = MaterialTheme.colorScheme.extended.textPlaceholder,
                 style = MaterialTheme.typography.bodyMedium,
               )
             }
+            innerBox()
           }
+
+          Spacer(Modifier.width(8.dp))
 
           Icon(
             imageVector = vectorResource(
@@ -125,10 +133,67 @@ fun ChirpTextFieldPassword(
                 onClick = onSecureToggleClick,
               ),
             tint = MaterialTheme.colorScheme.extended.textDisabled,
-            )
+          )
         }
-        innerBox()
       }
+    )
+  }
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordEmptyPreview() {
+  ChirTheme {
+    ChirpTextFieldPassword(
+      topTitle = "Password",
+      textFieldState = TextFieldState(""),
+      inputPlaceholder = "Password",
+      bottomTitle = "Create as secure as possible",
+      isSecureMode = true,
+    )
+  }
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordFilledPreview() {
+  ChirTheme {
+    ChirpTextFieldPassword(
+      topTitle = "Password",
+      textFieldState = TextFieldState("123456789"),
+      inputPlaceholder = "Password",
+      bottomTitle = "Create as secure as possible",
+      isSecureMode = true,
+    )
+  }
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordDisabledPreview() {
+  ChirTheme {
+    ChirpTextFieldPassword(
+      topTitle = "Password",
+      textFieldState = TextFieldState("123456789"),
+      inputPlaceholder = "Password",
+      bottomTitle = "Create as secure as possible",
+      isEnabled = false,
+      isSecureMode = true,
+    )
+  }
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordErrorPreview() {
+  ChirTheme {
+    ChirpTextFieldPassword(
+      topTitle = "Password",
+      textFieldState = TextFieldState("123456789"),
+      inputPlaceholder = "Password",
+      bottomTitle = "Create as secure as possible",
+      isError = true,
+      isSecureMode = true,
     )
   }
 }
