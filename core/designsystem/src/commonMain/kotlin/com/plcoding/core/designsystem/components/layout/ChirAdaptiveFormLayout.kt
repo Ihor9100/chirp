@@ -21,4 +21,17 @@ fun ChirAdaptiveFormLayout(
     MaterialTheme.colorScheme.extended.textPrimary
   }
 
+  when (deviceConfiguration) {
+    DeviceConfiguration.MOBILE_PORTRAIT -> {
+      TODO()
+    }
+    DeviceConfiguration.MOBILE_LANDSCAPE -> {
+      TODO()
+    }
+    DeviceConfiguration.TABLET_PORTRAIT,
+    DeviceConfiguration.TABLET_LANDSCAPE,
+    DeviceConfiguration.DESKTOP -> {
+      TODO()
+    }
+  }
 }

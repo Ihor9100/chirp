@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
 import chirp.core.designsystem.generated.resources.ic_logo_chirp
+import com.plcoding.core.designsystem.components.brand.ChirBrandLogo
+import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
 import com.plcoding.core.designsystem.style.ChirTheme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.vectorResource
@@ -78,20 +80,16 @@ fun ChirpSurfacePreview(
       modifier = Modifier
         .fillMaxSize(),
       logo = {
-        Icon(
-          imageVector = vectorResource(Res.drawable.ic_logo_chirp),
-          contentDescription = null,
-          modifier = Modifier.padding(32.dp),
-          tint = MaterialTheme.colorScheme.primary
+        ChirBrandLogo(
+          modifier = Modifier
+            .padding(32.dp)
         )
       },
       content = {
-        Text(
-          text = "Welcome to Chirp!",
+        ChirBrandTitle(
           modifier = Modifier
             .padding(40.dp),
-          style = MaterialTheme.typography.headlineLarge,
-          color = MaterialTheme.colorScheme.extended.textPrimary
+          title = "Welcome to Chirp!",
         )
       }
     )
