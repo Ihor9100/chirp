@@ -141,57 +141,63 @@ fun ChirpTextFieldPassword(
 @Composable
 @Preview
 fun ChirpTextFieldPasswordEmptyPreview() {
-  ChirTheme {
-    ChirpTextFieldPassword(
-      topTitle = "Password",
-      textFieldState = TextFieldState(""),
-      inputPlaceholder = "Password",
-      bottomTitle = "Create as secure as possible",
-      isSecureMode = true,
-    )
-  }
+  ChirpTextFieldPasswordPreview(
+    initialText = "",
+    isError = false,
+    isEnabled = true,
+    isSecureMode = true,
+  )
 }
 
 @Composable
 @Preview
 fun ChirpTextFieldPasswordFilledPreview() {
-  ChirTheme {
-    ChirpTextFieldPassword(
-      topTitle = "Password",
-      textFieldState = TextFieldState("123456789"),
-      inputPlaceholder = "Password",
-      bottomTitle = "Create as secure as possible",
-      isSecureMode = true,
-    )
-  }
+  ChirpTextFieldPasswordPreview(
+    initialText = "123456789",
+    isError = false,
+    isEnabled = true,
+    isSecureMode = true,
+  )
 }
 
 @Composable
 @Preview
 fun ChirpTextFieldPasswordDisabledPreview() {
-  ChirTheme {
-    ChirpTextFieldPassword(
-      topTitle = "Password",
-      textFieldState = TextFieldState("123456789"),
-      inputPlaceholder = "Password",
-      bottomTitle = "Create as secure as possible",
-      isEnabled = false,
-      isSecureMode = true,
-    )
-  }
+  ChirpTextFieldPasswordPreview(
+    initialText = "123456789",
+    isError = false,
+    isEnabled = false,
+    isSecureMode = true,
+  )
 }
 
 @Composable
 @Preview
 fun ChirpTextFieldPasswordErrorPreview() {
+  ChirpTextFieldPasswordPreview(
+    initialText = "123456789",
+    isError = true,
+    isEnabled = true,
+    isSecureMode = true,
+  )
+}
+
+@Composable
+fun ChirpTextFieldPasswordPreview(
+  initialText: String,
+  isError: Boolean,
+  isEnabled: Boolean,
+  isSecureMode: Boolean,
+) {
   ChirTheme {
     ChirpTextFieldPassword(
       topTitle = "Password",
-      textFieldState = TextFieldState("123456789"),
+      textFieldState = TextFieldState(initialText),
       inputPlaceholder = "Password",
       bottomTitle = "Create as secure as possible",
-      isError = true,
-      isSecureMode = true,
+      isError = isError,
+      isEnabled = isEnabled,
+      isSecureMode = isSecureMode,
     )
   }
 }

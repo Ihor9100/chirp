@@ -12,7 +12,6 @@ kotlin {
     commonMain {
       dependencies {
         implementation(projects.core.domain)
-        implementation(projects.core.designsystem)
 
         implementation(libs.jetbrains.compose.material3.adaptive)
       }

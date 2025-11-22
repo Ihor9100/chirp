@@ -1,12 +1,10 @@
-package com.plcoding.core.designsystem.components.layout
+package com.plcoding.core.designsystem.components.surface
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -15,18 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
-import chirp.core.designsystem.generated.resources.ic_eye_on
+import chirp.core.designsystem.generated.resources.ic_logo_chirp
 import com.plcoding.core.designsystem.style.ChirTheme
+import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ChirpSurface(
   modifier: Modifier = Modifier,
-  header: @Composable ColumnScope.() -> Unit,
+  logo: @Composable () -> Unit,
   content: @Composable ColumnScope.() -> Unit,
 ) {
   Surface(
@@ -37,7 +35,7 @@ fun ChirpSurface(
       horizontalAlignment = Alignment.CenterHorizontally,
       modifier = Modifier.fillMaxSize(),
     ) {
-      header()
+      logo()
       Surface(
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(
@@ -61,14 +59,27 @@ fun ChirpSurface(
 
 @Composable
 @Preview
-fun ChirpSurfacePreview() {
-  ChirTheme {
+fun ChirpSurfaceLightPreview() {
+  ChirpSurfacePreview(isDarkTheme = false)
+}
+
+@Composable
+@Preview
+fun ChirpSurfaceDarkPreview() {
+  ChirpSurfacePreview(isDarkTheme = true)
+}
+
+@Composable
+fun ChirpSurfacePreview(
+  isDarkTheme: Boolean,
+) {
+  ChirTheme(isDarkTheme) {
     ChirpSurface(
       modifier = Modifier
         .fillMaxSize(),
-      header = {
+      logo = {
         Icon(
-          imageVector = vectorResource(Res.drawable.ic_eye_on),
+          imageVector = vectorResource(Res.drawable.ic_logo_chirp),
           contentDescription = null,
           modifier = Modifier.padding(32.dp),
           tint = MaterialTheme.colorScheme.primary
@@ -80,6 +91,7 @@ fun ChirpSurfacePreview() {
           modifier = Modifier
             .padding(40.dp),
           style = MaterialTheme.typography.headlineLarge,
+          color = MaterialTheme.colorScheme.extended.textPrimary
         )
       }
     )
