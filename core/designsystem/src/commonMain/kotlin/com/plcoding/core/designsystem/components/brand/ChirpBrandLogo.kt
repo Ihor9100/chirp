@@ -9,7 +9,7 @@ import chirp.core.designsystem.generated.resources.ic_logo_chirp
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
-fun ChirBrandLogo(
+fun ChirpBrandLogo(
   modifier: Modifier = Modifier,
 ) {
   Icon(

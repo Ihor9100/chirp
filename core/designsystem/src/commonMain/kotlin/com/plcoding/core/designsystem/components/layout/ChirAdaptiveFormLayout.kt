@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirBrandLogo
+import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
 import com.plcoding.core.designsystem.components.surface.ChirpSurface
 import com.plcoding.core.designsystem.style.ChirTheme
@@ -78,7 +78,7 @@ fun ChirAdaptiveFormLayout(
             .weight(1f)
             .fillMaxHeight(),
         ) {
-          ChirBrandLogo()
+          ChirpBrandLogo()
           Spacer(Modifier.height(40.dp))
           ChirBrandTitle(
             title = title,
@@ -228,7 +228,7 @@ fun ChirpAdaptiveFormPreview(
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
       logo = {
-        ChirBrandLogo(
+        ChirpBrandLogo(
           modifier = Modifier
             .padding(32.dp)
         )

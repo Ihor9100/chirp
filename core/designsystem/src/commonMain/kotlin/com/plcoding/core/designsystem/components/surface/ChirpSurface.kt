@@ -1,27 +1,22 @@
 package com.plcoding.core.designsystem.components.surface
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import chirp.core.designsystem.generated.resources.Res
-import chirp.core.designsystem.generated.resources.ic_logo_chirp
-import com.plcoding.core.designsystem.components.brand.ChirBrandLogo
+import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
 import com.plcoding.core.designsystem.style.ChirTheme
-import com.plcoding.core.designsystem.style.extended
-import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -30,32 +25,25 @@ fun ChirpSurface(
   logo: @Composable () -> Unit,
   content: @Composable ColumnScope.() -> Unit,
 ) {
-  Surface(
-    modifier = modifier.fillMaxSize(),
-    color = MaterialTheme.colorScheme.background,
+  Column(
+    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = modifier
+      .background(MaterialTheme.colorScheme.background),
   ) {
+    logo()
     Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .clip(
+          RoundedCornerShape(
+            topStart = 20.dp,
+            topEnd = 20.dp,
+          )
+        )
+        .background(MaterialTheme.colorScheme.surface),
       horizontalAlignment = Alignment.CenterHorizontally,
-      modifier = Modifier.fillMaxSize(),
     ) {
-      logo()
-      Surface(
-        color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(
-          topStart = 20.dp,
-          topEnd = 20.dp,
-        ),
-        modifier = Modifier
-          .fillMaxWidth()
-          .weight(1f),
-      ) {
-        Column(
-          modifier = Modifier.fillMaxSize(),
-          horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-          content()
-        }
-      }
+      content()
     }
   }
 }
@@ -81,7 +69,7 @@ fun ChirpSurfacePreview(
       modifier = Modifier
         .fillMaxSize(),
       logo = {
-        ChirBrandLogo(
+        ChirpBrandLogo(
           modifier = Modifier
             .padding(32.dp)
         )
