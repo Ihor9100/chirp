@@ -1,5 +1,6 @@
 package com.plcoding.core.designsystem.components.surface
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +31,7 @@ fun ChirpSurface(
   content: @Composable ColumnScope.() -> Unit,
 ) {
   Surface(
-    modifier = modifier,
+    modifier = modifier.fillMaxSize(),
     color = MaterialTheme.colorScheme.background,
   ) {
     Column(
@@ -50,7 +51,7 @@ fun ChirpSurface(
       ) {
         Column(
           modifier = Modifier.fillMaxSize(),
-          horizontalAlignment = Alignment.CenterHorizontally
+          horizontalAlignment = Alignment.CenterHorizontally,
         ) {
           content()
         }

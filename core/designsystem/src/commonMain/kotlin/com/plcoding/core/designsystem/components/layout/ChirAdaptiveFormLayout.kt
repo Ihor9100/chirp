@@ -1,12 +1,24 @@
 package com.plcoding.core.designsystem.components.layout
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.brand.ChirBrandLogo
 import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
@@ -16,7 +28,6 @@ import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.utils.DeviceConfiguration
 import com.plcoding.core.presentation.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.math.log
 
 @Composable
 fun ChirAdaptiveFormLayout(
@@ -36,33 +47,89 @@ fun ChirAdaptiveFormLayout(
   when (deviceConfiguration) {
     DeviceConfiguration.MOBILE_PORTRAIT -> {
       ChirpSurface(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         logo = logo,
       ) {
+        Spacer(Modifier.height(40.dp))
         ChirBrandTitle(
           modifier = Modifier,
           title = title,
           titleColor = titleColor,
           error = error,
         )
+        Spacer(Modifier.height(24.dp))
         form()
       }
     }
     DeviceConfiguration.MOBILE_LANDSCAPE -> {
-      TODO()
+      Row(
+        modifier = modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.background)
+          .padding(
+            top = 16.dp,
+            start = 16.dp,
+            end = 16.dp,
+          ),
+        horizontalArrangement = Arrangement.spacedBy(24.dp),
+      ) {
+        Column(
+          modifier = Modifier
+            .weight(1f)
+            .fillMaxHeight(),
+        ) {
+          ChirBrandLogo()
+          Spacer(Modifier.height(40.dp))
+          ChirBrandTitle(
+            title = title,
+            titleColor = titleColor,
+            error = error,
+          )
+        }
+        ChirpSurface(
+          modifier = Modifier
+            .weight(1f),
+          logo = {},
+        ) {
+          form()
+        }
+      }
     }
     DeviceConfiguration.TABLET_PORTRAIT,
     DeviceConfiguration.TABLET_LANDSCAPE,
     DeviceConfiguration.DESKTOP -> {
-      TODO()
+      Column(
+        modifier = modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.background),
+        horizontalAlignment = Alignment.CenterHorizontally,
+      ) {
+        logo()
+        Column(
+          modifier = Modifier
+            .widthIn(max = 400.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(32.dp),
+          horizontalAlignment = Alignment.CenterHorizontally,
+          verticalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+          ChirBrandTitle(
+            title = title,
+            titleColor = titleColor,
+            error = error,
+          )
+          form()
+        }
+      }
     }
   }
 }
 
-
 @Composable
 @Preview
-fun ChirpAdaptiveFormPortraitLightPreview() {
+fun ChirpAdaptiveFormMobilePortraitLightPreview() {
   ChirpAdaptiveFormPreview(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
@@ -71,10 +138,82 @@ fun ChirpAdaptiveFormPortraitLightPreview() {
 
 @Composable
 @Preview
-fun ChirpAdaptiveFormPortraitDarkPreview() {
+fun ChirpAdaptiveFormMobilePortraitDarkPreview() {
   ChirpAdaptiveFormPreview(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 300,
+)
+fun ChirpAdaptiveFormMobileLandscapeLightPreview() {
+  ChirpAdaptiveFormPreview(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 300,
+)
+fun ChirpAdaptiveFormMobileLandscapeDarkPreview() {
+  ChirpAdaptiveFormPreview(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 1000,
+)
+fun ChirpAdaptiveFormTabletPortraitLightPreview() {
+  ChirpAdaptiveFormPreview(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 1000,
+)
+fun ChirpAdaptiveFormTabletPortraitDarkPreview() {
+  ChirpAdaptiveFormPreview(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 1000,
+  heightDp = 650,
+)
+fun ChirpAdaptiveFormTabletLandscapeLightPreview() {
+  ChirpAdaptiveFormPreview(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 1000,
+  heightDp = 650,
+)
+fun ChirpAdaptiveFormTabletLandscapeDarkPreview() {
+  ChirpAdaptiveFormPreview(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
 }
 
@@ -89,13 +228,31 @@ fun ChirpAdaptiveFormPreview(
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
       logo = {
-        ChirBrandLogo()
+        ChirBrandLogo(
+          modifier = Modifier
+            .padding(32.dp)
+        )
       },
       title = "Hello World",
-      error = null,
+      error = "Invalid Data",
       form = {
         Text(
-          text = "Test",
+          text = "Name",
+          color = MaterialTheme.colorScheme.extended.textPrimary,
+          style = MaterialTheme.typography.bodySmall,
+        )
+        Text(
+          text = "Surname",
+          color = MaterialTheme.colorScheme.extended.textPrimary,
+          style = MaterialTheme.typography.bodySmall,
+        )
+        Text(
+          text = "Address",
+          color = MaterialTheme.colorScheme.extended.textPrimary,
+          style = MaterialTheme.typography.bodySmall,
+        )
+        Text(
+          text = "Age",
           color = MaterialTheme.colorScheme.extended.textPrimary,
           style = MaterialTheme.typography.bodySmall,
         )
