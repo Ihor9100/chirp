@@ -26,7 +26,7 @@ import com.plcoding.core.presentation.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirAdaptiveSuccessLayout(
+fun ChirpAdaptiveResultLayout(
   modifier: Modifier = Modifier,
   deviceConfiguration: DeviceConfiguration = getDeviceConfiguration(),
   content: @Composable ColumnScope.() -> Unit,
@@ -72,8 +72,8 @@ fun ChirAdaptiveSuccessLayout(
 
 @Composable
 @Preview
-fun ChirpAdaptiveSuccessMobilePortraitLightPreview() {
-  ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultMobilePortraitLightPreview() {
+  ChirpAdaptiveResultPreview(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -81,8 +81,8 @@ fun ChirpAdaptiveSuccessMobilePortraitLightPreview() {
 
 @Composable
 @Preview
-fun ChirpAdaptiveSuccessMobilePortraitDarkPreview() {
-  ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultMobilePortraitDarkPreview() {
+  ChirpAdaptiveResultPreview(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -93,8 +93,8 @@ fun ChirpAdaptiveSuccessMobilePortraitDarkPreview() {
   widthDp = 650,
   heightDp = 300,
 )
-fun ChirpAdaptiveSuccessMobileLandscapeLightPreview() {
-  ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultMobileLandscapeLightPreview() {
+  ChirpAdaptiveResultPreview(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
   )
@@ -105,8 +105,8 @@ fun ChirpAdaptiveSuccessMobileLandscapeLightPreview() {
   widthDp = 650,
   heightDp = 300,
 )
-fun ChirpAdaptiveSuccessMobileLandscapeDarkPreview() {
-  ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultMobileLandscapeDarkPreview() {
+  ChirpAdaptiveResultPreview(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
   )
@@ -117,8 +117,8 @@ fun ChirpAdaptiveSuccessMobileLandscapeDarkPreview() {
   widthDp = 650,
   heightDp = 1000,
 )
-fun ChirpAdaptiveSuccessTabletPortraitLightPreview() {
-  ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultTabletPortraitLightPreview() {
+  ChirpAdaptiveResultPreview(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
@@ -129,8 +129,8 @@ fun ChirpAdaptiveSuccessTabletPortraitLightPreview() {
   widthDp = 650,
   heightDp = 1000,
 )
-fun ChirpAdaptiveSuccessTabletPortraitDarkPreview() {
-  ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultTabletPortraitDarkPreview() {
+  ChirpAdaptiveResultPreview(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
@@ -141,8 +141,8 @@ fun ChirpAdaptiveSuccessTabletPortraitDarkPreview() {
   widthDp = 1000,
   heightDp = 650,
 )
-fun ChirpAdaptiveSuccessTabletLandscapeLightPreview() {
-  ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultTabletLandscapeLightPreview() {
+  ChirpAdaptiveResultPreview(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
@@ -153,20 +153,20 @@ fun ChirpAdaptiveSuccessTabletLandscapeLightPreview() {
   widthDp = 1000,
   heightDp = 650,
 )
-fun ChirpAdaptiveSuccessTabletLandscapeDarkPreview() {
-  ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultTabletLandscapeDarkPreview() {
+  ChirpAdaptiveResultPreview(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
 }
 
 @Composable
-fun ChirpAdaptiveSuccessPreview(
+fun ChirpAdaptiveResultPreview(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
   ChirTheme(isDarkTheme) {
-    ChirAdaptiveSuccessLayout(
+    ChirpAdaptiveResultLayout(
       modifier = Modifier
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
