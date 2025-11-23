@@ -172,7 +172,10 @@ fun ChirpAdaptiveFormLayoutThemed(
 }
 
 @Composable
-@Preview
+@Preview(
+  widthDp = 450,
+  heightDp = 1000,
+)
 fun ChirpAdaptiveFormLayoutMobilePortraitLightPreview() {
   ChirpAdaptiveFormLayoutThemed(
     isDarkTheme = false,
@@ -181,7 +184,10 @@ fun ChirpAdaptiveFormLayoutMobilePortraitLightPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+  widthDp = 450,
+  heightDp = 1000,
+)
 fun ChirpAdaptiveFormLayoutMobilePortraitDarkPreview() {
   ChirpAdaptiveFormLayoutThemed(
     isDarkTheme = true,
@@ -191,8 +197,8 @@ fun ChirpAdaptiveFormLayoutMobilePortraitDarkPreview() {
 
 @Composable
 @Preview(
-  widthDp = 650,
-  heightDp = 300,
+  widthDp = 1000,
+  heightDp = 450,
 )
 fun ChirpAdaptiveFormLayoutMobileLandscapeLightPreview() {
   ChirpAdaptiveFormLayoutThemed(
@@ -203,8 +209,8 @@ fun ChirpAdaptiveFormLayoutMobileLandscapeLightPreview() {
 
 @Composable
 @Preview(
-  widthDp = 650,
-  heightDp = 300,
+  widthDp = 1000,
+  heightDp = 450,
 )
 fun ChirpAdaptiveFormLayoutMobileLandscapeDarkPreview() {
   ChirpAdaptiveFormLayoutThemed(
@@ -215,8 +221,8 @@ fun ChirpAdaptiveFormLayoutMobileLandscapeDarkPreview() {
 
 @Composable
 @Preview(
-  widthDp = 650,
-  heightDp = 1000,
+  widthDp = 750,
+  heightDp = 1200,
 )
 fun ChirpAdaptiveFormLayoutTabletPortraitLightPreview() {
   ChirpAdaptiveFormLayoutThemed(
@@ -227,8 +233,8 @@ fun ChirpAdaptiveFormLayoutTabletPortraitLightPreview() {
 
 @Composable
 @Preview(
-  widthDp = 650,
-  heightDp = 1000,
+  widthDp = 750,
+  heightDp = 1200,
 )
 fun ChirpAdaptiveFormLayoutTabletPortraitDarkPreview() {
   ChirpAdaptiveFormLayoutThemed(
@@ -239,8 +245,8 @@ fun ChirpAdaptiveFormLayoutTabletPortraitDarkPreview() {
 
 @Composable
 @Preview(
-  widthDp = 1000,
-  heightDp = 650,
+  widthDp = 1200,
+  heightDp = 750,
 )
 fun ChirpAdaptiveFormLayoutTabletLandscapeLightPreview() {
   ChirpAdaptiveFormLayoutThemed(
@@ -251,12 +257,36 @@ fun ChirpAdaptiveFormLayoutTabletLandscapeLightPreview() {
 
 @Composable
 @Preview(
-  widthDp = 1000,
-  heightDp = 650,
+  widthDp = 1200,
+  heightDp = 750,
 )
 fun ChirpAdaptiveFormLayoutTabletLandscapeDarkPreview() {
   ChirpAdaptiveFormLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 2000,
+  heightDp = 1500,
+)
+fun ChirpAdaptiveFormLayoutDesktopLightPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.DESKTOP,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 2000,
+  heightDp = 1500,
+)
+fun ChirpAdaptiveFormLayoutDesktopDarkPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.DESKTOP,
   )
 }

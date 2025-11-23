@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,29 +32,35 @@ fun ChirpSuccessLayout(
 ) {
   Column(
     modifier = modifier
-      .padding(horizontal = 32.dp)
+      .padding(horizontal = 16.dp)
       .padding(bottom = 32.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     icon()
-    Text(
-      text = title,
-      color = MaterialTheme.colorScheme.extended.textPrimary,
-      textAlign = TextAlign.Center,
-      style = MaterialTheme.typography.titleLarge,
-    )
-    Spacer(Modifier.height(8.dp))
-    Text(
-      text = description,
-      color = MaterialTheme.colorScheme.extended.textSecondary,
-      textAlign = TextAlign.Center,
-      style = MaterialTheme.typography.bodySmall,
-    )
-    Spacer(Modifier.height(32.dp))
-    primaryButton()
-    if (secondaryButton != null) {
-      Spacer(Modifier.height(12.dp))
-      secondaryButton()
+    Column(
+      modifier = Modifier
+        .offset(y = (-24).dp),
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      Text(
+        text = title,
+        color = MaterialTheme.colorScheme.extended.textPrimary,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.titleLarge,
+      )
+      Spacer(Modifier.height(8.dp))
+      Text(
+        text = description,
+        color = MaterialTheme.colorScheme.extended.textSecondary,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.bodySmall,
+      )
+      Spacer(Modifier.height(32.dp))
+      primaryButton()
+      if (secondaryButton != null) {
+        Spacer(Modifier.height(12.dp))
+        secondaryButton()
+      }
     }
   }
 }

@@ -86,7 +86,10 @@ fun ChirpAdaptiveResultLayoutThemed(
 }
 
 @Composable
-@Preview
+@Preview(
+  widthDp = 450,
+  heightDp = 1000,
+)
 fun ChirpAdaptiveResultLayoutMobilePortraitLightPreview() {
   ChirpAdaptiveResultLayoutThemed(
     isDarkTheme = false,
@@ -95,7 +98,10 @@ fun ChirpAdaptiveResultLayoutMobilePortraitLightPreview() {
 }
 
 @Composable
-@Preview
+@Preview(
+  widthDp = 450,
+  heightDp = 1000,
+)
 fun ChirpAdaptiveResultLayoutMobilePortraitDarkPreview() {
   ChirpAdaptiveResultLayoutThemed(
     isDarkTheme = true,
@@ -105,8 +111,8 @@ fun ChirpAdaptiveResultLayoutMobilePortraitDarkPreview() {
 
 @Composable
 @Preview(
-  widthDp = 650,
-  heightDp = 300,
+  widthDp = 1000,
+  heightDp = 450,
 )
 fun ChirpAdaptiveResultLayoutMobileLandscapeLightPreview() {
   ChirpAdaptiveResultLayoutThemed(
@@ -117,8 +123,8 @@ fun ChirpAdaptiveResultLayoutMobileLandscapeLightPreview() {
 
 @Composable
 @Preview(
-  widthDp = 650,
-  heightDp = 300,
+  widthDp = 1000,
+  heightDp = 450,
 )
 fun ChirpAdaptiveResultLayoutMobileLandscapeDarkPreview() {
   ChirpAdaptiveResultLayoutThemed(
@@ -129,8 +135,8 @@ fun ChirpAdaptiveResultLayoutMobileLandscapeDarkPreview() {
 
 @Composable
 @Preview(
-  widthDp = 650,
-  heightDp = 1000,
+  widthDp = 750,
+  heightDp = 1200,
 )
 fun ChirpAdaptiveResultLayoutTabletPortraitLightPreview() {
   ChirpAdaptiveResultLayoutThemed(
@@ -141,8 +147,8 @@ fun ChirpAdaptiveResultLayoutTabletPortraitLightPreview() {
 
 @Composable
 @Preview(
-  widthDp = 650,
-  heightDp = 1000,
+  widthDp = 750,
+  heightDp = 1200,
 )
 fun ChirpAdaptiveResultLayoutTabletPortraitDarkPreview() {
   ChirpAdaptiveResultLayoutThemed(
@@ -153,8 +159,8 @@ fun ChirpAdaptiveResultLayoutTabletPortraitDarkPreview() {
 
 @Composable
 @Preview(
-  widthDp = 1000,
-  heightDp = 650,
+  widthDp = 1200,
+  heightDp = 750,
 )
 fun ChirpAdaptiveResultLayoutTabletLandscapeLightPreview() {
   ChirpAdaptiveResultLayoutThemed(
@@ -165,12 +171,36 @@ fun ChirpAdaptiveResultLayoutTabletLandscapeLightPreview() {
 
 @Composable
 @Preview(
-  widthDp = 1000,
-  heightDp = 650,
+  widthDp = 1200,
+  heightDp = 750,
 )
 fun ChirpAdaptiveResultLayoutTabletLandscapeDarkPreview() {
   ChirpAdaptiveResultLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 2000,
+  heightDp = 1500,
+)
+fun ChirpAdaptiveResultLayoutDesktopLightPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.DESKTOP,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 2000,
+  heightDp = 1500,
+)
+fun ChirpAdaptiveResultLayoutDesktopDarkPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.DESKTOP,
   )
 }
