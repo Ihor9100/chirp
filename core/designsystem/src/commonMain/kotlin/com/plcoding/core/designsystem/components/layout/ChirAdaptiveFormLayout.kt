@@ -22,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
-import com.plcoding.core.designsystem.components.surface.ChirpSurface
 import com.plcoding.core.designsystem.style.ChirTheme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.utils.DeviceConfiguration
@@ -46,7 +45,7 @@ fun ChirAdaptiveFormLayout(
 
   when (deviceConfiguration) {
     DeviceConfiguration.MOBILE_PORTRAIT -> {
-      ChirpSurface(
+      ChirpLayout(
         modifier = modifier.fillMaxSize(),
         logo = logo,
       ) {
@@ -86,7 +85,7 @@ fun ChirAdaptiveFormLayout(
             error = error,
           )
         }
-        ChirpSurface(
+        ChirpLayout(
           modifier = Modifier
             .weight(1f),
           logo = {},

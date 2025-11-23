@@ -31,9 +31,7 @@ fun ChirpSuccessLayout(
   secondaryButton: @Composable (() -> Unit)?,
 ) {
   Column(
-    modifier = modifier
-      .padding(horizontal = 16.dp)
-      .padding(bottom = 32.dp),
+    modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     icon()
@@ -77,8 +75,6 @@ fun ChirpSuccessLayoutThemed(
 @Composable
 fun ChirpSuccessLayoutMock() {
   ChirpSuccessLayout(
-    modifier = Modifier
-      .fillMaxSize(),
     icon = {
       ChirpSuccessIcon()
     },

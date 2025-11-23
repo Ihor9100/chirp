@@ -1,4 +1,4 @@
-package com.plcoding.core.designsystem.components.surface
+package com.plcoding.core.designsystem.components.layout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import com.plcoding.core.designsystem.style.ChirTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpSurface(
+fun ChirpLayout(
   modifier: Modifier = Modifier,
   logo: @Composable () -> Unit,
   content: @Composable ColumnScope.() -> Unit,
@@ -40,7 +40,8 @@ fun ChirpSurface(
             topEnd = 20.dp,
           )
         )
-        .background(MaterialTheme.colorScheme.surface),
+        .background(MaterialTheme.colorScheme.surface)
+        .padding(horizontal = 16.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       content()
@@ -49,11 +50,11 @@ fun ChirpSurface(
 }
 
 @Composable
-fun ChirpSurfaceThemed(
+fun ChirpLayoutThemed(
   isDarkTheme: Boolean,
 ) {
   ChirTheme(isDarkTheme) {
-    ChirpSurface(
+    ChirpLayout(
       modifier = Modifier
         .fillMaxSize(),
       logo = {
@@ -75,12 +76,12 @@ fun ChirpSurfaceThemed(
 
 @Composable
 @Preview
-fun ChirpSurfaceLightPreview() {
-  ChirpSurfaceThemed(isDarkTheme = false)
+fun ChirpLayoutLightPreview() {
+  ChirpLayoutThemed(isDarkTheme = false)
 }
 
 @Composable
 @Preview
-fun ChirpSurfaceDarkPreview() {
-  ChirpSurfaceThemed(isDarkTheme = true)
+fun ChirpLayoutDarkPreview() {
+  ChirpLayoutThemed(isDarkTheme = true)
 }
