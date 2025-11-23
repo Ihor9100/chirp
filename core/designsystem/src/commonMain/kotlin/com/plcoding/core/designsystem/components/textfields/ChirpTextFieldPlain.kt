@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.layout.ChirpTextFieldLayout
-import com.plcoding.core.designsystem.style.ChirTheme
+import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -103,7 +103,7 @@ fun ChirpTextFieldPlainThemed(
   isEnabled: Boolean,
   isError: Boolean,
 ) {
-  ChirTheme(isDarkTheme) {
+  ChirpTheme(isDarkTheme) {
     ChirpTextFieldPlain(
       topTitle = "Hello",
       textFieldState = TextFieldState(initialText),

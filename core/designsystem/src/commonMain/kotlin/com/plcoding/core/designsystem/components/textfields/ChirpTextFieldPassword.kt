@@ -31,7 +31,7 @@ import chirp.core.designsystem.generated.resources.ic_eye_off
 import chirp.core.designsystem.generated.resources.ic_eye_on
 import chirp.core.designsystem.generated.resources.show_password
 import com.plcoding.core.designsystem.components.layout.ChirpTextFieldLayout
-import com.plcoding.core.designsystem.style.ChirTheme
+import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -147,7 +147,7 @@ fun ChirpTextFieldPasswordThemed(
   isEnabled: Boolean,
   isSecureMode: Boolean,
 ) {
-  ChirTheme(isDarkTheme) {
+  ChirpTheme(isDarkTheme) {
     ChirpTextFieldPassword(
       topTitle = "Password",
       textFieldState = TextFieldState(initialText),

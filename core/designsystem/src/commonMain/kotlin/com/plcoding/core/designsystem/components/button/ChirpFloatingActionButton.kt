@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.style.ChirTheme
+import com.plcoding.core.designsystem.style.ChirpTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -32,7 +32,7 @@ fun ChirFloatingActionButton(
 fun ChirFloatingActionButtonThemed(
   isDarkTheme: Boolean,
 ) {
-  ChirTheme(isDarkTheme) {
+  ChirpTheme(isDarkTheme) {
     ChirFloatingActionButton(
       onClick = {},
       content = {

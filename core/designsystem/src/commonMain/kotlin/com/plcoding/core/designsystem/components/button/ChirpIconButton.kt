@@ -12,7 +12,7 @@ import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.style.ChirTheme
+import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -43,7 +43,7 @@ fun ChirpIconButton(
 fun ChirpIconButtonThemed(
   isDarkTheme: Boolean,
 ) {
-  ChirTheme(isDarkTheme) {
+  ChirpTheme(isDarkTheme) {
     ChirpIconButton(
       onClick = {}
     ) {

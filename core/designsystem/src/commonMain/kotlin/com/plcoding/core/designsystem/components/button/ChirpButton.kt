@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.style.ChirTheme
+import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -132,7 +132,7 @@ fun ChirpButtonThemed(
   isDarkTheme: Boolean,
   style: ChirpButtonStyle,
 ) {
-  ChirTheme(isDarkTheme) {
+  ChirpTheme(isDarkTheme) {
     ChirpButton(
       text = "Click",
       style = style,

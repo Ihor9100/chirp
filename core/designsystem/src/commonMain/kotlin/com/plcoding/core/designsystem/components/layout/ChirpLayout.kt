@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
-import com.plcoding.core.designsystem.style.ChirTheme
+import com.plcoding.core.designsystem.style.ChirpTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -53,7 +53,7 @@ fun ChirpLayout(
 fun ChirpLayoutThemed(
   isDarkTheme: Boolean,
 ) {
-  ChirTheme(isDarkTheme) {
+  ChirpTheme(isDarkTheme) {
     ChirpLayout(
       modifier = Modifier
         .fillMaxSize(),

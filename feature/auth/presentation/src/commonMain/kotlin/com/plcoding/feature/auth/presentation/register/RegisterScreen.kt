@@ -2,14 +2,13 @@ package com.plcoding.feature.auth.presentation.register
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.plcoding.core.designsystem.style.ChirpTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RegisterScreen(
-  viewModel: RegisterViewModel = viewModel()
+  viewModel: RegisterViewModel
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -31,7 +30,7 @@ fun RegisterContent(
 @Composable
 private fun RegisterPreview() {
   ChirpTheme {
-    RegisterScreen(
+    RegisterContent(
       state = RegisterState(),
       onAction = {}
     )

@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
-import com.plcoding.core.designsystem.style.ChirTheme
+import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.presentation.utils.DeviceConfiguration
 import com.plcoding.core.presentation.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -68,7 +68,7 @@ fun ChirpAdaptiveResultLayoutThemed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
-  ChirTheme(isDarkTheme) {
+  ChirpTheme(isDarkTheme) {
     ChirpAdaptiveResultLayout(
       modifier = Modifier
         .fillMaxSize(),
