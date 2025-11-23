@@ -128,56 +128,104 @@ fun ChirpButton(
 }
 
 @Composable
-@Preview
-fun ChirpButtonTextPreview() {
-  ChirTheme {
+fun ChirpButtonThemed(
+  isDarkTheme: Boolean,
+  style: ChirpButtonStyle,
+) {
+  ChirTheme(isDarkTheme) {
     ChirpButton(
-      text = "Hello World!",
-      style = ChirpButtonStyle.TEXT
+      text = "Click",
+      style = style,
     )
   }
 }
 
 @Composable
 @Preview
-fun ChirpButtonPrimaryPreview() {
-  ChirTheme {
-    ChirpButton(
-      text = "Hello World!",
-      style = ChirpButtonStyle.PRIMARY
-    )
-  }
+fun ChirpButtonTextLightPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = false,
+    style = ChirpButtonStyle.TEXT,
+  )
 }
 
 @Composable
 @Preview
-fun ChirpButtonSecondaryPreview() {
-  ChirTheme {
-    ChirpButton(
-      text = "Hello World!",
-      style = ChirpButtonStyle.SECONDARY
-    )
-  }
+fun ChirpButtonTextDarkPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = true,
+    style = ChirpButtonStyle.TEXT,
+  )
 }
 
 @Composable
 @Preview
-fun ChirpButtonDestructivePrimaryPreview() {
-  ChirTheme {
-    ChirpButton(
-      text = "Hello World!",
-      style = ChirpButtonStyle.DESTRUCTIVE_PRIMARY
-    )
-  }
+fun ChirpButtonPrimaryLightPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = false,
+    style = ChirpButtonStyle.PRIMARY,
+  )
 }
 
 @Composable
 @Preview
-fun ChirpButtonDestructiveSecondaryPreview() {
-  ChirTheme {
-    ChirpButton(
-      text = "Hello World!",
-      style = ChirpButtonStyle.DESTRUCTIVE_SECONDARY
-    )
-  }
+fun ChirpButtonPrimaryDarkPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = true,
+    style = ChirpButtonStyle.PRIMARY,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpButtonSecondaryLightPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = false,
+    style = ChirpButtonStyle.SECONDARY,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpButtonSecondaryDarkPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = true,
+    style = ChirpButtonStyle.SECONDARY,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpButtonDestructivePrimaryLightPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = false,
+    style = ChirpButtonStyle.DESTRUCTIVE_PRIMARY,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpButtonDestructivePrimaryDarkPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = true,
+    style = ChirpButtonStyle.DESTRUCTIVE_PRIMARY,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpButtonDestructiveSecondaryLightPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = false,
+    style = ChirpButtonStyle.DESTRUCTIVE_SECONDARY,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpButtonDestructiveSecondaryDarkPreview() {
+  ChirpButtonThemed(
+    isDarkTheme = true,
+    style = ChirpButtonStyle.DESTRUCTIVE_SECONDARY,
+  )
 }

@@ -40,9 +40,10 @@ fun ChirpIconButton(
 }
 
 @Composable
-@Preview
-fun ChirpIconButtonLightPreview() {
-  ChirTheme {
+fun ChirpIconButtonThemed(
+  isDarkTheme: Boolean,
+) {
+  ChirTheme(isDarkTheme) {
     ChirpIconButton(
       onClick = {}
     ) {
@@ -54,18 +55,18 @@ fun ChirpIconButtonLightPreview() {
   }
 }
 
+@Composable
+@Preview
+fun ChirpIconButtonLightPreview() {
+  ChirpIconButtonThemed(
+    isDarkTheme = false,
+  )
+}
 
 @Composable
 @Preview
 fun ChirpIconButtonDarkPreview() {
-  ChirTheme(isDarkMode = true) {
-    ChirpIconButton(
-      onClick = {}
-    ) {
-      Icon(
-        imageVector = Icons.Default.Air,
-        contentDescription = null,
-      )
-    }
-  }
+  ChirpIconButtonThemed(
+    isDarkTheme = true,
+  )
 }

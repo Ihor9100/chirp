@@ -97,59 +97,109 @@ fun ChirpTextFieldPlain(
 }
 
 @Composable
-@Preview
-fun ChirpTextFieldPlainEmptyPreview() {
-  ChirTheme {
+fun ChirpTextFieldPlainThemed(
+  isDarkTheme: Boolean,
+  initialText: String,
+  isEnabled: Boolean,
+  isError: Boolean,
+) {
+  ChirTheme(isDarkTheme) {
     ChirpTextFieldPlain(
       topTitle = "Hello",
-      textFieldState = TextFieldState(""),
-      inputPlaceholder = "Wowww",
+      textFieldState = TextFieldState(initialText),
+      inputPlaceholder = "Enter here",
       keyboardType = KeyboardType.Text,
-      bottomTitle = "Tralalolo-Tralala",
+      bottomTitle = "Something happened",
+      isError = isError,
+      isEnabled = isEnabled,
     )
   }
 }
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainFilledPreview() {
-  ChirTheme {
-    ChirpTextFieldPlain(
-      topTitle = "Hello",
-      textFieldState = TextFieldState("How are you?"),
-      inputPlaceholder = "Wowww",
-      keyboardType = KeyboardType.Text,
-      bottomTitle = "Tralalolo-Tralala",
-    )
-  }
+fun ChirpTextFieldPlainEmptyLightPreview() {
+  ChirpTextFieldPlainThemed(
+    isDarkTheme = false,
+    initialText = "",
+    isError = false,
+    isEnabled = true,
+  )
 }
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainDisabledPreview() {
-  ChirTheme {
-    ChirpTextFieldPlain(
-      topTitle = "Hello",
-      textFieldState = TextFieldState("How are you?"),
-      inputPlaceholder = "Wowww",
-      keyboardType = KeyboardType.Text,
-      bottomTitle = "Tralalolo-Tralala",
-      isEnabled = false,
-    )
-  }
+fun ChirpTextFieldPlainEmptyDarkPreview() {
+  ChirpTextFieldPlainThemed(
+    isDarkTheme = true,
+    initialText = "",
+    isError = false,
+    isEnabled = true,
+  )
 }
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainErrorPreview() {
-  ChirTheme {
-    ChirpTextFieldPlain(
-      topTitle = "Hello",
-      textFieldState = TextFieldState("How are you?"),
-      inputPlaceholder = "Wowww",
-      keyboardType = KeyboardType.Text,
-      bottomTitle = "Tralalolo-Tralala",
-      isError = true,
-    )
-  }
+fun ChirpTextFieldPlainFilledLightPreview() {
+  ChirpTextFieldPlainThemed(
+    isDarkTheme = false,
+    initialText = "How are you?",
+    isError = false,
+    isEnabled = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPlainFilledDarkPreview() {
+  ChirpTextFieldPlainThemed(
+    isDarkTheme = true,
+    initialText = "How are you?",
+    isError = false,
+    isEnabled = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPlainDisabledLightPreview() {
+  ChirpTextFieldPlainThemed(
+    isDarkTheme = false,
+    initialText = "How are you?",
+    isError = false,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPlainDisabledDarkPreview() {
+  ChirpTextFieldPlainThemed(
+    isDarkTheme = true,
+    initialText = "How are you?",
+    isError = false,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPlainErrorLightPreview() {
+  ChirpTextFieldPlainThemed(
+    isDarkTheme = false,
+    initialText = "How are you?",
+    isError = true,
+    isEnabled = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPlainErrorDarkPreview() {
+  ChirpTextFieldPlainThemed(
+    isDarkTheme = true,
+    initialText = "How are you?",
+    isError = true,
+    isEnabled = true,
+  )
 }

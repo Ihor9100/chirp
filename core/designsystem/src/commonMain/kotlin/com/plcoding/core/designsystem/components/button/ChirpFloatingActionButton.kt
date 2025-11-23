@@ -29,9 +29,10 @@ fun ChirFloatingActionButton(
 }
 
 @Composable
-@Preview
-fun ChirFloatingActionButtonPreview() {
-  ChirTheme {
+fun ChirFloatingActionButtonThemed(
+  isDarkTheme: Boolean,
+) {
+  ChirTheme(isDarkTheme) {
     ChirFloatingActionButton(
       onClick = {},
       content = {
@@ -42,4 +43,20 @@ fun ChirFloatingActionButtonPreview() {
       }
     )
   }
+}
+
+@Composable
+@Preview
+fun ChirFloatingActionButtonLightPreview() {
+  ChirFloatingActionButtonThemed(
+    isDarkTheme = false
+  )
+}
+
+@Composable
+@Preview
+fun ChirFloatingActionButtonDarkPreview() {
+  ChirFloatingActionButtonThemed(
+    isDarkTheme = true
+  )
 }

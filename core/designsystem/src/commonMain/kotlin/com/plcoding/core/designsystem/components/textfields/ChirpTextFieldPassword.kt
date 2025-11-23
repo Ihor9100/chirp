@@ -141,12 +141,13 @@ fun ChirpTextFieldPassword(
 
 @Composable
 fun ChirpTextFieldPasswordThemed(
+  isDarkTheme: Boolean,
   initialText: String,
   isError: Boolean,
   isEnabled: Boolean,
   isSecureMode: Boolean,
 ) {
-  ChirTheme {
+  ChirTheme(isDarkTheme) {
     ChirpTextFieldPassword(
       topTitle = "Password",
       textFieldState = TextFieldState(initialText),
@@ -161,8 +162,9 @@ fun ChirpTextFieldPasswordThemed(
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordEmptyPreview() {
+fun ChirpTextFieldPasswordEmptyLightPreview() {
   ChirpTextFieldPasswordThemed(
+    isDarkTheme = false,
     initialText = "",
     isError = false,
     isEnabled = true,
@@ -172,8 +174,21 @@ fun ChirpTextFieldPasswordEmptyPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordFilledPreview() {
+fun ChirpTextFieldPasswordEmptyDarkPreview() {
   ChirpTextFieldPasswordThemed(
+    isDarkTheme = true,
+    initialText = "",
+    isError = false,
+    isEnabled = true,
+    isSecureMode = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordFilledLightPreview() {
+  ChirpTextFieldPasswordThemed(
+    isDarkTheme = false,
     initialText = "123456789",
     isError = false,
     isEnabled = true,
@@ -183,8 +198,21 @@ fun ChirpTextFieldPasswordFilledPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordDisabledPreview() {
+fun ChirpTextFieldPasswordFilledDarkPreview() {
   ChirpTextFieldPasswordThemed(
+    isDarkTheme = true,
+    initialText = "123456789",
+    isError = false,
+    isEnabled = true,
+    isSecureMode = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordDisabledLightPreview() {
+  ChirpTextFieldPasswordThemed(
+    isDarkTheme = false,
     initialText = "123456789",
     isError = false,
     isEnabled = false,
@@ -194,8 +222,33 @@ fun ChirpTextFieldPasswordDisabledPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordErrorPreview() {
+fun ChirpTextFieldPasswordDisabledDarkPreview() {
   ChirpTextFieldPasswordThemed(
+    isDarkTheme = true,
+    initialText = "123456789",
+    isError = false,
+    isEnabled = false,
+    isSecureMode = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordErrorLightPreview() {
+  ChirpTextFieldPasswordThemed(
+    isDarkTheme = false,
+    initialText = "123456789",
+    isError = true,
+    isEnabled = true,
+    isSecureMode = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordErrorDarkPreview() {
+  ChirpTextFieldPasswordThemed(
+    isDarkTheme = true,
     initialText = "123456789",
     isError = true,
     isEnabled = true,
