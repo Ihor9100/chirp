@@ -15,6 +15,16 @@ class CmpFeatureConventionPlugin : CmpLibraryConventionPlugin() {
         "commonMainImplementation"(project(":core:designsystem"))
         "commonMainImplementation"(project(":core:domain"))
         "commonMainImplementation"(project(":core:presentation"))
+
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
+
+        "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-runtime-compose").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel-compose").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel-savedstate").get())
+
+        "commonMainImplementation"(libs.findLibrary("jetbrains-savedstate").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-bundle").get())
       }
     }
   }

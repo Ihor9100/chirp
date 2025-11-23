@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel: ViewModel() {
 
   private var hasLoadedInitialData = false
 
