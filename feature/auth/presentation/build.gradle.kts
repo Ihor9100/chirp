@@ -11,6 +11,8 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
+        implementation(projects.core.designsystem)
+
         implementation(projects.feature.auth.domain)
       }
     }
