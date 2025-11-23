@@ -138,52 +138,9 @@ fun ChirpTextFieldPassword(
   }
 }
 
-@Composable
-@Preview
-fun ChirpTextFieldPasswordEmptyPreview() {
-  ChirpTextFieldPasswordPreview(
-    initialText = "",
-    isError = false,
-    isEnabled = true,
-    isSecureMode = true,
-  )
-}
 
 @Composable
-@Preview
-fun ChirpTextFieldPasswordFilledPreview() {
-  ChirpTextFieldPasswordPreview(
-    initialText = "123456789",
-    isError = false,
-    isEnabled = true,
-    isSecureMode = true,
-  )
-}
-
-@Composable
-@Preview
-fun ChirpTextFieldPasswordDisabledPreview() {
-  ChirpTextFieldPasswordPreview(
-    initialText = "123456789",
-    isError = false,
-    isEnabled = false,
-    isSecureMode = true,
-  )
-}
-
-@Composable
-@Preview
-fun ChirpTextFieldPasswordErrorPreview() {
-  ChirpTextFieldPasswordPreview(
-    initialText = "123456789",
-    isError = true,
-    isEnabled = true,
-    isSecureMode = true,
-  )
-}
-
-@Composable
-fun ChirpTextFieldPasswordPreview(
+fun ChirpTextFieldPasswordThemed(
   initialText: String,
   isError: Boolean,
   isEnabled: Boolean,
@@ -200,4 +157,48 @@ fun ChirpTextFieldPasswordPreview(
       isSecureMode = isSecureMode,
     )
   }
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordEmptyPreview() {
+  ChirpTextFieldPasswordThemed(
+    initialText = "",
+    isError = false,
+    isEnabled = true,
+    isSecureMode = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordFilledPreview() {
+  ChirpTextFieldPasswordThemed(
+    initialText = "123456789",
+    isError = false,
+    isEnabled = true,
+    isSecureMode = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordDisabledPreview() {
+  ChirpTextFieldPasswordThemed(
+    initialText = "123456789",
+    isError = false,
+    isEnabled = false,
+    isSecureMode = true,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpTextFieldPasswordErrorPreview() {
+  ChirpTextFieldPasswordThemed(
+    initialText = "123456789",
+    isError = true,
+    isEnabled = true,
+    isSecureMode = true,
+  )
 }

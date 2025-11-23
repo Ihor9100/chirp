@@ -128,97 +128,7 @@ fun ChirAdaptiveFormLayout(
 }
 
 @Composable
-@Preview
-fun ChirpAdaptiveFormMobilePortraitLightPreview() {
-  ChirpAdaptiveFormPreview(
-    isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview
-fun ChirpAdaptiveFormMobilePortraitDarkPreview() {
-  ChirpAdaptiveFormPreview(
-    isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 650,
-  heightDp = 300,
-)
-fun ChirpAdaptiveFormMobileLandscapeLightPreview() {
-  ChirpAdaptiveFormPreview(
-    isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 650,
-  heightDp = 300,
-)
-fun ChirpAdaptiveFormMobileLandscapeDarkPreview() {
-  ChirpAdaptiveFormPreview(
-    isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 650,
-  heightDp = 1000,
-)
-fun ChirpAdaptiveFormTabletPortraitLightPreview() {
-  ChirpAdaptiveFormPreview(
-    isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 650,
-  heightDp = 1000,
-)
-fun ChirpAdaptiveFormTabletPortraitDarkPreview() {
-  ChirpAdaptiveFormPreview(
-    isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 1000,
-  heightDp = 650,
-)
-fun ChirpAdaptiveFormTabletLandscapeLightPreview() {
-  ChirpAdaptiveFormPreview(
-    isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 1000,
-  heightDp = 650,
-)
-fun ChirpAdaptiveFormTabletLandscapeDarkPreview() {
-  ChirpAdaptiveFormPreview(
-    isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
-  )
-}
-
-@Composable
-fun ChirpAdaptiveFormPreview(
+fun ChirpAdaptiveFormLayoutThemed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
@@ -259,4 +169,94 @@ fun ChirpAdaptiveFormPreview(
       }
     )
   }
+}
+
+@Composable
+@Preview
+fun ChirpAdaptiveFormLayoutMobilePortraitLightPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpAdaptiveFormLayoutMobilePortraitDarkPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 300,
+)
+fun ChirpAdaptiveFormLayoutMobileLandscapeLightPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 300,
+)
+fun ChirpAdaptiveFormLayoutMobileLandscapeDarkPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 1000,
+)
+fun ChirpAdaptiveFormLayoutTabletPortraitLightPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 1000,
+)
+fun ChirpAdaptiveFormLayoutTabletPortraitDarkPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 1000,
+  heightDp = 650,
+)
+fun ChirpAdaptiveFormLayoutTabletLandscapeLightPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 1000,
+  heightDp = 650,
+)
+fun ChirpAdaptiveFormLayoutTabletLandscapeDarkPreview() {
+  ChirpAdaptiveFormLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
+  )
 }

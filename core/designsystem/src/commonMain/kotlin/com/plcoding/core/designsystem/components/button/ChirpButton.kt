@@ -31,8 +31,8 @@ enum class ChirpButtonStyle {
 
 @Composable
 fun ChirpButton(
-  text: String,
   modifier: Modifier = Modifier,
+  text: String,
   style: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
   isLoading: Boolean = false,
   enabled: Boolean = true,

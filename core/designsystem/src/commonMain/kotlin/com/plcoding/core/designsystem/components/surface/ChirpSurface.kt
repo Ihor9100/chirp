@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,19 +49,7 @@ fun ChirpSurface(
 }
 
 @Composable
-@Preview
-fun ChirpSurfaceLightPreview() {
-  ChirpSurfacePreview(isDarkTheme = false)
-}
-
-@Composable
-@Preview
-fun ChirpSurfaceDarkPreview() {
-  ChirpSurfacePreview(isDarkTheme = true)
-}
-
-@Composable
-fun ChirpSurfacePreview(
+fun ChirpSurfaceThemed(
   isDarkTheme: Boolean,
 ) {
   ChirTheme(isDarkTheme) {
@@ -85,4 +71,16 @@ fun ChirpSurfacePreview(
       }
     )
   }
+}
+
+@Composable
+@Preview
+fun ChirpSurfaceLightPreview() {
+  ChirpSurfaceThemed(isDarkTheme = false)
+}
+
+@Composable
+@Preview
+fun ChirpSurfaceDarkPreview() {
+  ChirpSurfaceThemed(isDarkTheme = true)
 }

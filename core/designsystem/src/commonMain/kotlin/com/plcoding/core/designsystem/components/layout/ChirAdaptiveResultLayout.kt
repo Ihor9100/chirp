@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.components.surface.ChirpSurface
 import com.plcoding.core.designsystem.style.ChirTheme
-import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.utils.DeviceConfiguration
 import com.plcoding.core.presentation.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -71,97 +69,7 @@ fun ChirpAdaptiveResultLayout(
 }
 
 @Composable
-@Preview
-fun ChirpAdaptiveResultMobilePortraitLightPreview() {
-  ChirpAdaptiveResultPreview(
-    isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview
-fun ChirpAdaptiveResultMobilePortraitDarkPreview() {
-  ChirpAdaptiveResultPreview(
-    isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 650,
-  heightDp = 300,
-)
-fun ChirpAdaptiveResultMobileLandscapeLightPreview() {
-  ChirpAdaptiveResultPreview(
-    isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 650,
-  heightDp = 300,
-)
-fun ChirpAdaptiveResultMobileLandscapeDarkPreview() {
-  ChirpAdaptiveResultPreview(
-    isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 650,
-  heightDp = 1000,
-)
-fun ChirpAdaptiveResultTabletPortraitLightPreview() {
-  ChirpAdaptiveResultPreview(
-    isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 650,
-  heightDp = 1000,
-)
-fun ChirpAdaptiveResultTabletPortraitDarkPreview() {
-  ChirpAdaptiveResultPreview(
-    isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 1000,
-  heightDp = 650,
-)
-fun ChirpAdaptiveResultTabletLandscapeLightPreview() {
-  ChirpAdaptiveResultPreview(
-    isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
-  )
-}
-
-@Composable
-@Preview(
-  widthDp = 1000,
-  heightDp = 650,
-)
-fun ChirpAdaptiveResultTabletLandscapeDarkPreview() {
-  ChirpAdaptiveResultPreview(
-    isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
-  )
-}
-
-@Composable
-fun ChirpAdaptiveResultPreview(
+fun ChirpAdaptiveResultLayoutThemed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
@@ -171,27 +79,98 @@ fun ChirpAdaptiveResultPreview(
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
       content = {
-        Text(
-          text = "Name",
-          color = MaterialTheme.colorScheme.extended.textPrimary,
-          style = MaterialTheme.typography.bodySmall,
-        )
-        Text(
-          text = "Surname",
-          color = MaterialTheme.colorScheme.extended.textPrimary,
-          style = MaterialTheme.typography.bodySmall,
-        )
-        Text(
-          text = "Address",
-          color = MaterialTheme.colorScheme.extended.textPrimary,
-          style = MaterialTheme.typography.bodySmall,
-        )
-        Text(
-          text = "Age",
-          color = MaterialTheme.colorScheme.extended.textPrimary,
-          style = MaterialTheme.typography.bodySmall,
-        )
+        ChirpSuccessLayoutMock()
       }
     )
   }
+}
+
+@Composable
+@Preview
+fun ChirpAdaptiveResultLayoutMobilePortraitLightPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview
+fun ChirpAdaptiveResultLayoutMobilePortraitDarkPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 300,
+)
+fun ChirpAdaptiveResultLayoutMobileLandscapeLightPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 300,
+)
+fun ChirpAdaptiveResultLayoutMobileLandscapeDarkPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 1000,
+)
+fun ChirpAdaptiveResultLayoutTabletPortraitLightPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 650,
+  heightDp = 1000,
+)
+fun ChirpAdaptiveResultLayoutTabletPortraitDarkPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 1000,
+  heightDp = 650,
+)
+fun ChirpAdaptiveResultLayoutTabletLandscapeLightPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 1000,
+  heightDp = 650,
+)
+fun ChirpAdaptiveResultLayoutTabletLandscapeDarkPreview() {
+  ChirpAdaptiveResultLayoutThemed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
+  )
 }
