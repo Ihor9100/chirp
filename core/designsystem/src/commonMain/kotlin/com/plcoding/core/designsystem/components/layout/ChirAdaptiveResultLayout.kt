@@ -30,18 +30,14 @@ fun ChirpAdaptiveResultLayout(
   if (deviceConfiguration == DeviceConfiguration.MOBILE_PORTRAIT) {
     ChirpLayout(
       modifier = modifier,
-      logo = {
-        Spacer(Modifier.height(32.dp))
-        ChirpBrandLogo()
-        Spacer(Modifier.height(32.dp))
-      },
+      contentColumnTopSpaceDp = 0.dp,
+      logo = { ChirpBrandLogo() },
     ) {
       content()
     }
   } else {
     Column(
-      modifier = modifier
-        .background(MaterialTheme.colorScheme.background),
+      modifier = modifier.background(MaterialTheme.colorScheme.background),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       if (deviceConfiguration != DeviceConfiguration.MOBILE_LANDSCAPE) {
@@ -54,10 +50,11 @@ fun ChirpAdaptiveResultLayout(
           .widthIn(max = 480.dp)
           .clip(RoundedCornerShape(16.dp))
           .background(MaterialTheme.colorScheme.surface)
-          .padding(16.dp),
+          .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         content()
+        Spacer(Modifier.height(16.dp))
       }
     }
   }

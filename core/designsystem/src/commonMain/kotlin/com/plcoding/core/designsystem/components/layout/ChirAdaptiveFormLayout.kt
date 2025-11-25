@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -51,13 +55,13 @@ fun ChirAdaptiveFormLayout(
         modifier = modifier.fillMaxSize(),
         logo = logo,
       ) {
-        Spacer(Modifier.height(40.dp))
         ChirBrandTitle(
           modifier = Modifier,
           title = title,
           titleColor = titleColor,
           error = error,
         )
+        Spacer(Modifier.height(32.dp))
         form()
       }
     }
@@ -66,11 +70,8 @@ fun ChirAdaptiveFormLayout(
         modifier = modifier
           .fillMaxSize()
           .background(MaterialTheme.colorScheme.background)
-          .padding(
-            top = 16.dp,
-            start = 16.dp,
-            end = 16.dp,
-          ),
+          .padding(horizontal = 16.dp)
+          .padding(top = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
       ) {
         Column(
@@ -87,8 +88,8 @@ fun ChirAdaptiveFormLayout(
           )
         }
         ChirpLayout(
-          modifier = Modifier
-            .weight(1f),
+          modifier = Modifier.weight(1f),
+          contentColumnTopSpaceDp = 20.dp,
           logo = {},
         ) {
           form()
@@ -111,16 +112,19 @@ fun ChirAdaptiveFormLayout(
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .padding(32.dp)
+            .padding(horizontal = 32.dp)
             .verticalScroll(rememberScrollState()),
           horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+          Spacer(Modifier.height(40.dp))
           ChirBrandTitle(
             title = title,
             titleColor = titleColor,
             error = error,
           )
+          Spacer(Modifier.height(32.dp))
           form()
+          Spacer(Modifier.height(40.dp))
         }
       }
     }
@@ -146,7 +150,6 @@ fun ChirpAdaptiveFormLayoutThemed(
       title = "Hello World",
       error = "Invalid Data",
       form = {
-        Spacer(Modifier.height(24.dp))
         Text(
           text = "Name",
           color = MaterialTheme.colorScheme.extended.textPrimary,

@@ -4,8 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,15 +20,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
 import com.plcoding.core.designsystem.style.ChirpTheme
+import kotlinx.serialization.json.JsonNull.content
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ChirpLayout(
   modifier: Modifier = Modifier,
+  contentColumnTopSpaceDp: Dp = 16.dp,
   logo: @Composable () -> Unit,
   content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -32,7 +40,9 @@ fun ChirpLayout(
     modifier = modifier
       .background(MaterialTheme.colorScheme.background),
   ) {
+    Spacer(Modifier.height(32.dp))
     logo()
+    Spacer(Modifier.height(32.dp))
     Column(
       modifier = Modifier
         .fillMaxSize()
@@ -47,6 +57,7 @@ fun ChirpLayout(
         .verticalScroll(rememberScrollState()),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+      Spacer(Modifier.height(contentColumnTopSpaceDp))
       content()
     }
   }
@@ -58,16 +69,9 @@ fun ChirpLayoutThemed(
 ) {
   ChirpTheme(isDarkTheme) {
     ChirpLayout(
-      modifier = Modifier
-        .fillMaxSize(),
-      logo = {
-        ChirpBrandLogo(
-          modifier = Modifier
-            .padding(32.dp)
-        )
-      },
+      modifier = Modifier.fillMaxSize(),
+      logo = { ChirpBrandLogo(modifier = Modifier) },
       content = {
-        Spacer(Modifier.height(16.dp))
         ChirBrandTitle(
           title = "Welcome to Chirp!",
           error = "Error"
