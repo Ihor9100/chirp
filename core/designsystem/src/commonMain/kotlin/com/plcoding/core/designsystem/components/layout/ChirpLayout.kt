@@ -43,7 +43,8 @@ fun ChirpLayout(
           )
         )
         .background(MaterialTheme.colorScheme.surface)
-        .padding(horizontal = 16.dp),
+        .padding(horizontal = 16.dp)
+        .verticalScroll(rememberScrollState()),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       content()
