@@ -90,7 +90,6 @@ fun ChirAdaptiveFormLayout(
         ChirpLayout(
           modifier = Modifier.weight(1f),
           contentColumnTopSpaceDp = 20.dp,
-          logo = {},
         ) {
           form()
         }

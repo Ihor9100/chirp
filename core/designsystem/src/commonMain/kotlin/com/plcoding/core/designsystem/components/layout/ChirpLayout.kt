@@ -31,18 +31,19 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun ChirpLayout(
   modifier: Modifier = Modifier,
-  contentColumnTopSpaceDp: Dp = 16.dp,
-  logo: @Composable () -> Unit,
+  contentColumnTopSpaceDp: Dp = 40.dp,
+  logo: @Composable (() -> Unit)? = null,
   content: @Composable ColumnScope.() -> Unit,
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
-    modifier = modifier
-      .background(MaterialTheme.colorScheme.background),
+    modifier = modifier.background(MaterialTheme.colorScheme.background),
   ) {
-    Spacer(Modifier.height(32.dp))
-    logo()
-    Spacer(Modifier.height(32.dp))
+    if (logo != null) {
+      Spacer(Modifier.height(32.dp))
+      logo()
+      Spacer(Modifier.height(32.dp))
+    }
     Column(
       modifier = Modifier
         .fillMaxSize()
