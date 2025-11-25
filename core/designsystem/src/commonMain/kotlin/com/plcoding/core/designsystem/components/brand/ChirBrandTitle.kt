@@ -27,16 +27,15 @@ fun ChirBrandTitle(
     style = MaterialTheme.typography.headlineLarge,
   )
 
-  Spacer(
-    modifier = modifier.height(4.dp)
-  )
-
   val showError = error != null
 
   AnimatedVisibility(
     visible = showError
   ) {
     if (showError) {
+      Spacer(
+        modifier = modifier.height(4.dp)
+      )
       Text(
         text = error,
         modifier = modifier,

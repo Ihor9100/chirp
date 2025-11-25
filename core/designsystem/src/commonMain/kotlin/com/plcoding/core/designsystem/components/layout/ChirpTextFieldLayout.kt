@@ -20,7 +20,7 @@ import com.plcoding.core.designsystem.style.extended
 fun ChirpTextFieldLayout(
   modifier: Modifier = Modifier,
   topTitle: String,
-  bottomTitle: String,
+  bottomTitle: String?,
   isError: Boolean = false,
   isEnabled: Boolean = true,
   onFocusChanged: ((Boolean) -> Unit) = {},
@@ -55,7 +55,7 @@ fun ChirpTextFieldLayout(
 
     textField(inputTextStyle, interactionSource, isFocused)
 
-    if (bottomTitle.isNotBlank()) {
+    if (!bottomTitle.isNullOrBlank()) {
       Spacer(
         modifier = Modifier
           .height(4.dp),

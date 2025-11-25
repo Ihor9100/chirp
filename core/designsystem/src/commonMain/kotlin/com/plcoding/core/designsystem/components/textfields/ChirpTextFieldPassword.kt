@@ -43,7 +43,7 @@ fun ChirpTextFieldPassword(
   topTitle: String,
   textFieldState: TextFieldState,
   inputPlaceholder: String,
-  bottomTitle: String,
+  bottomTitle: String?,
   isError: Boolean = false,
   isEnabled: Boolean = true,
   isSecureMode: Boolean = false,

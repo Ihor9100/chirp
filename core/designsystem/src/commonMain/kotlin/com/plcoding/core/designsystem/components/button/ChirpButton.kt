@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -112,7 +113,8 @@ fun ChirpButton(
       )
       Row(
         horizontalArrangement = Arrangement.spacedBy(
-          space = 8.dp, alignment = Alignment.CenterHorizontally
+          space = 8.dp,
+          alignment = Alignment.CenterHorizontally,
         ),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.alpha(if (isLoading) 0f else 1f)

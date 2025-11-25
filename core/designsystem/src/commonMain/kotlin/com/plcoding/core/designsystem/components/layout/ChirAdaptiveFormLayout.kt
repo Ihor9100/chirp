@@ -56,7 +56,6 @@ fun ChirAdaptiveFormLayout(
           titleColor = titleColor,
           error = error,
         )
-        Spacer(Modifier.height(24.dp))
         form()
       }
     }
@@ -112,7 +111,6 @@ fun ChirAdaptiveFormLayout(
             .background(MaterialTheme.colorScheme.surface)
             .padding(32.dp),
           horizontalAlignment = Alignment.CenterHorizontally,
-          verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
           ChirBrandTitle(
             title = title,
@@ -145,6 +143,7 @@ fun ChirpAdaptiveFormLayoutThemed(
       title = "Hello World",
       error = "Invalid Data",
       form = {
+        Spacer(Modifier.height(24.dp))
         Text(
           text = "Name",
           color = MaterialTheme.colorScheme.extended.textPrimary,

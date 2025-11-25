@@ -14,20 +14,19 @@ import org.jetbrains.compose.resources.StringResource
 
 data class RegisterState(
   val titleRes: StringResource = Res.string.welcome_to_chirp,
+  val error: String? = null,
 
   val usernameTopTitleRes: StringResource = Res.string.username,
   val usernameState: TextFieldState = TextFieldState(),
   val usernamePlaceholderRes: StringResource = Res.string.chirp,
   val usernameBottomTitleRes: StringResource? = null,
   val usernameIsError: Boolean = false,
-  val usernameIsSecureMode: Boolean = false,
 
   val emailTopTitleRes: StringResource = Res.string.email,
   val emailState: TextFieldState = TextFieldState(),
   val emailPlaceholderRes: StringResource = Res.string.email,
   val emailBottomTitleRes: StringResource? = null,
   val emailIsError: Boolean = false,
-  val emailIsSecureMode: Boolean = false,
 
   val passwordTopTitleRes: StringResource = Res.string.password,
   val passwordState: TextFieldState = TextFieldState(),
