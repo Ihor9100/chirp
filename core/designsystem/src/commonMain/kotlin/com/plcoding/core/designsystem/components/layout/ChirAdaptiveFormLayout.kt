@@ -7,14 +7,16 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,8 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
+import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.utils.DeviceConfiguration
@@ -70,8 +72,15 @@ fun ChirAdaptiveFormLayout(
         modifier = modifier
           .fillMaxSize()
           .background(MaterialTheme.colorScheme.background)
-          .padding(horizontal = 16.dp)
-          .padding(top = 16.dp),
+          .padding(
+            start = 32.dp,
+            top = 32.dp,
+          )
+          .padding(
+            WindowInsets.navigationBars
+              .only(WindowInsetsSides.Horizontal)
+              .asPaddingValues()
+          ),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
       ) {
         Column(
@@ -92,6 +101,7 @@ fun ChirAdaptiveFormLayout(
           contentColumnTopSpaceDp = 20.dp,
         ) {
           form()
+          Spacer(Modifier.height(40.dp))
         }
       }
     }
