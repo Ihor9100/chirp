@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -64,7 +65,8 @@ fun ChirAdaptiveFormLayout(
     DeviceConfiguration.MOBILE_LANDSCAPE -> {
       Row(
         modifier = modifier
-          .background(MaterialTheme.colorScheme.background),
+          .background(MaterialTheme.colorScheme.background)
+          .safeDrawingPadding(),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
       ) {
         Column(
@@ -72,8 +74,9 @@ fun ChirAdaptiveFormLayout(
             .weight(1f)
             .fillMaxHeight(),
         ) {
+          Spacer(Modifier.height(32.dp))
           ChirpBrandLogo()
-          Spacer(Modifier.height(40.dp))
+          Spacer(Modifier.height(32.dp))
           ChirBrandTitle(
             title = title,
             titleColor = titleColor,
@@ -83,10 +86,8 @@ fun ChirAdaptiveFormLayout(
         ChirpLayout(
           modifier = Modifier.weight(1f),
           contentColumnTopSpaceDp = 20.dp,
-        ) {
-          form()
-          Spacer(Modifier.height(40.dp))
-        }
+          content = form
+        )
       }
     }
     DeviceConfiguration.TABLET_PORTRAIT,
@@ -95,17 +96,20 @@ fun ChirAdaptiveFormLayout(
       Column(
         modifier = modifier
           .fillMaxSize()
-          .background(MaterialTheme.colorScheme.background),
+          .background(MaterialTheme.colorScheme.background)
+          .safeDrawingPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
+        Spacer(Modifier.height(32.dp))
         logo()
+        Spacer(Modifier.height(32.dp))
         Column(
           modifier = Modifier
             .widthIn(max = 400.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState()),
           horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -134,12 +138,7 @@ fun ChirpAdaptiveFormLayoutThemed(
       modifier = Modifier
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
-      logo = {
-        ChirpBrandLogo(
-          modifier = Modifier
-            .padding(32.dp)
-        )
-      },
+      logo = ::ChirpBrandLogo,
       title = "Hello World",
       error = "Invalid Data",
       form = {

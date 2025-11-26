@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -42,11 +41,7 @@ fun RegisterContent(
   ChirpTheme {
     ChirAdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = {
-        ChirpBrandLogo(
-          modifier = Modifier.padding(vertical = 32.dp),
-        )
-      },
+      logo = ::ChirpBrandLogo,
       title = stringResource(state.titleRes),
       error = state.error,
     ) {
