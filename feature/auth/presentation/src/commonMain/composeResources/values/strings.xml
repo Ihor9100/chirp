@@ -12,7 +12,7 @@
 	<string name="hint_username">Use between 3 and 20 characters for your username</string>
 	<string name="hint_password">Use 9+ characters, at least one digit and one uppercase letter</string>
 
-	<string name="error_username_already_exists">Username already exists</string>
-	<string name="error_not_valid_email">This is not a valid email</string>
-	<string name="error_not_appropriate_password_length">Password must be at least 9 characters and include one digit and one uppercase letter</string>
+	<string name="error_invalid_username">The username must be between 3 and 20 characters</string>
+	<string name="error_invalid_email">This is not a valid email</string>
+	<string name="error_invalid_password">Password must be at least 9 characters and include one digit and one uppercase letter</string>
 </resources>

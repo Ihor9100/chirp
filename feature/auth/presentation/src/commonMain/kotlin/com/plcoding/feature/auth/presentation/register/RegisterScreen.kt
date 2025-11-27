@@ -53,7 +53,14 @@ fun RegisterContent(
         bottomTitle = state.usernameBottomTitleRes?.let { stringResource(it) },
         keyboardType = KeyboardType.Text,
         isError = state.usernameIsError,
-        onFocusChanged = { onAction(RegisterAction.OnTextFieldFocusGain) }
+        onFocusChanged = {
+          onAction(
+            RegisterAction.OnTextFieldFocusGain(
+              isFocused = it,
+              inputField = RegisterViewModel.InputField.USERNAME,
+            )
+          )
+        }
       )
       Spacer(Modifier.height(20.dp))
       ChirpTextFieldPlain(
@@ -64,7 +71,14 @@ fun RegisterContent(
         bottomTitle = state.emailBottomTitleRes?.let { stringResource(it) },
         keyboardType = KeyboardType.Text,
         isError = state.emailIsError,
-        onFocusChanged = { onAction(RegisterAction.OnTextFieldFocusGain) }
+        onFocusChanged = {
+          onAction(
+            RegisterAction.OnTextFieldFocusGain(
+              isFocused = it,
+              inputField = RegisterViewModel.InputField.EMAIL,
+            )
+          )
+        }
       )
       Spacer(Modifier.height(20.dp))
       ChirpTextFieldPassword(
@@ -74,7 +88,14 @@ fun RegisterContent(
         inputPlaceholder = stringResource(state.passwordPlaceholderRes),
         bottomTitle = state.passwordBottomTitleRes?.let { stringResource(it) },
         isError = state.passwordIsError,
-        onFocusChanged = { onAction(RegisterAction.OnTextFieldFocusGain) }
+        onFocusChanged = {
+          onAction(
+            RegisterAction.OnTextFieldFocusGain(
+              isFocused = it,
+              inputField = RegisterViewModel.InputField.PASSWORD,
+            )
+          )
+        }
       )
       Spacer(Modifier.height(32.dp))
       ChirpButton(
