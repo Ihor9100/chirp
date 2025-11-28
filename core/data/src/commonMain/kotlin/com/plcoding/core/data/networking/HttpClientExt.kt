@@ -120,7 +120,7 @@ suspend inline fun <reified T> responseToResult(
     413 -> Result.Failure(DataError.Remote.PAYLOAD_TOO_LARGE)
     429 -> Result.Failure(DataError.Remote.TOO_MANY_REQUESTS)
     500 -> Result.Failure(DataError.Remote.SERVER_ERROR)
-    503 -> Result.Failure(DataError.Remote.SERVER_UNAVAILABLE)
+    503 -> Result.Failure(DataError.Remote.SERVICE_UNAVAILABLE)
     else -> Result.Failure(DataError.Remote.UNKNOWN)
   }
 }

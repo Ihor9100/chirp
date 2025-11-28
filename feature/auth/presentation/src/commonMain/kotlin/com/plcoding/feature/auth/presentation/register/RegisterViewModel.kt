@@ -18,7 +18,6 @@ import com.plcoding.core.presentation.utils.getString
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -90,7 +89,7 @@ class RegisterViewModel(
         .onFailure { error ->
           val errorRes = when (error) {
             DataError.Remote.CONFLICT -> Res.string.error_account_exists
-            else -> it.getString()
+            else -> error.getString()
           }
           _state.update {
             it.copy(errorRes = errorRes)
