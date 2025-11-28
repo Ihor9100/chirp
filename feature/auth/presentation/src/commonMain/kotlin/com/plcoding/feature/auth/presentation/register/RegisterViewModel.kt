@@ -50,6 +50,7 @@ class RegisterViewModel(
   fun onAction(action: RegisterAction) {
     when (action) {
       is RegisterAction.OnTextFieldFocusGain -> clearInputFieldError(action)
+      is RegisterAction.OnTextFieldSecureToggleClick -> handleTextFieldSecureToggleClick()
       is RegisterAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
       else -> Unit
     }
@@ -73,6 +74,12 @@ class RegisterViewModel(
           )
         }
       }
+    }
+  }
+
+  private fun handleTextFieldSecureToggleClick() {
+    _state.update {
+      it.copy(passwordIsSecureMode = !it.passwordIsSecureMode)
     }
   }
 
