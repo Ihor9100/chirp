@@ -14,7 +14,7 @@ import org.jetbrains.compose.resources.StringResource
 
 data class RegisterState(
   val titleRes: StringResource = Res.string.welcome_to_chirp,
-  val error: String? = null,
+  val errorRes: StringResource? = null,
 
   val usernameTopTitleRes: StringResource = Res.string.username,
   val usernameState: TextFieldState = TextFieldState(),

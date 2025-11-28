@@ -1,23 +1,25 @@
 package com.plcoding.core.domain.utils
 
 sealed interface DataError : Error {
-  enum class Remote : Error {
-    SERIALIZATION,
+  enum class Remote : DataError {
     BAD_REQUEST,
+    REQUEST_TIMEOUT,
     UNAUTHORIZED,
     FORBIDDEN,
     NOT_FOUND,
-    REQUEST_TIMEOUT,
     CONFLICT,
-    PAYLOAD_TOO_LARGE,
     TOO_MANY_REQUESTS,
     NO_INTERNET,
+    PAYLOAD_TOO_LARGE,
     SERVER_ERROR,
-    SERVER_UNAVAILABLE,
-    UNKNOWN,
+    SERVICE_UNAVAILABLE,
+    SERIALIZATION,
+    UNKNOWN
   }
 
-  enum class Local : Error {
-
+  enum class Local: DataError {
+    DISK_FULL,
+    NOT_FOUND,
+    UNKNOWN
   }
 }

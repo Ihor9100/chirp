@@ -43,7 +43,7 @@ fun RegisterContent(
       modifier = Modifier.fillMaxSize(),
       logo = ::ChirpBrandLogo,
       title = stringResource(state.titleRes),
-      error = state.error,
+      error = state.errorRes,
     ) {
       ChirpTextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
