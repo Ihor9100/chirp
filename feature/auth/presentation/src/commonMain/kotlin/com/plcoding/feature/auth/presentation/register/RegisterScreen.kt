@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
 import com.plcoding.core.designsystem.components.button.ChirpButton
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
@@ -20,10 +19,11 @@ import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
 import com.plcoding.core.designsystem.style.ChirpTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RegisterScreen(
-  viewModel: RegisterViewModel = viewModel()
+  viewModel: RegisterViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 

@@ -20,6 +20,10 @@ class CmpApplicationConventionPlugin : AndroidApplicationConventionPlugin() {
       configureCompose(extensions.getByType(ApplicationExtension::class.java))
       configureAndroidTarget()
       configureIosTarget(baseName = "ComposeApp", isStatic = true)
+
+      dependencies {
+        "commonMainImplementation"(libs.findLibrary("koin-core").get())
+      }
     }
   }
 }
