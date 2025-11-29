@@ -87,6 +87,10 @@ class RegisterViewModel(
     if (!areFieldsValid()) return
 
     viewModelScope.launch {
+      _state.update {
+        it.copy(primaryButtonIsLoading = true)
+      }
+
       authService
         .register(
           username = state.value.usernameState.text.toString(),
@@ -105,6 +109,10 @@ class RegisterViewModel(
         .onSuccess {
 
         }
+
+      _state.update {
+        it.copy(primaryButtonIsLoading = false)
+      }
     }
   }
 
