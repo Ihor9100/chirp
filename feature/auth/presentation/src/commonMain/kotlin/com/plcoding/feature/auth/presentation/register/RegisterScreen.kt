@@ -41,7 +41,7 @@ fun RegisterContent(
   ChirpTheme {
     ChirAdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = ::ChirpBrandLogo,
+      logo = { ChirpBrandLogo() },
       title = stringResource(state.titleRes),
       error = state.errorRes?.let { stringResource(it) },
     ) {
