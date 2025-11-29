@@ -37,6 +37,7 @@ data class RegisterState(
 
   val primaryButtonTitleRes: StringResource = Res.string.register,
   val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
+  val primaryButtonIsLoading: Boolean = false,
 
   val secondaryButtonTitleRes: StringResource = Res.string.log_in,
   val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,

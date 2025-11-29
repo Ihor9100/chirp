@@ -88,6 +88,7 @@ fun RegisterContent(
         inputPlaceholder = stringResource(state.passwordPlaceholderRes),
         bottomTitle = state.passwordBottomTitleRes?.let { stringResource(it) },
         isError = state.passwordIsError,
+        isSecureMode = state.passwordIsSecureMode,
         onFocusChanged = {
           onAction(
             RegisterAction.OnTextFieldFocusGain(
@@ -95,13 +96,15 @@ fun RegisterContent(
               inputField = RegisterViewModel.InputField.PASSWORD,
             )
           )
-        }
+        },
+        onSecureToggleClick = { onAction(RegisterAction.OnTextFieldSecureToggleClick) }
       )
       Spacer(Modifier.height(32.dp))
       ChirpButton(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(state.primaryButtonTitleRes),
         style = ChirpButtonStyle.PRIMARY,
+        isLoading = state.primaryButtonIsLoading,
         onClick = { onAction(RegisterAction.OnPrimaryButtonClick) }
       )
       ChirpButton(

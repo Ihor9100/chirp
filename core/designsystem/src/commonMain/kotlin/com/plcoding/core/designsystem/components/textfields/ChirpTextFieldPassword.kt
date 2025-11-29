@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -133,11 +134,15 @@ fun ChirpTextFieldPassword(
             tint = MaterialTheme.colorScheme.extended.textDisabled,
           )
         }
+      },
+      textObfuscationMode = if (isSecureMode) {
+        TextObfuscationMode.Hidden
+      } else {
+        TextObfuscationMode.Visible
       }
     )
   }
 }
-
 
 @Composable
 fun ChirpTextFieldPasswordThemed(
@@ -252,6 +257,6 @@ fun ChirpTextFieldPasswordErrorDarkPreview() {
     initialText = "123456789",
     isError = true,
     isEnabled = true,
-    isSecureMode = true,
+    isSecureMode = false,
   )
 }
