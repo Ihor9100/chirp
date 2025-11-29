@@ -28,6 +28,7 @@ open class KmpLibraryConventionPlugin : Plugin<Project> {
       configureTargets()
 
       dependencies {
+        "commonMainImplementation"(libs.findLibrary("koin-core").get())
         "commonMainImplementation"(libs.findLibrary("kotlinx-serialization-json").get())
         "commonTestImplementation"(libs.findLibrary("kotlin-test").get())
       }

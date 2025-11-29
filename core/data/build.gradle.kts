@@ -14,7 +14,7 @@ kotlin {
       dependencies {
         implementation(projects.core.domain)
 
-        implementation(libs.bundles.ktor.common)
+        implementation(libs.bundles.ktor)
         implementation(libs.touchlab.kermit)
       }
     }

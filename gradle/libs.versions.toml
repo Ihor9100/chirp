@@ -217,13 +217,13 @@ buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig"
 android-lint = { id = "com.android.lint", version.ref = "agp" }
 
 [bundles]
-koin-common = [
+koin = [
     "koin-core",
     "koin-compose",
     "koin-compose-viewmodel"
 ]
 
-ktor-common = [
+ktor = [
     "ktor-client-core",
     "ktor-client-content-negotiation",
     "ktor-serialization-kotlinx-json",

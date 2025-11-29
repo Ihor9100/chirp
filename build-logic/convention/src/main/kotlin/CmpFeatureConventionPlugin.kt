@@ -1,9 +1,7 @@
+
 import com.plcoding.buildlogic.convention.libs
-import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.internal.serialize.codecs.core.NodeOwner
 import org.gradle.kotlin.dsl.dependencies
-import kotlin.jvm.kotlin
 
 class CmpFeatureConventionPlugin : CmpLibraryConventionPlugin() {
 
@@ -25,6 +23,8 @@ class CmpFeatureConventionPlugin : CmpLibraryConventionPlugin() {
 
         "commonMainImplementation"(libs.findLibrary("jetbrains-savedstate").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-bundle").get())
+
+        "commonMainImplementation"(libs.findBundle("koin").get())
       }
     }
   }
