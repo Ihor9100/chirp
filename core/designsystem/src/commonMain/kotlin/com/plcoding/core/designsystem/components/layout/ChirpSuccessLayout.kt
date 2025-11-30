@@ -54,7 +54,6 @@ fun ChirpSuccessLayout(
       Spacer(Modifier.height(32.dp))
       primaryButton()
       if (secondaryButton != null) {
-        Spacer(Modifier.height(12.dp))
         secondaryButton()
       }
     }

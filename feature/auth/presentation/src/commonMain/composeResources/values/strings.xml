@@ -8,6 +8,7 @@
 	<string name="email">Email</string>
 	<string name="register">Register</string>
 	<string name="log_in">Log in</string>
+	<string name="resend_verification_email">Resend verification email</string>
 
 	<string name="hint_username">Use between 3 and 20 characters for your username</string>
 	<string name="hint_password">Use 9+ characters, at least one digit and one uppercase letter</string>
@@ -16,4 +17,7 @@
 	<string name="error_invalid_username">The username must be between 3 and 20 characters</string>
 	<string name="error_invalid_email">This is not a valid email</string>
 	<string name="error_invalid_password">Password must be at least 9 characters and include one digit and one uppercase letter</string>
+
+	<string name="account_successfully_created">Chirp successfully created!</string>
+	<string name="verification_email_sent_to_x">We’ve sent verification email to %1$s</string>
 </resources>
