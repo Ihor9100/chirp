@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface AuthRoute {
 
+  data object Graph : AuthRoute
+
   data object Register : AuthRoute
 
   data class RegisterSuccess(val email: String) : AuthRoute
