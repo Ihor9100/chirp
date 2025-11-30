@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,7 +40,9 @@ fun ChirpAdaptiveResultLayout(
     }
   } else {
     Column(
-      modifier = modifier.background(MaterialTheme.colorScheme.background),
+      modifier = modifier
+        .background(MaterialTheme.colorScheme.background)
+        .safeDrawingPadding(),
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       if (deviceConfiguration != DeviceConfiguration.MOBILE_LANDSCAPE) {
@@ -50,7 +55,8 @@ fun ChirpAdaptiveResultLayout(
           .widthIn(max = 480.dp)
           .clip(RoundedCornerShape(16.dp))
           .background(MaterialTheme.colorScheme.surface)
-          .padding(horizontal = 16.dp),
+          .padding(horizontal = 16.dp)
+          .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         content()

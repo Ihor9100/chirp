@@ -1,5 +1,6 @@
 package com.plcoding.feature.auth.presentation.register.success
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +32,9 @@ fun RegisterSuccessContent(
   state: RegisterSuccessState,
   onAction: (RegisterSuccessAction) -> Unit,
 ) {
-  ChirpAdaptiveResultLayout {
+  ChirpAdaptiveResultLayout(
+    modifier = Modifier.fillMaxSize()
+  ) {
     ChirpSuccessLayout(
       icon = { ChirpSuccessIcon() },
       title = stringResource(state.titleRes),
