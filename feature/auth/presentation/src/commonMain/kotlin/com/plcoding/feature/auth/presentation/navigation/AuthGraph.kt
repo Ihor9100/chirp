@@ -4,7 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import kotlinx.serialization.Serializable
+import com.plcoding.feature.auth.presentation.register.RegisterScreen
+import com.plcoding.feature.auth.presentation.register.success.RegisterSuccessScreen
 
 fun NavGraphBuilder.authGraph(
   navController: NavController,
@@ -13,7 +14,12 @@ fun NavGraphBuilder.authGraph(
     startDestination = AuthRoute.Register
   ) {
     composable<AuthRoute.Register> {
-
+      RegisterScreen {
+        navController.navigate(AuthRoute.RegisterSuccess(it))
+      }
+    }
+    composable<AuthRoute.RegisterSuccess> {
+      RegisterSuccessScreen()
     }
   }
 }

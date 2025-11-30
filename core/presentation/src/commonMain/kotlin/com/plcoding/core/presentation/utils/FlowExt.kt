@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 @Composable
-fun <T> Flow<T>.collectEvent(
+fun <T> Flow<T>.CollectEvent(
   key1: Any? = null,
   key2: Any? = null,
   onEvent: (T) -> Unit,

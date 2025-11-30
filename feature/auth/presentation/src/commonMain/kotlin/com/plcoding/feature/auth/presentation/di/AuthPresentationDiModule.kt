@@ -5,7 +5,7 @@ import com.plcoding.feature.auth.presentation.register.success.RegisterSuccessVi
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val featureAuthPresentationDiModule = module {
+val authPresentationDiModule = module {
   viewModelOf(::RegisterViewModel)
   viewModelOf(::RegisterSuccessViewModel)
 }
