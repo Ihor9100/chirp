@@ -12,16 +12,22 @@ class CmpApplicationConventionPlugin : AndroidApplicationConventionPlugin() {
     super.apply(target)
 
     with(target) {
-      pluginManager.apply("org.jetbrains.kotlin.multiplatform")
-      pluginManager.apply("org.jetbrains.compose.hot-reload")
-      pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
-      pluginManager.apply("org.jetbrains.compose")
+      with(pluginManager) {
+        apply("org.jetbrains.kotlin.plugin.serialization")
+        apply("org.jetbrains.kotlin.multiplatform")
+
+        apply("org.jetbrains.kotlin.plugin.compose")
+        apply("org.jetbrains.compose.hot-reload")
+        apply("org.jetbrains.compose")
+      }
+
 
       configureCompose(extensions.getByType(ApplicationExtension::class.java))
       configureAndroidTarget()
       configureIosTarget(baseName = "ComposeApp", isStatic = true)
 
       dependencies {
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-navigation").get())
         "commonMainImplementation"(libs.findLibrary("koin-core").get())
       }
     }

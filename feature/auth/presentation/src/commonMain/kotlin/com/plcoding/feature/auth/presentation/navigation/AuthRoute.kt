@@ -2,12 +2,14 @@ package com.plcoding.feature.auth.presentation.navigation
 
 import kotlinx.serialization.Serializable
 
-@Serializable
 sealed interface AuthRoute {
 
+  @Serializable
   data object Graph : AuthRoute
 
+  @Serializable
   data object Register : AuthRoute
 
+  @Serializable
   data class RegisterSuccess(val email: String) : AuthRoute
 }
