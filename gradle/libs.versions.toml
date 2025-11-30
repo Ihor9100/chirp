@@ -8,6 +8,10 @@ projectTargetSdkVersion = "36"
 projectCompileSdkVersion = "36"
 projectVersionCode = "1"
 
+# Desktop Version
+desktopPackageName = "Chirp"
+desktopPackageVersion = "1.0.0"
+
 # Core
 agp = "8.13.1"
 composeBom = "2025.11.01"
@@ -22,21 +26,21 @@ jetbrains-compose = "1.9.3"
 jetbrains-compose-hot-reload = "1.0.0-rc04"
 jetbrains-compose-material3 = "1.9.0"
 jetbrains-compose-material-icons-extended = "1.7.3"
+jetbrains-compose-navigation = "2.9.1"
 
 # Maintain compose multiplatform version aligned with navigation, cache error could happen
 jetbrains-lifecycle = "2.9.6"
-navigation-compose = "2.9.1"
 jetbrains-core-bundle = "1.0.1"
 
 # AndroidX
 androidx-activity = "1.12.0"
 androidx-core = "1.17.0"
-androidx-lifecycle = "2.9.0"
+androidx-lifecycle = "2.10.0"
 androidx-test-ext = "1.2.1"
 androidx-runner = "1.6.2"
 androidx-test-core = "1.7.0"
-appcompatVersion = "1.7.1"
-core-splashscreen = "1.2.0"
+androidx-appcompat = "1.7.1"
+androidx-core-splashscreen = "1.2.0"
 
 # Kotlinx
 kotlinx-coroutines = "1.10.2"
@@ -56,10 +60,6 @@ coil = "3.3.0"
 coil-network = "3.3.0"
 moko = "0.20.1"
 buildkonfig = "0.17.1"
-
-# Desktop Version
-desktopPackageName = "Chirp"
-desktopPackageVersion = "1.0.0"
 
 # Logging
 kermit = "2.0.8"
@@ -81,13 +81,13 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 # AndroidX
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "jetbrains-lifecycle" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
-androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashscreen" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 
 # AndroidX Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -102,7 +102,7 @@ jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foun
 jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "jetbrains-compose" }
 jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrains-compose" }
 jetbrains-compose-components-ui-tooling-preview = { module = "org.jetbrains.compose.components:components-ui-tooling-preview", version.ref = "jetbrains-compose" }
-jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrains-compose-navigation" }
 jetbrains-compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
 
 # Jetbrains Compose Material3

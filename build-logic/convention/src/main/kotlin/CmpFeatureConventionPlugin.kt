@@ -15,6 +15,7 @@ class CmpFeatureConventionPlugin : CmpLibraryConventionPlugin() {
         "commonMainImplementation"(project(":core:presentation"))
 
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-navigation").get())
 
         "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-runtime-compose").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel").get())
