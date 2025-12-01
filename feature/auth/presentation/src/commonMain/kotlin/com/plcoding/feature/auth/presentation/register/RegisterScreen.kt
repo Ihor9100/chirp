@@ -29,9 +29,9 @@ fun RegisterScreen(
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
-  viewModel.event.CollectEvent {
-    when(it) {
-      is RegisterEvent.Success -> onRegisterSuccess(it.email)
+  viewModel.event.CollectEvent { event ->
+    when (event) {
+      is RegisterEvent.Success -> onRegisterSuccess(event.email)
     }
   }
 

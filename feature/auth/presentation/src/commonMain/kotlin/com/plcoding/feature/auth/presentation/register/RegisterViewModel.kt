@@ -87,6 +87,7 @@ class RegisterViewModel(
     if (!areFieldsValid()) return
 
     viewModelScope.launch {
+      val email = state.value.emailState.text.toString()
       _state.update {
         it.copy(primaryButtonIsLoading = true)
       }
@@ -94,7 +95,7 @@ class RegisterViewModel(
       authService
         .register(
           username = state.value.usernameState.text.toString(),
-          email = state.value.emailState.text.toString(),
+          email = email,
           password = state.value.passwordState.text.toString(),
         )
         .onFailure { error ->
@@ -107,7 +108,7 @@ class RegisterViewModel(
           }
         }
         .onSuccess {
-
+          _event.send(RegisterEvent.Success(email))
         }
 
       _state.update {
@@ -115,7 +116,6 @@ class RegisterViewModel(
       }
     }
   }
-
 
   private fun areFieldsValid(): Boolean {
     val isUsernameValid = UsernameValidator.validate(state.value.usernameState.text.toString())
