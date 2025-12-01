@@ -10,4 +10,8 @@ interface AuthService {
     email: String,
     password: String,
   ): Result<Unit, DataError.Remote>
+
+  suspend fun resendVerificationEmail(
+    email: String,
+  ): Result<Unit, DataError.Remote>
 }

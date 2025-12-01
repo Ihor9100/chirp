@@ -1,13 +1,22 @@
 package com.plcoding.feature.auth.presentation.register.success
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.plcoding.core.domain.networking.service.AuthService
+import com.plcoding.core.domain.onFailure
+import com.plcoding.core.domain.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class RegisterSuccessViewModel : ViewModel() {
+class RegisterSuccessViewModel(
+  private val authService: AuthService,
+  savedStateHandle: SavedStateHandle,
+) : ViewModel() {
 
   private var hasLoadedInitialData = false
 
@@ -25,9 +34,27 @@ class RegisterSuccessViewModel : ViewModel() {
       initialValue = RegisterSuccessState()
     )
 
+  private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
+
   fun onAction(action: RegisterSuccessAction) {
     when (action) {
+      is RegisterSuccessAction.SecondaryButtonClick -> resendVerificationEmail()
       else -> TODO("Handle actions")
+    }
+  }
+
+  private fun resendVerificationEmail() {
+    if (state.value.hasOngoingRequest) return
+
+    viewModelScope.launch {
+      _state.update { it.copy(hasOngoingRequest = true) }
+
+      authService
+        .resendVerificationEmail(email)
+        .onFailure { }
+        .onSuccess { }
+
+      _state.update { it.copy(hasOngoingRequest = false) }
     }
   }
 }
