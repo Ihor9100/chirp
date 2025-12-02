@@ -21,7 +21,6 @@ class CmpApplicationConventionPlugin : AndroidApplicationConventionPlugin() {
         apply("org.jetbrains.compose")
       }
 
-
       configureCompose(extensions.getByType(ApplicationExtension::class.java))
       configureAndroidTarget()
       configureIosTarget(baseName = "ComposeApp", isStatic = true)

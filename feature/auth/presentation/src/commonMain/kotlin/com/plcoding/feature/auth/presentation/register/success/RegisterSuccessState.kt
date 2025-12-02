@@ -23,7 +23,7 @@ data class RegisterSuccessState(
 
   val secondaryButtonTitleRes: StringResource = Res.string.resend_verification_email,
   val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
-  val secondaryButtonError: String? = null,
+  val secondaryButtonErrorRes: StringResource? = null,
 
   val snackbarEvent: SnackbarEvent? = null,
   val hasOngoingRequest: Boolean = false

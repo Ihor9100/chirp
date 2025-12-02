@@ -8,7 +8,9 @@ import chirp.feature.auth.presentation.generated.resources.resent_verification_e
 import com.plcoding.core.domain.networking.service.AuthService
 import com.plcoding.core.domain.onFailure
 import com.plcoding.core.domain.onSuccess
+import com.plcoding.core.domain.utils.DataError
 import com.plcoding.core.presentation.utils.event.SnackbarEvent
+import com.plcoding.core.presentation.utils.getString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -37,12 +39,12 @@ class RegisterSuccessViewModel(
       initialValue = RegisterSuccessState()
     )
 
-  private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
+  private val email = savedStateHandle.get<String>("email") ?: "throw IllegalArgumentException()"
 
   fun onAction(action: RegisterSuccessAction) {
     when (action) {
+      is RegisterSuccessAction.PrimaryButtonClick -> handleSuccess()
       is RegisterSuccessAction.SecondaryButtonClick -> resendVerificationEmail()
-      else -> TODO("Handle actions")
     }
   }
 
@@ -54,15 +56,20 @@ class RegisterSuccessViewModel(
 
       authService
         .resendVerificationEmail(email)
-        .onFailure { }
+        .onFailure { handleFailure(it) }
         .onSuccess { handleSuccess() }
 
       _state.update { it.copy(hasOngoingRequest = false) }
     }
   }
 
-  private fun handleFailure() {
-
+  private fun handleFailure(error: DataError.Remote) {
+    _state.update {
+      it.copy(
+        secondaryButtonErrorRes = error.getString(),
+        hasOngoingRequest = false,
+      )
+    }
   }
 
   private fun handleSuccess() {
@@ -76,7 +83,9 @@ class RegisterSuccessViewModel(
 
   private fun getSnackbarEvent(): SnackbarEvent {
     return SnackbarEvent(data = Res.string.resent_verification_email) {
-      _state.update { it.copy(snackbarEvent = null) }
+      _state.update {
+        it.copy(snackbarEvent = null)
+      }
     }
   }
 }
