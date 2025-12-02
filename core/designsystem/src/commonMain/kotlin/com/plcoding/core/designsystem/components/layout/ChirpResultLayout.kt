@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.brand.ChirpSuccessIcon
 import com.plcoding.core.designsystem.components.button.ChirpButton
@@ -20,11 +21,12 @@ import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpSuccessLayout(
+fun ChirpResultLayout(
   modifier: Modifier = Modifier,
   icon: @Composable () -> Unit,
   title: String,
   description: String,
+  contentOffset: Dp = (-24).dp,
   primaryButton: @Composable () -> Unit,
   secondaryButton: @Composable (() -> Unit)?,
 ) {
@@ -35,7 +37,7 @@ fun ChirpSuccessLayout(
     icon()
     Column(
       modifier = Modifier
-        .offset(y = (-24).dp),
+        .offset(y = contentOffset),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Text(
@@ -61,17 +63,17 @@ fun ChirpSuccessLayout(
 }
 
 @Composable
-fun ChirpSuccessLayoutThemed(
+fun ChirpResultLayoutThemed(
   isDarkTheme: Boolean,
 ) {
   ChirpTheme(isDarkTheme) {
-    ChirpSuccessLayoutMock()
+    ChirpResultLayoutMock()
   }
 }
 
 @Composable
-fun ChirpSuccessLayoutMock() {
-  ChirpSuccessLayout(
+fun ChirpResultLayoutMock() {
+  ChirpResultLayout(
     icon = {
       ChirpSuccessIcon()
     },
@@ -95,16 +97,16 @@ fun ChirpSuccessLayoutMock() {
 
 @Composable
 @Preview
-fun ChirpSuccessLayoutLightPreview() {
-  ChirpSuccessLayoutThemed(
+fun ChirpResultLayoutLightPreview() {
+  ChirpResultLayoutThemed(
     isDarkTheme = false,
   )
 }
 
 @Composable
 @Preview
-fun ChirpSuccessLayoutDarkPreview() {
-  ChirpSuccessLayoutThemed(
+fun ChirpResultLayoutDarkPreview() {
+  ChirpResultLayoutThemed(
     isDarkTheme = true,
   )
 }

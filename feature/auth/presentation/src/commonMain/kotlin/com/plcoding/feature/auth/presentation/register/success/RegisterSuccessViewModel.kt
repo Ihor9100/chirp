@@ -39,7 +39,7 @@ class RegisterSuccessViewModel(
       initialValue = RegisterSuccessState()
     )
 
-  private val email = savedStateHandle.get<String>("email") ?: "throw IllegalArgumentException()"
+  private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
 
   fun onAction(action: RegisterSuccessAction) {
     when (action) {

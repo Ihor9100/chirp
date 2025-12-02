@@ -77,7 +77,7 @@ fun ChirpAdaptiveResultLayoutThemed(
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
       content = {
-        ChirpSuccessLayoutMock()
+        ChirpResultLayoutMock()
       }
     )
   }

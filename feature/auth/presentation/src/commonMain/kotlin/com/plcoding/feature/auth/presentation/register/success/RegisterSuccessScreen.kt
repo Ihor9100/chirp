@@ -17,7 +17,7 @@ import com.plcoding.core.designsystem.components.brand.ChirpSuccessIcon
 import com.plcoding.core.designsystem.components.button.ChirpButton
 import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayout
 import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
-import com.plcoding.core.designsystem.components.layout.ChirpSuccessLayout
+import com.plcoding.core.designsystem.components.layout.ChirpResultLayout
 import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.presentation.utils.event.consume
 import org.jetbrains.compose.resources.getString
@@ -58,7 +58,7 @@ fun RegisterSuccessContent(
     ChirpAdaptiveResultLayout(
       modifier = Modifier.fillMaxSize()
     ) {
-      ChirpSuccessLayout(
+      ChirpResultLayout(
         icon = { ChirpSuccessIcon() },
         title = stringResource(state.titleRes),
         description = state.description.get(),
