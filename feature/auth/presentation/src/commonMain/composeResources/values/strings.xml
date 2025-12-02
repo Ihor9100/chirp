@@ -9,7 +9,8 @@
 	<string name="register">Register</string>
 	<string name="log_in">Log in</string>
 	<string name="resend_verification_email">Resend verification email</string>
-
+	<string name="resent_verification_email">Successfully resent verification email</string>
+	
 	<string name="hint_username">Use between 3 and 20 characters for your username</string>
 	<string name="hint_password">Use 9+ characters, at least one digit and one uppercase letter</string>
 

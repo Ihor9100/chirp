@@ -3,9 +3,12 @@ package com.plcoding.feature.auth.presentation.register.success
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import chirp.feature.auth.presentation.generated.resources.Res
+import chirp.feature.auth.presentation.generated.resources.resent_verification_email
 import com.plcoding.core.domain.networking.service.AuthService
 import com.plcoding.core.domain.onFailure
 import com.plcoding.core.domain.onSuccess
+import com.plcoding.core.presentation.utils.event.SnackbarEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -52,9 +55,28 @@ class RegisterSuccessViewModel(
       authService
         .resendVerificationEmail(email)
         .onFailure { }
-        .onSuccess { }
+        .onSuccess { handleSuccess() }
 
       _state.update { it.copy(hasOngoingRequest = false) }
+    }
+  }
+
+  private fun handleFailure() {
+
+  }
+
+  private fun handleSuccess() {
+    _state.update {
+      it.copy(
+        hasOngoingRequest = false,
+        snackbarEvent = getSnackbarEvent()
+      )
+    }
+  }
+
+  private fun getSnackbarEvent(): SnackbarEvent {
+    return SnackbarEvent(data = Res.string.resent_verification_email) {
+      _state.update { it.copy(snackbarEvent = null) }
     }
   }
 }
