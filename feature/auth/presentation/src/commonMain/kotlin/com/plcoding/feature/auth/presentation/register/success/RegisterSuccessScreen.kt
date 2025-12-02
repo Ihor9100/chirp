@@ -19,6 +19,7 @@ import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayou
 import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
 import com.plcoding.core.designsystem.components.layout.ChirpSuccessLayout
 import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.presentation.utils.event.consume
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -31,8 +32,8 @@ fun RegisterSuccessScreen(
   val state by viewModel.state.collectAsStateWithLifecycle()
   val snackbarHostState = remember { SnackbarHostState() }
 
-  LaunchedEffect(state.snackbarEvent) {
-    state.snackbarEvent?.consume()?.let {
+  state.snackbarEvent?.consume {
+    LaunchedEffect(it) {
       snackbarHostState.showSnackbar(getString(it))
     }
   }
