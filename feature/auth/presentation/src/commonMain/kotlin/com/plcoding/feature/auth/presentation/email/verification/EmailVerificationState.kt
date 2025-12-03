@@ -17,7 +17,7 @@ import org.jetbrains.compose.resources.StringResource
 sealed interface EmailVerificationState {
 
   data class Loading(
-    val title: StringResource = Res.string.verifying_account,
+    val titleRes: StringResource = Res.string.verifying_account,
   ) : EmailVerificationState
 
   data class Failed(
