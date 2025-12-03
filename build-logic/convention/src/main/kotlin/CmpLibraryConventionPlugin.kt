@@ -11,6 +11,7 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
 
     with(target) {
       with(pluginManager) {
+        apply("com.android.library")
         apply("org.jetbrains.compose")
         apply("org.jetbrains.kotlin.plugin.compose")
       }

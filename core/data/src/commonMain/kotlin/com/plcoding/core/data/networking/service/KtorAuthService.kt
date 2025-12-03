@@ -1,5 +1,6 @@
 package com.plcoding.core.data.networking.service
 
+import com.plcoding.core.data.networking.get
 import com.plcoding.core.data.networking.model.RegisterRequest
 import com.plcoding.core.data.networking.model.ResendVerificationEmailRequest
 import com.plcoding.core.data.networking.post
@@ -25,8 +26,15 @@ class KtorAuthService(
 
   override suspend fun resendVerificationEmail(email: String): Empty<DataError.Remote> {
     return httpClient.post(
-      route = "auth/resend-verification",
+      route = "/auth/resend-verification",
       request = ResendVerificationEmailRequest(email)
+    )
+  }
+
+  override suspend fun verifyEmail(token: String): Empty<DataError.Remote> {
+    return httpClient.get(
+      route = "/auth/verify",
+      params = mapOf("token" to token),
     )
   }
 }

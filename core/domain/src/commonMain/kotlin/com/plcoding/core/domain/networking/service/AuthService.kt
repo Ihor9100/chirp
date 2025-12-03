@@ -14,4 +14,8 @@ interface AuthService {
   suspend fun resendVerificationEmail(
     email: String,
   ): Empty<DataError.Remote>
+
+  suspend fun verifyEmail(
+    token: String,
+  ): Empty<DataError.Remote>
 }

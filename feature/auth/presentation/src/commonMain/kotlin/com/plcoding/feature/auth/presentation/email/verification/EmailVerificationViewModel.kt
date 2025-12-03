@@ -2,12 +2,15 @@ package com.plcoding.feature.auth.presentation.email.verification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.plcoding.core.domain.networking.service.AuthService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
-class EmailVerificationViewModel : ViewModel() {
+class EmailVerificationViewModel(
+  private val authService: AuthService,
+) : ViewModel() {
 
   private var hasLoadedInitialData = false
 
