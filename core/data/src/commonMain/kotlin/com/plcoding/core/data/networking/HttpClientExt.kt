@@ -23,7 +23,7 @@ expect suspend fun <T> platformSafeCall(
 suspend inline fun <reified T> safeCall(
   noinline execute: suspend () -> HttpResponse,
 ): Result<T, DataError.Remote> {
-  return platformSafeCall(execute, ::responseToResult)
+  return platformSafeCall(execute, ::handleHttpResponse)
 }
 
 suspend inline fun <reified Request, reified Response> HttpClient.post(
@@ -100,7 +100,7 @@ suspend inline fun <reified Response> HttpClient.put(
   }
 }
 
-suspend inline fun <reified T> responseToResult(
+suspend inline fun <reified T> handleHttpResponse(
   httpResponse: HttpResponse,
 ): Result<T, DataError.Remote> {
   return when (httpResponse.status.value) {

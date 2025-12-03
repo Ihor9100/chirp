@@ -3,7 +3,9 @@ package com.plcoding.feature.auth.presentation.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
+import com.plcoding.feature.auth.presentation.email.verification.EmailVerificationScreen
 import com.plcoding.feature.auth.presentation.register.RegisterScreen
 import com.plcoding.feature.auth.presentation.register.success.RegisterSuccessScreen
 
@@ -20,6 +22,18 @@ fun NavGraphBuilder.authGraph(
     }
     composable<AuthRoute.RegisterSuccess> {
       RegisterSuccessScreen()
+    }
+    composable<AuthRoute.EmailVerification>(
+      deepLinks = listOf(
+        navDeepLink {
+          uriPattern = "https://chirp.pl-coding.com/api/auth/verify?token={token}"
+        },
+        navDeepLink {
+          uriPattern = "chirp://chirp.pl-coding.com/api/auth/verify?token={token}"
+        },
+      )
+    ) {
+      EmailVerificationScreen()
     }
   }
 }

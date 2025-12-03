@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.plcoding.core.designsystem.components.brand.ChirpSuccessIcon
 import com.plcoding.core.designsystem.components.button.ChirpButton
 import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayout
@@ -26,10 +25,11 @@ import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun EmailVerificationScreen(
-  viewModel: EmailVerificationViewModel = viewModel()
+  viewModel: EmailVerificationViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 

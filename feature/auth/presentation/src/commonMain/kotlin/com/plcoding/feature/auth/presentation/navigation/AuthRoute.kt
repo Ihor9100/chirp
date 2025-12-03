@@ -12,4 +12,7 @@ sealed interface AuthRoute {
 
   @Serializable
   data class RegisterSuccess(val email: String) : AuthRoute
+
+  @Serializable
+  data class EmailVerification(val token: String) : AuthRoute
 }
