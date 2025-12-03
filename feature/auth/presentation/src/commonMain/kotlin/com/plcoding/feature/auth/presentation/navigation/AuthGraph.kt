@@ -25,8 +25,12 @@ fun NavGraphBuilder.authGraph(
     }
     composable<AuthRoute.EmailVerification>(
       deepLinks = listOf(
-        navDeepLink<AuthRoute.EmailVerification>("https://chirp.pl-coding.com/api/auth/verify"),
-        navDeepLink<AuthRoute.EmailVerification>("chirp://chirp.pl-coding.com/api/auth/verify"),
+        navDeepLink {
+          uriPattern = "https://chirp.pl-coding.com/api/auth/verify?token={token}"
+        },
+        navDeepLink {
+          uriPattern = "chirp://chirp.pl-coding.com/api/auth/verify?token={token}"
+        },
       )
     ) {
       EmailVerificationScreen()
