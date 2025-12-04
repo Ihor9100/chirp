@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.error_invalid_credentials
 import chirp.feature.auth.presentation.generated.resources.error_invalid_password
-import com.plcoding.core.domain.validation.EmailValidator
-import com.plcoding.core.domain.validation.PasswordValidator
-import com.plcoding.core.domain.validation.UsernameValidator
+import com.plcoding.core.domain.validator.EmailValidator
+import com.plcoding.core.domain.validator.PasswordValidator
+import com.plcoding.core.domain.validator.UsernameValidator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -47,8 +47,8 @@ class LoginViewModel : ViewModel() {
       _state.update {
         when (action.inputField) {
           InputField.USERNAME -> it.copy(
-            usernameOrEmailIsError = false,
-            usernameOrEmailBottomTitleRes = null,
+            emailIsError = false,
+            emailBottomTitleRes = null,
           )
           InputField.PASSWORD -> it.copy(
             passwordIsError = false,
@@ -82,25 +82,25 @@ class LoginViewModel : ViewModel() {
   }
 
   private fun areFieldsValid(): Boolean {
-    val usernameOrEmail = state.value.usernameOrEmailState.text.toString()
-    val isUsernameOrEmailValid = UsernameValidator.validate(usernameOrEmail) ||
-      EmailValidator.validate(usernameOrEmail)
+    val email = state.value.emailState.text.toString()
+    val isemailValid = UsernameValidator.validate(email) ||
+      EmailValidator.validate(email)
     val isPasswordValid = PasswordValidator.validate(state.value.passwordState.text.toString())
 
-    val usernameOrEmailError =
-      if (!isUsernameOrEmailValid) Res.string.error_invalid_credentials else null
+    val emailError =
+      if (!isemailValid) Res.string.error_invalid_credentials else null
     val passwordError = if (!isPasswordValid) Res.string.error_invalid_password else null
 
     _state.update {
       it.copy(
-        usernameOrEmailIsError = usernameOrEmailError != null,
-        usernameOrEmailBottomTitleRes = usernameOrEmailError,
+        emailIsError = emailError != null,
+        emailBottomTitleRes = emailError,
         passwordIsError = passwordError != null,
         passwordBottomTitleRes = passwordError,
       )
     }
 
-    return isUsernameOrEmailValid && isPasswordValid
+    return isemailValid && isPasswordValid
   }
 
   enum class InputField {

@@ -3,9 +3,9 @@ package com.plcoding.feature.auth.presentation.screen.email.verification
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.plcoding.core.domain.networking.service.AuthService
-import com.plcoding.core.domain.onFailure
-import com.plcoding.core.domain.onSuccess
+import com.plcoding.core.domain.network.service.AuthService
+import com.plcoding.core.domain.utils.onFailure
+import com.plcoding.core.domain.utils.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart

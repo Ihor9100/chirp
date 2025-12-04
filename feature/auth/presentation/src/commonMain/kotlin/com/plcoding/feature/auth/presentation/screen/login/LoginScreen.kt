@@ -60,12 +60,12 @@ fun LoginScreenContent(
   ) {
     ChirpTextFieldPlain(
       modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(state.usernameOrEmailTopTitleRes),
-      textFieldState = state.usernameOrEmailState,
-      inputPlaceholder = stringResource(state.usernameOrEmailPlaceholderRes),
-      bottomTitle = state.usernameOrEmailBottomTitleRes?.let { stringResource(it) },
+      topTitle = stringResource(state.emailTopTitleRes),
+      textFieldState = state.emailState,
+      inputPlaceholder = stringResource(state.emailPlaceholderRes),
+      bottomTitle = state.emailBottomTitleRes?.let { stringResource(it) },
       keyboardType = KeyboardType.Text,
-      isError = state.usernameOrEmailIsError,
+      isError = state.emailIsError,
       onFocusChanged = {
         onAction(
           LoginAction.OnTextFieldFocusGain(

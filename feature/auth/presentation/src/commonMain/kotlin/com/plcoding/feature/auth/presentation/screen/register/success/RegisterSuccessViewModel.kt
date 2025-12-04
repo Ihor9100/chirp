@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.resent_verification_email
-import com.plcoding.core.domain.networking.service.AuthService
-import com.plcoding.core.domain.onFailure
-import com.plcoding.core.domain.onSuccess
-import com.plcoding.core.domain.utils.DataError
+import com.plcoding.core.domain.network.service.AuthService
+import com.plcoding.core.domain.utils.onFailure
+import com.plcoding.core.domain.utils.onSuccess
+import com.plcoding.core.domain.error.DataError
 import com.plcoding.core.presentation.utils.event.SnackbarEvent
 import com.plcoding.core.presentation.utils.getString
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -15,11 +15,11 @@ data class LoginState(
   val titleRes: StringResource = Res.string.welcome_back,
   val errorRes: StringResource? = null,
 
-  val usernameOrEmailTopTitleRes: StringResource = Res.string.username_or_email,
-  val usernameOrEmailState: TextFieldState = TextFieldState(),
-  val usernameOrEmailPlaceholderRes: StringResource = Res.string.chirp,
-  val usernameOrEmailBottomTitleRes: StringResource? = null,
-  val usernameOrEmailIsError: Boolean = false,
+  val emailTopTitleRes: StringResource = Res.string.username_or_email,
+  val emailState: TextFieldState = TextFieldState(),
+  val emailPlaceholderRes: StringResource = Res.string.chirp,
+  val emailBottomTitleRes: StringResource? = null,
+  val emailIsError: Boolean = false,
 
   val passwordTopTitleRes: StringResource = Res.string.password,
   val passwordState: TextFieldState = TextFieldState(),
