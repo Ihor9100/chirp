@@ -17,18 +17,17 @@ fun NavGraphBuilder.authGraph(
     startDestination = AuthRoute.Login
   ) {
     composable<AuthRoute.Login> {
-      LoginScreenScreen {
-        navController.navigate(AuthRoute.Register)
-      }
+      LoginScreenScreen(
+        openForgotPassword = { Unit },
+        openRegisterScreen = { navController.navigate(AuthRoute.Register) }
+      )
     }
     composable<AuthRoute.Register> {
       RegisterScreen(
         openRegisterSuccess = { navController.navigate(AuthRoute.RegisterSuccess(it)) },
         openLogin = {
           navController.navigate(AuthRoute.Login) {
-            popUpTo(AuthRoute.Login) {
-              inclusive = true
-            }
+            popUpTo(AuthRoute.Login) { inclusive = true }
           }
         }
       )
@@ -38,8 +37,14 @@ fun NavGraphBuilder.authGraph(
     }
     composable<AuthRoute.EmailVerification>(
       deepLinks = listOf(
-        navDeepLink { uriPattern = "https://chirp.pl-coding.com/api/auth/verify?token={token}" },
-        navDeepLink { uriPattern = "chirp://chirp.pl-coding.com/api/auth/verify?token={token}" },
+        navDeepLink {
+          uriPattern =
+            "https://chirp.pl-coding.com/api/auth/verify?token={token}"
+        },
+        navDeepLink {
+          uriPattern =
+            "chirp://chirp.pl-coding.com/api/auth/verify?token={token}"
+        },
       )
     ) {
       EmailVerificationScreen()

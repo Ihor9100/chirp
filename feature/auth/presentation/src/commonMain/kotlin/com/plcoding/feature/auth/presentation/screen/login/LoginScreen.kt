@@ -1,15 +1,21 @@
 package com.plcoding.feature.auth.presentation.screen.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import chirp.feature.auth.presentation.generated.resources.Res
+import chirp.feature.auth.presentation.generated.resources.forgot_password
 import com.plcoding.core.designsystem.components.brand.ChirpLogo
 import com.plcoding.core.designsystem.components.button.ChirpButton
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
@@ -24,6 +30,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun LoginScreenScreen(
   viewModel: LoginViewModel = koinViewModel(),
+  openForgotPassword: () -> Unit,
   openRegisterScreen: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
@@ -32,6 +39,7 @@ fun LoginScreenScreen(
     state = state,
     onAction = {
       when (it) {
+        is LoginAction.OnForgotPasswordClick -> openForgotPassword()
         is LoginAction.OnSecondaryButtonClick -> openRegisterScreen()
         else -> viewModel.onAction(it)
       }
@@ -85,6 +93,15 @@ fun LoginScreenContent(
         )
       },
       onSecureToggleClick = { onAction(LoginAction.OnTextFieldSecureToggleClick) }
+    )
+    Spacer(Modifier.height(20.dp))
+    Text(
+      modifier = Modifier
+        .align(Alignment.End)
+        .clickable { onAction(LoginAction.OnForgotPasswordClick) },
+      text = stringResource(Res.string.forgot_password),
+      color = MaterialTheme.colorScheme.tertiary,
+      style = MaterialTheme.typography.bodySmall,
     )
     Spacer(Modifier.height(32.dp))
     ChirpButton(
