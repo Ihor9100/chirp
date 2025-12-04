@@ -24,7 +24,13 @@ fun NavGraphBuilder.authGraph(
     composable<AuthRoute.Register> {
       RegisterScreen(
         openRegisterSuccess = { navController.navigate(AuthRoute.RegisterSuccess(it)) },
-        openLogin = { navController.navigate(AuthRoute.Login) }
+        openLogin = {
+          navController.navigate(AuthRoute.Login) {
+            popUpTo(AuthRoute.Login) {
+              inclusive = true
+            }
+          }
+        }
       )
     }
     composable<AuthRoute.RegisterSuccess> {
