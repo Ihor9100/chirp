@@ -25,19 +25,25 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun RegisterScreen(
   viewModel: RegisterViewModel = koinViewModel(),
-  onRegisterSuccess: (String) -> Unit,
+  openRegisterSuccess: (String) -> Unit,
+  openLogin: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
   viewModel.event.CollectEvent { event ->
     when (event) {
-      is RegisterEvent.Success -> onRegisterSuccess(event.email)
+      is RegisterEvent.Success -> openRegisterSuccess(event.email)
     }
   }
 
   RegisterContent(
     state = state,
-    onAction = viewModel::onAction
+    onAction = {
+      when (it) {
+        RegisterAction.OnSecondaryButtonClick -> openLogin()
+        else -> viewModel.onAction(it)
+      }
+    }
   )
 }
 

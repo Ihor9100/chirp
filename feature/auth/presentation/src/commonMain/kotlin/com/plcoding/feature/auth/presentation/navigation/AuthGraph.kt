@@ -22,9 +22,10 @@ fun NavGraphBuilder.authGraph(
       }
     }
     composable<AuthRoute.Register> {
-      RegisterScreen {
-        navController.navigate(AuthRoute.RegisterSuccess(it))
-      }
+      RegisterScreen(
+        openRegisterSuccess = { navController.navigate(AuthRoute.RegisterSuccess(it)) },
+        openLogin = { navController.navigate(AuthRoute.Login) }
+      )
     }
     composable<AuthRoute.RegisterSuccess> {
       RegisterSuccessScreen()
