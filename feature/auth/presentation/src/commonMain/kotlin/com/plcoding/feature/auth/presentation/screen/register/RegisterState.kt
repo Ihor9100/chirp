@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.register
+package com.plcoding.feature.auth.presentation.screen.register
 
 import androidx.compose.foundation.text.input.TextFieldState
 import chirp.feature.auth.presentation.generated.resources.Res

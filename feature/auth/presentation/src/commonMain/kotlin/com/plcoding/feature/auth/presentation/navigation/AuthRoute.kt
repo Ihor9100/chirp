@@ -8,6 +8,9 @@ sealed interface AuthRoute {
   data object Graph : AuthRoute
 
   @Serializable
+  data object Login : AuthRoute
+
+  @Serializable
   data object Register : AuthRoute
 
   @Serializable

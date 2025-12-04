@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
+import com.plcoding.core.designsystem.components.brand.ChirpLogo
 import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.presentation.utils.DeviceConfiguration
 import com.plcoding.core.presentation.utils.getDeviceConfiguration
@@ -34,7 +34,7 @@ fun ChirpAdaptiveResultLayout(
     ChirpLayout(
       modifier = modifier,
       contentColumnTopSpaceDp = 0.dp,
-      logo = { ChirpBrandLogo() },
+      logo = { ChirpLogo() },
     ) {
       content()
     }
@@ -47,7 +47,7 @@ fun ChirpAdaptiveResultLayout(
     ) {
       if (deviceConfiguration != DeviceConfiguration.MOBILE_LANDSCAPE) {
         Spacer(Modifier.height(32.dp))
-        ChirpBrandLogo()
+        ChirpLogo()
       }
       Spacer(Modifier.height(32.dp))
       Column(

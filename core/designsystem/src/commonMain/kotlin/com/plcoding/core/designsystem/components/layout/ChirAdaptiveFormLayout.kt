@@ -23,8 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
-import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
+import com.plcoding.core.designsystem.components.brand.ChirTitle
+import com.plcoding.core.designsystem.components.brand.ChirpLogo
 import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.utils.DeviceConfiguration
@@ -52,8 +52,7 @@ fun ChirAdaptiveFormLayout(
         modifier = modifier,
         logo = logo,
       ) {
-        ChirBrandTitle(
-          modifier = Modifier,
+        ChirTitle(
           title = title,
           titleColor = titleColor,
           error = error,
@@ -75,9 +74,9 @@ fun ChirAdaptiveFormLayout(
             .fillMaxHeight(),
         ) {
           Spacer(Modifier.height(32.dp))
-          ChirpBrandLogo()
+          ChirpLogo()
           Spacer(Modifier.height(32.dp))
-          ChirBrandTitle(
+          ChirTitle(
             title = title,
             titleColor = titleColor,
             error = error,
@@ -114,7 +113,7 @@ fun ChirAdaptiveFormLayout(
           horizontalAlignment = Alignment.CenterHorizontally,
         ) {
           Spacer(Modifier.height(40.dp))
-          ChirBrandTitle(
+          ChirTitle(
             title = title,
             titleColor = titleColor,
             error = error,
@@ -138,7 +137,7 @@ fun ChirpAdaptiveFormLayoutThemed(
       modifier = Modifier
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
-      logo = ::ChirpBrandLogo,
+      logo = ::ChirpLogo,
       title = "Hello World",
       error = "Invalid Data",
       form = {

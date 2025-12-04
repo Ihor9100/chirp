@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.register
+package com.plcoding.feature.auth.presentation.screen.register
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
+import com.plcoding.core.designsystem.components.brand.ChirpLogo
 import com.plcoding.core.designsystem.components.button.ChirpButton
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
 import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
@@ -49,7 +49,7 @@ fun RegisterContent(
   ChirpTheme {
     ChirAdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { ChirpBrandLogo() },
+      logo = { ChirpLogo() },
       title = stringResource(state.titleRes),
       error = state.errorRes?.let { stringResource(it) },
     ) {

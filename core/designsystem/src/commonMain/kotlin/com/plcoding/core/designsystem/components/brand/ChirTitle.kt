@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.extended
 
 @Composable
-fun ChirBrandTitle(
+fun ChirTitle(
   modifier: Modifier = Modifier,
   title: String,
   titleColor: Color = MaterialTheme.colorScheme.extended.textPrimary,

@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.email.verification
+package com.plcoding.feature.auth.presentation.screen.email.verification
 
 sealed interface EmailVerificationAction {
   data object OnCloseClick : EmailVerificationAction

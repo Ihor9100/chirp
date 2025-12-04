@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.register.success
+package com.plcoding.feature.auth.presentation.screen.register.success
 
 sealed interface RegisterSuccessAction {
     data object PrimaryButtonClick: RegisterSuccessAction

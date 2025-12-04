@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.email.verification
+package com.plcoding.feature.auth.presentation.screen.email.verification
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class EmailVerificationViewModel(
+class   EmailVerificationViewModel(
   private val authService: AuthService,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {

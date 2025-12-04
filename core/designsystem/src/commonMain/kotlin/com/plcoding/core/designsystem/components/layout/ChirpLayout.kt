@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirBrandTitle
-import com.plcoding.core.designsystem.components.brand.ChirpBrandLogo
+import com.plcoding.core.designsystem.components.brand.ChirTitle
+import com.plcoding.core.designsystem.components.brand.ChirpLogo
 import com.plcoding.core.designsystem.style.ChirpTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -69,9 +69,9 @@ fun ChirpLayoutThemed(
   ChirpTheme(isDarkTheme) {
     ChirpLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { ChirpBrandLogo(modifier = Modifier) },
+      logo = { ChirpLogo(modifier = Modifier) },
       content = {
-        ChirBrandTitle(
+        ChirTitle(
           title = "Welcome to Chirp!",
           error = "Error"
         )

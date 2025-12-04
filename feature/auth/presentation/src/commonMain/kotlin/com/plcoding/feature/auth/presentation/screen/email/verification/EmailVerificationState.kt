@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.email.verification
+package com.plcoding.feature.auth.presentation.screen.email.verification
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close

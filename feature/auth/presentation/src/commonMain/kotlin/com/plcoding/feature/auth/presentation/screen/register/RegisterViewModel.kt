@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.register
+package com.plcoding.feature.auth.presentation.screen.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.register.success
+package com.plcoding.feature.auth.presentation.screen.register.success
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,8 +16,8 @@ import com.plcoding.core.designsystem.components.brand.ChirError
 import com.plcoding.core.designsystem.components.brand.ChirpSuccessIcon
 import com.plcoding.core.designsystem.components.button.ChirpButton
 import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayout
-import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
 import com.plcoding.core.designsystem.components.layout.ChirpResultLayout
+import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
 import com.plcoding.core.designsystem.style.ChirpTheme
 import com.plcoding.core.presentation.utils.event.consume
 import org.jetbrains.compose.resources.getString

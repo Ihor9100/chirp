@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.register
+package com.plcoding.feature.auth.presentation.screen.register
 
 sealed interface RegisterEvent {
 

@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.register.success
+package com.plcoding.feature.auth.presentation.screen.register.success
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

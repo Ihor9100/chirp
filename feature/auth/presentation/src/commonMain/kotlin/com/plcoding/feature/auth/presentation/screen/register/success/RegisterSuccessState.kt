@@ -1,4 +1,4 @@
-package com.plcoding.feature.auth.presentation.register.success
+package com.plcoding.feature.auth.presentation.screen.register.success
 
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.account_successfully_created
