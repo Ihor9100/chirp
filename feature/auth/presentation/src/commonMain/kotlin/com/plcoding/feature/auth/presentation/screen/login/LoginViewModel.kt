@@ -46,7 +46,7 @@ class LoginViewModel : ViewModel() {
     if (action.isFocused) {
       _state.update {
         when (action.inputField) {
-          InputField.USERNAME -> it.copy(
+          InputField.EMAIL -> it.copy(
             emailIsError = false,
             emailBottomTitleRes = null,
           )
@@ -83,12 +83,12 @@ class LoginViewModel : ViewModel() {
 
   private fun areFieldsValid(): Boolean {
     val email = state.value.emailState.text.toString()
-    val isemailValid = UsernameValidator.validate(email) ||
+    val isEmailValid = UsernameValidator.validate(email) ||
       EmailValidator.validate(email)
     val isPasswordValid = PasswordValidator.validate(state.value.passwordState.text.toString())
 
     val emailError =
-      if (!isemailValid) Res.string.error_invalid_credentials else null
+      if (!isEmailValid) Res.string.error_invalid_credentials else null
     val passwordError = if (!isPasswordValid) Res.string.error_invalid_password else null
 
     _state.update {
@@ -100,11 +100,11 @@ class LoginViewModel : ViewModel() {
       )
     }
 
-    return isemailValid && isPasswordValid
+    return isEmailValid && isPasswordValid
   }
 
   enum class InputField {
-    USERNAME,
+    EMAIL,
     PASSWORD;
   }
 }

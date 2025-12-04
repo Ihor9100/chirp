@@ -70,7 +70,7 @@ fun LoginScreenContent(
         onAction(
           LoginAction.OnTextFieldFocusGain(
             isFocused = it,
-            inputField = LoginViewModel.InputField.USERNAME,
+            inputField = LoginViewModel.InputField.EMAIL,
           )
         )
       }
