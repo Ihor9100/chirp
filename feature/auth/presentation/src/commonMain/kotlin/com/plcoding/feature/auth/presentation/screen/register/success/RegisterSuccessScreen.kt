@@ -8,6 +8,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,6 +19,7 @@ import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayou
 import com.plcoding.core.designsystem.components.layout.ChirpResultLayout
 import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
 import com.plcoding.core.designsystem.style.ChirpTheme
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -25,19 +27,27 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RegisterSuccessScreen(
-  viewModel: RegisterSuccessViewModel = koinViewModel()
+  viewModel: RegisterSuccessViewModel = koinViewModel(),
+  openLogin: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
   val snackbarHostState = remember { SnackbarHostState() }
 
-  state.snackbarEvent?.ConsumeSafely {
-    snackbarHostState.showSnackbar(getString(it))
+  rememberCoroutineScope().launch {
+    state.snackbarEvent?.consumeAsync {
+      snackbarHostState.showSnackbar(getString(it))
+    }
   }
 
   RegisterSuccessContent(
     state = state,
     snackbarHostState = snackbarHostState,
-    onAction = viewModel::onAction,
+    onAction = {
+      when(it) {
+        is RegisterSuccessAction.PrimaryButtonClick -> openLogin()
+        else -> viewModel.onAction(it)
+      }
+    },
   )
 }
 

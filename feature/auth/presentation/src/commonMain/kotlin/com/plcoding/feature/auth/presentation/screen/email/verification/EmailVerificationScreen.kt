@@ -29,13 +29,14 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun EmailVerificationScreen(
-  viewModel: EmailVerificationViewModel = koinViewModel()
+  viewModel: EmailVerificationViewModel = koinViewModel(),
+  openLogin: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
   EmailVerificationContent(
     state = state,
-    onAction = viewModel::onAction
+    onAction = { openLogin() },
   )
 }
 

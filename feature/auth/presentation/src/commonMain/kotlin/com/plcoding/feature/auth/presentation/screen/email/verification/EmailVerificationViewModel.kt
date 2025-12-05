@@ -37,12 +37,7 @@ class   EmailVerificationViewModel(
 
   private val token = savedStateHandle.get<String>("token")
 
-  fun onAction(action: EmailVerificationAction) {
-    when (action) {
-      EmailVerificationAction.OnCloseClick -> TODO()
-      EmailVerificationAction.OnLogInClick -> TODO()
-    }
-  }
+  fun onAction(action: EmailVerificationAction) = Unit
 
   private fun verifyEmail() {
     viewModelScope.launch {

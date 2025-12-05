@@ -12,20 +12,27 @@ import com.plcoding.feature.auth.presentation.screen.register.success.RegisterSu
 
 fun NavGraphBuilder.authGraph(
   navController: NavController,
+  openChat: () -> Unit,
 ) {
   navigation<AuthRoute.Graph>(
     startDestination = AuthRoute.Login
   ) {
     composable<AuthRoute.Login> {
       LoginScreenScreen(
-        openChat = { navController.navigate(AuthRoute.Register) },
-        openForgotPassword = { Unit },
+        openChat = openChat,
+        openForgotPassword = {
+          // TODO:
+        },
         openRegisterScreen = { navController.navigate(AuthRoute.Register) }
       )
     }
     composable<AuthRoute.Register> {
       RegisterScreen(
-        openRegisterSuccess = { navController.navigate(AuthRoute.RegisterSuccess(it)) },
+        openRegisterSuccess = {
+          navController.navigate(AuthRoute.RegisterSuccess(it)) {
+            popUpTo(AuthRoute.Register) { inclusive = true }
+          }
+        },
         openLogin = {
           navController.navigate(AuthRoute.Login) {
             popUpTo(AuthRoute.Login) { inclusive = true }
@@ -34,7 +41,11 @@ fun NavGraphBuilder.authGraph(
       )
     }
     composable<AuthRoute.RegisterSuccess> {
-      RegisterSuccessScreen()
+      RegisterSuccessScreen {
+        navController.navigate(AuthRoute.Login) {
+          popUpTo(AuthRoute.Login) { inclusive = true }
+        }
+      }
     }
     composable<AuthRoute.EmailVerification>(
       deepLinks = listOf(
@@ -48,7 +59,11 @@ fun NavGraphBuilder.authGraph(
         },
       )
     ) {
-      EmailVerificationScreen()
+      EmailVerificationScreen {
+        navController.navigate(AuthRoute.Login) {
+          popUpTo(AuthRoute.Login) { inclusive = true }
+        }
+      }
     }
   }
 }

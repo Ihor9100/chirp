@@ -43,8 +43,8 @@ class RegisterSuccessViewModel(
 
   fun onAction(action: RegisterSuccessAction) {
     when (action) {
-      is RegisterSuccessAction.PrimaryButtonClick -> handleSuccess()
       is RegisterSuccessAction.SecondaryButtonClick -> resendVerificationEmail()
+      else -> Unit
     }
   }
 
