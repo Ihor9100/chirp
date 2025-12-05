@@ -18,6 +18,7 @@ fun NavGraphBuilder.authGraph(
   ) {
     composable<AuthRoute.Login> {
       LoginScreenScreen(
+        openChat = { navController.navigate(AuthRoute.Register) },
         openForgotPassword = { Unit },
         openRegisterScreen = { navController.navigate(AuthRoute.Register) }
       )

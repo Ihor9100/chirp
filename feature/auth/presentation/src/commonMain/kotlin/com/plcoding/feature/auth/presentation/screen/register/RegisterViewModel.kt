@@ -7,14 +7,14 @@ import chirp.feature.auth.presentation.generated.resources.error_account_exists
 import chirp.feature.auth.presentation.generated.resources.error_invalid_email
 import chirp.feature.auth.presentation.generated.resources.error_invalid_password
 import chirp.feature.auth.presentation.generated.resources.error_invalid_username
+import com.plcoding.core.domain.error.DataError
 import com.plcoding.core.domain.network.service.AuthService
 import com.plcoding.core.domain.utils.onFailure
 import com.plcoding.core.domain.utils.onSuccess
-import com.plcoding.core.domain.error.DataError
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.domain.validator.PasswordValidator
 import com.plcoding.core.domain.validator.UsernameValidator
-import com.plcoding.core.presentation.utils.getString
+import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -101,7 +101,7 @@ class RegisterViewModel(
         .onFailure { error ->
           val errorRes = when (error) {
             DataError.Remote.CONFLICT -> Res.string.error_account_exists
-            else -> error.getString()
+            else -> error.getStringRes()
           }
           _state.update {
             it.copy(errorRes = errorRes)

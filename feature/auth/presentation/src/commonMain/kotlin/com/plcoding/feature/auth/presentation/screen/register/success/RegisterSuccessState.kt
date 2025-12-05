@@ -7,7 +7,7 @@ import chirp.feature.auth.presentation.generated.resources.resend_verification_e
 import chirp.feature.auth.presentation.generated.resources.verification_email_sent_to_x
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
 import com.plcoding.core.presentation.utils.TextProvider
-import com.plcoding.core.presentation.utils.event.SnackbarEvent
+import com.plcoding.core.presentation.event.SnackbarEvent
 import org.jetbrains.compose.resources.StringResource
 
 data class RegisterSuccessState(

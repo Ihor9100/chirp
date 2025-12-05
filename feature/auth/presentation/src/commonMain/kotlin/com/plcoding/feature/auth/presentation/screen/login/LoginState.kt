@@ -9,6 +9,7 @@ import chirp.feature.auth.presentation.generated.resources.password
 import chirp.feature.auth.presentation.generated.resources.username_or_email
 import chirp.feature.auth.presentation.generated.resources.welcome_back
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
+import com.plcoding.core.presentation.event.SimpleEvent
 import org.jetbrains.compose.resources.StringResource
 
 data class LoginState(
@@ -18,20 +19,19 @@ data class LoginState(
   val emailTopTitleRes: StringResource = Res.string.username_or_email,
   val emailState: TextFieldState = TextFieldState(),
   val emailPlaceholderRes: StringResource = Res.string.chirp,
-  val emailBottomTitleRes: StringResource? = null,
-  val emailIsError: Boolean = false,
 
   val passwordTopTitleRes: StringResource = Res.string.password,
   val passwordState: TextFieldState = TextFieldState(),
   val passwordPlaceholderRes: StringResource = Res.string.password,
-  val passwordBottomTitleRes: StringResource? = null,
-  val passwordIsError: Boolean = false,
   val passwordIsSecureMode: Boolean = false,
 
   val primaryButtonTitleRes: StringResource = Res.string.log_in,
   val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
-  val primaryButtonIsLoading: Boolean = false,
+  val primaryButtonIsEnable: Boolean = false,
 
   val secondaryButtonTitleRes: StringResource = Res.string.create_account,
   val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
+
+  val hasOngoingRequest: Boolean = false,
+  val logInSuccessEvent: SimpleEvent? = null
 )

@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.plcoding.feature.auth.presentation.navigation.AuthRoute
 import com.plcoding.feature.auth.presentation.navigation.authGraph
+import com.plcoding.feature.chat.presentation.navigation.chatGraph
 
 @Composable
 fun NavigationRoot(navController: NavHostController) {
@@ -13,5 +14,6 @@ fun NavigationRoot(navController: NavHostController) {
     startDestination = AuthRoute.Graph,
   ) {
     authGraph(navController)
+    chatGraph(navController)
   }
 }

@@ -1,21 +1,32 @@
 package com.plcoding.feature.auth.presentation.screen.login
 
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
+import chirp.feature.auth.presentation.generated.resources.error_email_not_verified
 import chirp.feature.auth.presentation.generated.resources.error_invalid_credentials
-import chirp.feature.auth.presentation.generated.resources.error_invalid_password
+import com.plcoding.core.domain.error.DataError
+import com.plcoding.core.domain.network.service.AuthService
+import com.plcoding.core.domain.utils.onFailure
+import com.plcoding.core.domain.utils.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
-import com.plcoding.core.domain.validator.PasswordValidator
-import com.plcoding.core.domain.validator.UsernameValidator
+import com.plcoding.core.presentation.event.SimpleEvent
+import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+  private val authService: AuthService,
+) : ViewModel() {
 
   private var hasLoadedInitialData = false
 
@@ -23,6 +34,7 @@ class LoginViewModel : ViewModel() {
   val state = _state
     .onStart {
       if (!hasLoadedInitialData) {
+        subscribeToState()
         /** Load initial data here **/
         hasLoadedInitialData = true
       }
@@ -33,78 +45,76 @@ class LoginViewModel : ViewModel() {
       initialValue = LoginState()
     )
 
+  private fun subscribeToState() {
+    combine(
+      snapshotFlow { state.value.emailState.text.toString() },
+      snapshotFlow { state.value.passwordState.text.toString() },
+      state.map { it.hasOngoingRequest }.distinctUntilChanged(),
+    ) { email, password, hasOngoingRequest ->
+      val primaryButtonIsEnable = EmailValidator.validate(email) &&
+        password.isNotBlank() &&
+        !hasOngoingRequest
+
+      _state.update {
+        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
+      }
+    }.launchIn(viewModelScope)
+  }
+
   fun onAction(action: LoginAction) {
     when (action) {
-      is LoginAction.OnTextFieldFocusGain -> clearInputFieldError(action)
-      is LoginAction.OnTextFieldSecureToggleClick -> handleTextFieldSecureToggleClick()
+      is LoginAction.OnTextFieldSecureToggleClick -> _state.update {
+        it.copy(passwordIsSecureMode = !it.passwordIsSecureMode)
+      }
       is LoginAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
       else -> Unit
     }
   }
 
-  private fun clearInputFieldError(action: LoginAction.OnTextFieldFocusGain) {
-    if (action.isFocused) {
-      _state.update {
-        when (action.inputField) {
-          InputField.EMAIL -> it.copy(
-            emailIsError = false,
-            emailBottomTitleRes = null,
-          )
-          InputField.PASSWORD -> it.copy(
-            passwordIsError = false,
-            passwordBottomTitleRes = null,
-          )
-        }
-      }
-    }
-  }
-
-  private fun handleTextFieldSecureToggleClick() {
-    _state.update {
-      it.copy(passwordIsSecureMode = !it.passwordIsSecureMode)
-    }
-  }
-
   private fun handlePrimaryButtonClick() {
-    if (!areFieldsValid()) return
+    if (state.value.hasOngoingRequest) return
 
     viewModelScope.launch {
       _state.update {
-        it.copy(primaryButtonIsLoading = true)
+        it.copy(hasOngoingRequest = true)
       }
 
-      // TODO:
+      authService
+        .login(
+          email = state.value.emailState.text.toString(),
+          password = state.value.passwordState.text.toString(),
+        )
+        .onFailure {
+          val errorRes = when (it) {
+            DataError.Remote.UNAUTHORIZED -> Res.string.error_invalid_credentials
+            DataError.Remote.FORBIDDEN -> Res.string.error_email_not_verified
+            else -> it.getStringRes()
+          }
+          _state.update { state ->
+            state.copy(
+              errorRes = errorRes,
+              hasOngoingRequest = false,
+            )
+          }
+        }
+        .onSuccess {
+          _state.update { state ->
+            state.copy(
+              hasOngoingRequest = false,
+              logInSuccessEvent = getLogInSuccessEvent()
+            )
+          }
+        }
 
       _state.update {
-        it.copy(primaryButtonIsLoading = false)
+        it.copy(hasOngoingRequest = false)
       }
     }
   }
 
-  private fun areFieldsValid(): Boolean {
-    val email = state.value.emailState.text.toString()
-    val isEmailValid = UsernameValidator.validate(email) ||
-      EmailValidator.validate(email)
-    val isPasswordValid = PasswordValidator.validate(state.value.passwordState.text.toString())
-
-    val emailError =
-      if (!isEmailValid) Res.string.error_invalid_credentials else null
-    val passwordError = if (!isPasswordValid) Res.string.error_invalid_password else null
-
-    _state.update {
-      it.copy(
-        emailIsError = emailError != null,
-        emailBottomTitleRes = emailError,
-        passwordIsError = passwordError != null,
-        passwordBottomTitleRes = passwordError,
-      )
+  private fun getLogInSuccessEvent(): SimpleEvent {
+    return SimpleEvent(Unit) {
+      _state.update { it.copy(logInSuccessEvent = null) }
     }
-
-    return isEmailValid && isPasswordValid
-  }
-
-  enum class InputField {
-    EMAIL,
-    PASSWORD;
   }
 }

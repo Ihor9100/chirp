@@ -17,7 +17,7 @@ import chirp.core.presentation.generated.resources.error_unauthorized
 import chirp.core.presentation.generated.resources.error_unknown
 import com.plcoding.core.domain.error.DataError
 
-fun DataError.getString() = when (this) {
+fun DataError.getStringRes() = when (this) {
   DataError.Local.DISK_FULL -> Res.string.error_disk_full
   DataError.Local.NOT_FOUND -> Res.string.error_not_found
   DataError.Local.UNKNOWN -> Res.string.error_unknown

@@ -9,8 +9,8 @@ import com.plcoding.core.domain.network.service.AuthService
 import com.plcoding.core.domain.utils.onFailure
 import com.plcoding.core.domain.utils.onSuccess
 import com.plcoding.core.domain.error.DataError
-import com.plcoding.core.presentation.utils.event.SnackbarEvent
-import com.plcoding.core.presentation.utils.getString
+import com.plcoding.core.presentation.event.SnackbarEvent
+import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -66,7 +66,7 @@ class RegisterSuccessViewModel(
   private fun handleFailure(error: DataError.Remote) {
     _state.update {
       it.copy(
-        secondaryButtonErrorRes = error.getString(),
+        secondaryButtonErrorRes = error.getStringRes(),
         hasOngoingRequest = false,
       )
     }

@@ -19,7 +19,7 @@ import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayou
 import com.plcoding.core.designsystem.components.layout.ChirpResultLayout
 import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
 import com.plcoding.core.designsystem.style.ChirpTheme
-import com.plcoding.core.presentation.utils.event.consume
+import com.plcoding.core.presentation.event.consume
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

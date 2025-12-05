@@ -23,6 +23,7 @@ import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
 import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.presentation.event.consume
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -30,10 +31,15 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun LoginScreenScreen(
   viewModel: LoginViewModel = koinViewModel(),
+  openChat: () -> Unit,
   openForgotPassword: () -> Unit,
   openRegisterScreen: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
+
+  state.logInSuccessEvent?.consume {
+    openChat()
+  }
 
   LoginScreenContent(
     state = state,
@@ -63,17 +69,8 @@ fun LoginScreenContent(
       topTitle = stringResource(state.emailTopTitleRes),
       textFieldState = state.emailState,
       inputPlaceholder = stringResource(state.emailPlaceholderRes),
-      bottomTitle = state.emailBottomTitleRes?.let { stringResource(it) },
+      bottomTitle = null,
       keyboardType = KeyboardType.Text,
-      isError = state.emailIsError,
-      onFocusChanged = {
-        onAction(
-          LoginAction.OnTextFieldFocusGain(
-            isFocused = it,
-            inputField = LoginViewModel.InputField.EMAIL,
-          )
-        )
-      }
     )
     Spacer(Modifier.height(20.dp))
     ChirpTextFieldPassword(
@@ -81,17 +78,8 @@ fun LoginScreenContent(
       topTitle = stringResource(state.passwordTopTitleRes),
       textFieldState = state.passwordState,
       inputPlaceholder = stringResource(state.passwordPlaceholderRes),
-      bottomTitle = state.passwordBottomTitleRes?.let { stringResource(it) },
-      isError = state.passwordIsError,
+      bottomTitle = null,
       isSecureMode = state.passwordIsSecureMode,
-      onFocusChanged = {
-        onAction(
-          LoginAction.OnTextFieldFocusGain(
-            isFocused = it,
-            inputField = LoginViewModel.InputField.PASSWORD,
-          )
-        )
-      },
       onSecureToggleClick = { onAction(LoginAction.OnTextFieldSecureToggleClick) }
     )
     Spacer(Modifier.height(20.dp))
@@ -108,7 +96,8 @@ fun LoginScreenContent(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(state.primaryButtonTitleRes),
       style = ChirpButtonStyle.PRIMARY,
-      isLoading = state.primaryButtonIsLoading,
+      isLoading = state.hasOngoingRequest,
+      enabled = state.primaryButtonIsEnable,
       onClick = { onAction(LoginAction.OnPrimaryButtonClick) }
     )
     ChirpButton(
