@@ -9,7 +9,7 @@ import chirp.feature.auth.presentation.generated.resources.password
 import chirp.feature.auth.presentation.generated.resources.username_or_email
 import chirp.feature.auth.presentation.generated.resources.welcome_back
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
-import com.plcoding.core.presentation.event.SimpleEvent
+import com.plcoding.core.presentation.event.Event
 import org.jetbrains.compose.resources.StringResource
 
 data class LoginState(
@@ -33,5 +33,5 @@ data class LoginState(
   val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
 
   val hasOngoingRequest: Boolean = false,
-  val logInSuccessEvent: SimpleEvent? = null
+  val logInSuccessEvent: Event<Unit>? = null
 )

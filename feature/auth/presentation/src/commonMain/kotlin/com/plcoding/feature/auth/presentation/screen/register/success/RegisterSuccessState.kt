@@ -6,8 +6,8 @@ import chirp.feature.auth.presentation.generated.resources.log_in
 import chirp.feature.auth.presentation.generated.resources.resend_verification_email
 import chirp.feature.auth.presentation.generated.resources.verification_email_sent_to_x
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
+import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.utils.TextProvider
-import com.plcoding.core.presentation.event.SnackbarEvent
 import org.jetbrains.compose.resources.StringResource
 
 data class RegisterSuccessState(
@@ -25,6 +25,6 @@ data class RegisterSuccessState(
   val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
   val secondaryButtonErrorRes: StringResource? = null,
 
-  val snackbarEvent: SnackbarEvent? = null,
+  val snackbarEvent: Event<StringResource>? = null,
   val hasOngoingRequest: Boolean = false
 )

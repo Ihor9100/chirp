@@ -23,7 +23,6 @@ import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
 import com.plcoding.core.designsystem.style.ChirpTheme
-import com.plcoding.core.presentation.event.consume
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -37,9 +36,7 @@ fun LoginScreenScreen(
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
-  state.logInSuccessEvent?.consume {
-    openChat()
-  }
+  state.logInSuccessEvent?.run(openChat)
 
   LoginScreenContent(
     state = state,

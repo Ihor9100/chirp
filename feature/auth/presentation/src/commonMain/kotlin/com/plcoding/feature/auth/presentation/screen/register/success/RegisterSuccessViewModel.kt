@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.resent_verification_email
+import com.plcoding.core.domain.error.DataError
 import com.plcoding.core.domain.network.service.AuthService
 import com.plcoding.core.domain.utils.onFailure
 import com.plcoding.core.domain.utils.onSuccess
-import com.plcoding.core.domain.error.DataError
-import com.plcoding.core.presentation.event.SnackbarEvent
+import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -76,16 +76,8 @@ class RegisterSuccessViewModel(
     _state.update {
       it.copy(
         hasOngoingRequest = false,
-        snackbarEvent = getSnackbarEvent()
+        snackbarEvent = Event(Res.string.resent_verification_email)
       )
-    }
-  }
-
-  private fun getSnackbarEvent(): SnackbarEvent {
-    return SnackbarEvent(data = Res.string.resent_verification_email) {
-      _state.update {
-        it.copy(snackbarEvent = null)
-      }
     }
   }
 }
