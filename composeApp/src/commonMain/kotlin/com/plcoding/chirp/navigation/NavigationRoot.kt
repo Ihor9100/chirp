@@ -15,7 +15,9 @@ fun NavigationRoot(navController: NavHostController) {
     startDestination = AuthRoute.Graph,
   ) {
     authGraph(navController) {
-      navController.navigate(ChatRoute.Graph)
+      navController.navigate(ChatRoute.Graph) {
+        popUpTo(AuthRoute.Graph) { inclusive = true }
+      }
     }
     chatGraph(navController)
   }
