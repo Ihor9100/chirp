@@ -10,6 +10,7 @@ import com.plcoding.core.domain.logger.ChirpLogger
 import com.plcoding.core.domain.network.service.AuthService
 import com.plcoding.core.domain.storage.SessionStorage
 import io.ktor.client.HttpClient
+import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -21,8 +22,9 @@ expect val platformCoreDataDiModule: Module
 val coreDataDiModule = module {
   includes(platformCoreDataDiModule)
 
+  single<Json> { Json { ignoreUnknownKeys = true } }
   single<ChirpLogger> { KermitLogger }
-  single<HttpClient> { HttpClientFactory(get()).create(get()) }
+  single<HttpClient> { HttpClientFactory(get(), get()).create(get()) }
 
   singleOf(::KtorAuthService) bind AuthService::class
   singleOf(::DataStoreSessionStorage) bind SessionStorage::class

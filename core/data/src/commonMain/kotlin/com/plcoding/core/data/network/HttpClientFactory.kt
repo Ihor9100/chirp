@@ -18,15 +18,14 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 class HttpClientFactory(
+  private val json: Json,
   private val chirpLogger: ChirpLogger,
 ) {
 
   fun create(httpClientEngine: HttpClientEngine): HttpClient {
     return HttpClient(httpClientEngine) {
       install(ContentNegotiation) {
-        json(Json {
-          ignoreUnknownKeys = true
-        })
+        json(json)
       }
       install(HttpTimeout) {
         requestTimeoutMillis = 20_000L
