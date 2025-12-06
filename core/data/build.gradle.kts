@@ -14,7 +14,9 @@ kotlin {
       dependencies {
         implementation(projects.core.domain)
 
-        implementation(libs.bundles.ktor)
+        implementation(libs.datastore)
+        implementation(libs.datastore.preferences)
+
         implementation(libs.touchlab.kermit)
       }
     }
