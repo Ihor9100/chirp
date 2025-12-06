@@ -18,6 +18,8 @@ kotlin {
         implementation(libs.datastore.preferences)
 
         implementation(libs.touchlab.kermit)
+
+        implementation(libs.bundles.ktor)
       }
     }
     androidMain {
