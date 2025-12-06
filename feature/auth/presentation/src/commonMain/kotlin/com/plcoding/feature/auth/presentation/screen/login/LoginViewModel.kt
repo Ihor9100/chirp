@@ -8,6 +8,7 @@ import chirp.feature.auth.presentation.generated.resources.error_email_not_verif
 import chirp.feature.auth.presentation.generated.resources.error_invalid_credentials
 import com.plcoding.core.domain.error.DataError
 import com.plcoding.core.domain.network.service.AuthService
+import com.plcoding.core.domain.storage.SessionStorage
 import com.plcoding.core.domain.utils.onFailure
 import com.plcoding.core.domain.utils.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
   private val authService: AuthService,
+  private val sessionStorage: SessionStorage,
 ) : ViewModel() {
 
   private var hasLoadedInitialData = false
@@ -98,6 +100,8 @@ class LoginViewModel(
           }
         }
         .onSuccess {
+          sessionStorage.saveAuthInfo(it)
+
           _state.update { state ->
             state.copy(
               hasOngoingRequest = false,

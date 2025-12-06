@@ -10,3 +10,5 @@ fun createDataStore(getPath: () -> String): DataStore<Preferences> {
     getPath().toPath()
   }
 }
+
+const val DATA_STORE_FILE_NAME = "data_store_file_pb"
