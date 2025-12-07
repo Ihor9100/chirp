@@ -8,7 +8,10 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
+@OptIn(ExperimentalEncodingApi::class)
 class CryptographyDataRepository : CryptographyRepository {
 
   companion object {
@@ -22,18 +25,19 @@ class CryptographyDataRepository : CryptographyRepository {
   private val cipher = Cipher.getInstance(TRANSFORMATION)
   private val keyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
 
-  override fun encrypt(byteArray: ByteArray): ByteArray {
+  override fun encrypt(string: String): String {
     cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
     val iv = cipher.iv
-    val encrypted = cipher.doFinal(byteArray)
-    return iv + encrypted
+    val encrypted = cipher.doFinal(string.toByteArray())
+    return Base64.encode(iv + encrypted)
   }
 
-  override fun decrypt(byteArray: ByteArray): ByteArray {
+  override fun decrypt(string: String): String {
+    val byteArray = Base64.decode(string)
     val iv = byteArray.copyOfRange(0, cipher.blockSize)
     val encrypted = byteArray.copyOfRange(cipher.blockSize, byteArray.size)
     cipher.init(Cipher.DECRYPT_MODE, getSecretKey(), IvParameterSpec(iv))
-    return cipher.doFinal(encrypted)
+    return String(cipher.doFinal(encrypted))
   }
 
   private fun getSecretKey(): SecretKey {
