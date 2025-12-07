@@ -6,11 +6,11 @@ import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.error_email_not_verified
 import chirp.feature.auth.presentation.generated.resources.error_invalid_credentials
-import com.plcoding.core.domain.error.DataError
-import com.plcoding.core.domain.network.service.AuthService
-import com.plcoding.core.domain.storage.SessionStorage
-import com.plcoding.core.domain.utils.onFailure
-import com.plcoding.core.domain.utils.onSuccess
+import com.plcoding.core.domain.result.DataError
+import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
+import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.utils.getStringRes
@@ -26,8 +26,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-  private val authService: AuthService,
-  private val sessionStorage: SessionStorage,
+  private val authRemoteRepository: AuthRemoteRepository,
+  private val preferencesLocalRepository: PreferencesLocalRepository,
 ) : ViewModel() {
 
   private var hasLoadedInitialData = false
@@ -81,7 +81,7 @@ class LoginViewModel(
         it.copy(hasOngoingRequest = true)
       }
 
-      authService
+      authRemoteRepository
         .login(
           email = state.value.emailState.text.toString(),
           password = state.value.passwordState.text.toString(),
@@ -100,7 +100,7 @@ class LoginViewModel(
           }
         }
         .onSuccess {
-          sessionStorage.saveAuthInfo(it)
+          preferencesLocalRepository.saveAuthInfo(it)
 
           _state.update { state ->
             state.copy(

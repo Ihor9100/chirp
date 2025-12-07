@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.resent_verification_email
-import com.plcoding.core.domain.error.DataError
-import com.plcoding.core.domain.network.service.AuthService
-import com.plcoding.core.domain.utils.onFailure
-import com.plcoding.core.domain.utils.onSuccess
+import com.plcoding.core.domain.result.DataError
+import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterSuccessViewModel(
-  private val authService: AuthService,
+  private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -54,7 +54,7 @@ class RegisterSuccessViewModel(
     viewModelScope.launch {
       _state.update { it.copy(hasOngoingRequest = true) }
 
-      authService
+      authRemoteRepository
         .resendVerificationEmail(email)
         .onFailure { handleFailure(it) }
         .onSuccess { handleSuccess() }

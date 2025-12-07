@@ -35,7 +35,6 @@ fun LoginScreenScreen(
   openRegisterScreen: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
-
   state.logInSuccessEvent?.run(openChat)
 
   LoginScreenContent(

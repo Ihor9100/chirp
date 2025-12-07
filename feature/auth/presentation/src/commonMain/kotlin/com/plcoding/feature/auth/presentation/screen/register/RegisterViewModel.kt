@@ -7,10 +7,10 @@ import chirp.feature.auth.presentation.generated.resources.error_account_exists
 import chirp.feature.auth.presentation.generated.resources.error_invalid_email
 import chirp.feature.auth.presentation.generated.resources.error_invalid_password
 import chirp.feature.auth.presentation.generated.resources.error_invalid_username
-import com.plcoding.core.domain.error.DataError
-import com.plcoding.core.domain.network.service.AuthService
-import com.plcoding.core.domain.utils.onFailure
-import com.plcoding.core.domain.utils.onSuccess
+import com.plcoding.core.domain.result.DataError
+import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.domain.validator.PasswordValidator
 import com.plcoding.core.domain.validator.UsernameValidator
@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-  private val authService: AuthService,
+  private val authRemoteRepository: AuthRemoteRepository,
 ) : ViewModel() {
 
   private var hasLoadedInitialData = false
@@ -92,7 +92,7 @@ class RegisterViewModel(
         it.copy(primaryButtonIsLoading = true)
       }
 
-      authService
+      authRemoteRepository
         .register(
           username = state.value.usernameState.text.toString(),
           email = email,

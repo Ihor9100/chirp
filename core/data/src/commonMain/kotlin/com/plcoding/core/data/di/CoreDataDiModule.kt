@@ -1,14 +1,14 @@
 package com.plcoding.core.data.di
 
 import com.plcoding.core.data.logger.KermitLogger
-import com.plcoding.core.data.network.HttpClientFactory
-import com.plcoding.core.data.network.mapper.AuthInfoMapper
-import com.plcoding.core.data.network.mapper.UserMapper
-import com.plcoding.core.data.network.service.KtorAuthService
-import com.plcoding.core.data.storage.DataStoreSessionStorage
+import com.plcoding.core.data.tools.HttpClientFactory
+import com.plcoding.core.data.mapper.AuthInfoMapper
+import com.plcoding.core.data.mapper.UserMapper
+import com.plcoding.core.data.repository.remote.AuthRemoteDataRepository
+import com.plcoding.core.data.repository.local.PreferencesLocalDataRepository
 import com.plcoding.core.domain.logger.ChirpLogger
-import com.plcoding.core.domain.network.service.AuthService
-import com.plcoding.core.domain.storage.SessionStorage
+import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
@@ -26,8 +26,8 @@ val coreDataDiModule = module {
   single<ChirpLogger> { KermitLogger }
   single<HttpClient> { HttpClientFactory(get(), get()).create(get()) }
 
-  singleOf(::KtorAuthService) bind AuthService::class
-  singleOf(::DataStoreSessionStorage) bind SessionStorage::class
+  singleOf(::AuthRemoteDataRepository) bind AuthRemoteRepository::class
+  singleOf(::PreferencesLocalDataRepository) bind PreferencesLocalRepository::class
 
   factoryOf(::UserMapper)
   factoryOf(::AuthInfoMapper)

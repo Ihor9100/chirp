@@ -3,9 +3,9 @@ package com.plcoding.feature.auth.presentation.screen.email.verification
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.plcoding.core.domain.network.service.AuthService
-import com.plcoding.core.domain.utils.onFailure
-import com.plcoding.core.domain.utils.onSuccess
+import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class   EmailVerificationViewModel(
-  private val authService: AuthService,
+  private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -41,7 +41,7 @@ class   EmailVerificationViewModel(
 
   private fun verifyEmail() {
     viewModelScope.launch {
-      authService
+      authRemoteRepository
         .verifyEmail(token ?: "")
         .onFailure { _state.update { EmailVerificationState.Failed() } }
         .onSuccess { _state.update { EmailVerificationState.Success() } }

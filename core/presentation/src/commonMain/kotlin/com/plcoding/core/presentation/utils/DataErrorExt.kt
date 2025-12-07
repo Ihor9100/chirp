@@ -15,7 +15,7 @@ import chirp.core.presentation.generated.resources.error_service_unavailable
 import chirp.core.presentation.generated.resources.error_too_many_requests
 import chirp.core.presentation.generated.resources.error_unauthorized
 import chirp.core.presentation.generated.resources.error_unknown
-import com.plcoding.core.domain.error.DataError
+import com.plcoding.core.domain.result.DataError
 
 fun DataError.getStringRes() = when (this) {
   DataError.Local.DISK_FULL -> Res.string.error_disk_full
