@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface PreferencesLocalRepository {
   fun observeAuthInfo(): Flow<AuthInfo?>
   suspend fun saveAuthInfo(authInfo: AuthInfo?)
+
+  suspend fun saveData(data: String)
 }

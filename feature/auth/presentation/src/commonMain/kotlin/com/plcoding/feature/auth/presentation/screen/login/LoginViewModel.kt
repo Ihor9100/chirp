@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.error_email_not_verified
 import chirp.feature.auth.presentation.generated.resources.error_invalid_credentials
-import com.plcoding.core.domain.result.DataError
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
+import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator

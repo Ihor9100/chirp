@@ -18,6 +18,7 @@ class PreferencesLocalDataRepository(
 ) : PreferencesLocalRepository {
 
   private val authInfoKey = stringPreferencesKey("auth_info_key")
+  private val dataKey = stringPreferencesKey("data_key")
 
   override fun observeAuthInfo(): Flow<AuthInfo?> {
     return dataStore.data.map {
@@ -35,6 +36,12 @@ class PreferencesLocalDataRepository(
     dataStore.edit {
       val authInfoAm = authInfoMapper.reverse(authInfo, Unit)
       it[authInfoKey] = json.encodeToString(authInfoAm)
+    }
+  }
+
+  override suspend fun saveData(data: String) {
+    dataStore.edit {
+      it[dataKey] = data
     }
   }
 }
