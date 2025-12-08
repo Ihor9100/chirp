@@ -27,9 +27,9 @@ class CmpApplicationConventionPlugin : AndroidApplicationConventionPlugin() {
       configureIosTarget(baseName = "ComposeApp", isStatic = true)
 
       dependencies {
-        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-navigation").get())
+        "androidMainImplementation"(libs.findLibrary("koin-android").get())
 
-        "commonMainImplementation"(libs.findLibrary("koin-android").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-navigation").get())
         "commonMainImplementation"(libs.findLibrary("koin-core").get())
       }
     }
