@@ -6,11 +6,12 @@ struct iOSApp: App {
     
     init() {
         DiRootKt.doInitKoin()
-
-EncryptionHandler().encrypt { data in
-    // iOS AES encryption logic
-    return data.encryptString
-}
+        ExternalEncryptionHandler().addEncrypt { data in
+            data
+        }
+        ExternalEncryptionHandler().addDecrypt { data in
+            data
+        }
     }
     
     var body: some Scene {

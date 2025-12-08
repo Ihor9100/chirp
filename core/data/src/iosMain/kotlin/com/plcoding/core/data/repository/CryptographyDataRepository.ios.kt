@@ -5,15 +5,15 @@ import com.plcoding.core.domain.repository.CryptographyRepository
 class CryptographyDataRepository : CryptographyRepository {
 
   companion object {
-    var iosEncrypt: ((String) -> String)? = null
-    var iosDecrypt: ((String) -> String)? = null
+    var nativeEncrypt: ((String) -> String)? = null
+    var nativeDecrypt: ((String) -> String)? = null
   }
 
-  override fun encrypt(string: String): String {
-    return string
+  override fun encrypt(decrypted: String): String {
+    return nativeEncrypt?.invoke(decrypted).orEmpty()
   }
 
-  override fun decrypt(string: String): String {
-    return string
+  override fun decrypt(encrypted: String): String {
+    return nativeDecrypt?.invoke(encrypted).orEmpty()
   }
 }

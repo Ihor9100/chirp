@@ -25,10 +25,10 @@ class CryptographyDataRepository : CryptographyRepository {
   private val cipher = Cipher.getInstance(TRANSFORMATION)
   private val keyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
 
-  override fun encrypt(string: String): String {
+  override fun encrypt(decrypted: String): String {
     cipher.init(Cipher.ENCRYPT_MODE, getSecretKey())
     val iv = cipher.iv
-    val encrypted = cipher.doFinal(string.toByteArray())
+    val encrypted = cipher.doFinal(decrypted.toByteArray())
     return Base64.encode(iv + encrypted)
   }
 

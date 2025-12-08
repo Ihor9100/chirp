@@ -1,6 +1,6 @@
 package com.plcoding.core.domain.repository
 
 interface CryptographyRepository {
-  fun encrypt(string: String): String
-  fun decrypt(string: String): String
+  fun encrypt(decrypted: String): String
+  fun decrypt(encrypted: String): String
 }
