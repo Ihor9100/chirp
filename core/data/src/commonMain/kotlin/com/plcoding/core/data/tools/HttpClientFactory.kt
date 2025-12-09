@@ -1,10 +1,18 @@
 package com.plcoding.core.data.tools
 
 import com.plcoding.core.data.BuildKonfig
+import com.plcoding.core.data.model.RefreshRequestAm
+import com.plcoding.core.data.repository.local.PreferencesLocalDataRepository
 import com.plcoding.core.domain.logger.ChirpLogger
+import com.plcoding.core.domain.model.AuthInfo
+import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -12,14 +20,17 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.header
+import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.json.Json
 
 class HttpClientFactory(
   private val json: Json,
   private val chirpLogger: ChirpLogger,
+  private val preferencesLocalDataRepository: PreferencesLocalDataRepository,
 ) {
 
   fun create(httpClientEngine: HttpClientEngine): HttpClient {
@@ -46,6 +57,51 @@ class HttpClientFactory(
         header("x-api-key", BuildKonfig.API_KEY)
         contentType(ContentType.Application.Json)
       }
+      install(Auth) {
+        bearer {
+          loadTokens {
+            getAuthInfo()?.run {
+              BearerTokens(
+                accessToken = accessToken,
+                refreshToken = refreshToken
+              )
+            }
+          }
+          refreshTokens {
+            if (response.request.url.encodedPath.contains("auth/")) {
+              return@refreshTokens null
+            }
+
+            val authInfo = getAuthInfo()
+
+            if (authInfo?.refreshToken.isNullOrBlank()) {
+              preferencesLocalDataRepository.saveAuthInfo(null)
+              return@refreshTokens null
+            }
+
+            var bearerTokens: BearerTokens? = null
+
+            client.post<RefreshRequestAm, AuthInfo>(
+              route = "/auth/refresh",
+              request = RefreshRequestAm(authInfo.refreshToken),
+              builder = { markAsRefreshTokenRequest() }
+            ).onSuccess {
+              preferencesLocalDataRepository.saveAuthInfo(it)
+              bearerTokens = BearerTokens(it.accessToken, it.refreshToken)
+            }.onFailure {
+              preferencesLocalDataRepository.saveAuthInfo(null)
+            }
+
+            bearerTokens
+          }
+        }
+      }
     }
+  }
+
+  private suspend fun getAuthInfo(): AuthInfo? {
+    return preferencesLocalDataRepository
+      .observeAuthInfo()
+      .firstOrNull()
   }
 }
