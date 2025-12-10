@@ -5,6 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
+import com.plcoding.core.presentation.utils.navigateFresh
+import com.plcoding.core.presentation.utils.navigateWithPopUpTo
 import com.plcoding.feature.auth.presentation.screen.email.verification.EmailVerificationScreen
 import com.plcoding.feature.auth.presentation.screen.login.LoginScreen
 import com.plcoding.feature.auth.presentation.screen.register.RegisterScreen
@@ -29,22 +31,19 @@ fun NavGraphBuilder.authGraph(
     composable<AuthRoute.Register> {
       RegisterScreen(
         openRegisterSuccess = {
-          navController.navigate(AuthRoute.RegisterSuccess(it)) {
-            popUpTo(AuthRoute.Register) { inclusive = true }
-          }
+          navController.navigateWithPopUpTo(
+            destination = AuthRoute.RegisterSuccess(it),
+            popUpTo = AuthRoute.Register,
+          )
         },
         openLogin = {
-          navController.navigate(AuthRoute.Login) {
-            popUpTo(AuthRoute.Login) { inclusive = true }
-          }
+          navController.navigateFresh(AuthRoute.Login)
         }
       )
     }
     composable<AuthRoute.RegisterSuccess> {
       RegisterSuccessScreen {
-        navController.navigate(AuthRoute.Login) {
-          popUpTo(AuthRoute.Login) { inclusive = true }
-        }
+        navController.navigateFresh(AuthRoute.Login)
       }
     }
     composable<AuthRoute.EmailVerification>(
@@ -60,9 +59,7 @@ fun NavGraphBuilder.authGraph(
       )
     ) {
       EmailVerificationScreen {
-        navController.navigate(AuthRoute.Login) {
-          popUpTo(AuthRoute.Login) { inclusive = true }
-        }
+        navController.navigateFresh(AuthRoute.Login)
       }
     }
   }
