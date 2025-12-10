@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.plcoding.core.data.mapper.AuthInfoMapper
+import com.plcoding.core.data.model.AuthInfoAm
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +24,10 @@ class PreferencesLocalDataRepository(
   override fun observeAuthInfo(): Flow<AuthInfo?> {
     return dataStore.data.map {
       val serialized = it[authInfoKey]
-      serialized?.run { json.decodeFromString(this) }
+      serialized?.run {
+        val authInfoAm = json.decodeFromString<AuthInfoAm>(this)
+        authInfoMapper.map(authInfoAm, Unit)
+      }
     }
   }
 

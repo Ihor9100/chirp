@@ -30,7 +30,7 @@ class CmpApplicationConventionPlugin : AndroidApplicationConventionPlugin() {
         "androidMainImplementation"(libs.findLibrary("koin-android").get())
 
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-navigation").get())
-        "commonMainImplementation"(libs.findLibrary("koin-core").get())
+        "commonMainImplementation"(libs.findBundle("koin").get())
       }
     }
   }

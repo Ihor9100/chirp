@@ -1,7 +1,6 @@
+
 import com.plcoding.buildlogic.convention.libs
-import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.internal.serialize.codecs.core.NodeOwner
 import org.gradle.kotlin.dsl.dependencies
 
 open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
@@ -26,6 +25,8 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-resources").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-extended").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-components-ui-tooling-preview").get())
+
+        "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel").get())
 
         "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
       }

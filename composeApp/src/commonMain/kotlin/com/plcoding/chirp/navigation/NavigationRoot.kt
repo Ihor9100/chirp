@@ -9,10 +9,13 @@ import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import com.plcoding.feature.chat.presentation.navigation.chatGraph
 
 @Composable
-fun NavigationRoot(navController: NavHostController) {
+fun NavigationRoot(
+  navController: NavHostController,
+  startDestination: Any,
+) {
   NavHost(
     navController = navController,
-    startDestination = AuthRoute.Graph,
+    startDestination = startDestination,
   ) {
     authGraph(navController) {
       navController.navigate(ChatRoute.Graph) {

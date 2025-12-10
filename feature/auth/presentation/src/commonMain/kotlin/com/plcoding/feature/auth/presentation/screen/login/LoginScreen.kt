@@ -28,7 +28,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun LoginScreenScreen(
+fun LoginScreen(
   viewModel: LoginViewModel = koinViewModel(),
   openChat: () -> Unit,
   openForgotPassword: () -> Unit,
