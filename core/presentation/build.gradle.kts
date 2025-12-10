@@ -14,6 +14,7 @@ kotlin {
         implementation(projects.core.domain)
 
         implementation(libs.jetbrains.compose.material3.adaptive)
+        implementation(libs.jetbrains.compose.navigation)
       }
     }
 

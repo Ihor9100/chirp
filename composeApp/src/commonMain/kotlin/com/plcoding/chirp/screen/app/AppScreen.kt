@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.plcoding.chirp.navigation.DeepLinksListener
 import com.plcoding.chirp.navigation.NavigationRoot
 import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.presentation.utils.navigateNewRoot
 import com.plcoding.feature.auth.presentation.navigation.AuthRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -22,12 +23,10 @@ fun AppScreen(
   val navController = rememberNavController()
 
   state.removeSplashScreenEvent?.run {
-     removeSplashScreen?.invoke()
+    removeSplashScreen?.invoke()
   }
   state.logoutEvent?.run {
-    navController.navigate(AuthRoute.Graph) {
-      popUpTo(AuthRoute.Graph) { inclusive = false }
-    }
+    navController.navigateNewRoot(AuthRoute.Graph)
   }
 
   DeepLinksListener(navController)

@@ -11,8 +11,6 @@ abstract class BaseViewModel<State>() : ViewModel() {
 
   protected abstract fun getInitialState(): State
 
-  private var isInitialized = false
-
   protected val mutableState = MutableStateFlow(getInitialState())
   val state = mutableState
     .onStart {
@@ -27,5 +25,7 @@ abstract class BaseViewModel<State>() : ViewModel() {
       initialValue = getInitialState()
     )
 
-  protected open suspend fun onInitialized() = Unit
+  private var isInitialized = false
+
+  protected open fun onInitialized() = Unit
 }
