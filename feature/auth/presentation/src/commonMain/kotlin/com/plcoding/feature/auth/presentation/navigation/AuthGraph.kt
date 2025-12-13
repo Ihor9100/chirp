@@ -8,6 +8,7 @@ import androidx.navigation.navigation
 import com.plcoding.core.presentation.utils.navigateFresh
 import com.plcoding.core.presentation.utils.navigateWithPopUpTo
 import com.plcoding.feature.auth.presentation.screen.email.verification.EmailVerificationScreen
+import com.plcoding.feature.auth.presentation.screen.forgot.password.ForgotPasswordScreen
 import com.plcoding.feature.auth.presentation.screen.login.LoginScreen
 import com.plcoding.feature.auth.presentation.screen.register.RegisterScreen
 import com.plcoding.feature.auth.presentation.screen.register.success.RegisterSuccessScreen
@@ -25,6 +26,9 @@ fun NavGraphBuilder.authGraph(
         openForgotPassword = { navController.navigate(AuthRoute.ForgotPassword) },
         openRegisterScreen = { navController.navigate(AuthRoute.Register) }
       )
+    }
+    composable<AuthRoute.Login> {
+      ForgotPasswordScreen()
     }
     composable<AuthRoute.Register> {
       RegisterScreen(

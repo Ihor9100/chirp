@@ -2,6 +2,7 @@ package com.plcoding.core.data.repository.remote
 
 import com.plcoding.core.data.mapper.AuthInfoMapper
 import com.plcoding.core.data.model.AuthInfoAm
+import com.plcoding.core.data.model.EmailRequestAm
 import com.plcoding.core.data.model.LoginRequestAm
 import com.plcoding.core.data.model.RegisterRequestAm
 import com.plcoding.core.data.model.ResendVerificationEmailRequestAm
@@ -33,6 +34,13 @@ class AuthRemoteDataRepository(
     ).map {
       authInfoMapper.map(it, Unit)
     }
+  }
+
+  override suspend fun login(email: String): Empty<DataError.Remote> {
+    return httpClient.post(
+      route = "/auth/forgot-password",
+      request = EmailRequestAm(email)
+    )
   }
 
   override suspend fun register(

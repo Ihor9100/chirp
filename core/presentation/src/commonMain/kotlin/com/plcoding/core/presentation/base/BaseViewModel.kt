@@ -2,12 +2,16 @@ package com.plcoding.core.presentation.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.plcoding.core.presentation.utils.Loadable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<State>() : ViewModel() {
+// TODO: add super type like: WithLoader, Loadable and function like: runLoadable(execute: suspend () -> Unit) wh
+abstract class BaseViewModel<State : Loadable<State>>() : ViewModel() {
 
   protected abstract fun getInitialState(): State
 
@@ -28,4 +32,12 @@ abstract class BaseViewModel<State>() : ViewModel() {
   private var isInitialized = false
 
   protected open fun onInitialized() = Unit
+
+  protected fun runLoadable(run: suspend () -> Unit) {
+    viewModelScope.launch {
+      mutableState.update { it.showLoader(true) }
+      run()
+      mutableState.update { it.showLoader(false) }
+    }
+  }
 }

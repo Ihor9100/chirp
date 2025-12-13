@@ -1,29 +1,41 @@
 package com.plcoding.feature.auth.presentation.screen.forgot.password
 
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
+import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.validator.EmailValidator
+import com.plcoding.core.presentation.base.BaseViewModel
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 
-class ForgotPasswordViewModel : ViewModel() {
+class ForgotPasswordViewModel(
+  private val authRemoteRepository: AuthRemoteRepository,
+) : BaseViewModel<ForgotPasswordState>() {
 
-  private var hasLoadedInitialData = false
+  override fun getInitialState(): ForgotPasswordState {
+    return ForgotPasswordState()
+  }
 
-  private val _state = MutableStateFlow(ForgotPasswordState())
-  val state = _state
-    .onStart {
-      if (!hasLoadedInitialData) {
-        /** Load initial data here **/
-        hasLoadedInitialData = true
+  override fun onInitialized() {
+    super.onInitialized()
+    subscribeToState()
+  }
+
+  private fun subscribeToState() {
+    combine(
+      snapshotFlow { state.value.emailState.text.toString() },
+      state.map { it.hasOngoingRequest }.distinctUntilChanged(),
+    ) { email, hasOngoingRequest ->
+      mutableState.update {
+        it.copy(
+          primaryButtonIsEnable = EmailValidator.validate(email) && !hasOngoingRequest
+        )
       }
-    }
-    .stateIn(
-      scope = viewModelScope,
-      started = SharingStarted.WhileSubscribed(5_000L),
-      initialValue = ForgotPasswordState()
-    )
+    }.launchIn(viewModelScope)
+  }
 
   fun onAction(action: ForgotPasswordAction) {
     when (action) {
@@ -31,4 +43,11 @@ class ForgotPasswordViewModel : ViewModel() {
     }
   }
 
+  private fun handleSubmitClick() {
+    if (state.value.hasOngoingRequest) return
+
+    mutableState.update { it.copy(hasOngoingRequest = true) }
+    // TODO:
+    mutableState.update { it.copy(hasOngoingRequest = true) }
+  }
 }

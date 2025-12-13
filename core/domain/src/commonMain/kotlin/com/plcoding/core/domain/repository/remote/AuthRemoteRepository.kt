@@ -12,6 +12,10 @@ interface AuthRemoteRepository {
     password: String,
   ): Result<AuthInfo, DataError.Remote>
 
+  suspend fun login(
+    email: String,
+  ): Empty<DataError.Remote>
+
   suspend fun register(
     username: String,
     email: String,

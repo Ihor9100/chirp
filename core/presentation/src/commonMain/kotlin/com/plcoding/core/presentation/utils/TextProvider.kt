@@ -13,14 +13,14 @@ sealed interface TextProvider {
   fun get(): String {
     return when (this) {
       is Dynamic -> value
-      is Resource -> stringResource(id, *args.toTypedArray())
+      is Resource -> stringResource(id, args)
     }
   }
 
   suspend fun getAsync(): String {
     return when (this) {
       is Dynamic -> value
-      is Resource -> getString(id)
+      is Resource -> getString(id, args)
     }
   }
 }

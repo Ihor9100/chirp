@@ -1,45 +1,36 @@
 package com.plcoding.feature.auth.presentation.screen.register.success
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.resent_verification_email
-import com.plcoding.core.domain.result.DataError
+import chirp.feature.auth.presentation.generated.resources.verification_email_sent_to_x
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
+import com.plcoding.core.presentation.base.BaseViewModel
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.core.presentation.utils.getStringRes
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterSuccessViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
-) : ViewModel() {
-
-  private var hasLoadedInitialData = false
-
-  private val _state = MutableStateFlow(RegisterSuccessState())
-  val state = _state
-    .onStart {
-      if (!hasLoadedInitialData) {
-        /** Load initial data here **/
-        hasLoadedInitialData = true
-      }
-    }
-    .stateIn(
-      scope = viewModelScope,
-      started = SharingStarted.WhileSubscribed(5_000L),
-      initialValue = RegisterSuccessState()
-    )
+) : BaseViewModel<RegisterSuccessState>() {
 
   private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
+
+  override fun getInitialState(): RegisterSuccessState {
+    return RegisterSuccessState(
+      description = TextProvider.Resource(
+        id = Res.string.verification_email_sent_to_x,
+        args = listOf(email),
+      )
+    )
+  }
 
   fun onAction(action: RegisterSuccessAction) {
     when (action) {
@@ -52,19 +43,19 @@ class RegisterSuccessViewModel(
     if (state.value.hasOngoingRequest) return
 
     viewModelScope.launch {
-      _state.update { it.copy(hasOngoingRequest = true) }
+      mutableState.update { it.copy(hasOngoingRequest = true) }
 
       authRemoteRepository
         .resendVerificationEmail(email)
         .onFailure { handleFailure(it) }
         .onSuccess { handleSuccess() }
 
-      _state.update { it.copy(hasOngoingRequest = false) }
+      mutableState.update { it.copy(hasOngoingRequest = false) }
     }
   }
 
   private fun handleFailure(error: DataError.Remote) {
-    _state.update {
+    mutableState.update {
       it.copy(
         secondaryButtonErrorRes = error.getStringRes(),
         hasOngoingRequest = false,
@@ -73,7 +64,7 @@ class RegisterSuccessViewModel(
   }
 
   private fun handleSuccess() {
-    _state.update {
+    mutableState.update {
       it.copy(
         hasOngoingRequest = false,
         snackbarEvent = Event(Res.string.resent_verification_email)
