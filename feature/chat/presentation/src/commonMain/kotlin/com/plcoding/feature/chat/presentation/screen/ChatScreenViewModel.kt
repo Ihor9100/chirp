@@ -2,13 +2,13 @@ package com.plcoding.feature.chat.presentation.screen
 
 import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
-import com.plcoding.core.presentation.base.BaseViewModel
+import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ChatViewModel(
+class ChatScreenViewModel(
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseViewModel<ChatState>() {
+) : BaseScreenViewModel<ChatState>() {
 
   override fun getInitialState() = ChatState()
 

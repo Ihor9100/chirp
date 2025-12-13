@@ -25,7 +25,7 @@ fun ChirpResultLayout(
   modifier: Modifier = Modifier,
   icon: @Composable () -> Unit,
   title: String,
-  description: String,
+  description: String?,
   contentOffset: Dp = (-24).dp,
   primaryButton: @Composable () -> Unit,
   secondaryButton: @Composable (() -> Unit)?,
@@ -46,13 +46,15 @@ fun ChirpResultLayout(
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.titleLarge,
       )
-      Spacer(Modifier.height(8.dp))
-      Text(
-        text = description,
-        color = MaterialTheme.colorScheme.extended.textSecondary,
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.bodySmall,
-      )
+      description?.let {
+        Spacer(Modifier.height(8.dp))
+        Text(
+          text = description,
+          color = MaterialTheme.colorScheme.extended.textSecondary,
+          textAlign = TextAlign.Center,
+          style = MaterialTheme.typography.bodySmall,
+        )
+      }
       Spacer(Modifier.height(32.dp))
       primaryButton()
       if (secondaryButton != null) {

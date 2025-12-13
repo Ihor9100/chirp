@@ -24,7 +24,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RegisterScreen(
-  viewModel: RegisterViewModel = koinViewModel(),
+  viewModel: RegisterScreenViewModel = koinViewModel(),
   openRegisterSuccess: (String) -> Unit,
   openLogin: () -> Unit,
 ) {
@@ -71,7 +71,7 @@ fun RegisterContent(
           onAction(
             RegisterAction.OnTextFieldFocusGain(
               isFocused = it,
-              inputField = RegisterViewModel.InputField.USERNAME,
+              inputField = RegisterScreenViewModel.InputField.USERNAME,
             )
           )
         }
@@ -89,7 +89,7 @@ fun RegisterContent(
           onAction(
             RegisterAction.OnTextFieldFocusGain(
               isFocused = it,
-              inputField = RegisterViewModel.InputField.EMAIL,
+              inputField = RegisterScreenViewModel.InputField.EMAIL,
             )
           )
         }
@@ -107,7 +107,7 @@ fun RegisterContent(
           onAction(
             RegisterAction.OnTextFieldFocusGain(
               isFocused = it,
-              inputField = RegisterViewModel.InputField.PASSWORD,
+              inputField = RegisterScreenViewModel.InputField.PASSWORD,
             )
           )
         },

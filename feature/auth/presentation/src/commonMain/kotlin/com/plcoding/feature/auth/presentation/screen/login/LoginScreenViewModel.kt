@@ -12,20 +12,20 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
-import com.plcoding.core.presentation.base.BaseViewModel
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
-class LoginViewModel(
+class LoginScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseViewModel<LoginState>() {
+) : BaseScreenViewModel<LoginState>() {
 
   override fun getInitialState(): LoginState {
     return LoginState()
@@ -40,15 +40,15 @@ class LoginViewModel(
     combine(
       snapshotFlow { state.value.emailState.text.toString() },
       snapshotFlow { state.value.passwordState.text.toString() },
-      state.map { it.hasOngoingRequest }.distinctUntilChanged(),
-    ) { email, password, hasOngoingRequest ->
+      state.map { it.showLoader }.distinctUntilChanged(),
+    ) { email, password, showLoader ->
       val primaryButtonIsEnable = EmailValidator.validate(email) &&
         password.isNotBlank() &&
-        !hasOngoingRequest
+        !showLoader
 
-      mutableState.update {
-        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
-      }
+//      mutableState.update {
+//        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
+//      }
     }.launchIn(viewModelScope)
   }
 
@@ -63,11 +63,8 @@ class LoginViewModel(
   }
 
   private fun handlePrimaryButtonClick() {
-    if (state.value.hasOngoingRequest) return
-
-    viewModelScope.launch {
-      mutableState.update { it.copy(hasOngoingRequest = true) }
-
+    launchLoadable {
+      delay(5000)
       authRemoteRepository
         .login(
           email = state.value.emailState.text.toString(),
@@ -75,8 +72,6 @@ class LoginViewModel(
         )
         .onFailure { handleFailure(it) }
         .onSuccess { handleSuccess(it) }
-
-      mutableState.update { it.copy(hasOngoingRequest = false) }
     }
   }
 
@@ -89,7 +84,7 @@ class LoginViewModel(
     mutableState.update { state ->
       state.copy(
         errorRes = errorRes,
-        hasOngoingRequest = false,
+        showLoader = false,
       )
     }
   }
@@ -99,7 +94,7 @@ class LoginViewModel(
 
     mutableState.update { state ->
       state.copy(
-        hasOngoingRequest = false,
+        showLoader = false,
         logInSuccessEvent = Event(Unit)
       )
     }

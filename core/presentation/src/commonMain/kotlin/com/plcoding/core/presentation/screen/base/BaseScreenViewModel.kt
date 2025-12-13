@@ -1,15 +1,15 @@
-package com.plcoding.core.presentation.base
+package com.plcoding.core.presentation.screen.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.plcoding.core.presentation.utils.Loadable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<State : Loadable<State>>() : ViewModel() {
+abstract class BaseScreenViewModel<State : BaseScreenState<State>>() : ViewModel() {
 
   protected abstract fun getInitialState(): State
 
@@ -31,9 +31,11 @@ abstract class BaseViewModel<State : Loadable<State>>() : ViewModel() {
 
   protected open fun onInitialized() = Unit
 
-  protected suspend fun runLoadable(block: suspend () -> Unit) {
-    mutableState.update { it.showLoader(true) }
-    block()
-    mutableState.update { it.showLoader(false) }
+  protected fun launchLoadable(block: suspend () -> Unit) {
+    viewModelScope.launch {
+      mutableState.update { it.update(true) }
+      block()
+      mutableState.update { it.update(false) }
+    }
   }
 }

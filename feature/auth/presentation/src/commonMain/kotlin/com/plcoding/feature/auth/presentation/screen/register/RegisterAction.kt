@@ -4,7 +4,7 @@ sealed interface RegisterAction {
 
   data class OnTextFieldFocusGain(
     val isFocused: Boolean,
-    val inputField: RegisterViewModel.InputField,
+    val inputField: RegisterScreenViewModel.InputField,
   ) : RegisterAction
 
   data object OnTextFieldSecureToggleClick : RegisterAction

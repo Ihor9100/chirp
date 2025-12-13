@@ -27,7 +27,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RegisterSuccessScreen(
-  viewModel: RegisterSuccessViewModel = koinViewModel(),
+  viewModel: RegisterSuccessScreenViewModel = koinViewModel(),
   openLogin: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
@@ -67,7 +67,7 @@ fun RegisterSuccessContent(
       ChirpResultLayout(
         icon = { ChirpSuccessIcon() },
         title = stringResource(state.titleRes),
-        description = state.description.get(),
+        description = state.description?.get(),
         primaryButton = {
           ChirpButton(
             modifier = Modifier.fillMaxWidth(),

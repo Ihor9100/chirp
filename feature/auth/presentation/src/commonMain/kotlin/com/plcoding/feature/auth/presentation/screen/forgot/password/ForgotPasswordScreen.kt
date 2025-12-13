@@ -27,7 +27,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ForgotPasswordScreen(
-  viewModel: ForgotPasswordViewModel = koinViewModel()
+  viewModel: ForgotPasswordScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
   val snackbarHostState = remember { SnackbarHostState() }
@@ -73,7 +73,7 @@ fun ForgotPasswordContent(
       ChirpButton(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(state.primaryButtonTitleRes),
-        isLoading = state.hasOngoingRequest,
+        isLoading = state.showLoader,
         onClick = { onAction(ForgotPasswordAction.OnSubmitClick) },
       )
     }

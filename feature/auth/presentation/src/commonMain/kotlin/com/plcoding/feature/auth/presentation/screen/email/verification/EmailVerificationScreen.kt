@@ -29,7 +29,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun EmailVerificationScreen(
-  viewModel: EmailVerificationViewModel = koinViewModel(),
+  viewModel: EmailVerificationScreenViewModel = koinViewModel(),
   openLogin: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()

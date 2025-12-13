@@ -27,7 +27,7 @@ fun NavGraphBuilder.authGraph(
         openRegisterScreen = { navController.navigate(AuthRoute.Register) }
       )
     }
-    composable<AuthRoute.Login> {
+    composable<AuthRoute.ForgotPassword> {
       ForgotPasswordScreen()
     }
     composable<AuthRoute.Register> {

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class   EmailVerificationViewModel(
+class   EmailVerificationScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
 ) : ViewModel() {

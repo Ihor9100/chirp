@@ -10,7 +10,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatScreen(
-  viewModel: ChatViewModel = koinViewModel()
+  viewModel: ChatScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 

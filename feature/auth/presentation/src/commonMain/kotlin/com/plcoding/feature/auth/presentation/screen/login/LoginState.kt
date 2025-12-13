@@ -10,9 +10,12 @@ import chirp.feature.auth.presentation.generated.resources.username_or_email
 import chirp.feature.auth.presentation.generated.resources.welcome_back
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.screen.base.BaseScreenState
 import org.jetbrains.compose.resources.StringResource
 
 data class LoginState(
+  override val showLoader: Boolean = false,
+  
   val titleRes: StringResource = Res.string.welcome_back,
   val errorRes: StringResource? = null,
 
@@ -27,11 +30,15 @@ data class LoginState(
 
   val primaryButtonTitleRes: StringResource = Res.string.log_in,
   val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
-  val primaryButtonIsEnable: Boolean = false,
+  val primaryButtonIsEnable: Boolean = true,
 
   val secondaryButtonTitleRes: StringResource = Res.string.create_account,
   val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
+  
+  val logInSuccessEvent: Event<Unit>? = null,
+) : BaseScreenState<LoginState> {
 
-  val hasOngoingRequest: Boolean = false,
-  val logInSuccessEvent: Event<Unit>? = null
-)
+  override fun update(showLoader: Boolean): LoginState {
+    return copy(showLoader = showLoader)
+  }
+}

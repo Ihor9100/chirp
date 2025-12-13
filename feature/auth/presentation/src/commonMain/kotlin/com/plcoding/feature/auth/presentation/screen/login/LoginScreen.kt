@@ -23,13 +23,14 @@ import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
 import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.presentation.screen.base.BaseScreen
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LoginScreen(
-  viewModel: LoginViewModel = koinViewModel(),
+  viewModel: LoginScreenViewModel = koinViewModel(),
   openChat: () -> Unit,
   openForgotPassword: () -> Unit,
   openRegisterScreen: () -> Unit,
@@ -37,16 +38,20 @@ fun LoginScreen(
   val state by viewModel.state.collectAsStateWithLifecycle()
   state.logInSuccessEvent?.run(openChat)
 
-  LoginScreenContent(
-    state = state,
-    onAction = {
-      when (it) {
-        is LoginAction.OnForgotPasswordClick -> openForgotPassword()
-        is LoginAction.OnSecondaryButtonClick -> openRegisterScreen()
-        else -> viewModel.onAction(it)
+  BaseScreen(
+    baseScreenState = state,
+  ) {
+    LoginScreenContent(
+      state = state,
+      onAction = {
+        when (it) {
+          is LoginAction.OnForgotPasswordClick -> openForgotPassword()
+          is LoginAction.OnSecondaryButtonClick -> openRegisterScreen()
+          else -> viewModel.onAction(it)
+        }
       }
-    }
-  )
+    )
+  }
 }
 
 @Composable
@@ -92,7 +97,7 @@ fun LoginScreenContent(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(state.primaryButtonTitleRes),
       style = ChirpButtonStyle.PRIMARY,
-      isLoading = state.hasOngoingRequest,
+      isLoading = state.showLoader,
       enabled = state.primaryButtonIsEnable,
       onClick = { onAction(LoginAction.OnPrimaryButtonClick) }
     )

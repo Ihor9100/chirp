@@ -15,7 +15,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 @Preview
 fun AppScreen(
-  appViewModel: AppViewModel = koinViewModel(),
+  appViewModel: AppScreenViewModel = koinViewModel(),
   removeSplashScreen: (() -> Unit)? = null,
 ) {
   val state by appViewModel.state.collectAsStateWithLifecycle()

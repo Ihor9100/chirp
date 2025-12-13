@@ -7,9 +7,12 @@ import chirp.feature.auth.presentation.generated.resources.forgot_password
 import chirp.feature.auth.presentation.generated.resources.submit
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.screen.base.BaseScreenState
 import org.jetbrains.compose.resources.StringResource
 
 data class ForgotPasswordState(
+  override val showLoader: Boolean=false,
+
   val titleRes: StringResource = Res.string.forgot_password,
   val errorRes: StringResource? = null,
 
@@ -22,5 +25,9 @@ data class ForgotPasswordState(
   val primaryButtonIsEnable: Boolean = false,
 
   val snackbarEvent: Event<StringResource>? = null,
-  val hasOngoingRequest: Boolean = false,
-)
+): BaseScreenState<ForgotPasswordState> {
+
+  override fun update(showLoader: Boolean): ForgotPasswordState {
+    return copy(showLoader = showLoader)
+  }
+}

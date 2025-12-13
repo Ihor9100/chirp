@@ -4,16 +4,16 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.validator.EmailValidator
-import com.plcoding.core.presentation.base.BaseViewModel
+import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
-class ForgotPasswordViewModel(
+class ForgotPasswordScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
-) : BaseViewModel<ForgotPasswordState>() {
+) : BaseScreenViewModel<ForgotPasswordState>() {
 
   override fun getInitialState(): ForgotPasswordState {
     return ForgotPasswordState()
@@ -27,11 +27,11 @@ class ForgotPasswordViewModel(
   private fun subscribeToState() {
     combine(
       snapshotFlow { state.value.emailState.text.toString() },
-      state.map { it.hasOngoingRequest }.distinctUntilChanged(),
-    ) { email, hasOngoingRequest ->
+      state.map { it.showLoader }.distinctUntilChanged(),
+    ) { email, showLoader ->
       mutableState.update {
         it.copy(
-          primaryButtonIsEnable = EmailValidator.validate(email) && !hasOngoingRequest
+          primaryButtonIsEnable = EmailValidator.validate(email) && !showLoader
         )
       }
     }.launchIn(viewModelScope)
@@ -44,10 +44,10 @@ class ForgotPasswordViewModel(
   }
 
   private fun handleSubmitClick() {
-    if (state.value.hasOngoingRequest) return
+    if (state.value.showLoader) return
 
-    mutableState.update { it.copy(hasOngoingRequest = true) }
+    mutableState.update { it.copy(showLoader = true) }
     // TODO:
-    mutableState.update { it.copy(hasOngoingRequest = true) }
+    mutableState.update { it.copy(showLoader = true) }
   }
 }

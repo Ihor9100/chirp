@@ -9,17 +9,17 @@ import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
-import com.plcoding.core.presentation.base.BaseViewModel
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RegisterSuccessViewModel(
+class RegisterSuccessScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
-) : BaseViewModel<RegisterSuccessState>() {
+) : BaseScreenViewModel<RegisterSuccessState>() {
 
   private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
 

@@ -3,8 +3,8 @@ package com.plcoding.chirp.screen.app
 import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
-import com.plcoding.core.presentation.base.BaseViewModel
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.feature.auth.presentation.navigation.AuthRoute
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.flow.firstOrNull
@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AppViewModel(
+class AppScreenViewModel(
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseViewModel<AppState>() {
+) : BaseScreenViewModel<AppState>() {
 
   private var authInfo: AuthInfo? = null
 
