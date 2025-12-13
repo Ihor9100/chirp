@@ -22,9 +22,7 @@ fun NavGraphBuilder.authGraph(
     composable<AuthRoute.Login> {
       LoginScreen(
         openChat = openChat,
-        openForgotPassword = {
-          // TODO:
-        },
+        openForgotPassword = { navController.navigate(AuthRoute.ForgotPassword) },
         openRegisterScreen = { navController.navigate(AuthRoute.Register) }
       )
     }

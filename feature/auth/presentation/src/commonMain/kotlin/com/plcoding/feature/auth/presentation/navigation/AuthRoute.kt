@@ -11,6 +11,9 @@ sealed interface AuthRoute {
   data object Login : AuthRoute
 
   @Serializable
+  data object ForgotPassword : AuthRoute
+
+  @Serializable
   data object Register : AuthRoute
 
   @Serializable
