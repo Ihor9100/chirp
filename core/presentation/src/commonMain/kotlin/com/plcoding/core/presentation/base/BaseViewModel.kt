@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
-// TODO: add super type like: WithLoader, Loadable and function like: runLoadable(execute: suspend () -> Unit) wh
 abstract class BaseViewModel<State : Loadable<State>>() : ViewModel() {
 
   protected abstract fun getInitialState(): State
@@ -33,11 +31,9 @@ abstract class BaseViewModel<State : Loadable<State>>() : ViewModel() {
 
   protected open fun onInitialized() = Unit
 
-  protected fun runLoadable(run: suspend () -> Unit) {
-    viewModelScope.launch {
-      mutableState.update { it.showLoader(true) }
-      run()
-      mutableState.update { it.showLoader(false) }
-    }
+  protected suspend fun runLoadable(block: suspend () -> Unit) {
+    mutableState.update { it.showLoader(true) }
+    block()
+    mutableState.update { it.showLoader(false) }
   }
 }
