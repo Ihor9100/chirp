@@ -25,10 +25,10 @@ import kotlinx.coroutines.flow.update
 class LoginScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseScreenViewModel<LoginState>() {
+) : BaseScreenViewModel<LoginScreenState>() {
 
-  override fun getInitialState(): LoginState {
-    return LoginState()
+  override fun getInitialState(): LoginScreenState {
+    return LoginScreenState()
   }
 
   override fun onInitialized() {
@@ -52,19 +52,19 @@ class LoginScreenViewModel(
     }.launchIn(viewModelScope)
   }
 
-  fun onAction(action: LoginAction) {
+  fun onAction(action: LoginScreenAction) {
     when (action) {
-      is LoginAction.OnTextFieldSecureToggleClick -> mutableState.update {
+      is LoginScreenAction.OnTextFieldSecureToggleClick -> mutableState.update {
         it.copy(passwordIsSecureMode = !it.passwordIsSecureMode)
       }
-      is LoginAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
+      is LoginScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
       else -> Unit
     }
   }
 
   private fun handlePrimaryButtonClick() {
     launchLoadable {
-      delay(5000)
+      delay(3000)
       authRemoteRepository
         .login(
           email = state.value.emailState.text.toString(),

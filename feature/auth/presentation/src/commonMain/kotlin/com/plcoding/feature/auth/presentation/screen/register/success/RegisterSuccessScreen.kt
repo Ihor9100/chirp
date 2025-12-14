@@ -44,7 +44,7 @@ fun RegisterSuccessScreen(
     snackbarHostState = snackbarHostState,
     onAction = {
       when(it) {
-        is RegisterSuccessAction.PrimaryButtonClick -> openLogin()
+        is RegisterSuccessScreenAction.PrimaryButtonClick -> openLogin()
         else -> viewModel.onAction(it)
       }
     },
@@ -53,9 +53,9 @@ fun RegisterSuccessScreen(
 
 @Composable
 fun RegisterSuccessContent(
-  state: RegisterSuccessState,
+  state: RegisterSuccessScreenState,
   snackbarHostState: SnackbarHostState,
-  onAction: (RegisterSuccessAction) -> Unit,
+  onAction: (RegisterSuccessScreenAction) -> Unit,
 ) {
   ChirpSnackbarLayout(
     modifier = Modifier.fillMaxSize(),
@@ -75,7 +75,7 @@ fun RegisterSuccessContent(
             style = state.primaryButtonStyle,
             isLoading = false,
             enabled = !state.hasOngoingRequest,
-            onClick = { onAction(RegisterSuccessAction.PrimaryButtonClick) }
+            onClick = { onAction(RegisterSuccessScreenAction.PrimaryButtonClick) }
           )
         },
         secondaryButton = {
@@ -85,7 +85,7 @@ fun RegisterSuccessContent(
             style = state.secondaryButtonStyle,
             isLoading = false,
             enabled = !state.hasOngoingRequest,
-            onClick = { onAction(RegisterSuccessAction.SecondaryButtonClick) }
+            onClick = { onAction(RegisterSuccessScreenAction.SecondaryButtonClick) }
           )
           if (state.secondaryButtonErrorRes != null) {
             Spacer(Modifier.height(6.dp))
@@ -102,7 +102,7 @@ fun RegisterSuccessContent(
 private fun RegisterSuccessPreview() {
   ChirpTheme {
     RegisterSuccessContent(
-      state = RegisterSuccessState(),
+      state = RegisterSuccessScreenState(),
       snackbarHostState = SnackbarHostState(),
       onAction = {},
     )

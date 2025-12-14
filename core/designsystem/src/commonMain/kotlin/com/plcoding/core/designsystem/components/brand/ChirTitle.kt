@@ -8,20 +8,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.extended
 
 @Composable
 fun ChirTitle(
-  modifier: Modifier = Modifier,
   title: String,
   titleColor: Color = MaterialTheme.colorScheme.extended.textPrimary,
   error: String? = null,
 ) {
   Text(
     text = title,
-    modifier = modifier,
     color = titleColor,
+    textAlign = TextAlign.Center,
     style = MaterialTheme.typography.headlineLarge,
   )
 
@@ -31,8 +31,8 @@ fun ChirTitle(
     visible = showError
   ) {
     if (showError) {
-      Spacer(modifier.height(4.dp))
-      ChirError(error = error)
+      Spacer(Modifier.height(4.dp))
+      ChirError(error)
     }
   }
 }

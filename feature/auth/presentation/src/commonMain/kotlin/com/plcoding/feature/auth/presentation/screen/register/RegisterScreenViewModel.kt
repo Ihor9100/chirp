@@ -30,10 +30,10 @@ class RegisterScreenViewModel(
 
   private var hasLoadedInitialData = false
 
-  private val _event = Channel<RegisterEvent>()
+  private val _event = Channel<RegisterScreenEvent>()
   val event = _event.receiveAsFlow()
 
-  private val _state = MutableStateFlow(RegisterState())
+  private val _state = MutableStateFlow(RegisterScreenState())
   val state = _state
     .onStart {
       if (!hasLoadedInitialData) {
@@ -44,19 +44,19 @@ class RegisterScreenViewModel(
     .stateIn(
       scope = viewModelScope,
       started = SharingStarted.WhileSubscribed(5_000L),
-      initialValue = RegisterState()
+      initialValue = RegisterScreenState()
     )
 
-  fun onAction(action: RegisterAction) {
+  fun onAction(action: RegisterScreenAction) {
     when (action) {
-      is RegisterAction.OnTextFieldFocusGain -> clearInputFieldError(action)
-      is RegisterAction.OnTextFieldSecureToggleClick -> handleTextFieldSecureToggleClick()
-      is RegisterAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
+      is RegisterScreenAction.OnTextFieldFocusGain -> clearInputFieldError(action)
+      is RegisterScreenAction.OnTextFieldSecureToggleClick -> handleTextFieldSecureToggleClick()
+      is RegisterScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
       else -> Unit
     }
   }
 
-  private fun clearInputFieldError(action: RegisterAction.OnTextFieldFocusGain) {
+  private fun clearInputFieldError(action: RegisterScreenAction.OnTextFieldFocusGain) {
     if (action.isFocused) {
       _state.update {
         when (action.inputField) {
@@ -108,7 +108,7 @@ class RegisterScreenViewModel(
           }
         }
         .onSuccess {
-          _event.send(RegisterEvent.Success(email))
+          _event.send(RegisterScreenEvent.Success(email))
         }
 
       _state.update {

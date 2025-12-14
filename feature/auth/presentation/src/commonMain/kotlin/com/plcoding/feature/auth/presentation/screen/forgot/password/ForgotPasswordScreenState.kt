@@ -10,7 +10,7 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenState
 import org.jetbrains.compose.resources.StringResource
 
-data class ForgotPasswordState(
+data class ForgotPasswordScreenState(
   override val showLoader: Boolean=false,
 
   val titleRes: StringResource = Res.string.forgot_password,
@@ -25,9 +25,9 @@ data class ForgotPasswordState(
   val primaryButtonIsEnable: Boolean = false,
 
   val snackbarEvent: Event<StringResource>? = null,
-): BaseScreenState<ForgotPasswordState> {
+): BaseScreenState<ForgotPasswordScreenState> {
 
-  override fun update(showLoader: Boolean): ForgotPasswordState {
+  override fun update(showLoader: Boolean): ForgotPasswordScreenState {
     return copy(showLoader = showLoader)
   }
 }

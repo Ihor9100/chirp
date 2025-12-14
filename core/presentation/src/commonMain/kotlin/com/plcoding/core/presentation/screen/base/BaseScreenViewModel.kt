@@ -31,8 +31,14 @@ abstract class BaseScreenViewModel<State : BaseScreenState<State>>() : ViewModel
 
   protected open fun onInitialized() = Unit
 
-  protected fun launchLoadable(block: suspend () -> Unit) {
+  protected fun launch(block: suspend () -> Unit) {
     viewModelScope.launch {
+      block()
+    }
+  }
+
+  protected fun launchLoadable(block: suspend () -> Unit) {
+    launch {
       mutableState.update { it.update(true) }
       block()
       mutableState.update { it.update(false) }

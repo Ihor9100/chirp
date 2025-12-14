@@ -10,7 +10,7 @@ import com.plcoding.core.presentation.screen.base.BaseScreenState
 import com.plcoding.core.presentation.utils.TextProvider
 import org.jetbrains.compose.resources.StringResource
 
-data class RegisterSuccessState(
+data class RegisterSuccessScreenState(
   override val showLoader: Boolean = false,
 
   val titleRes: StringResource = Res.string.account_successfully_created,
@@ -26,9 +26,9 @@ data class RegisterSuccessState(
 
   val snackbarEvent: Event<StringResource>? = null,
   val hasOngoingRequest: Boolean = false
-): BaseScreenState<RegisterSuccessState> {
+): BaseScreenState<RegisterSuccessScreenState> {
 
-  override fun update(showLoader: Boolean): RegisterSuccessState {
+  override fun update(showLoader: Boolean): RegisterSuccessScreenState {
     return copy(showLoader = showLoader)
   }
 }

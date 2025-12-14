@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.update
 
 class ForgotPasswordScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
-) : BaseScreenViewModel<ForgotPasswordState>() {
+) : BaseScreenViewModel<ForgotPasswordScreenState>() {
 
-  override fun getInitialState(): ForgotPasswordState {
-    return ForgotPasswordState()
+  override fun getInitialState(): ForgotPasswordScreenState {
+    return ForgotPasswordScreenState()
   }
 
   override fun onInitialized() {
@@ -37,7 +37,7 @@ class ForgotPasswordScreenViewModel(
     }.launchIn(viewModelScope)
   }
 
-  fun onAction(action: ForgotPasswordAction) {
+  fun onAction(action: ForgotPasswordScreenAction) {
     when (action) {
       else -> TODO("Handle actions")
     }

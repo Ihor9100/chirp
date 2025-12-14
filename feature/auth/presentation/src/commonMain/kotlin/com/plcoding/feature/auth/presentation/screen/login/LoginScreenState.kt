@@ -13,7 +13,7 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenState
 import org.jetbrains.compose.resources.StringResource
 
-data class LoginState(
+data class LoginScreenState(
   override val showLoader: Boolean = false,
   
   val titleRes: StringResource = Res.string.welcome_back,
@@ -36,9 +36,9 @@ data class LoginState(
   val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
   
   val logInSuccessEvent: Event<Unit>? = null,
-) : BaseScreenState<LoginState> {
+) : BaseScreenState<LoginScreenState> {
 
-  override fun update(showLoader: Boolean): LoginState {
+  override fun update(showLoader: Boolean): LoginScreenState {
     return copy(showLoader = showLoader)
   }
 }

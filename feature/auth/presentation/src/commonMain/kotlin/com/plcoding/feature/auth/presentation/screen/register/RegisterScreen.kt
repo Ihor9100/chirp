@@ -32,7 +32,7 @@ fun RegisterScreen(
 
   viewModel.event.CollectEvent { event ->
     when (event) {
-      is RegisterEvent.Success -> openRegisterSuccess(event.email)
+      is RegisterScreenEvent.Success -> openRegisterSuccess(event.email)
     }
   }
 
@@ -40,7 +40,7 @@ fun RegisterScreen(
     state = state,
     onAction = {
       when (it) {
-        RegisterAction.OnSecondaryButtonClick -> openLogin()
+        RegisterScreenAction.OnSecondaryButtonClick -> openLogin()
         else -> viewModel.onAction(it)
       }
     }
@@ -49,8 +49,8 @@ fun RegisterScreen(
 
 @Composable
 fun RegisterContent(
-  state: RegisterState,
-  onAction: (RegisterAction) -> Unit,
+  state: RegisterScreenState,
+  onAction: (RegisterScreenAction) -> Unit,
 ) {
   ChirpTheme {
     ChirAdaptiveFormLayout(
@@ -69,7 +69,7 @@ fun RegisterContent(
         isError = state.usernameIsError,
         onFocusChanged = {
           onAction(
-            RegisterAction.OnTextFieldFocusGain(
+            RegisterScreenAction.OnTextFieldFocusGain(
               isFocused = it,
               inputField = RegisterScreenViewModel.InputField.USERNAME,
             )
@@ -87,7 +87,7 @@ fun RegisterContent(
         isError = state.emailIsError,
         onFocusChanged = {
           onAction(
-            RegisterAction.OnTextFieldFocusGain(
+            RegisterScreenAction.OnTextFieldFocusGain(
               isFocused = it,
               inputField = RegisterScreenViewModel.InputField.EMAIL,
             )
@@ -105,13 +105,13 @@ fun RegisterContent(
         isSecureMode = state.passwordIsSecureMode,
         onFocusChanged = {
           onAction(
-            RegisterAction.OnTextFieldFocusGain(
+            RegisterScreenAction.OnTextFieldFocusGain(
               isFocused = it,
               inputField = RegisterScreenViewModel.InputField.PASSWORD,
             )
           )
         },
-        onSecureToggleClick = { onAction(RegisterAction.OnTextFieldSecureToggleClick) }
+        onSecureToggleClick = { onAction(RegisterScreenAction.OnTextFieldSecureToggleClick) }
       )
       Spacer(Modifier.height(32.dp))
       ChirpButton(
@@ -119,13 +119,13 @@ fun RegisterContent(
         text = stringResource(state.primaryButtonTitleRes),
         style = ChirpButtonStyle.PRIMARY,
         isLoading = state.primaryButtonIsLoading,
-        onClick = { onAction(RegisterAction.OnPrimaryButtonClick) }
+        onClick = { onAction(RegisterScreenAction.OnPrimaryButtonClick) }
       )
       ChirpButton(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(state.secondaryButtonTitleRes),
         style = ChirpButtonStyle.SECONDARY,
-        onClick = { onAction(RegisterAction.OnSecondaryButtonClick) }
+        onClick = { onAction(RegisterScreenAction.OnSecondaryButtonClick) }
       )
     }
   }
@@ -136,7 +136,7 @@ fun RegisterContent(
 private fun RegisterPreview() {
   ChirpTheme {
     RegisterContent(
-      state = RegisterState(),
+      state = RegisterScreenState(),
       onAction = {}
     )
   }

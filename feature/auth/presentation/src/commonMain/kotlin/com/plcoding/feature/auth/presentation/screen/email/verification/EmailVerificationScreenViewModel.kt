@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
+import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -13,14 +14,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class   EmailVerificationScreenViewModel(
+class EmailVerificationScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+) : BaseScreenViewModel<EmailVerificationScreenState>() {
 
   private var hasLoadedInitialData = false
 
-  private val _state = MutableStateFlow<EmailVerificationState>(EmailVerificationState.Loading())
+  private val _state =
+    MutableStateFlow<EmailVerificationScreenState>(EmailVerificationScreenState.Loading())
   val state = _state
     .onStart {
       if (!hasLoadedInitialData) {
@@ -32,19 +34,19 @@ class   EmailVerificationScreenViewModel(
     .stateIn(
       scope = viewModelScope,
       started = SharingStarted.WhileSubscribed(5_000L),
-      initialValue = EmailVerificationState.Loading()
+      initialValue = EmailVerificationScreenState.Loading()
     )
 
   private val token = savedStateHandle.get<String>("token")
 
-  fun onAction(action: EmailVerificationAction) = Unit
+  fun onAction(action: EmailVerificationScreenAction) = Unit
 
   private fun verifyEmail() {
     viewModelScope.launch {
       authRemoteRepository
         .verifyEmail(token ?: "")
-        .onFailure { _state.update { EmailVerificationState.Failed() } }
-        .onSuccess { _state.update { EmailVerificationState.Success() } }
+        .onFailure { _state.update { EmailVerificationScreenState.Failed() } }
+        .onSuccess { _state.update { EmailVerificationScreenState.Success() } }
     }
   }
 }

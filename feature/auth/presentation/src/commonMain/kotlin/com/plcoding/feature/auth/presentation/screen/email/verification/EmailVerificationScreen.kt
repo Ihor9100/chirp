@@ -42,22 +42,22 @@ fun EmailVerificationScreen(
 
 @Composable
 fun EmailVerificationContent(
-  state: EmailVerificationState,
-  onAction: (EmailVerificationAction) -> Unit,
+  state: EmailVerificationScreenState,
+  onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   ChirpAdaptiveResultLayout {
     when (state) {
-      is EmailVerificationState.Failed -> EmailVerificationFailedContent(state, onAction)
-      is EmailVerificationState.Loading -> EmailVerificationLoadingContent(state)
-      is EmailVerificationState.Success -> EmailVerificationSuccessContent(state, onAction)
+      is EmailVerificationScreenState.Failed -> EmailVerificationFailedContent(state, onAction)
+      is EmailVerificationScreenState.Loading -> EmailVerificationLoadingContent(state)
+      is EmailVerificationScreenState.Success -> EmailVerificationSuccessContent(state, onAction)
     }
   }
 }
 
 @Composable
 fun EmailVerificationFailedContent(
-  state: EmailVerificationState.Failed,
-  onAction: (EmailVerificationAction) -> Unit,
+  state: EmailVerificationScreenState.Failed,
+  onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   ChirpResultLayout(
     icon = {
@@ -78,7 +78,7 @@ fun EmailVerificationFailedContent(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(state.primaryButtonTitleRes),
         style = state.primaryButtonStyle,
-        onClick = { onAction(EmailVerificationAction.OnCloseClick) }
+        onClick = { onAction(EmailVerificationScreenAction.OnCloseClick) }
       )
     },
     secondaryButton = null,
@@ -87,7 +87,7 @@ fun EmailVerificationFailedContent(
 
 @Composable
 fun EmailVerificationLoadingContent(
-  state: EmailVerificationState.Loading,
+  state: EmailVerificationScreenState.Loading,
 ) {
   Column(
     modifier = Modifier.heightIn(min = 200.dp),
@@ -110,8 +110,8 @@ fun EmailVerificationLoadingContent(
 
 @Composable
 fun EmailVerificationSuccessContent(
-  state: EmailVerificationState.Success,
-  onAction: (EmailVerificationAction) -> Unit,
+  state: EmailVerificationScreenState.Success,
+  onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   ChirpResultLayout(
     icon = { ChirpSuccessIcon() },
@@ -122,7 +122,7 @@ fun EmailVerificationSuccessContent(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(state.primaryButtonTitleRes),
         style = state.primaryButtonStyle,
-        onClick = { onAction(EmailVerificationAction.OnLogInClick) }
+        onClick = { onAction(EmailVerificationScreenAction.OnLogInClick) }
       )
     },
     secondaryButton = null,
@@ -131,7 +131,7 @@ fun EmailVerificationSuccessContent(
 
 @Composable
 private fun EmailVerificationThemed(
-  state: EmailVerificationState,
+  state: EmailVerificationScreenState,
 ) {
   ChirpTheme {
     EmailVerificationContent(
@@ -144,17 +144,17 @@ private fun EmailVerificationThemed(
 @Preview
 @Composable
 private fun EmailVerificationLoadingPreview() {
-  EmailVerificationThemed(EmailVerificationState.Loading())
+  EmailVerificationThemed(EmailVerificationScreenState.Loading())
 }
 
 @Preview
 @Composable
 private fun EmailVerificationFailedLoadingPreview() {
-  EmailVerificationThemed(EmailVerificationState.Failed())
+  EmailVerificationThemed(EmailVerificationScreenState.Failed())
 }
 
 @Preview
 @Composable
 private fun EmailVerificationFailedSuccessPreview() {
-  EmailVerificationThemed(EmailVerificationState.Success())
+  EmailVerificationThemed(EmailVerificationScreenState.Success())
 }

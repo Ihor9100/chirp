@@ -12,7 +12,7 @@ import chirp.feature.auth.presentation.generated.resources.welcome_to_chirp
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
 import org.jetbrains.compose.resources.StringResource
 
-data class RegisterState(
+data class RegisterScreenState(
   val titleRes: StringResource = Res.string.welcome_to_chirp,
   val errorRes: StringResource? = null,
 

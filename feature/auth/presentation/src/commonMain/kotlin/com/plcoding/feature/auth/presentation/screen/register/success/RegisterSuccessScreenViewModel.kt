@@ -19,12 +19,12 @@ import kotlinx.coroutines.launch
 class RegisterSuccessScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<RegisterSuccessState>() {
+) : BaseScreenViewModel<RegisterSuccessScreenState>() {
 
   private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
 
-  override fun getInitialState(): RegisterSuccessState {
-    return RegisterSuccessState(
+  override fun getInitialState(): RegisterSuccessScreenState {
+    return RegisterSuccessScreenState(
       description = TextProvider.Resource(
         id = Res.string.verification_email_sent_to_x,
         args = listOf(email),
@@ -32,9 +32,9 @@ class RegisterSuccessScreenViewModel(
     )
   }
 
-  fun onAction(action: RegisterSuccessAction) {
+  fun onAction(action: RegisterSuccessScreenAction) {
     when (action) {
-      is RegisterSuccessAction.SecondaryButtonClick -> resendVerificationEmail()
+      is RegisterSuccessScreenAction.SecondaryButtonClick -> resendVerificationEmail()
       else -> Unit
     }
   }

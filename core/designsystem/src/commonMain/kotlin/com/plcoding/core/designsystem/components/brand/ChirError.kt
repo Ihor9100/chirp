@@ -3,17 +3,16 @@ package com.plcoding.core.designsystem.components.brand
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun ChirError(
-  modifier: Modifier = Modifier,
   error: String,
 ) {
   Text(
     text = error,
-    modifier = modifier,
     color = MaterialTheme.colorScheme.error,
+    textAlign = TextAlign.Center,
     style = MaterialTheme.typography.labelSmall,
   )
 }

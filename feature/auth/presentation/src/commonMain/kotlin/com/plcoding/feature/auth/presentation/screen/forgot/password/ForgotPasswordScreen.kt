@@ -47,9 +47,9 @@ fun ForgotPasswordScreen(
 
 @Composable
 fun ForgotPasswordContent(
-  state: ForgotPasswordState,
+  state: ForgotPasswordScreenState,
   snackbarHostState: SnackbarHostState,
-  onAction: (ForgotPasswordAction) -> Unit,
+  onAction: (ForgotPasswordScreenAction) -> Unit,
 ) {
   ChirpSnackbarLayout(
     modifier = Modifier.fillMaxSize(),
@@ -74,7 +74,7 @@ fun ForgotPasswordContent(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(state.primaryButtonTitleRes),
         isLoading = state.showLoader,
-        onClick = { onAction(ForgotPasswordAction.OnSubmitClick) },
+        onClick = { onAction(ForgotPasswordScreenAction.OnSubmitClick) },
       )
     }
   }
@@ -85,7 +85,7 @@ fun ForgotPasswordContent(
 private fun ForgotPasswordPreview() {
   ChirpTheme {
     ForgotPasswordContent(
-      state = ForgotPasswordState(),
+      state = ForgotPasswordScreenState(),
       snackbarHostState = SnackbarHostState(),
       onAction = {},
     )

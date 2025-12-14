@@ -45,8 +45,8 @@ fun LoginScreen(
       state = state,
       onAction = {
         when (it) {
-          is LoginAction.OnForgotPasswordClick -> openForgotPassword()
-          is LoginAction.OnSecondaryButtonClick -> openRegisterScreen()
+          is LoginScreenAction.OnForgotPasswordClick -> openForgotPassword()
+          is LoginScreenAction.OnSecondaryButtonClick -> openRegisterScreen()
           else -> viewModel.onAction(it)
         }
       }
@@ -56,8 +56,8 @@ fun LoginScreen(
 
 @Composable
 fun LoginScreenContent(
-  state: LoginState,
-  onAction: (LoginAction) -> Unit,
+  state: LoginScreenState,
+  onAction: (LoginScreenAction) -> Unit,
 ) {
   ChirAdaptiveFormLayout(
     modifier = Modifier.fillMaxSize(),
@@ -81,13 +81,13 @@ fun LoginScreenContent(
       inputPlaceholder = stringResource(state.passwordPlaceholderRes),
       bottomTitle = null,
       isSecureMode = state.passwordIsSecureMode,
-      onSecureToggleClick = { onAction(LoginAction.OnTextFieldSecureToggleClick) }
+      onSecureToggleClick = { onAction(LoginScreenAction.OnTextFieldSecureToggleClick) }
     )
     Spacer(Modifier.height(20.dp))
     Text(
       modifier = Modifier
         .align(Alignment.End)
-        .clickable { onAction(LoginAction.OnForgotPasswordClick) },
+        .clickable { onAction(LoginScreenAction.OnForgotPasswordClick) },
       text = stringResource(Res.string.forgot_password),
       color = MaterialTheme.colorScheme.tertiary,
       style = MaterialTheme.typography.bodySmall,
@@ -99,13 +99,13 @@ fun LoginScreenContent(
       style = ChirpButtonStyle.PRIMARY,
       isLoading = state.showLoader,
       enabled = state.primaryButtonIsEnable,
-      onClick = { onAction(LoginAction.OnPrimaryButtonClick) }
+      onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
     )
     ChirpButton(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(state.secondaryButtonTitleRes),
       style = ChirpButtonStyle.SECONDARY,
-      onClick = { onAction(LoginAction.OnSecondaryButtonClick) }
+      onClick = { onAction(LoginScreenAction.OnSecondaryButtonClick) }
     )
   }
 }
@@ -115,7 +115,7 @@ fun LoginScreenContent(
 private fun LoginScreenPreview() {
   ChirpTheme {
     LoginScreenContent(
-      state = LoginState(),
+      state = LoginScreenState(),
       onAction = {}
     )
   }
