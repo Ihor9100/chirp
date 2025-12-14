@@ -46,9 +46,9 @@ class LoginScreenViewModel(
         password.isNotBlank() &&
         !showLoader
 
-//      mutableState.update {
-//        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
-//      }
+      //      mutableState.update {
+      //        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
+      //      }
     }.launchIn(viewModelScope)
   }
 
@@ -99,4 +99,14 @@ class LoginScreenViewModel(
       )
     }
   }
+}
+
+data class BaseScreenState<State>(
+  val state: State,
+  val overlay: Overlay,
+)
+
+enum class Overlay {
+  NONE,
+  BLOCKABLE,
 }
