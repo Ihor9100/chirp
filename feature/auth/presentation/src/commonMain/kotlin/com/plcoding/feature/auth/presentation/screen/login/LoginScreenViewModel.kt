@@ -14,6 +14,7 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
+import com.plcoding.core.presentation.screen.base.BaseScreenViewModel2
 import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
@@ -25,7 +26,7 @@ import kotlinx.coroutines.flow.update
 class LoginScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseScreenViewModel<LoginScreenState>() {
+) : BaseScreenViewModel2<LoginScreenState>() {
 
   override fun getInitialState(): LoginScreenState {
     return LoginScreenState()
@@ -46,9 +47,9 @@ class LoginScreenViewModel(
         password.isNotBlank() &&
         !showLoader
 
-      //      mutableState.update {
-      //        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
-      //      }
+//      mutableState.update {
+//        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
+//      }
     }.launchIn(viewModelScope)
   }
 
@@ -101,12 +102,3 @@ class LoginScreenViewModel(
   }
 }
 
-data class BaseScreenState<State>(
-  val state: State,
-  val overlay: Overlay,
-)
-
-enum class Overlay {
-  NONE,
-  BLOCKABLE,
-}
