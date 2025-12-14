@@ -12,10 +12,9 @@ import chirp.feature.auth.presentation.generated.resources.email_verified_succes
 import chirp.feature.auth.presentation.generated.resources.log_in
 import chirp.feature.auth.presentation.generated.resources.verifying_account
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
-import com.plcoding.core.presentation.screen.base.BaseScreenState
 import org.jetbrains.compose.resources.StringResource
 
-sealed interface EmailVerificationScreenState: BaseScreenState<EmailVerificationScreenState> {
+sealed interface EmailVerificationScreenState {
 
   data class Loading(
     val titleRes: StringResource = Res.string.verifying_account,

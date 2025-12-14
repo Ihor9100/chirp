@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
-import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
 class EmailVerificationScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<EmailVerificationScreenState>() {
+) : ViewModel() {
 
   private var hasLoadedInitialData = false
 
