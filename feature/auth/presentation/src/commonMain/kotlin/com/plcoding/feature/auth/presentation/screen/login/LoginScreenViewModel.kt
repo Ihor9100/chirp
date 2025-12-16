@@ -15,7 +15,6 @@ import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -62,8 +61,7 @@ class LoginScreenViewModel(
   }
 
   private fun handlePrimaryButtonClick() {
-    launchBlockable {
-      delay(3000)
+    launchLoadable {
       authRemoteRepository
         .login(
           email = state.value.content.emailState.text.toString(),
