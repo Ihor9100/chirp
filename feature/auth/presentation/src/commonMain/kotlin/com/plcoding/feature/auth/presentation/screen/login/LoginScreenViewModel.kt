@@ -13,7 +13,8 @@ import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.event.Event
-import com.plcoding.core.presentation.screen.base.BaseScreenViewModel2
+import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
+import com.plcoding.core.presentation.screen.base.Overlay
 import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
@@ -24,10 +25,10 @@ import kotlinx.coroutines.flow.map
 class LoginScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseScreenViewModel2<LoginScreenState>() {
+) : BaseScreenViewModel<LoginScreenContent>() {
 
-  override fun getInitialContent(): LoginScreenState {
-    return LoginScreenState()
+  override fun getInitialContent(): LoginScreenContent {
+    return LoginScreenContent()
   }
 
   override fun onInitialized() {
@@ -39,7 +40,7 @@ class LoginScreenViewModel(
     combine(
       snapshotFlow { state.value.content.emailState.text.toString() },
       snapshotFlow { state.value.content.passwordState.text.toString() },
-      state.map { it.content.showLoader }.distinctUntilChanged(),
+      state.map { it.baseContent.overlay == Overlay.BLOCKABLE }.distinctUntilChanged(),
     ) { email, password, showLoader ->
       val primaryButtonIsEnable = EmailValidator.validate(email) &&
         password.isNotBlank() &&
@@ -81,21 +82,14 @@ class LoginScreenViewModel(
       else -> error.getStringRes()
     }
     mutableState.updateContent {
-      copy(
-        errorRes = errorRes,
-        showLoader = false,
-      )
+      copy(errorRes = errorRes)
     }
   }
 
   private suspend fun handleSuccess(authInfo: AuthInfo) {
     preferencesLocalRepository.saveAuthInfo(authInfo)
-
     mutableState.updateContent {
-      copy(
-        showLoader = false,
-        logInSuccessEvent = Event(Unit)
-      )
+      copy(logInSuccessEvent = Event(Unit))
     }
   }
 }

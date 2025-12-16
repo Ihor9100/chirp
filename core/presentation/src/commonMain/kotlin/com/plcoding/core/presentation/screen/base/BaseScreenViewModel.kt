@@ -9,50 +9,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseScreenViewModel<State : BaseScreenState<State>>() : ViewModel() {
-
-  protected abstract fun getInitialState(): State
-
-  protected val mutableState = MutableStateFlow(getInitialState())
-  val state = mutableState
-    .onStart {
-      if (!isInitialized) {
-        isInitialized = true
-        onInitialized()
-      }
-    }
-    .stateIn(
-      scope = viewModelScope,
-      started = SharingStarted.WhileSubscribed(5_000L),
-      initialValue = getInitialState()
-    )
-
-  private var isInitialized = false
-
-  protected open fun onInitialized() = Unit
-
-  protected fun launch(block: suspend () -> Unit) {
-    viewModelScope.launch {
-      block()
-    }
-  }
-
-  protected fun launchLoadable(block: suspend () -> Unit) {
-    launch {
-      mutableState.update { it.update(true) }
-      block()
-      mutableState.update { it.update(false) }
-    }
-  }
-}
-
-data class BaseScreenState2<Content>(
-  val content: Content,
-  val baseContent: BaseContent = BaseContent(),
-)
-
-
-abstract class BaseScreenViewModel2<Content>() : ViewModel() {
+abstract class BaseScreenViewModel<Content>() : ViewModel() {
 
   protected abstract fun getInitialContent(): Content
 
@@ -73,7 +30,7 @@ abstract class BaseScreenViewModel2<Content>() : ViewModel() {
   private var isInitialized = false
 
   protected open fun onInitialized() = Unit
-  protected open fun getInitialBaseScreenState() = BaseScreenState2(getInitialContent())
+  protected open fun getInitialBaseScreenState() = BaseScreenState(getInitialContent())
 
   protected fun launch(block: suspend () -> Unit) {
     viewModelScope.launch {
@@ -89,13 +46,13 @@ abstract class BaseScreenViewModel2<Content>() : ViewModel() {
     }
   }
 
-  protected inline fun MutableStateFlow<BaseScreenState2<Content>>.updateContent(
+  protected inline fun MutableStateFlow<BaseScreenState<Content>>.updateContent(
     block: Content.() -> Content,
   ) {
     return update { it.copy(content = block(it.content)) }
   }
 
-  protected inline fun MutableStateFlow<BaseScreenState2<Content>>.updateBaseContent(
+  protected inline fun MutableStateFlow<BaseScreenState<Content>>.updateBaseContent(
     block: BaseContent.() -> BaseContent,
   ) {
     return update { it.copy(baseContent = block(it.baseContent)) }

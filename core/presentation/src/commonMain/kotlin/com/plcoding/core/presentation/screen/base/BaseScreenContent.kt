@@ -12,28 +12,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 @Composable
 fun BaseScreenContent(
   modifier: Modifier = Modifier,
-  baseScreenState: BaseScreenState<*>,
-  content: @Composable BoxScope.() -> Unit,
-) {
-  Box(
-    modifier = modifier.fillMaxSize()
-  ) {
-    content()
-
-    if (baseScreenState.showLoader) {
-      Box(
-        modifier = Modifier
-          .fillMaxSize()
-          .background(Color.Black.copy(alpha = 0.2f))
-          .pointerInput(Unit) {}
-      )
-    }
-  }
-}
-
-@Composable
-fun BaseScreenContent2(
-  modifier: Modifier = Modifier,
   baseContent: BaseContent,
   content: @Composable BoxScope.() -> Unit,
 ) {

@@ -23,7 +23,7 @@ import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
 import com.plcoding.core.designsystem.style.ChirpTheme
-import com.plcoding.core.presentation.screen.base.BaseScreenContent2
+import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -38,11 +38,11 @@ fun LoginScreen(
   val state by viewModel.state.collectAsStateWithLifecycle()
   state.content.logInSuccessEvent?.run(openChat)
 
-  BaseScreenContent2(
+  BaseScreenContent(
     baseContent = state.baseContent,
   ) {
     LoginScreenContent(
-      state = state.content,
+      content = state.content,
       onAction = {
         when (it) {
           is LoginScreenAction.OnForgotPasswordClick -> openForgotPassword()
@@ -56,31 +56,31 @@ fun LoginScreen(
 
 @Composable
 fun LoginScreenContent(
-  state: LoginScreenState,
+  content: LoginScreenContent,
   onAction: (LoginScreenAction) -> Unit,
 ) {
   ChirAdaptiveFormLayout(
     modifier = Modifier.fillMaxSize(),
     logo = { ChirpLogo() },
-    title = stringResource(state.titleRes),
-    error = state.errorRes?.let { stringResource(it) },
+    title = stringResource(content.titleRes),
+    error = content.errorRes?.let { stringResource(it) },
   ) {
     ChirpTextFieldPlain(
       modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(state.emailTopTitleRes),
-      textFieldState = state.emailState,
-      inputPlaceholder = stringResource(state.emailPlaceholderRes),
+      topTitle = stringResource(content.emailTopTitleRes),
+      textFieldState = content.emailState,
+      inputPlaceholder = stringResource(content.emailPlaceholderRes),
       bottomTitle = null,
       keyboardType = KeyboardType.Text,
     )
     Spacer(Modifier.height(20.dp))
     ChirpTextFieldPassword(
       modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(state.passwordTopTitleRes),
-      textFieldState = state.passwordState,
-      inputPlaceholder = stringResource(state.passwordPlaceholderRes),
+      topTitle = stringResource(content.passwordTopTitleRes),
+      textFieldState = content.passwordState,
+      inputPlaceholder = stringResource(content.passwordPlaceholderRes),
       bottomTitle = null,
-      isSecureMode = state.passwordIsSecureMode,
+      isSecureMode = content.passwordIsSecureMode,
       onSecureToggleClick = { onAction(LoginScreenAction.OnTextFieldSecureToggleClick) }
     )
     Spacer(Modifier.height(20.dp))
@@ -95,15 +95,15 @@ fun LoginScreenContent(
     Spacer(Modifier.height(32.dp))
     ChirpButton(
       modifier = Modifier.fillMaxWidth(),
-      text = stringResource(state.primaryButtonTitleRes),
+      text = stringResource(content.primaryButtonTitleRes),
       style = ChirpButtonStyle.PRIMARY,
-      isLoading = state.showLoader,
-      enabled = state.primaryButtonIsEnable,
+      isLoading = content.showLoader,
+      enabled = content.primaryButtonIsEnable,
       onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
     )
     ChirpButton(
       modifier = Modifier.fillMaxWidth(),
-      text = stringResource(state.secondaryButtonTitleRes),
+      text = stringResource(content.secondaryButtonTitleRes),
       style = ChirpButtonStyle.SECONDARY,
       onClick = { onAction(LoginScreenAction.OnSecondaryButtonClick) }
     )
@@ -115,7 +115,7 @@ fun LoginScreenContent(
 private fun LoginScreenPreview() {
   ChirpTheme {
     LoginScreenContent(
-      state = LoginScreenState(),
+      content = LoginScreenContent(),
       onAction = {}
     )
   }
