@@ -6,13 +6,10 @@ import chirp.feature.auth.presentation.generated.resources.log_in
 import chirp.feature.auth.presentation.generated.resources.resend_verification_email
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
 import com.plcoding.core.presentation.event.Event
-import com.plcoding.core.presentation.screen.base.BaseScreenState
 import com.plcoding.core.presentation.utils.TextProvider
 import org.jetbrains.compose.resources.StringResource
 
-data class RegisterSuccessScreenState(
-  override val showLoader: Boolean = false,
-
+data class RegisterSuccessScreenContent(
   val titleRes: StringResource = Res.string.account_successfully_created,
   val description: TextProvider? = null,
 
@@ -26,9 +23,4 @@ data class RegisterSuccessScreenState(
 
   val snackbarEvent: Event<StringResource>? = null,
   val hasOngoingRequest: Boolean = false
-): BaseScreenState<RegisterSuccessScreenState> {
-
-  override fun update(showLoader: Boolean): RegisterSuccessScreenState {
-    return copy(showLoader = showLoader)
-  }
-}
+)

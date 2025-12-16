@@ -12,7 +12,7 @@ import chirp.feature.auth.presentation.generated.resources.welcome_to_chirp
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
 import org.jetbrains.compose.resources.StringResource
 
-data class RegisterScreenState(
+data class RegisterScreenContent(
   val titleRes: StringResource = Res.string.welcome_to_chirp,
   val errorRes: StringResource? = null,
 
@@ -37,7 +37,6 @@ data class RegisterScreenState(
 
   val primaryButtonTitleRes: StringResource = Res.string.register,
   val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
-  val primaryButtonIsLoading: Boolean = false,
 
   val secondaryButtonTitleRes: StringResource = Res.string.log_in,
   val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,

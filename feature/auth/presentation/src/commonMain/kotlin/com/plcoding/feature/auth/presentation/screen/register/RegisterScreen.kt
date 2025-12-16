@@ -17,6 +17,7 @@ import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
 import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import com.plcoding.core.presentation.utils.CollectEvent
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -36,37 +37,41 @@ fun RegisterScreen(
     }
   }
 
-  RegisterContent(
-    state = state,
-    onAction = {
-      when (it) {
-        RegisterScreenAction.OnSecondaryButtonClick -> openLogin()
-        else -> viewModel.onAction(it)
+  BaseScreenContent(
+    baseContent = state.baseContent
+  ) {
+    RegisterScreenContent(
+      content = state.content,
+      onAction = {
+        when (it) {
+          RegisterScreenAction.OnSecondaryButtonClick -> openLogin()
+          else -> viewModel.onAction(it)
+        }
       }
-    }
-  )
+    )
+  }
 }
 
 @Composable
-fun RegisterContent(
-  state: RegisterScreenState,
+fun RegisterScreenContent(
+  content: RegisterScreenContent,
   onAction: (RegisterScreenAction) -> Unit,
 ) {
   ChirpTheme {
     ChirAdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
       logo = { ChirpLogo() },
-      title = stringResource(state.titleRes),
-      error = state.errorRes?.let { stringResource(it) },
+      title = stringResource(content.titleRes),
+      error = content.errorRes?.let { stringResource(it) },
     ) {
       ChirpTextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(state.usernameTopTitleRes),
-        textFieldState = state.usernameState,
-        inputPlaceholder = stringResource(state.usernamePlaceholderRes),
-        bottomTitle = state.usernameBottomTitleRes?.let { stringResource(it) },
+        topTitle = stringResource(content.usernameTopTitleRes),
+        textFieldState = content.usernameState,
+        inputPlaceholder = stringResource(content.usernamePlaceholderRes),
+        bottomTitle = content.usernameBottomTitleRes?.let { stringResource(it) },
         keyboardType = KeyboardType.Text,
-        isError = state.usernameIsError,
+        isError = content.usernameIsError,
         onFocusChanged = {
           onAction(
             RegisterScreenAction.OnTextFieldFocusGain(
@@ -79,12 +84,12 @@ fun RegisterContent(
       Spacer(Modifier.height(20.dp))
       ChirpTextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(state.emailTopTitleRes),
-        textFieldState = state.emailState,
-        inputPlaceholder = stringResource(state.emailPlaceholderRes),
-        bottomTitle = state.emailBottomTitleRes?.let { stringResource(it) },
+        topTitle = stringResource(content.emailTopTitleRes),
+        textFieldState = content.emailState,
+        inputPlaceholder = stringResource(content.emailPlaceholderRes),
+        bottomTitle = content.emailBottomTitleRes?.let { stringResource(it) },
         keyboardType = KeyboardType.Text,
-        isError = state.emailIsError,
+        isError = content.emailIsError,
         onFocusChanged = {
           onAction(
             RegisterScreenAction.OnTextFieldFocusGain(
@@ -97,12 +102,12 @@ fun RegisterContent(
       Spacer(Modifier.height(20.dp))
       ChirpTextFieldPassword(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(state.passwordTopTitleRes),
-        textFieldState = state.passwordState,
-        inputPlaceholder = stringResource(state.passwordPlaceholderRes),
-        bottomTitle = state.passwordBottomTitleRes?.let { stringResource(it) },
-        isError = state.passwordIsError,
-        isSecureMode = state.passwordIsSecureMode,
+        topTitle = stringResource(content.passwordTopTitleRes),
+        textFieldState = content.passwordState,
+        inputPlaceholder = stringResource(content.passwordPlaceholderRes),
+        bottomTitle = content.passwordBottomTitleRes?.let { stringResource(it) },
+        isError = content.passwordIsError,
+        isSecureMode = content.passwordIsSecureMode,
         onFocusChanged = {
           onAction(
             RegisterScreenAction.OnTextFieldFocusGain(
@@ -116,14 +121,13 @@ fun RegisterContent(
       Spacer(Modifier.height(32.dp))
       ChirpButton(
         modifier = Modifier.fillMaxWidth(),
-        text = stringResource(state.primaryButtonTitleRes),
+        text = stringResource(content.primaryButtonTitleRes),
         style = ChirpButtonStyle.PRIMARY,
-        isLoading = state.primaryButtonIsLoading,
         onClick = { onAction(RegisterScreenAction.OnPrimaryButtonClick) }
       )
       ChirpButton(
         modifier = Modifier.fillMaxWidth(),
-        text = stringResource(state.secondaryButtonTitleRes),
+        text = stringResource(content.secondaryButtonTitleRes),
         style = ChirpButtonStyle.SECONDARY,
         onClick = { onAction(RegisterScreenAction.OnSecondaryButtonClick) }
       )
@@ -133,10 +137,10 @@ fun RegisterContent(
 
 @Preview
 @Composable
-private fun RegisterPreview() {
+private fun RegisterScreenPreview() {
   ChirpTheme {
-    RegisterContent(
-      state = RegisterScreenState(),
+    RegisterScreenContent(
+      content = RegisterScreenContent(),
       onAction = {}
     )
   }

@@ -19,6 +19,7 @@ import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayou
 import com.plcoding.core.designsystem.components.layout.ChirpResultLayout
 import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
 import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -34,26 +35,30 @@ fun RegisterSuccessScreen(
   val snackbarHostState = remember { SnackbarHostState() }
 
   rememberCoroutineScope().launch {
-    state.snackbarEvent?.consumeAsync {
+    state.content.snackbarEvent?.consumeAsync {
       snackbarHostState.showSnackbar(getString(it))
     }
   }
 
-  RegisterSuccessContent(
-    state = state,
-    snackbarHostState = snackbarHostState,
-    onAction = {
-      when(it) {
-        is RegisterSuccessScreenAction.PrimaryButtonClick -> openLogin()
-        else -> viewModel.onAction(it)
-      }
-    },
-  )
+  BaseScreenContent(
+    baseContent = state.baseContent
+  ) {
+    RegisterSuccessScreenContent(
+      content = state.content,
+      snackbarHostState = snackbarHostState,
+      onAction = {
+        when (it) {
+          is RegisterSuccessScreenAction.PrimaryButtonClick -> openLogin()
+          else -> viewModel.onAction(it)
+        }
+      },
+    )
+  }
 }
 
 @Composable
-fun RegisterSuccessContent(
-  state: RegisterSuccessScreenState,
+fun RegisterSuccessScreenContent(
+  content: RegisterSuccessScreenContent,
   snackbarHostState: SnackbarHostState,
   onAction: (RegisterSuccessScreenAction) -> Unit,
 ) {
@@ -66,30 +71,30 @@ fun RegisterSuccessContent(
     ) {
       ChirpResultLayout(
         icon = { ChirpSuccessIcon() },
-        title = stringResource(state.titleRes),
-        description = state.description?.get(),
+        title = stringResource(content.titleRes),
+        description = content.description?.get(),
         primaryButton = {
           ChirpButton(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(state.primaryButtonTitleRes),
-            style = state.primaryButtonStyle,
+            text = stringResource(content.primaryButtonTitleRes),
+            style = content.primaryButtonStyle,
             isLoading = false,
-            enabled = !state.hasOngoingRequest,
+            enabled = !content.hasOngoingRequest,
             onClick = { onAction(RegisterSuccessScreenAction.PrimaryButtonClick) }
           )
         },
         secondaryButton = {
           ChirpButton(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(state.secondaryButtonTitleRes),
-            style = state.secondaryButtonStyle,
+            text = stringResource(content.secondaryButtonTitleRes),
+            style = content.secondaryButtonStyle,
             isLoading = false,
-            enabled = !state.hasOngoingRequest,
+            enabled = !content.hasOngoingRequest,
             onClick = { onAction(RegisterSuccessScreenAction.SecondaryButtonClick) }
           )
-          if (state.secondaryButtonErrorRes != null) {
+          if (content.secondaryButtonErrorRes != null) {
             Spacer(Modifier.height(6.dp))
-            ChirError(error = stringResource(state.secondaryButtonErrorRes))
+            ChirError(error = stringResource(content.secondaryButtonErrorRes))
           }
         }
       )
@@ -99,10 +104,10 @@ fun RegisterSuccessContent(
 
 @Preview
 @Composable
-private fun RegisterSuccessPreview() {
+private fun RegisterSuccessScreenPreview() {
   ChirpTheme {
-    RegisterSuccessContent(
-      state = RegisterSuccessScreenState(),
+    RegisterSuccessScreenContent(
+      content = RegisterSuccessScreenContent(),
       snackbarHostState = SnackbarHostState(),
       onAction = {},
     )

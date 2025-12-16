@@ -45,7 +45,7 @@ class LoginScreenViewModel(
         password.isNotBlank() &&
         !isLoading
 
-      mutableState.updateContent {
+      updateContent {
         copy(primaryButtonIsEnable = primaryButtonIsEnable)
       }
     }.launchIn(viewModelScope)
@@ -53,7 +53,7 @@ class LoginScreenViewModel(
 
   fun onAction(action: LoginScreenAction) {
     when (action) {
-      is LoginScreenAction.OnTextFieldSecureToggleClick -> mutableState.updateContent {
+      is LoginScreenAction.OnTextFieldSecureToggleClick -> updateContent {
         copy(passwordIsSecureMode = !passwordIsSecureMode)
       }
       is LoginScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
@@ -80,14 +80,14 @@ class LoginScreenViewModel(
       DataError.Remote.FORBIDDEN -> Res.string.error_email_not_verified
       else -> error.getStringRes()
     }
-    mutableState.updateContent {
+    updateContent {
       copy(errorRes = errorRes)
     }
   }
 
   private suspend fun handleSuccess(authInfo: AuthInfo) {
     preferencesLocalRepository.saveAuthInfo(authInfo)
-    mutableState.updateContent {
+    updateContent {
       copy(logInSuccessEvent = Event(Unit))
     }
   }

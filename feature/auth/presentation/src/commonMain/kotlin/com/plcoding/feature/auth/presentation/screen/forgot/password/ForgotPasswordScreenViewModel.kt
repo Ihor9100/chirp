@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.screen.base.Overlay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -29,7 +28,7 @@ class ForgotPasswordScreenViewModel(
       snapshotFlow { state.value.content.emailState.text.toString() },
       state.map { it.isLoading() }.distinctUntilChanged(),
     ) { email, showLoader ->
-      mutableState.updateContent {
+      updateContent {
         copy(primaryButtonIsEnable = EmailValidator.validate(email) && !showLoader)
       }
     }.launchIn(viewModelScope)
@@ -42,7 +41,7 @@ class ForgotPasswordScreenViewModel(
   }
 
   private fun handleSubmitClick() {
-    launchWithOverlays(setOf(Overlay.BLOCKABLE, Overlay.LOADABLE)) {
+    launchLoadable() {
       // TODO:
     }
   }

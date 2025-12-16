@@ -40,29 +40,25 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
 
   protected fun launchBlockable(block: suspend () -> Unit) {
     launch {
-      mutableState.updateBaseContent { copy(overlays = setOf(Overlay.BLOCKABLE)) }
+      updateBaseContent { copy(overlays = setOf(Overlay.BLOCKABLE)) }
       block()
-      mutableState.updateBaseContent { copy(overlays = null) }
+      updateBaseContent { copy(overlays = null) }
     }
   }
 
-  protected fun launchWithOverlays(overlays: Set<Overlay>, block: suspend () -> Unit) {
+  protected fun launchLoadable(block: suspend () -> Unit) {
     launch {
-      mutableState.updateBaseContent { copy(overlays = overlays) }
+      updateBaseContent { copy(overlays = setOf(Overlay.BLOCKABLE, Overlay.LOADABLE)) }
       block()
-      mutableState.updateBaseContent { copy(overlays = null) }
+      updateBaseContent { copy(overlays = null) }
     }
   }
 
-  protected inline fun MutableStateFlow<BaseScreenState<Content>>.updateContent(
-    block: Content.() -> Content,
-  ) {
-    return update { it.copy(content = block(it.content)) }
+  protected inline fun updateContent(block: Content.() -> Content) {
+    return mutableState.update { it.copy(content = block(it.content)) }
   }
 
-  protected inline fun MutableStateFlow<BaseScreenState<Content>>.updateBaseContent(
-    block: BaseContent.() -> BaseContent,
-  ) {
-    return update { it.copy(baseContent = block(it.baseContent)) }
+  protected inline fun updateBaseContent(block: BaseContent.() -> BaseContent) {
+    return mutableState.update { it.copy(baseContent = block(it.baseContent)) }
   }
 }
