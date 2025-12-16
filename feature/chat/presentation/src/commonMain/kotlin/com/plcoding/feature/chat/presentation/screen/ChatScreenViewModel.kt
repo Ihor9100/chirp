@@ -8,9 +8,7 @@ import kotlinx.coroutines.launch
 
 class ChatScreenViewModel(
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseScreenViewModel<ChatState>() {
-
-  override fun getInitialState() = ChatState()
+) : BaseScreenViewModel<ChatScreenContent>() {
 
   init {
     viewModelScope.launch {
@@ -19,7 +17,11 @@ class ChatScreenViewModel(
     }
   }
 
-  fun onAction(action: ChatAction) {
+  override fun getInitialContent(): ChatScreenContent {
+    return ChatScreenContent()
+  }
+
+  fun onAction(action: ChatScreenAction) {
     when (action) {
       else -> TODO("Handle actions")
     }

@@ -14,7 +14,6 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.screen.base.Overlay
 import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
@@ -40,15 +39,15 @@ class LoginScreenViewModel(
     combine(
       snapshotFlow { state.value.content.emailState.text.toString() },
       snapshotFlow { state.value.content.passwordState.text.toString() },
-      state.map { it.baseContent.overlay == Overlay.BLOCKABLE }.distinctUntilChanged(),
-    ) { email, password, showLoader ->
+      state.map { it.isLoading() }.distinctUntilChanged(),
+    ) { email, password, isLoading ->
       val primaryButtonIsEnable = EmailValidator.validate(email) &&
         password.isNotBlank() &&
-        !showLoader
+        !isLoading
 
-      //      mutableState.update {
-      //        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
-      //      }
+      mutableState.updateContent {
+        copy(primaryButtonIsEnable = primaryButtonIsEnable)
+      }
     }.launchIn(viewModelScope)
   }
 

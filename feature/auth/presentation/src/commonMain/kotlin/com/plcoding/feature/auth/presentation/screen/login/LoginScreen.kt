@@ -97,7 +97,6 @@ fun LoginScreenContent(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(content.primaryButtonTitleRes),
       style = ChirpButtonStyle.PRIMARY,
-      isLoading = content.showLoader,
       enabled = content.primaryButtonIsEnable,
       onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
     )

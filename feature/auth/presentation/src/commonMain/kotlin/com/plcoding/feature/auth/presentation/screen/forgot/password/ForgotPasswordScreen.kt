@@ -19,6 +19,7 @@ import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
 import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
 import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -33,21 +34,25 @@ fun ForgotPasswordScreen(
   val snackbarHostState = remember { SnackbarHostState() }
 
   rememberCoroutineScope().launch {
-    state.snackbarEvent?.consumeAsync {
+    state.content.snackbarEvent?.consumeAsync {
       snackbarHostState.showSnackbar(getString(it))
     }
   }
 
-  ForgotPasswordContent(
-    state = state,
-    snackbarHostState = snackbarHostState,
-    onAction = viewModel::onAction
-  )
+  BaseScreenContent(
+    baseContent = state.baseContent
+  ) {
+    ForgotPasswordScreenContent(
+      content = state.content,
+      snackbarHostState = snackbarHostState,
+      onAction = viewModel::onAction
+    )
+  }
 }
 
 @Composable
-fun ForgotPasswordContent(
-  state: ForgotPasswordScreenState,
+fun ForgotPasswordScreenContent(
+  content: ForgotPasswordScreenContent,
   snackbarHostState: SnackbarHostState,
   onAction: (ForgotPasswordScreenAction) -> Unit,
 ) {
@@ -58,22 +63,21 @@ fun ForgotPasswordContent(
     ChirAdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
       logo = { ChirpLogo() },
-      title = stringResource(state.titleRes),
-      error = state.errorRes?.let { stringResource(it) },
+      title = stringResource(content.titleRes),
+      error = content.errorRes?.let { stringResource(it) },
     ) {
       ChirpTextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(state.emailTopTitleRes),
-        textFieldState = state.emailState,
-        inputPlaceholder = stringResource(state.emailPlaceholderRes),
+        topTitle = stringResource(content.emailTopTitleRes),
+        textFieldState = content.emailState,
+        inputPlaceholder = stringResource(content.emailPlaceholderRes),
         bottomTitle = null,
         keyboardType = KeyboardType.Email,
       )
       Spacer(Modifier.height(32.dp))
       ChirpButton(
         modifier = Modifier.fillMaxWidth(),
-        text = stringResource(state.primaryButtonTitleRes),
-        isLoading = state.showLoader,
+        text = stringResource(content.primaryButtonTitleRes),
         onClick = { onAction(ForgotPasswordScreenAction.OnSubmitClick) },
       )
     }
@@ -82,10 +86,10 @@ fun ForgotPasswordContent(
 
 @Preview
 @Composable
-private fun ForgotPasswordPreview() {
+private fun ForgotPasswordScreenPreview() {
   ChirpTheme {
-    ForgotPasswordContent(
-      state = ForgotPasswordScreenState(),
+    ForgotPasswordScreenContent(
+      content = ForgotPasswordScreenContent(),
       snackbarHostState = SnackbarHostState(),
       onAction = {},
     )

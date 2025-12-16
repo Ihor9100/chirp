@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -14,26 +15,30 @@ fun ChatScreen(
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
-  ChatContent(
-    state = state,
-    onAction = viewModel::onAction
-  )
+  BaseScreenContent(
+    baseContent = state.baseContent
+  ) {
+    ChatScreenContent(
+      content = state.content,
+      onAction = viewModel::onAction
+    )
+  }
 }
 
 @Composable
-fun ChatContent(
-  state: ChatState,
-  onAction: (ChatAction) -> Unit,
+fun ChatScreenContent(
+  content: ChatScreenContent,
+  onAction: (ChatScreenAction) -> Unit,
 ) {
   Text(text = "Hello World!!!")
 }
 
 @Preview
 @Composable
-private fun ChatPreview() {
+private fun ChatScreenPreview() {
   ChirpTheme {
-    ChatContent(
-      state = ChatState(),
+    ChatScreenContent(
+      content = ChatScreenContent(),
       onAction = {}
     )
   }

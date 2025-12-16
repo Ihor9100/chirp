@@ -5,18 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
+import com.plcoding.core.presentation.screen.base.Overlay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 
 class ForgotPasswordScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
-) : BaseScreenViewModel<ForgotPasswordScreenState>() {
+) : BaseScreenViewModel<ForgotPasswordScreenContent>() {
 
-  override fun getInitialState(): ForgotPasswordScreenState {
-    return ForgotPasswordScreenState()
+  override fun getInitialContent(): ForgotPasswordScreenContent {
+    return ForgotPasswordScreenContent()
   }
 
   override fun onInitialized() {
@@ -26,28 +26,24 @@ class ForgotPasswordScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { state.value.emailState.text.toString() },
-      state.map { it.showLoader }.distinctUntilChanged(),
+      snapshotFlow { state.value.content.emailState.text.toString() },
+      state.map { it.isLoading() }.distinctUntilChanged(),
     ) { email, showLoader ->
-      mutableState.update {
-        it.copy(
-          primaryButtonIsEnable = EmailValidator.validate(email) && !showLoader
-        )
+      mutableState.updateContent {
+        copy(primaryButtonIsEnable = EmailValidator.validate(email) && !showLoader)
       }
     }.launchIn(viewModelScope)
   }
 
   fun onAction(action: ForgotPasswordScreenAction) {
     when (action) {
-      else -> TODO("Handle actions")
+      is ForgotPasswordScreenAction.OnSubmitClick -> handleSubmitClick()
     }
   }
 
   private fun handleSubmitClick() {
-    if (state.value.showLoader) return
-
-    mutableState.update { it.copy(showLoader = true) }
-    // TODO:
-    mutableState.update { it.copy(showLoader = true) }
+    launchWithOverlays(setOf(Overlay.BLOCKABLE, Overlay.LOADABLE)) {
+      // TODO:
+    }
   }
 }

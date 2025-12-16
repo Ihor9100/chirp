@@ -40,9 +40,17 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
 
   protected fun launchBlockable(block: suspend () -> Unit) {
     launch {
-      mutableState.updateBaseContent { copy(overlay = Overlay.BLOCKABLE) }
+      mutableState.updateBaseContent { copy(overlays = setOf(Overlay.BLOCKABLE)) }
       block()
-      mutableState.updateBaseContent { copy(overlay = Overlay.NONE) }
+      mutableState.updateBaseContent { copy(overlays = null) }
+    }
+  }
+
+  protected fun launchWithOverlays(overlays: Set<Overlay>, block: suspend () -> Unit) {
+    launch {
+      mutableState.updateBaseContent { copy(overlays = overlays) }
+      block()
+      mutableState.updateBaseContent { copy(overlays = null) }
     }
   }
 

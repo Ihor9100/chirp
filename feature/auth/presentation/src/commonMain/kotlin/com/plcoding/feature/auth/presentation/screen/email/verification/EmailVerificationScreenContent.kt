@@ -14,11 +14,11 @@ import chirp.feature.auth.presentation.generated.resources.verifying_account
 import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
 import org.jetbrains.compose.resources.StringResource
 
-sealed interface EmailVerificationScreenState {
+sealed interface EmailVerificationScreenContent {
 
   data class Loading(
     val titleRes: StringResource = Res.string.verifying_account,
-  ) : EmailVerificationScreenState
+  ) : EmailVerificationScreenContent
 
   data class Failed(
     val imageVector: ImageVector = Icons.Default.Close,
@@ -26,12 +26,12 @@ sealed interface EmailVerificationScreenState {
     val descriptionRes: StringResource = Res.string.email_verified_failed_description,
     val primaryButtonTitleRes: StringResource = Res.string.close,
     val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
-  ) : EmailVerificationScreenState
+  ) : EmailVerificationScreenContent
 
   data class Success(
     val titleRes: StringResource = Res.string.email_verified_successfully,
     val descriptionRes: StringResource = Res.string.email_verified_successfully_description,
     val primaryButtonTitleRes: StringResource = Res.string.log_in,
     val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
-  ) : EmailVerificationScreenState
+  ) : EmailVerificationScreenContent
 }
