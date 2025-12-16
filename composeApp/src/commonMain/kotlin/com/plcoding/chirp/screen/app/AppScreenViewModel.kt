@@ -10,17 +10,15 @@ import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class AppScreenViewModel(
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseScreenViewModel<AppState>() {
+) : BaseScreenViewModel<AppScreenContent>() {
 
   private var authInfo: AuthInfo? = null
 
-  override fun getInitialState(): AppState {
-    return AppState()
+  override fun getInitialContent(): AppScreenContent {
+    return AppScreenContent()
   }
 
   override fun onInitialized() {
@@ -31,7 +29,7 @@ class AppScreenViewModel(
   }
 
   private fun updateStartDestination() {
-    viewModelScope.launch {
+    launch {
       val authInfo = preferencesLocalRepository.observeAuthInfo().firstOrNull()
 
       val startDestination = if (authInfo == null) {
@@ -40,8 +38,8 @@ class AppScreenViewModel(
         ChatRoute.Graph
       }
 
-      mutableState.update {
-        it.copy(
+      updateContent {
+        copy(
           startDestination = startDestination,
           removeSplashScreenEvent = Event(Unit),
         )
@@ -54,9 +52,7 @@ class AppScreenViewModel(
       .observeAuthInfo()
       .onEach { authInfo ->
         if (this.authInfo != null && authInfo == null) {
-          mutableState.update {
-            it.copy(logoutEvent = Event(Unit))
-          }
+          updateContent { copy(logoutEvent = Event(Unit)) }
         }
         this.authInfo = authInfo
       }
