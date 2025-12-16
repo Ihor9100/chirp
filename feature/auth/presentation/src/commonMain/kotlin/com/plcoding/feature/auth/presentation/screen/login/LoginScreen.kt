@@ -23,7 +23,7 @@ import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
 import com.plcoding.core.designsystem.style.ChirpTheme
-import com.plcoding.core.presentation.screen.base.BaseScreen
+import com.plcoding.core.presentation.screen.base.BaseScreenContent2
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -36,13 +36,13 @@ fun LoginScreen(
   openRegisterScreen: () -> Unit,
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
-  state.logInSuccessEvent?.run(openChat)
+  state.content.logInSuccessEvent?.run(openChat)
 
-  BaseScreen(
-    baseScreenState = state,
+  BaseScreenContent2(
+    baseContent = state.baseContent,
   ) {
     LoginScreenContent(
-      state = state,
+      state = state.content,
       onAction = {
         when (it) {
           is LoginScreenAction.OnForgotPasswordClick -> openForgotPassword()

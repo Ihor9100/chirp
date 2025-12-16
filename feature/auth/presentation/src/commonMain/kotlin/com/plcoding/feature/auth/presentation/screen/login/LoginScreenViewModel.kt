@@ -13,7 +13,6 @@ import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.event.Event
-import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel2
 import com.plcoding.core.presentation.utils.getStringRes
 import kotlinx.coroutines.delay
@@ -21,14 +20,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 
 class LoginScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   private val preferencesLocalRepository: PreferencesLocalRepository,
 ) : BaseScreenViewModel2<LoginScreenState>() {
 
-  override fun getInitialState(): LoginScreenState {
+  override fun getInitialContent(): LoginScreenState {
     return LoginScreenState()
   }
 
@@ -39,24 +37,24 @@ class LoginScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { state.value.emailState.text.toString() },
-      snapshotFlow { state.value.passwordState.text.toString() },
-      state.map { it.showLoader }.distinctUntilChanged(),
+      snapshotFlow { state.value.content.emailState.text.toString() },
+      snapshotFlow { state.value.content.passwordState.text.toString() },
+      state.map { it.content.showLoader }.distinctUntilChanged(),
     ) { email, password, showLoader ->
       val primaryButtonIsEnable = EmailValidator.validate(email) &&
         password.isNotBlank() &&
         !showLoader
 
-//      mutableState.update {
-//        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
-//      }
+      //      mutableState.update {
+      //        it.copy(primaryButtonIsEnable = primaryButtonIsEnable)
+      //      }
     }.launchIn(viewModelScope)
   }
 
   fun onAction(action: LoginScreenAction) {
     when (action) {
-      is LoginScreenAction.OnTextFieldSecureToggleClick -> mutableState.update {
-        it.copy(passwordIsSecureMode = !it.passwordIsSecureMode)
+      is LoginScreenAction.OnTextFieldSecureToggleClick -> mutableState.updateContent {
+        copy(passwordIsSecureMode = !passwordIsSecureMode)
       }
       is LoginScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
       else -> Unit
@@ -64,12 +62,12 @@ class LoginScreenViewModel(
   }
 
   private fun handlePrimaryButtonClick() {
-    launchLoadable {
+    launchBlockable {
       delay(3000)
       authRemoteRepository
         .login(
-          email = state.value.emailState.text.toString(),
-          password = state.value.passwordState.text.toString(),
+          email = state.value.content.emailState.text.toString(),
+          password = state.value.content.passwordState.text.toString(),
         )
         .onFailure { handleFailure(it) }
         .onSuccess { handleSuccess(it) }
@@ -82,8 +80,8 @@ class LoginScreenViewModel(
       DataError.Remote.FORBIDDEN -> Res.string.error_email_not_verified
       else -> error.getStringRes()
     }
-    mutableState.update { state ->
-      state.copy(
+    mutableState.updateContent {
+      copy(
         errorRes = errorRes,
         showLoader = false,
       )
@@ -93,8 +91,8 @@ class LoginScreenViewModel(
   private suspend fun handleSuccess(authInfo: AuthInfo) {
     preferencesLocalRepository.saveAuthInfo(authInfo)
 
-    mutableState.update { state ->
-      state.copy(
+    mutableState.updateContent {
+      copy(
         showLoader = false,
         logInSuccessEvent = Event(Unit)
       )

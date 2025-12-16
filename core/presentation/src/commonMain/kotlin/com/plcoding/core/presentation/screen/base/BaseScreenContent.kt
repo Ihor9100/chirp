@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 
 @Composable
-fun BaseScreen(
+fun BaseScreenContent(
   modifier: Modifier = Modifier,
   baseScreenState: BaseScreenState<*>,
   content: @Composable BoxScope.() -> Unit,
@@ -27,6 +27,31 @@ fun BaseScreen(
           .background(Color.Black.copy(alpha = 0.2f))
           .pointerInput(Unit) {}
       )
+    }
+  }
+}
+
+@Composable
+fun BaseScreenContent2(
+  modifier: Modifier = Modifier,
+  baseContent: BaseContent,
+  content: @Composable BoxScope.() -> Unit,
+) {
+  Box(
+    modifier = modifier.fillMaxSize()
+  ) {
+    content()
+
+    when (baseContent.overlay) {
+      Overlay.NONE -> Unit
+      Overlay.BLOCKABLE -> {
+        Box(
+          modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.2f))
+            .pointerInput(Unit) {}
+        )
+      }
     }
   }
 }

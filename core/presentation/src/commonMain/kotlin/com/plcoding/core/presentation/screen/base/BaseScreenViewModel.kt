@@ -46,18 +46,17 @@ abstract class BaseScreenViewModel<State : BaseScreenState<State>>() : ViewModel
   }
 }
 
+data class BaseScreenState2<Content>(
+  val content: Content,
+  val baseContent: BaseContent = BaseContent(),
+)
 
 
+abstract class BaseScreenViewModel2<Content>() : ViewModel() {
 
+  protected abstract fun getInitialContent(): Content
 
-
-
-abstract class BaseScreenViewModel2<State>() : ViewModel() {
-
-  protected abstract fun getInitialState(): State
-  protected open fun getInitialBaseScreenState() = BaseScreenState(getInitialState())
-
-  protected val mutableState = MutableStateFlow(BaseScreenState(getInitialState()))
+  protected val mutableState = MutableStateFlow(getInitialBaseScreenState())
   val state = mutableState
     .onStart {
       if (!isInitialized) {
@@ -68,12 +67,13 @@ abstract class BaseScreenViewModel2<State>() : ViewModel() {
     .stateIn(
       scope = viewModelScope,
       started = SharingStarted.WhileSubscribed(5_000L),
-      initialValue = getInitialState()
+      initialValue = getInitialBaseScreenState()
     )
 
   private var isInitialized = false
 
   protected open fun onInitialized() = Unit
+  protected open fun getInitialBaseScreenState() = BaseScreenState2(getInitialContent())
 
   protected fun launch(block: suspend () -> Unit) {
     viewModelScope.launch {
@@ -81,22 +81,23 @@ abstract class BaseScreenViewModel2<State>() : ViewModel() {
     }
   }
 
-  protected fun launchLoadable(block: suspend () -> Unit) {
+  protected fun launchBlockable(block: suspend () -> Unit) {
     launch {
-      mutableState.update { it.copy(overlay = Overlay.BLOCKABLE) }
+      mutableState.updateBaseContent { copy(overlay = Overlay.BLOCKABLE) }
       block()
-      mutableState.update { it.copy(overlay = Overlay.NONE) }
+      mutableState.updateBaseContent { copy(overlay = Overlay.NONE) }
     }
   }
-}
 
+  protected inline fun MutableStateFlow<BaseScreenState2<Content>>.updateContent(
+    block: Content.() -> Content,
+  ) {
+    return update { it.copy(content = block(it.content)) }
+  }
 
-data class BaseScreenState<State>(
-  val state: State,
-  val overlay: Overlay = Overlay.NONE,
-)
-
-enum class Overlay {
-  NONE,
-  BLOCKABLE,
+  protected inline fun MutableStateFlow<BaseScreenState2<Content>>.updateBaseContent(
+    block: BaseContent.() -> BaseContent,
+  ) {
+    return update { it.copy(baseContent = block(it.baseContent)) }
+  }
 }
