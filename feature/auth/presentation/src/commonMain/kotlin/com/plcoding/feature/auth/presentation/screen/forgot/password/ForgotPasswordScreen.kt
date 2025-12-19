@@ -78,6 +78,8 @@ fun ForgotPasswordScreenContent(
       ChirpButton(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
+        style = content.primaryButtonStyle,
+        enabled = content.primaryButtonIsEnable,
         onClick = { onAction(ForgotPasswordScreenAction.OnSubmitClick) },
       )
     }

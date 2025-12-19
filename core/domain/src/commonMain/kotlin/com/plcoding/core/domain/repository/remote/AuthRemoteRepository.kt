@@ -12,7 +12,7 @@ interface AuthRemoteRepository {
     password: String,
   ): Result<AuthInfo, DataError.Remote>
 
-  suspend fun login(
+  suspend fun forgotPassword(
     email: String,
   ): Empty<DataError.Remote>
 

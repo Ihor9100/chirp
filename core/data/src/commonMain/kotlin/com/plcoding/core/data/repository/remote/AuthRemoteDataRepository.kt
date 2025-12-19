@@ -36,7 +36,7 @@ class AuthRemoteDataRepository(
     }
   }
 
-  override suspend fun login(email: String): Empty<DataError.Remote> {
+  override suspend fun forgotPassword(email: String): Empty<DataError.Remote> {
     return httpClient.post(
       route = "/auth/forgot-password",
       request = EmailRequestAm(email)
