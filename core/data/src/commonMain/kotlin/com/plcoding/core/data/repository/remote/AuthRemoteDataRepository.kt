@@ -6,6 +6,7 @@ import com.plcoding.core.data.model.EmailRequestAm
 import com.plcoding.core.data.model.LoginRequestAm
 import com.plcoding.core.data.model.RegisterRequestAm
 import com.plcoding.core.data.model.ResendVerificationEmailRequestAm
+import com.plcoding.core.data.model.ResetPasswordRequestAm
 import com.plcoding.core.data.tools.get
 import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.model.AuthInfo
@@ -40,6 +41,16 @@ class AuthRemoteDataRepository(
     return httpClient.post(
       route = "/auth/forgot-password",
       request = EmailRequestAm(email)
+    )
+  }
+
+  override suspend fun resetPassword(
+    password: String,
+    token: String
+  ): Empty<DataError.Remote> {
+    return httpClient.post(
+      route = "/auth/reset-password",
+      request = ResetPasswordRequestAm(password, token),
     )
   }
 
