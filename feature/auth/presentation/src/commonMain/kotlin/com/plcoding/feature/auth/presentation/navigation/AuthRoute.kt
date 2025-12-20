@@ -14,6 +14,9 @@ sealed interface AuthRoute {
   data object ForgotPassword : AuthRoute
 
   @Serializable
+  data class ResetPassword(val token: String) : AuthRoute
+
+  @Serializable
   data object Register : AuthRoute
 
   @Serializable

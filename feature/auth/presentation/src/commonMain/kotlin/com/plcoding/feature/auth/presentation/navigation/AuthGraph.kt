@@ -6,12 +6,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.plcoding.core.presentation.utils.navigateFresh
+import com.plcoding.core.presentation.utils.navigateNewRoot
 import com.plcoding.core.presentation.utils.navigateWithPopUpTo
 import com.plcoding.feature.auth.presentation.screen.email.verification.EmailVerificationScreen
 import com.plcoding.feature.auth.presentation.screen.forgot.password.ForgotPasswordScreen
 import com.plcoding.feature.auth.presentation.screen.login.LoginScreen
 import com.plcoding.feature.auth.presentation.screen.register.RegisterScreen
 import com.plcoding.feature.auth.presentation.screen.register.success.RegisterSuccessScreen
+import com.plcoding.feature.auth.presentation.screen.reset.password.ResetPasswordScreen
 
 fun NavGraphBuilder.authGraph(
   navController: NavController,
@@ -29,6 +31,22 @@ fun NavGraphBuilder.authGraph(
     }
     composable<AuthRoute.ForgotPassword> {
       ForgotPasswordScreen()
+    }
+    composable<AuthRoute.ResetPassword>(
+      deepLinks = listOf(
+        navDeepLink {
+          uriPattern =
+            "https://chirp.pl-coding.com/api/auth/reset-password?token={token}"
+        },
+        navDeepLink {
+          uriPattern =
+            "chirp://chirp.pl-coding.com/api/auth/reset-password?token={token}"
+        },
+      )
+    ) {
+      ResetPasswordScreen {
+        navController.navigateNewRoot(AuthRoute.Login)
+      }
     }
     composable<AuthRoute.Register> {
       RegisterScreen(

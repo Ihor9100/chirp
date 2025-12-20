@@ -27,6 +27,7 @@
 				<data android:scheme="https" />
 				<data android:host="chirp.pl-coding.com" />
 				<data android:path="/api/auth/verify" />
+				<data android:path="/api/auth/reset-password" />
 			</intent-filter>
 
 			<intent-filter>
@@ -38,6 +39,7 @@
 				<data android:scheme="chirp" />
 				<data android:host="chirp.pl-coding.com" />
 				<data android:path="/api/auth/verify" />
+				<data android:path="/api/auth/reset-password" />
 			</intent-filter>
 		</activity>
 	</application>

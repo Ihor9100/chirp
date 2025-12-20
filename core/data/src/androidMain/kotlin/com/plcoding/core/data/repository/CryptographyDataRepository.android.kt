@@ -32,8 +32,8 @@ class CryptographyDataRepository : CryptographyRepository {
     return Base64.encode(iv + encrypted)
   }
 
-  override fun decrypt(string: String): String {
-    val byteArray = Base64.decode(string)
+  override fun decrypt(encrypted: String): String {
+    val byteArray = Base64.decode(encrypted)
     val iv = byteArray.copyOfRange(0, cipher.blockSize)
     val encrypted = byteArray.copyOfRange(cipher.blockSize, byteArray.size)
     cipher.init(Cipher.DECRYPT_MODE, getSecretKey(), IvParameterSpec(iv))

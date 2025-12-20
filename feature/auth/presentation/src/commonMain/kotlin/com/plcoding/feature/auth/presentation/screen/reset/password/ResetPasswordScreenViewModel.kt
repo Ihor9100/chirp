@@ -1,17 +1,15 @@
 package com.plcoding.feature.auth.presentation.screen.reset.password
 
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.error_reset_password_token_invalid
+import chirp.feature.auth.presentation.generated.resources.error_same_password
 import chirp.feature.auth.presentation.generated.resources.forgot_password_email_sent_successfully
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.result.DataError
-import com.plcoding.core.domain.result.onFailure
-import com.plcoding.core.domain.result.onSuccess
-import com.plcoding.core.domain.validator.EmailValidator
+import com.plcoding.core.domain.validator.PasswordValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
@@ -40,9 +38,9 @@ class ResetPasswordScreenViewModel(
     combine(
       snapshotFlow { state.value.content.passwordState.text.toString() },
       state.map { it.isLoading() }.distinctUntilChanged(),
-    ) { email, isLoading ->
+    ) { password, isLoading ->
       updateContent {
-        copy(passwordIsEnable = EmailValidator.validate(email) && !isLoading)
+        copy(primaryButtonIsEnable = PasswordValidator.validate(password) && !isLoading)
       }
     }.launchIn(viewModelScope)
   }
@@ -63,10 +61,11 @@ class ResetPasswordScreenViewModel(
 
   private fun handlePrimaryButtonClick() {
     launchLoadable {
-      authRemoteRepository
-        .resetPassword(state.value.content.passwordState.text.toString(), token)
-        .onFailure(::handleFailure)
-        .onSuccess { handleSuccess() }
+      handleSuccess()
+//      authRemoteRepository
+//        .resetPassword(state.value.content.passwordState.text.toString(), token)
+//        .onFailure(::handleFailure)
+//        .onSuccess { handleSuccess() }
     }
   }
 
