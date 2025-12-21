@@ -30,7 +30,11 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
   private var isInitialized = false
 
   protected open fun onInitialized() = Unit
-  protected open fun getInitialBaseScreenState() = BaseScreenState(getInitialContent())
+  protected open fun getInitialBaseContent() = BaseContent()
+  protected open fun getInitialBaseScreenState() = BaseScreenState(
+    getInitialContent(),
+    getInitialBaseContent(),
+  )
 
   protected fun launch(block: suspend () -> Unit) {
     viewModelScope.launch {

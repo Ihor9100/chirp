@@ -63,9 +63,7 @@ fun ChirAdaptiveFormLayout(
     }
     DeviceConfiguration.MOBILE_LANDSCAPE -> {
       Row(
-        modifier = modifier
-          .background(MaterialTheme.colorScheme.background)
-          .safeDrawingPadding(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(24.dp),
       ) {
         Column(
@@ -94,9 +92,7 @@ fun ChirAdaptiveFormLayout(
     DeviceConfiguration.DESKTOP -> {
       Column(
         modifier = modifier
-          .fillMaxSize()
-          .background(MaterialTheme.colorScheme.background)
-          .safeDrawingPadding(),
+          .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Spacer(Modifier.height(32.dp))

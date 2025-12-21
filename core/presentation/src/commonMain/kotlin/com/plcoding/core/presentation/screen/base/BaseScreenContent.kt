@@ -24,6 +24,7 @@ fun BaseScreenContent(
   Box(
     modifier = modifier
       .fillMaxSize()
+      .background(MaterialTheme.colorScheme.background)
       .safeDrawingPadding(),
     contentAlignment = Alignment.Center,
   ) {

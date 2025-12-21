@@ -32,9 +32,7 @@ fun ChirpLayout(
 ) {
   Column(
     horizontalAlignment = Alignment.CenterHorizontally,
-    modifier = modifier
-      .background(MaterialTheme.colorScheme.background)
-      .safeDrawingPadding(),
+    modifier = modifier,
   ) {
     if (logo != null) {
       Spacer(Modifier.height(32.dp))

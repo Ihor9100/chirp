@@ -22,8 +22,7 @@ fun ChirpSnackbarLayout(
   content: @Composable () -> Unit,
 ) {
   Scaffold(
-    modifier = modifier
-      .safeDrawingPadding(),
+    modifier = modifier,
     snackbarHost = {
       SnackbarHost(
         hostState = snackbarHostState,

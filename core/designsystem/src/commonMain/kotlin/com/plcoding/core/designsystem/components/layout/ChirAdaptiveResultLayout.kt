@@ -40,9 +40,7 @@ fun ChirpAdaptiveResultLayout(
     }
   } else {
     Column(
-      modifier = modifier
-        .background(MaterialTheme.colorScheme.background)
-        .safeDrawingPadding(),
+      modifier = modifier,
       horizontalAlignment = Alignment.CenterHorizontally,
     ) {
       if (deviceConfiguration != DeviceConfiguration.MOBILE_LANDSCAPE) {
