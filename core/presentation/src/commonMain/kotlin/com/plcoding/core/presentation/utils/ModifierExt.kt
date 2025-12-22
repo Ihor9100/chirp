@@ -1,0 +1,15 @@
+package com.plcoding.core.presentation.utils
+
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+
+@Composable
+fun Modifier.clearFocusOnTab(): Modifier {
+  val focusManager = LocalFocusManager.current
+  return pointerInput(Unit) {
+    detectTapGestures { focusManager.clearFocus() }
+  }
+}

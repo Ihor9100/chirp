@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.plcoding.core.presentation.utils.clearFocusOnTab
 
 @Composable
 fun BaseScreenContent(
@@ -25,6 +26,7 @@ fun BaseScreenContent(
     modifier = modifier
       .fillMaxSize()
       .background(MaterialTheme.colorScheme.background)
+      .clearFocusOnTab()
       .safeDrawingPadding(),
     contentAlignment = Alignment.Center,
   ) {
