@@ -8,7 +8,7 @@ import chirp.feature.auth.presentation.generated.resources.log_in
 import chirp.feature.auth.presentation.generated.resources.password
 import chirp.feature.auth.presentation.generated.resources.username_or_email
 import chirp.feature.auth.presentation.generated.resources.welcome_back
-import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
+import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.presentation.event.Event
 import org.jetbrains.compose.resources.StringResource
 
@@ -26,11 +26,11 @@ data class LoginScreenContent(
   val passwordIsSecureMode: Boolean = false,
 
   val primaryButtonTitleRes: StringResource = Res.string.log_in,
-  val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
+  val primaryButtonStyle: ButtonStyle = ButtonStyle.PRIMARY,
   val primaryButtonIsEnable: Boolean = true,
 
   val secondaryButtonTitleRes: StringResource = Res.string.create_account,
-  val secondaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
+  val secondaryButtonStyle: ButtonStyle = ButtonStyle.SECONDARY,
   
   val logInSuccessEvent: Event<Unit>? = null,
 )

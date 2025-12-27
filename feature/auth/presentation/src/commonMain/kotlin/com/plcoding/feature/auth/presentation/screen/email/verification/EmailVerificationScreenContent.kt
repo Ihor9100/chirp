@@ -11,7 +11,7 @@ import chirp.feature.auth.presentation.generated.resources.email_verified_succes
 import chirp.feature.auth.presentation.generated.resources.email_verified_successfully_description
 import chirp.feature.auth.presentation.generated.resources.log_in
 import chirp.feature.auth.presentation.generated.resources.verifying_account
-import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
+import com.plcoding.core.designsystem.components.button.ButtonStyle
 import org.jetbrains.compose.resources.StringResource
 
 sealed interface EmailVerificationScreenContent {
@@ -25,13 +25,13 @@ sealed interface EmailVerificationScreenContent {
     val titleRes: StringResource = Res.string.email_verified_failed,
     val descriptionRes: StringResource = Res.string.email_verified_failed_description,
     val primaryButtonTitleRes: StringResource = Res.string.close,
-    val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.SECONDARY,
+    val primaryButtonStyle: ButtonStyle = ButtonStyle.SECONDARY,
   ) : EmailVerificationScreenContent
 
   data class Success(
     val titleRes: StringResource = Res.string.email_verified_successfully,
     val descriptionRes: StringResource = Res.string.email_verified_successfully_description,
     val primaryButtonTitleRes: StringResource = Res.string.log_in,
-    val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
+    val primaryButtonStyle: ButtonStyle = ButtonStyle.PRIMARY,
   ) : EmailVerificationScreenContent
 }

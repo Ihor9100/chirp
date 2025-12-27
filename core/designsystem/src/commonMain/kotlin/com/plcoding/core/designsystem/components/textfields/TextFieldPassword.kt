@@ -31,15 +31,15 @@ import chirp.core.designsystem.generated.resources.hide_password
 import chirp.core.designsystem.generated.resources.ic_eye_off
 import chirp.core.designsystem.generated.resources.ic_eye_on
 import chirp.core.designsystem.generated.resources.show_password
-import com.plcoding.core.designsystem.components.layout.ChirpTextFieldLayout
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.layout.TextFieldLayout
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpTextFieldPassword(
+fun TextFieldPassword(
   modifier: Modifier = Modifier,
   topTitle: String,
   textFieldState: TextFieldState,
@@ -51,7 +51,7 @@ fun ChirpTextFieldPassword(
   onFocusChanged: ((Boolean) -> Unit) = {},
   onSecureToggleClick: (() -> Unit) = {},
 ) {
-  ChirpTextFieldLayout(
+  TextFieldLayout(
     modifier = modifier,
     topTitle = topTitle,
     bottomTitle = bottomTitle,
@@ -145,15 +145,15 @@ fun ChirpTextFieldPassword(
 }
 
 @Composable
-fun ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordThemed(
   isDarkTheme: Boolean,
   initialText: String,
   isError: Boolean,
   isEnabled: Boolean,
   isSecureMode: Boolean,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirpTextFieldPassword(
+  Theme(isDarkTheme) {
+    TextFieldPassword(
       topTitle = "Password",
       textFieldState = TextFieldState(initialText),
       inputPlaceholder = "Password",
@@ -167,8 +167,8 @@ fun ChirpTextFieldPasswordThemed(
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordEmptyLightPreview() {
-  ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordEmptyLightPreview() {
+  TextFieldPasswordThemed(
     isDarkTheme = false,
     initialText = "",
     isError = false,
@@ -179,8 +179,8 @@ fun ChirpTextFieldPasswordEmptyLightPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordEmptyDarkPreview() {
-  ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordEmptyDarkPreview() {
+  TextFieldPasswordThemed(
     isDarkTheme = true,
     initialText = "",
     isError = false,
@@ -191,8 +191,8 @@ fun ChirpTextFieldPasswordEmptyDarkPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordFilledLightPreview() {
-  ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordFilledLightPreview() {
+  TextFieldPasswordThemed(
     isDarkTheme = false,
     initialText = "123456789",
     isError = false,
@@ -203,8 +203,8 @@ fun ChirpTextFieldPasswordFilledLightPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordFilledDarkPreview() {
-  ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordFilledDarkPreview() {
+  TextFieldPasswordThemed(
     isDarkTheme = true,
     initialText = "123456789",
     isError = false,
@@ -215,8 +215,8 @@ fun ChirpTextFieldPasswordFilledDarkPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordDisabledLightPreview() {
-  ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordDisabledLightPreview() {
+  TextFieldPasswordThemed(
     isDarkTheme = false,
     initialText = "123456789",
     isError = false,
@@ -227,8 +227,8 @@ fun ChirpTextFieldPasswordDisabledLightPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordDisabledDarkPreview() {
-  ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordDisabledDarkPreview() {
+  TextFieldPasswordThemed(
     isDarkTheme = true,
     initialText = "123456789",
     isError = false,
@@ -239,8 +239,8 @@ fun ChirpTextFieldPasswordDisabledDarkPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordErrorLightPreview() {
-  ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordErrorLightPreview() {
+  TextFieldPasswordThemed(
     isDarkTheme = false,
     initialText = "123456789",
     isError = true,
@@ -251,8 +251,8 @@ fun ChirpTextFieldPasswordErrorLightPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPasswordErrorDarkPreview() {
-  ChirpTextFieldPasswordThemed(
+fun TextFieldPasswordErrorDarkPreview() {
+  TextFieldPasswordThemed(
     isDarkTheme = true,
     initialText = "123456789",
     isError = true,

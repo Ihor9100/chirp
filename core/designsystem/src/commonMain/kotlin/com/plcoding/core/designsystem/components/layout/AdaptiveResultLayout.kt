@@ -18,23 +18,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirpLogo
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.utils.DeviceConfiguration
 import com.plcoding.core.presentation.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpAdaptiveResultLayout(
+fun AdaptiveResultLayout(
   modifier: Modifier = Modifier,
   deviceConfiguration: DeviceConfiguration = getDeviceConfiguration(),
   content: @Composable ColumnScope.() -> Unit,
 ) {
   if (deviceConfiguration == DeviceConfiguration.MOBILE_PORTRAIT) {
-    ChirpLayout(
+    FormLayout(
       modifier = modifier,
       contentColumnTopSpaceDp = 0.dp,
-      logo = { ChirpLogo() },
+      logo = { AppLogo() },
     ) {
       content()
     }
@@ -45,7 +45,7 @@ fun ChirpAdaptiveResultLayout(
     ) {
       if (deviceConfiguration != DeviceConfiguration.MOBILE_LANDSCAPE) {
         Spacer(Modifier.height(32.dp))
-        ChirpLogo()
+        AppLogo()
       }
       Spacer(Modifier.height(32.dp))
       Column(
@@ -65,17 +65,17 @@ fun ChirpAdaptiveResultLayout(
 }
 
 @Composable
-fun ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutThemed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirpAdaptiveResultLayout(
+  Theme(isDarkTheme) {
+    AdaptiveResultLayout(
       modifier = Modifier
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
       content = {
-        ChirpResultLayoutMock()
+        ResultLayoutMock()
       }
     )
   }
@@ -86,8 +86,8 @@ fun ChirpAdaptiveResultLayoutThemed(
   widthDp = 450,
   heightDp = 1000,
 )
-fun ChirpAdaptiveResultLayoutMobilePortraitLightPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutMobilePortraitLightPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -98,8 +98,8 @@ fun ChirpAdaptiveResultLayoutMobilePortraitLightPreview() {
   widthDp = 450,
   heightDp = 1000,
 )
-fun ChirpAdaptiveResultLayoutMobilePortraitDarkPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutMobilePortraitDarkPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -110,8 +110,8 @@ fun ChirpAdaptiveResultLayoutMobilePortraitDarkPreview() {
   widthDp = 1000,
   heightDp = 450,
 )
-fun ChirpAdaptiveResultLayoutMobileLandscapeLightPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutMobileLandscapeLightPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
   )
@@ -122,8 +122,8 @@ fun ChirpAdaptiveResultLayoutMobileLandscapeLightPreview() {
   widthDp = 1000,
   heightDp = 450,
 )
-fun ChirpAdaptiveResultLayoutMobileLandscapeDarkPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutMobileLandscapeDarkPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
   )
@@ -134,8 +134,8 @@ fun ChirpAdaptiveResultLayoutMobileLandscapeDarkPreview() {
   widthDp = 750,
   heightDp = 1200,
 )
-fun ChirpAdaptiveResultLayoutTabletPortraitLightPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutTabletPortraitLightPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
@@ -146,8 +146,8 @@ fun ChirpAdaptiveResultLayoutTabletPortraitLightPreview() {
   widthDp = 750,
   heightDp = 1200,
 )
-fun ChirpAdaptiveResultLayoutTabletPortraitDarkPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutTabletPortraitDarkPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
@@ -158,8 +158,8 @@ fun ChirpAdaptiveResultLayoutTabletPortraitDarkPreview() {
   widthDp = 1200,
   heightDp = 750,
 )
-fun ChirpAdaptiveResultLayoutTabletLandscapeLightPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutTabletLandscapeLightPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
@@ -170,8 +170,8 @@ fun ChirpAdaptiveResultLayoutTabletLandscapeLightPreview() {
   widthDp = 1200,
   heightDp = 750,
 )
-fun ChirpAdaptiveResultLayoutTabletLandscapeDarkPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutTabletLandscapeDarkPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
@@ -182,8 +182,8 @@ fun ChirpAdaptiveResultLayoutTabletLandscapeDarkPreview() {
   widthDp = 2000,
   heightDp = 1500,
 )
-fun ChirpAdaptiveResultLayoutDesktopLightPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutDesktopLightPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.DESKTOP,
   )
@@ -194,8 +194,8 @@ fun ChirpAdaptiveResultLayoutDesktopLightPreview() {
   widthDp = 2000,
   heightDp = 1500,
 )
-fun ChirpAdaptiveResultLayoutDesktopDarkPreview() {
-  ChirpAdaptiveResultLayoutThemed(
+fun AdaptiveResultLayoutDesktopDarkPreview() {
+  AdaptiveResultLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.DESKTOP,
   )

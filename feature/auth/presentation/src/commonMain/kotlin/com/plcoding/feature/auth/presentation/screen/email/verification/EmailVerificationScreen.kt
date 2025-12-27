@@ -17,11 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.brand.ChirpSuccessIcon
-import com.plcoding.core.designsystem.components.button.ChirpButton
-import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayout
-import com.plcoding.core.designsystem.components.layout.ChirpResultLayout
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.SuccessIcon
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.layout.AdaptiveResultLayout
+import com.plcoding.core.designsystem.components.layout.ResultLayout
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import org.jetbrains.compose.resources.stringResource
@@ -50,7 +50,7 @@ fun EmailVerificationScreenContent(
   content: EmailVerificationScreenContent,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
-  ChirpAdaptiveResultLayout {
+  AdaptiveResultLayout {
     when (content) {
       is EmailVerificationScreenContent.Failed -> EmailVerificationScreenFailedContent(
         content,
@@ -70,7 +70,7 @@ fun EmailVerificationScreenFailedContent(
   content: EmailVerificationScreenContent.Failed,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
-  ChirpResultLayout(
+  ResultLayout(
     icon = {
       Spacer(Modifier.height(24.dp))
       Icon(
@@ -85,7 +85,7 @@ fun EmailVerificationScreenFailedContent(
     description = stringResource(content.descriptionRes),
     contentOffset = 0.dp,
     primaryButton = {
-      ChirpButton(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
         style = content.primaryButtonStyle,
@@ -124,12 +124,12 @@ fun EmailVerificationScreenSuccessContent(
   content: EmailVerificationScreenContent.Success,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
-  ChirpResultLayout(
-    icon = { ChirpSuccessIcon() },
+  ResultLayout(
+    icon = { SuccessIcon() },
     title = stringResource(content.titleRes),
     description = stringResource(content.descriptionRes),
     primaryButton = {
-      ChirpButton(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
         style = content.primaryButtonStyle,
@@ -144,7 +144,7 @@ fun EmailVerificationScreenSuccessContent(
 private fun EmailVerificationScreenThemed(
   content: EmailVerificationScreenContent,
 ) {
-  ChirpTheme {
+  Theme {
     EmailVerificationScreenContent(
       content = content,
       onAction = {}

@@ -4,7 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -36,7 +36,7 @@ fun ChatScreenContent(
 @Preview
 @Composable
 private fun ChatScreenPreview() {
-  ChirpTheme {
+  Theme {
     ChatScreenContent(
       content = ChatScreenContent(),
       onAction = {}

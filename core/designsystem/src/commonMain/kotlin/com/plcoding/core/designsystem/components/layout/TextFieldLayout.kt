@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.extended
 
 @Composable
-fun ChirpTextFieldLayout(
+fun TextFieldLayout(
   modifier: Modifier = Modifier,
   topTitle: String,
   bottomTitle: String?,

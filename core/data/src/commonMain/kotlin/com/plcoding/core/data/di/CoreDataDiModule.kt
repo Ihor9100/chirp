@@ -6,7 +6,7 @@ import com.plcoding.core.data.mapper.UserMapper
 import com.plcoding.core.data.repository.local.PreferencesLocalDataRepository
 import com.plcoding.core.data.repository.remote.AuthRemoteDataRepository
 import com.plcoding.core.data.tools.HttpClientFactory
-import com.plcoding.core.domain.logger.ChirpLogger
+import com.plcoding.core.domain.logger.Logger
 import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import io.ktor.client.HttpClient
@@ -23,7 +23,7 @@ val coreDataDiModule = module {
   includes(platformCoreDataDiModule)
 
   single<Json> { Json { ignoreUnknownKeys = true } }
-  single<ChirpLogger> { KermitLogger }
+  single<Logger> { KermitLogger }
   single<HttpClient> { HttpClientFactory(get(), get(), get()).create(get()) }
 
   singleOf(::AuthRemoteDataRepository) bind AuthRemoteRepository::class

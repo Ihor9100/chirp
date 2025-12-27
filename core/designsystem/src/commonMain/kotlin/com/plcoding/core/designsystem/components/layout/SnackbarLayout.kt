@@ -11,12 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpSnackbarLayout(
+fun SnackbarLayout(
   modifier: Modifier = Modifier,
   snackbarHostState: SnackbarHostState,
   content: @Composable () -> Unit,
@@ -37,11 +37,11 @@ fun ChirpSnackbarLayout(
 }
 
 @Composable
-fun ChirpSnackbarLayoutThemed(
+fun SnackbarLayoutThemed(
   isDarkTheme: Boolean,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirpSnackbarLayout(
+  Theme(isDarkTheme) {
+    SnackbarLayout(
       snackbarHostState = SnackbarHostState(),
     ) {
       Text(
@@ -55,12 +55,12 @@ fun ChirpSnackbarLayoutThemed(
 
 @Composable
 @Preview
-fun ChirpSnackbarLayoutLightPreview() {
-  ChirpSnackbarLayoutThemed(isDarkTheme = false)
+fun SnackbarLayoutLightPreview() {
+  SnackbarLayoutThemed(isDarkTheme = false)
 }
 
 @Composable
 @Preview
-fun ChirpSnackbarLayoutDarkPreview() {
-  ChirpSnackbarLayoutThemed(isDarkTheme = true)
+fun SnackbarLayoutDarkPreview() {
+  SnackbarLayoutThemed(isDarkTheme = true)
 }

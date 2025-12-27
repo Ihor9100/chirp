@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -18,11 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-enum class ChirpButtonStyle {
+enum class ButtonStyle {
   TEXT,
   PRIMARY,
   SECONDARY,
@@ -31,41 +30,41 @@ enum class ChirpButtonStyle {
 }
 
 @Composable
-fun ChirpButton(
+fun Button(
   modifier: Modifier = Modifier,
   text: String,
-  style: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
+  style: ButtonStyle = ButtonStyle.PRIMARY,
   isLoading: Boolean = false,
   enabled: Boolean = true,
   onClick: () -> Unit = {},
   leadingIcon: @Composable (() -> Unit)? = null,
 ) {
   val colors = when (style) {
-    ChirpButtonStyle.TEXT -> ButtonDefaults.buttonColors(
+    ButtonStyle.TEXT -> ButtonDefaults.buttonColors(
       containerColor = Color.Transparent,
       contentColor = MaterialTheme.colorScheme.tertiary,
       disabledContainerColor = Color.Transparent,
       disabledContentColor = MaterialTheme.colorScheme.extended.textDisabled,
     )
-    ChirpButtonStyle.PRIMARY -> ButtonDefaults.buttonColors(
+    ButtonStyle.PRIMARY -> ButtonDefaults.buttonColors(
       containerColor = MaterialTheme.colorScheme.primary,
       contentColor = MaterialTheme.colorScheme.onPrimary,
       disabledContainerColor = MaterialTheme.colorScheme.extended.disabledFill,
       disabledContentColor = MaterialTheme.colorScheme.extended.textDisabled,
     )
-    ChirpButtonStyle.SECONDARY -> ButtonDefaults.buttonColors(
+    ButtonStyle.SECONDARY -> ButtonDefaults.buttonColors(
       containerColor = Color.Transparent,
       contentColor = MaterialTheme.colorScheme.extended.textSecondary,
       disabledContainerColor = Color.Transparent,
       disabledContentColor = MaterialTheme.colorScheme.extended.textDisabled,
     )
-    ChirpButtonStyle.DESTRUCTIVE_PRIMARY -> ButtonDefaults.buttonColors(
+    ButtonStyle.DESTRUCTIVE_PRIMARY -> ButtonDefaults.buttonColors(
       containerColor = MaterialTheme.colorScheme.error,
       contentColor = MaterialTheme.colorScheme.onError,
       disabledContainerColor = MaterialTheme.colorScheme.extended.disabledFill,
       disabledContentColor = MaterialTheme.colorScheme.extended.textDisabled,
     )
-    ChirpButtonStyle.DESTRUCTIVE_SECONDARY -> ButtonDefaults.buttonColors(
+    ButtonStyle.DESTRUCTIVE_SECONDARY -> ButtonDefaults.buttonColors(
       containerColor = Color.Transparent,
       contentColor = MaterialTheme.colorScheme.error,
       disabledContainerColor = Color.Transparent,
@@ -78,10 +77,10 @@ fun ChirpButton(
     color = MaterialTheme.colorScheme.extended.disabledOutline,
   )
   val borderStroke = when {
-    style == ChirpButtonStyle.PRIMARY && !enabled -> defaultBorderColor
-    style == ChirpButtonStyle.SECONDARY -> defaultBorderColor
-    style == ChirpButtonStyle.DESTRUCTIVE_PRIMARY && !enabled -> defaultBorderColor
-    style == ChirpButtonStyle.DESTRUCTIVE_SECONDARY && !enabled -> {
+    style == ButtonStyle.PRIMARY && !enabled -> defaultBorderColor
+    style == ButtonStyle.SECONDARY -> defaultBorderColor
+    style == ButtonStyle.DESTRUCTIVE_PRIMARY && !enabled -> defaultBorderColor
+    style == ButtonStyle.DESTRUCTIVE_SECONDARY && !enabled -> {
       val color = if (enabled) {
         MaterialTheme.colorScheme.extended.destructiveSecondaryOutline
       } else {
@@ -130,12 +129,12 @@ fun ChirpButton(
 }
 
 @Composable
-fun ChirpButtonThemed(
+fun ButtonThemed(
   isDarkTheme: Boolean,
-  style: ChirpButtonStyle,
+  style: ButtonStyle,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirpButton(
+  Theme(isDarkTheme) {
+    Button(
       text = "Click",
       style = style,
     )
@@ -144,90 +143,90 @@ fun ChirpButtonThemed(
 
 @Composable
 @Preview
-fun ChirpButtonTextLightPreview() {
-  ChirpButtonThemed(
+fun ButtonTextLightPreview() {
+  ButtonThemed(
     isDarkTheme = false,
-    style = ChirpButtonStyle.TEXT,
+    style = ButtonStyle.TEXT,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonTextDarkPreview() {
-  ChirpButtonThemed(
+fun ButtonTextDarkPreview() {
+  ButtonThemed(
     isDarkTheme = true,
-    style = ChirpButtonStyle.TEXT,
+    style = ButtonStyle.TEXT,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonPrimaryLightPreview() {
-  ChirpButtonThemed(
+fun ButtonPrimaryLightPreview() {
+  ButtonThemed(
     isDarkTheme = false,
-    style = ChirpButtonStyle.PRIMARY,
+    style = ButtonStyle.PRIMARY,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonPrimaryDarkPreview() {
-  ChirpButtonThemed(
+fun ButtonPrimaryDarkPreview() {
+  ButtonThemed(
     isDarkTheme = true,
-    style = ChirpButtonStyle.PRIMARY,
+    style = ButtonStyle.PRIMARY,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonSecondaryLightPreview() {
-  ChirpButtonThemed(
+fun ButtonSecondaryLightPreview() {
+  ButtonThemed(
     isDarkTheme = false,
-    style = ChirpButtonStyle.SECONDARY,
+    style = ButtonStyle.SECONDARY,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonSecondaryDarkPreview() {
-  ChirpButtonThemed(
+fun ButtonSecondaryDarkPreview() {
+  ButtonThemed(
     isDarkTheme = true,
-    style = ChirpButtonStyle.SECONDARY,
+    style = ButtonStyle.SECONDARY,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonDestructivePrimaryLightPreview() {
-  ChirpButtonThemed(
+fun ButtonDestructivePrimaryLightPreview() {
+  ButtonThemed(
     isDarkTheme = false,
-    style = ChirpButtonStyle.DESTRUCTIVE_PRIMARY,
+    style = ButtonStyle.DESTRUCTIVE_PRIMARY,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonDestructivePrimaryDarkPreview() {
-  ChirpButtonThemed(
+fun ButtonDestructivePrimaryDarkPreview() {
+  ButtonThemed(
     isDarkTheme = true,
-    style = ChirpButtonStyle.DESTRUCTIVE_PRIMARY,
+    style = ButtonStyle.DESTRUCTIVE_PRIMARY,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonDestructiveSecondaryLightPreview() {
-  ChirpButtonThemed(
+fun ButtonDestructiveSecondaryLightPreview() {
+  ButtonThemed(
     isDarkTheme = false,
-    style = ChirpButtonStyle.DESTRUCTIVE_SECONDARY,
+    style = ButtonStyle.DESTRUCTIVE_SECONDARY,
   )
 }
 
 @Composable
 @Preview
-fun ChirpButtonDestructiveSecondaryDarkPreview() {
-  ChirpButtonThemed(
+fun ButtonDestructiveSecondaryDarkPreview() {
+  ButtonThemed(
     isDarkTheme = true,
-    style = ChirpButtonStyle.DESTRUCTIVE_SECONDARY,
+    style = ButtonStyle.DESTRUCTIVE_SECONDARY,
   )
 }

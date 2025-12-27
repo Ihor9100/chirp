@@ -6,7 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.plcoding.chirp.navigation.DeepLinksListener
 import com.plcoding.chirp.navigation.NavigationRoot
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.utils.navigateNewRoot
 import com.plcoding.feature.auth.presentation.navigation.AuthRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -30,7 +30,7 @@ fun AppScreen(
   }
 
   DeepLinksListener(navController)
-  ChirpTheme {
+  Theme {
     if (startDestination != null) {
       NavigationRoot(navController, startDestination)
     }

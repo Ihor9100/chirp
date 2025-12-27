@@ -1,4 +1,4 @@
-package com.plcoding.core.designsystem.components.brand
+package com.plcoding.core.designsystem.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

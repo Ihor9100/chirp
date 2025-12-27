@@ -7,7 +7,7 @@ import chirp.feature.auth.presentation.generated.resources.new_password
 import chirp.feature.auth.presentation.generated.resources.password
 import chirp.feature.auth.presentation.generated.resources.set_new_password
 import chirp.feature.auth.presentation.generated.resources.submit
-import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
+import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.presentation.event.Event
 import org.jetbrains.compose.resources.StringResource
 
@@ -23,7 +23,7 @@ data class ResetPasswordScreenContent(
   val passwordIsSecureMode: Boolean = true,
 
   val primaryButtonTitleRes: StringResource = Res.string.submit,
-  val primaryButtonStyle: ChirpButtonStyle = ChirpButtonStyle.PRIMARY,
+  val primaryButtonStyle: ButtonStyle = ButtonStyle.PRIMARY,
   val primaryButtonIsEnable: Boolean = false,
 
   val resetSuccessEvent: Event<StringResource>? = null,

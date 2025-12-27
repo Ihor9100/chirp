@@ -18,13 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirTitle
-import com.plcoding.core.designsystem.components.brand.ChirpLogo
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.Title
+import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpLayout(
+fun FormLayout(
   modifier: Modifier = Modifier,
   contentColumnTopSpaceDp: Dp = 40.dp,
   logo: @Composable (() -> Unit)? = null,
@@ -61,16 +61,16 @@ fun ChirpLayout(
 }
 
 @Composable
-fun ChirpLayoutThemed(
+fun FormLayoutThemed(
   isDarkTheme: Boolean,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirpLayout(
+  Theme(isDarkTheme) {
+    FormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { ChirpLogo(modifier = Modifier) },
+      logo = { AppLogo(modifier = Modifier) },
       content = {
-        ChirTitle(
-          title = "Welcome to Chirp!",
+        Title(
+          text = "Welcome to Chirp!",
           error = "Error"
         )
       }
@@ -80,12 +80,12 @@ fun ChirpLayoutThemed(
 
 @Composable
 @Preview
-fun ChirpLayoutLightPreview() {
-  ChirpLayoutThemed(isDarkTheme = false)
+fun FormLayoutLightPreview() {
+  FormLayoutThemed(isDarkTheme = false)
 }
 
 @Composable
 @Preview
-fun ChirpLayoutDarkPreview() {
-  ChirpLayoutThemed(isDarkTheme = true)
+fun FormLayoutDarkPreview() {
+  FormLayoutThemed(isDarkTheme = true)
 }

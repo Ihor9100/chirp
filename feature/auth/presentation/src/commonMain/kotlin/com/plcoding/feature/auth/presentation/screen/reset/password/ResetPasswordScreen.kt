@@ -12,12 +12,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.brand.ChirpLogo
-import com.plcoding.core.designsystem.components.button.ChirpButton
-import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
-import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
-import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.layout.AdaptiveFormLayout
+import com.plcoding.core.designsystem.components.layout.SnackbarLayout
+import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -59,17 +59,17 @@ fun ResetPasswordScreenContent(
   snackbarHostState: SnackbarHostState,
   onAction: (ResetPasswordScreenAction) -> Unit,
 ) {
-  ChirpSnackbarLayout(
+  SnackbarLayout(
     modifier = Modifier.fillMaxSize(),
     snackbarHostState = snackbarHostState,
   ) {
-    ChirAdaptiveFormLayout(
+    AdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { ChirpLogo() },
+      logo = { AppLogo() },
       title = stringResource(content.titleRes),
       error = content.errorRes?.let { stringResource(it) },
     ) {
-      ChirpTextFieldPassword(
+      TextFieldPassword(
         modifier = Modifier.fillMaxWidth(),
         topTitle = stringResource(content.passwordTopTitleRes),
         textFieldState = content.passwordState,
@@ -80,7 +80,7 @@ fun ResetPasswordScreenContent(
         onSecureToggleClick = { onAction(ResetPasswordScreenAction.OnTextFieldSecureToggleClick) }
       )
       Spacer(Modifier.height(32.dp))
-      ChirpButton(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
         style = content.primaryButtonStyle,
@@ -94,7 +94,7 @@ fun ResetPasswordScreenContent(
 @Preview
 @Composable
 private fun ResetPasswordScreenPreview() {
-  ChirpTheme {
+  Theme {
     ResetPasswordScreenContent(
       content = ResetPasswordScreenContent(),
       snackbarHostState = SnackbarHostState(),

@@ -1,4 +1,4 @@
-package com.plcoding.core.designsystem.components.brand
+package com.plcoding.core.designsystem.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Spacer
@@ -13,14 +13,14 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.extended
 
 @Composable
-fun ChirTitle(
-  title: String,
-  titleColor: Color = MaterialTheme.colorScheme.extended.textPrimary,
+fun Title(
+  text: String,
+  textColor: Color = MaterialTheme.colorScheme.extended.textPrimary,
   error: String? = null,
 ) {
   Text(
-    text = title,
-    color = titleColor,
+    text = text,
+    color = textColor,
     textAlign = TextAlign.Center,
     style = MaterialTheme.typography.headlineLarge,
   )

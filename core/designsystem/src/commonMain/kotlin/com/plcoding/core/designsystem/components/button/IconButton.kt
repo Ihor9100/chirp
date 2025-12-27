@@ -12,12 +12,12 @@ import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpIconButton(
+fun IconButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   content: @Composable () -> Unit,
@@ -40,11 +40,11 @@ fun ChirpIconButton(
 }
 
 @Composable
-fun ChirpIconButtonThemed(
+fun IconButtonThemed(
   isDarkTheme: Boolean,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirpIconButton(
+  Theme(isDarkTheme) {
+    IconButton(
       onClick = {}
     ) {
       Icon(
@@ -57,16 +57,16 @@ fun ChirpIconButtonThemed(
 
 @Composable
 @Preview
-fun ChirpIconButtonLightPreview() {
-  ChirpIconButtonThemed(
+fun IconButtonLightPreview() {
+  IconButtonThemed(
     isDarkTheme = false,
   )
 }
 
 @Composable
 @Preview
-fun ChirpIconButtonDarkPreview() {
-  ChirpIconButtonThemed(
+fun IconButtonDarkPreview() {
+  IconButtonThemed(
     isDarkTheme = true,
   )
 }

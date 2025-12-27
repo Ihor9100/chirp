@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.brand.ChirpLogo
-import com.plcoding.core.designsystem.components.button.ChirpButton
-import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
-import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
-import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
-import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.components.layout.AdaptiveFormLayout
+import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
+import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import com.plcoding.core.presentation.utils.CollectEvent
 import org.jetbrains.compose.resources.stringResource
@@ -57,14 +57,14 @@ fun RegisterScreenContent(
   content: RegisterScreenContent,
   onAction: (RegisterScreenAction) -> Unit,
 ) {
-  ChirpTheme {
-    ChirAdaptiveFormLayout(
+  Theme {
+    AdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { ChirpLogo() },
+      logo = { AppLogo() },
       title = stringResource(content.titleRes),
       error = content.errorRes?.let { stringResource(it) },
     ) {
-      ChirpTextFieldPlain(
+      TextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
         topTitle = stringResource(content.usernameTopTitleRes),
         textFieldState = content.usernameState,
@@ -82,7 +82,7 @@ fun RegisterScreenContent(
         }
       )
       Spacer(Modifier.height(20.dp))
-      ChirpTextFieldPlain(
+      TextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
         topTitle = stringResource(content.emailTopTitleRes),
         textFieldState = content.emailState,
@@ -100,7 +100,7 @@ fun RegisterScreenContent(
         }
       )
       Spacer(Modifier.height(20.dp))
-      ChirpTextFieldPassword(
+      TextFieldPassword(
         modifier = Modifier.fillMaxWidth(),
         topTitle = stringResource(content.passwordTopTitleRes),
         textFieldState = content.passwordState,
@@ -119,16 +119,16 @@ fun RegisterScreenContent(
         onSecureToggleClick = { onAction(RegisterScreenAction.OnTextFieldSecureToggleClick) }
       )
       Spacer(Modifier.height(32.dp))
-      ChirpButton(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
-        style = ChirpButtonStyle.PRIMARY,
+        style = ButtonStyle.PRIMARY,
         onClick = { onAction(RegisterScreenAction.OnPrimaryButtonClick) }
       )
-      ChirpButton(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.secondaryButtonTitleRes),
-        style = ChirpButtonStyle.SECONDARY,
+        style = ButtonStyle.SECONDARY,
         onClick = { onAction(RegisterScreenAction.OnSecondaryButtonClick) }
       )
     }
@@ -138,7 +138,7 @@ fun RegisterScreenContent(
 @Preview
 @Composable
 private fun RegisterScreenPreview() {
-  ChirpTheme {
+  Theme {
     RegisterScreenContent(
       content = RegisterScreenContent(),
       onAction = {}

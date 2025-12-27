@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.layout.ChirpTextFieldLayout
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.layout.TextFieldLayout
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpTextFieldPlain(
+fun TextFieldPlain(
   modifier: Modifier = Modifier,
   topTitle: String,
   textFieldState: TextFieldState,
@@ -35,7 +35,7 @@ fun ChirpTextFieldPlain(
   isSingleLineInput: Boolean = true,
   onFocusChanged: ((Boolean) -> Unit) = {},
 ) {
-  ChirpTextFieldLayout(
+  TextFieldLayout(
     modifier = modifier,
     topTitle = topTitle,
     bottomTitle = bottomTitle,
@@ -97,14 +97,14 @@ fun ChirpTextFieldPlain(
 }
 
 @Composable
-fun ChirpTextFieldPlainThemed(
+fun TextFieldPlainThemed(
   isDarkTheme: Boolean,
   initialText: String,
   isEnabled: Boolean,
   isError: Boolean,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirpTextFieldPlain(
+  Theme(isDarkTheme) {
+    TextFieldPlain(
       topTitle = "Hello",
       textFieldState = TextFieldState(initialText),
       inputPlaceholder = "Enter here",
@@ -118,8 +118,8 @@ fun ChirpTextFieldPlainThemed(
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainEmptyLightPreview() {
-  ChirpTextFieldPlainThemed(
+fun TextFieldPlainEmptyLightPreview() {
+  TextFieldPlainThemed(
     isDarkTheme = false,
     initialText = "",
     isError = false,
@@ -129,8 +129,8 @@ fun ChirpTextFieldPlainEmptyLightPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainEmptyDarkPreview() {
-  ChirpTextFieldPlainThemed(
+fun TextFieldPlainEmptyDarkPreview() {
+  TextFieldPlainThemed(
     isDarkTheme = true,
     initialText = "",
     isError = false,
@@ -140,8 +140,8 @@ fun ChirpTextFieldPlainEmptyDarkPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainFilledLightPreview() {
-  ChirpTextFieldPlainThemed(
+fun TextFieldPlainFilledLightPreview() {
+  TextFieldPlainThemed(
     isDarkTheme = false,
     initialText = "How are you?",
     isError = false,
@@ -151,8 +151,8 @@ fun ChirpTextFieldPlainFilledLightPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainFilledDarkPreview() {
-  ChirpTextFieldPlainThemed(
+fun TextFieldPlainFilledDarkPreview() {
+  TextFieldPlainThemed(
     isDarkTheme = true,
     initialText = "How are you?",
     isError = false,
@@ -162,8 +162,8 @@ fun ChirpTextFieldPlainFilledDarkPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainDisabledLightPreview() {
-  ChirpTextFieldPlainThemed(
+fun TextFieldPlainDisabledLightPreview() {
+  TextFieldPlainThemed(
     isDarkTheme = false,
     initialText = "How are you?",
     isError = false,
@@ -173,8 +173,8 @@ fun ChirpTextFieldPlainDisabledLightPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainDisabledDarkPreview() {
-  ChirpTextFieldPlainThemed(
+fun TextFieldPlainDisabledDarkPreview() {
+  TextFieldPlainThemed(
     isDarkTheme = true,
     initialText = "How are you?",
     isError = false,
@@ -184,8 +184,8 @@ fun ChirpTextFieldPlainDisabledDarkPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainErrorLightPreview() {
-  ChirpTextFieldPlainThemed(
+fun TextFieldPlainErrorLightPreview() {
+  TextFieldPlainThemed(
     isDarkTheme = false,
     initialText = "How are you?",
     isError = true,
@@ -195,8 +195,8 @@ fun ChirpTextFieldPlainErrorLightPreview() {
 
 @Composable
 @Preview
-fun ChirpTextFieldPlainErrorDarkPreview() {
-  ChirpTextFieldPlainThemed(
+fun TextFieldPlainErrorDarkPreview() {
+  TextFieldPlainThemed(
     isDarkTheme = true,
     initialText = "How are you?",
     isError = true,

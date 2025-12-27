@@ -3,7 +3,6 @@ package com.plcoding.core.data.tools
 import com.plcoding.core.data.BuildKonfig
 import com.plcoding.core.data.model.RefreshRequestAm
 import com.plcoding.core.data.repository.local.PreferencesLocalDataRepository
-import com.plcoding.core.domain.logger.ChirpLogger
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -16,7 +15,6 @@ import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.header
@@ -26,6 +24,8 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.json.Json
+import com.plcoding.core.domain.logger.Logger as ChirpLogger
+import io.ktor.client.plugins.logging.Logger as KtorLogger
 
 class HttpClientFactory(
   private val json: Json,
@@ -43,7 +43,7 @@ class HttpClientFactory(
         socketTimeoutMillis = 20_000L
       }
       install(Logging) {
-        logger = object : Logger {
+        logger = object : KtorLogger {
           override fun log(message: String) {
             chirpLogger.debug(message)
           }

@@ -12,13 +12,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.brand.ChirError
-import com.plcoding.core.designsystem.components.brand.ChirpSuccessIcon
-import com.plcoding.core.designsystem.components.button.ChirpButton
-import com.plcoding.core.designsystem.components.layout.ChirpAdaptiveResultLayout
-import com.plcoding.core.designsystem.components.layout.ChirpResultLayout
-import com.plcoding.core.designsystem.components.layout.ChirpSnackbarLayout
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.ChirError
+import com.plcoding.core.designsystem.components.SuccessIcon
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.layout.AdaptiveResultLayout
+import com.plcoding.core.designsystem.components.layout.ResultLayout
+import com.plcoding.core.designsystem.components.layout.SnackbarLayout
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -62,19 +62,19 @@ fun RegisterSuccessScreenContent(
   snackbarHostState: SnackbarHostState,
   onAction: (RegisterSuccessScreenAction) -> Unit,
 ) {
-  ChirpSnackbarLayout(
+  SnackbarLayout(
     modifier = Modifier.fillMaxSize(),
     snackbarHostState = snackbarHostState,
   ) {
-    ChirpAdaptiveResultLayout(
+    AdaptiveResultLayout(
       modifier = Modifier.fillMaxSize()
     ) {
-      ChirpResultLayout(
-        icon = { ChirpSuccessIcon() },
+      ResultLayout(
+        icon = { SuccessIcon() },
         title = stringResource(content.titleRes),
         description = content.description?.get(),
         primaryButton = {
-          ChirpButton(
+          Button(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(content.primaryButtonTitleRes),
             style = content.primaryButtonStyle,
@@ -84,7 +84,7 @@ fun RegisterSuccessScreenContent(
           )
         },
         secondaryButton = {
-          ChirpButton(
+          Button(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(content.secondaryButtonTitleRes),
             style = content.secondaryButtonStyle,
@@ -105,7 +105,7 @@ fun RegisterSuccessScreenContent(
 @Preview
 @Composable
 private fun RegisterSuccessScreenPreview() {
-  ChirpTheme {
+  Theme {
     RegisterSuccessScreenContent(
       content = RegisterSuccessScreenContent(),
       snackbarHostState = SnackbarHostState(),

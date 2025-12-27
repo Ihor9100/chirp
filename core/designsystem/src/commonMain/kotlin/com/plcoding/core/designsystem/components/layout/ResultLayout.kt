@@ -13,15 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirpSuccessIcon
-import com.plcoding.core.designsystem.components.button.ChirpButton
-import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.SuccessIcon
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirpResultLayout(
+fun ResultLayout(
   modifier: Modifier = Modifier,
   icon: @Composable () -> Unit,
   title: String,
@@ -65,33 +65,33 @@ fun ChirpResultLayout(
 }
 
 @Composable
-fun ChirpResultLayoutThemed(
+fun ResultLayoutThemed(
   isDarkTheme: Boolean,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirpResultLayoutMock()
+  Theme(isDarkTheme) {
+    ResultLayoutMock()
   }
 }
 
 @Composable
-fun ChirpResultLayoutMock() {
-  ChirpResultLayout(
+fun ResultLayoutMock() {
+  ResultLayout(
     icon = {
-      ChirpSuccessIcon()
+      SuccessIcon()
     },
     title = "Chirp successfully created!",
     description = "We’ve sent verification email to olivia@chirp.chat",
     primaryButton = {
-      ChirpButton(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = "Log in",
       )
     },
     secondaryButton = {
-      ChirpButton(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = "Resend verification email",
-        style = ChirpButtonStyle.SECONDARY,
+        style = ButtonStyle.SECONDARY,
       )
     },
   )
@@ -99,16 +99,16 @@ fun ChirpResultLayoutMock() {
 
 @Composable
 @Preview
-fun ChirpResultLayoutLightPreview() {
-  ChirpResultLayoutThemed(
+fun ResultLayoutLightPreview() {
+  ResultLayoutThemed(
     isDarkTheme = false,
   )
 }
 
 @Composable
 @Preview
-fun ChirpResultLayoutDarkPreview() {
-  ChirpResultLayoutThemed(
+fun ResultLayoutDarkPreview() {
+  ResultLayoutThemed(
     isDarkTheme = true,
   )
 }

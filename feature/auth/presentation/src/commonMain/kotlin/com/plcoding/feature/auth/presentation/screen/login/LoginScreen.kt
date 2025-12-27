@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.forgot_password
-import com.plcoding.core.designsystem.components.brand.ChirpLogo
-import com.plcoding.core.designsystem.components.button.ChirpButton
-import com.plcoding.core.designsystem.components.button.ChirpButtonStyle
-import com.plcoding.core.designsystem.components.layout.ChirAdaptiveFormLayout
-import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPassword
-import com.plcoding.core.designsystem.components.textfields.ChirpTextFieldPlain
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.components.layout.AdaptiveFormLayout
+import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
+import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -59,13 +59,13 @@ fun LoginScreenContent(
   content: LoginScreenContent,
   onAction: (LoginScreenAction) -> Unit,
 ) {
-  ChirAdaptiveFormLayout(
+  AdaptiveFormLayout(
     modifier = Modifier.fillMaxSize(),
-    logo = { ChirpLogo() },
+    logo = { AppLogo() },
     title = stringResource(content.titleRes),
     error = content.errorRes?.let { stringResource(it) },
   ) {
-    ChirpTextFieldPlain(
+    TextFieldPlain(
       modifier = Modifier.fillMaxWidth(),
       topTitle = stringResource(content.emailTopTitleRes),
       textFieldState = content.emailState,
@@ -74,7 +74,7 @@ fun LoginScreenContent(
       keyboardType = KeyboardType.Text,
     )
     Spacer(Modifier.height(20.dp))
-    ChirpTextFieldPassword(
+    TextFieldPassword(
       modifier = Modifier.fillMaxWidth(),
       topTitle = stringResource(content.passwordTopTitleRes),
       textFieldState = content.passwordState,
@@ -93,17 +93,17 @@ fun LoginScreenContent(
       style = MaterialTheme.typography.bodySmall,
     )
     Spacer(Modifier.height(32.dp))
-    ChirpButton(
+    Button(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(content.primaryButtonTitleRes),
-      style = ChirpButtonStyle.PRIMARY,
+      style = ButtonStyle.PRIMARY,
       enabled = content.primaryButtonIsEnable,
       onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
     )
-    ChirpButton(
+    Button(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(content.secondaryButtonTitleRes),
-      style = ChirpButtonStyle.SECONDARY,
+      style = ButtonStyle.SECONDARY,
       onClick = { onAction(LoginScreenAction.OnSecondaryButtonClick) }
     )
   }
@@ -112,7 +112,7 @@ fun LoginScreenContent(
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-  ChirpTheme {
+  Theme {
     LoginScreenContent(
       content = LoginScreenContent(),
       onAction = {}

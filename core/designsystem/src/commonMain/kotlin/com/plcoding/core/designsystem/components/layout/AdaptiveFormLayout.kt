@@ -23,16 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.brand.ChirTitle
-import com.plcoding.core.designsystem.components.brand.ChirpLogo
-import com.plcoding.core.designsystem.style.ChirpTheme
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.Title
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.utils.DeviceConfiguration
 import com.plcoding.core.presentation.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirAdaptiveFormLayout(
+fun AdaptiveFormLayout(
   modifier: Modifier = Modifier,
   deviceConfiguration: DeviceConfiguration = getDeviceConfiguration(),
   logo: @Composable () -> Unit,
@@ -48,13 +48,13 @@ fun ChirAdaptiveFormLayout(
 
   when (deviceConfiguration) {
     DeviceConfiguration.MOBILE_PORTRAIT -> {
-      ChirpLayout(
+      FormLayout(
         modifier = modifier,
         logo = logo,
       ) {
-        ChirTitle(
-          title = title,
-          titleColor = titleColor,
+        Title(
+          text = title,
+          textColor = titleColor,
           error = error,
         )
         Spacer(Modifier.height(32.dp))
@@ -72,15 +72,15 @@ fun ChirAdaptiveFormLayout(
             .fillMaxHeight(),
         ) {
           Spacer(Modifier.height(32.dp))
-          ChirpLogo()
+          AppLogo()
           Spacer(Modifier.height(32.dp))
-          ChirTitle(
-            title = title,
-            titleColor = titleColor,
+          Title(
+            text = title,
+            textColor = titleColor,
             error = error,
           )
         }
-        ChirpLayout(
+        FormLayout(
           modifier = Modifier.weight(1f),
           contentColumnTopSpaceDp = 20.dp,
           content = form
@@ -109,9 +109,9 @@ fun ChirAdaptiveFormLayout(
           horizontalAlignment = Alignment.CenterHorizontally,
         ) {
           Spacer(Modifier.height(40.dp))
-          ChirTitle(
-            title = title,
-            titleColor = titleColor,
+          Title(
+            text = title,
+            textColor = titleColor,
             error = error,
           )
           Spacer(Modifier.height(32.dp))
@@ -124,16 +124,16 @@ fun ChirAdaptiveFormLayout(
 }
 
 @Composable
-fun ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutThemed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
-  ChirpTheme(isDarkTheme) {
-    ChirAdaptiveFormLayout(
+  Theme(isDarkTheme) {
+    AdaptiveFormLayout(
       modifier = Modifier
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
-      logo = ::ChirpLogo,
+      logo = ::AppLogo,
       title = "Hello World",
       error = "Invalid Data",
       form = {
@@ -167,8 +167,8 @@ fun ChirpAdaptiveFormLayoutThemed(
   widthDp = 450,
   heightDp = 1000,
 )
-fun ChirpAdaptiveFormLayoutMobilePortraitLightPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutMobilePortraitLightPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -179,8 +179,8 @@ fun ChirpAdaptiveFormLayoutMobilePortraitLightPreview() {
   widthDp = 450,
   heightDp = 1000,
 )
-fun ChirpAdaptiveFormLayoutMobilePortraitDarkPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutMobilePortraitDarkPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -191,8 +191,8 @@ fun ChirpAdaptiveFormLayoutMobilePortraitDarkPreview() {
   widthDp = 1000,
   heightDp = 450,
 )
-fun ChirpAdaptiveFormLayoutMobileLandscapeLightPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutMobileLandscapeLightPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
   )
@@ -203,8 +203,8 @@ fun ChirpAdaptiveFormLayoutMobileLandscapeLightPreview() {
   widthDp = 1000,
   heightDp = 450,
 )
-fun ChirpAdaptiveFormLayoutMobileLandscapeDarkPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutMobileLandscapeDarkPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
   )
@@ -215,8 +215,8 @@ fun ChirpAdaptiveFormLayoutMobileLandscapeDarkPreview() {
   widthDp = 750,
   heightDp = 1200,
 )
-fun ChirpAdaptiveFormLayoutTabletPortraitLightPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutTabletPortraitLightPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
@@ -227,8 +227,8 @@ fun ChirpAdaptiveFormLayoutTabletPortraitLightPreview() {
   widthDp = 750,
   heightDp = 1200,
 )
-fun ChirpAdaptiveFormLayoutTabletPortraitDarkPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutTabletPortraitDarkPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
@@ -239,8 +239,8 @@ fun ChirpAdaptiveFormLayoutTabletPortraitDarkPreview() {
   widthDp = 1200,
   heightDp = 750,
 )
-fun ChirpAdaptiveFormLayoutTabletLandscapeLightPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutTabletLandscapeLightPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
@@ -251,8 +251,8 @@ fun ChirpAdaptiveFormLayoutTabletLandscapeLightPreview() {
   widthDp = 1200,
   heightDp = 750,
 )
-fun ChirpAdaptiveFormLayoutTabletLandscapeDarkPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutTabletLandscapeDarkPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
@@ -263,8 +263,8 @@ fun ChirpAdaptiveFormLayoutTabletLandscapeDarkPreview() {
   widthDp = 2000,
   heightDp = 1500,
 )
-fun ChirpAdaptiveFormLayoutDesktopLightPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutDesktopLightPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.DESKTOP,
   )
@@ -275,8 +275,8 @@ fun ChirpAdaptiveFormLayoutDesktopLightPreview() {
   widthDp = 2000,
   heightDp = 1500,
 )
-fun ChirpAdaptiveFormLayoutDesktopDarkPreview() {
-  ChirpAdaptiveFormLayoutThemed(
+fun AdaptiveFormLayoutDesktopDarkPreview() {
+  AdaptiveFormLayoutThemed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.DESKTOP,
   )
