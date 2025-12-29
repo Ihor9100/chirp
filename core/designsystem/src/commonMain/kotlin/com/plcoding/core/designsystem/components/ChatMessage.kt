@@ -16,13 +16,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
 import chirp.core.designsystem.generated.resources.failed
 import chirp.core.designsystem.generated.resources.sent
+import com.plcoding.core.designsystem.components.Sender.Other
+import com.plcoding.core.designsystem.components.Sender.You
 import com.plcoding.core.designsystem.shape.AnchorPosition
 import com.plcoding.core.designsystem.shape.ChatMessageShape
 import com.plcoding.core.designsystem.style.Theme
@@ -40,12 +42,36 @@ fun ChatMessage(
   status: Status?,
   backgroundColor: Color,
 ) {
+  val horizontalPadding = 16.dp
+  val verticalPadding = 12.dp
+  val startPadding: Dp
+  val endPadding: Dp
+
+  val anchorPosition = when (sender) {
+    is You -> {
+      startPadding = horizontalPadding
+      endPadding = horizontalPadding * 2
+      AnchorPosition.RIGHT
+    }
+    is Other -> {
+      startPadding = horizontalPadding * 2
+      endPadding = horizontalPadding
+      AnchorPosition.LEFT
+    }
+  }
+
   Column(
     modifier = modifier
-      .clip(ChatMessageShape(sender.getAnchorPosition()))
-      .padding(horizontal = 16.dp)
-      .background(backgroundColor)
-      .padding(horizontal = 14.dp, vertical = 12.dp),
+      .background(
+        color = backgroundColor,
+        shape = ChatMessageShape(anchorPosition, horizontalPadding)
+      )
+      .padding(
+        start = startPadding,
+        end = endPadding,
+        top = verticalPadding,
+        bottom = verticalPadding,
+      ),
     verticalArrangement = Arrangement.spacedBy(6.dp),
     horizontalAlignment = Alignment.Start,
   ) {
@@ -74,13 +100,15 @@ fun ChatMessage(
     )
     status?.let {
       Row(
+        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
       ) {
         Icon(
           modifier = modifier.size(16.dp),
           imageVector = it.icon,
-          contentDescription = null
+          contentDescription = null,
+          tint = it.color
         )
         Text(
           text = stringResource(it.titleRes),
@@ -107,7 +135,7 @@ fun ChatMessageThemed(
       date = "today",
       message = "Hello World",
       status = status,
-      backgroundColor = MaterialTheme.colorScheme.extended.accentGrey
+      backgroundColor = MaterialTheme.colorScheme.surface
     )
   }
 }
@@ -126,7 +154,7 @@ fun ChatMessageYouDarkPreview() {
 @Preview
 fun ChatMessageYouLightPreview() {
   ChatMessageThemed(
-    isDarkMode = true,
+    isDarkMode = false,
     sender = Sender.You("Ihor"),
     status = Status.success
   )
@@ -146,7 +174,7 @@ fun ChatMessageOtherDarkPreview() {
 @Preview
 fun ChatMessageOtherLightPreview() {
   ChatMessageThemed(
-    isDarkMode = true,
+    isDarkMode = false,
     sender = Sender.Other("Bohdana"),
     status = Status.error
   )
@@ -158,11 +186,6 @@ sealed interface Sender {
 
   data class You(override val name: String) : Sender
   data class Other(override val name: String) : Sender
-
-  fun getAnchorPosition() = when (this) {
-    is You -> AnchorPosition.RIGHT
-    is Other -> AnchorPosition.LEFT
-  }
 }
 
 @ConsistentCopyVisibility
@@ -178,7 +201,7 @@ data class Status private constructor(
       get() = Status(
         icon = Icons.Default.MarkChatRead,
         titleRes = Res.string.sent,
-        color = MaterialTheme.colorScheme.extended.textPrimary,
+        color = MaterialTheme.colorScheme.extended.textTertiary,
       )
 
     val error: Status

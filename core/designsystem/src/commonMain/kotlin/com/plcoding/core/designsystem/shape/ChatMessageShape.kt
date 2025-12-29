@@ -8,8 +8,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 
 enum class AnchorPosition {
   LEFT,
@@ -18,41 +18,36 @@ enum class AnchorPosition {
 
 class ChatMessageShape(
   private val anchorPosition: AnchorPosition,
+  private val anchorSizeDp: Dp,
 ) : Shape {
-
-  companion object {
-    private val triangleSizeDp = 16.dp
-    private val cornerRadiusDp = 16.dp
-  }
 
   override fun createOutline(
     size: Size,
     layoutDirection: LayoutDirection,
     density: Density,
   ): Outline {
-    val triangleSizePx = with(density) { triangleSizeDp.toPx() }
-    val cornerRadiusPx = with(density) { cornerRadiusDp.toPx() }
+    val anchorSizePx = with(density) { anchorSizeDp.toPx() }
 
     val finalPath = when (anchorPosition) {
       AnchorPosition.LEFT -> {
         val bodyPath = Path().apply {
           addRoundRect(
             roundRect = RoundRect(
-              left = triangleSizePx,
+              left = anchorSizePx,
               top = 0f,
               right = size.width,
               bottom = size.height,
               cornerRadius = CornerRadius(
-                x = cornerRadiusPx,
-                y = cornerRadiusPx,
+                x = anchorSizePx,
+                y = anchorSizePx,
               )
             )
           )
         }
         val anchorPath = Path().apply {
           moveTo(0f, size.height)
-          lineTo(triangleSizePx, size.height - cornerRadiusPx)
-          lineTo(triangleSizePx + cornerRadiusPx, size.height)
+          lineTo(anchorSizePx, size.height - anchorSizePx)
+          lineTo(anchorSizePx + anchorSizePx, size.height)
           close()
         }
         Path.combine(PathOperation.Union, bodyPath, anchorPath)
@@ -63,19 +58,19 @@ class ChatMessageShape(
             roundRect = RoundRect(
               left = 0f,
               top = 0f,
-              right = size.width - triangleSizePx,
+              right = size.width - anchorSizePx,
               bottom = size.height,
               cornerRadius = CornerRadius(
-                x = cornerRadiusPx,
-                y = cornerRadiusPx,
+                x = anchorSizePx,
+                y = anchorSizePx,
               )
             )
           )
         }
         val anchorPath = Path().apply {
           moveTo(size.width, size.height)
-          lineTo(size.width - triangleSizePx, size.height - cornerRadiusPx)
-          lineTo(size.height - triangleSizePx - cornerRadiusPx, size.height)
+          lineTo(size.width - anchorSizePx, size.height - anchorSizePx)
+          lineTo(size.height - anchorSizePx - anchorSizePx, size.height)
           close()
         }
         Path.combine(PathOperation.Union, bodyPath, anchorPath)
