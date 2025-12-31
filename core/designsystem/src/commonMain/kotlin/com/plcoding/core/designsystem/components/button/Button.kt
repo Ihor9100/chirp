@@ -132,101 +132,213 @@ fun Button(
 fun ButtonThemed(
   isDarkTheme: Boolean,
   style: ButtonStyle,
+  isEnabled: Boolean,
 ) {
   Theme(isDarkTheme) {
     Button(
       text = "Click",
       style = style,
+      enabled = isEnabled,
     )
   }
 }
 
 @Composable
 @Preview
-fun ButtonTextLightPreview() {
+fun ButtonTextEnabledLightPreview() {
   ButtonThemed(
     isDarkTheme = false,
     style = ButtonStyle.TEXT,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonTextDarkPreview() {
+fun ButtonTextDisabledLightPreview() {
+  ButtonThemed(
+    isDarkTheme = false,
+    style = ButtonStyle.TEXT,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonTextEnabledDarkPreview() {
   ButtonThemed(
     isDarkTheme = true,
     style = ButtonStyle.TEXT,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonPrimaryLightPreview() {
+fun ButtonTextDisabledDarkPreview() {
+  ButtonThemed(
+    isDarkTheme = true,
+    style = ButtonStyle.TEXT,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonPrimaryEnabledLightPreview() {
   ButtonThemed(
     isDarkTheme = false,
     style = ButtonStyle.PRIMARY,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonPrimaryDarkPreview() {
+fun ButtonPrimaryDisabledLightPreview() {
+  ButtonThemed(
+    isDarkTheme = false,
+    style = ButtonStyle.PRIMARY,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonPrimaryEnabledDarkPreview() {
   ButtonThemed(
     isDarkTheme = true,
     style = ButtonStyle.PRIMARY,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonSecondaryLightPreview() {
+fun ButtonPrimaryDisabledDarkPreview() {
+  ButtonThemed(
+    isDarkTheme = true,
+    style = ButtonStyle.PRIMARY,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonSecondaryEnabledLightPreview() {
   ButtonThemed(
     isDarkTheme = false,
     style = ButtonStyle.SECONDARY,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonSecondaryDarkPreview() {
+fun ButtonSecondaryDisabledLightPreview() {
+  ButtonThemed(
+    isDarkTheme = false,
+    style = ButtonStyle.SECONDARY,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonSecondaryEnabledDarkPreview() {
   ButtonThemed(
     isDarkTheme = true,
     style = ButtonStyle.SECONDARY,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonDestructivePrimaryLightPreview() {
+fun ButtonSecondaryDisabledDarkPreview() {
+  ButtonThemed(
+    isDarkTheme = true,
+    style = ButtonStyle.SECONDARY,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonDestructivePrimaryEnabledLightPreview() {
   ButtonThemed(
     isDarkTheme = false,
     style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonDestructivePrimaryDarkPreview() {
+fun ButtonDestructivePrimaryDisabledLightPreview() {
+  ButtonThemed(
+    isDarkTheme = false,
+    style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonDestructivePrimaryEnabledDarkPreview() {
   ButtonThemed(
     isDarkTheme = true,
     style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonDestructiveSecondaryLightPreview() {
+fun ButtonDestructivePrimaryDisabledDarkPreview() {
+  ButtonThemed(
+    isDarkTheme = true,
+    style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonDestructiveSecondaryEnabledLightPreview() {
   ButtonThemed(
     isDarkTheme = false,
     style = ButtonStyle.DESTRUCTIVE_SECONDARY,
+    isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun ButtonDestructiveSecondaryDarkPreview() {
+fun ButtonDestructiveSecondaryDisabledLightPreview() {
+  ButtonThemed(
+    isDarkTheme = false,
+    style = ButtonStyle.DESTRUCTIVE_SECONDARY,
+    isEnabled = false,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonDestructiveSecondaryEnabledDarkPreview() {
   ButtonThemed(
     isDarkTheme = true,
     style = ButtonStyle.DESTRUCTIVE_SECONDARY,
+    isEnabled = true,
+  )
+}
+
+@Composable
+@Preview
+fun ButtonDestructiveSecondaryDisabledDarkPreview() {
+  ButtonThemed(
+    isDarkTheme = true,
+    style = ButtonStyle.DESTRUCTIVE_SECONDARY,
+    isEnabled = false,
   )
 }
