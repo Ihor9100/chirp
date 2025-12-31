@@ -45,20 +45,23 @@ fun MultilineTextField(
   Column(
     modifier = modifier
       .fillMaxWidth()
-      .apply {
+      .then(
         if (deviceConfiguration == DeviceConfiguration.DESKTOP) {
-          shadow(
-            elevation = 4.dp,
-            shape = RoundedCornerShape(16.dp),
-            clip = false,
-          )
-          background(
-            color = MaterialTheme.colorScheme.surface,
-            shape = RoundedCornerShape(16.dp),
-          )
-          padding(4.dp)
+          Modifier
+            .shadow(
+              elevation = 4.dp,
+              shape = RoundedCornerShape(16.dp),
+              clip = false,
+            )
+            .background(
+              color = MaterialTheme.colorScheme.surface,
+              shape = RoundedCornerShape(16.dp),
+            )
+            .padding(4.dp)
+        } else {
+          Modifier
         }
-      }
+      )
       .border(
         width = 1.dp,
         color = MaterialTheme.colorScheme.extended.surfaceOutline,
@@ -134,21 +137,31 @@ fun MultilineTextFieldThemed(
 
 @Composable
 @Preview
-fun EnabledDesktopLightPreview() {
-  MultilineTextFieldThemed(
-    isDarkTheme = false,
-    isEnabled = true,
-    deviceConfiguration = DeviceConfiguration.DESKTOP
-  )
-}
-
-@Composable
-@Preview
 fun EnabledNotDesktopLightPreview() {
   MultilineTextFieldThemed(
     isDarkTheme = false,
     isEnabled = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview
+fun DisabledNotDesktopLightPreview() {
+  MultilineTextFieldThemed(
+    isDarkTheme = false,
+    isEnabled = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview
+fun EnabledDesktopLightPreview() {
+  MultilineTextFieldThemed(
+    isDarkTheme = false,
+    isEnabled = true,
+    deviceConfiguration = DeviceConfiguration.DESKTOP
   )
 }
 
@@ -164,9 +177,19 @@ fun DisabledDesktopLightPreview() {
 
 @Composable
 @Preview
-fun DisabledNotDesktopLightPreview() {
+fun EnabledNotDesktopDarkPreview() {
   MultilineTextFieldThemed(
-    isDarkTheme = false,
+    isDarkTheme = true,
+    isEnabled = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview
+fun DisabledNotDesktopDarkPreview() {
+  MultilineTextFieldThemed(
+    isDarkTheme = true,
     isEnabled = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -184,31 +207,10 @@ fun EnabledDesktopDarkPreview() {
 
 @Composable
 @Preview
-fun EnabledNotDesktopDarkPreview() {
-  MultilineTextFieldThemed(
-    isDarkTheme = true,
-    isEnabled = true,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-  )
-}
-
-
-@Composable
-@Preview
 fun DisabledDesktopDarkPreview() {
   MultilineTextFieldThemed(
     isDarkTheme = true,
     isEnabled = false,
     deviceConfiguration = DeviceConfiguration.DESKTOP
-  )
-}
-
-@Composable
-@Preview
-fun DisabledNotDesktopDarkPreview() {
-  MultilineTextFieldThemed(
-    isDarkTheme = true,
-    isEnabled = false,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
 }
