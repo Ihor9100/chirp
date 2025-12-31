@@ -26,6 +26,8 @@ import chirp.core.designsystem.generated.resources.sent
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
+import com.plcoding.core.presentation.utils.DeviceConfiguration
+import com.plcoding.core.presentation.utils.getDeviceConfiguration
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -34,6 +36,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun MultilineTextField(
   modifier: Modifier = Modifier,
+  deviceConfiguration: DeviceConfiguration = getDeviceConfiguration(),
   textFieldState: TextFieldState,
   inputPlaceholder: String,
   buttonTitleRes: StringResource,
@@ -42,16 +45,20 @@ fun MultilineTextField(
   Column(
     modifier = modifier
       .fillMaxWidth()
-      .shadow(
-        elevation = 4.dp,
-        shape = RoundedCornerShape(16.dp),
-        clip = false,
-      )
-      .background(
-        color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(16.dp),
-      )
-      .padding(4.dp)
+      .apply {
+        if (deviceConfiguration == DeviceConfiguration.DESKTOP) {
+          shadow(
+            elevation = 4.dp,
+            shape = RoundedCornerShape(16.dp),
+            clip = false,
+          )
+          background(
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(16.dp),
+          )
+          padding(4.dp)
+        }
+      }
       .border(
         width = 1.dp,
         color = MaterialTheme.colorScheme.extended.surfaceOutline,
@@ -112,6 +119,7 @@ fun MultilineTextField(
 fun MultilineTextFieldThemed(
   isDarkTheme: Boolean,
   isEnabled: Boolean,
+  deviceConfiguration: DeviceConfiguration,
 ) {
   Theme(isDarkTheme) {
     MultilineTextField(
@@ -119,42 +127,88 @@ fun MultilineTextFieldThemed(
       inputPlaceholder = "Enter your message",
       buttonTitleRes = Res.string.sent,
       isEnabled = isEnabled,
+      deviceConfiguration = deviceConfiguration,
     )
   }
 }
 
 @Composable
 @Preview
-fun MultilineTextFieldEnabledLightPreview() {
+fun EnabledDesktopLightPreview() {
   MultilineTextFieldThemed(
     isDarkTheme = false,
-    isEnabled = true
+    isEnabled = true,
+    deviceConfiguration = DeviceConfiguration.DESKTOP
   )
 }
 
 @Composable
 @Preview
-fun MultilineTextFieldDisabledLightPreview() {
+fun EnabledNotDesktopLightPreview() {
   MultilineTextFieldThemed(
     isDarkTheme = false,
-    isEnabled = false
+    isEnabled = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
 }
 
 @Composable
 @Preview
-fun MultilineTextFieldEnabledDarkPreview() {
+fun DisabledDesktopLightPreview() {
   MultilineTextFieldThemed(
-    isDarkTheme = true,
-    isEnabled = true
+    isDarkTheme = false,
+    isEnabled = false,
+    deviceConfiguration = DeviceConfiguration.DESKTOP
   )
 }
 
 @Composable
 @Preview
-fun MultilineTextFieldDisabledDarkPreview() {
+fun DisabledNotDesktopLightPreview() {
+  MultilineTextFieldThemed(
+    isDarkTheme = false,
+    isEnabled = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview
+fun EnabledDesktopDarkPreview() {
   MultilineTextFieldThemed(
     isDarkTheme = true,
-    isEnabled = false
+    isEnabled = true,
+    deviceConfiguration = DeviceConfiguration.DESKTOP
+  )
+}
+
+@Composable
+@Preview
+fun EnabledNotDesktopDarkPreview() {
+  MultilineTextFieldThemed(
+    isDarkTheme = true,
+    isEnabled = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+
+@Composable
+@Preview
+fun DisabledDesktopDarkPreview() {
+  MultilineTextFieldThemed(
+    isDarkTheme = true,
+    isEnabled = false,
+    deviceConfiguration = DeviceConfiguration.DESKTOP
+  )
+}
+
+@Composable
+@Preview
+fun DisabledNotDesktopDarkPreview() {
+  MultilineTextFieldThemed(
+    isDarkTheme = true,
+    isEnabled = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
 }
