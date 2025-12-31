@@ -97,7 +97,7 @@ fun LoginScreenContent(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(content.primaryButtonTitleRes),
       style = ButtonStyle.PRIMARY,
-      enabled = content.primaryButtonIsEnable,
+      isEnabled = content.primaryButtonIsEnable,
       onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
     )
     Button(

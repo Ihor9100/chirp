@@ -84,7 +84,7 @@ fun ResetPasswordScreenContent(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
         style = content.primaryButtonStyle,
-        enabled = content.primaryButtonIsEnable,
+        isEnabled = content.primaryButtonIsEnable,
         onClick = { onAction(ResetPasswordScreenAction.OnPrimaryButtonClick) }
       )
     }

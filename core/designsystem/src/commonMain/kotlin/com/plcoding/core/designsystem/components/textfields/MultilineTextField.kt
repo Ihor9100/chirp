@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.OfflinePin
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,12 +21,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
+import chirp.core.designsystem.generated.resources.ic_cloud_off
 import chirp.core.designsystem.generated.resources.sent
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -90,18 +90,19 @@ fun MultilineTextField(
     Row(
       modifier = Modifier
         .fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.End),
+      horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Icon(
         modifier = modifier
           .size(24.dp),
-        imageVector = Icons.Default.OfflinePin,
+        imageVector = vectorResource(Res.drawable.ic_cloud_off),
         contentDescription = null,
+        tint = MaterialTheme.colorScheme.extended.textDisabled
       )
       Button(
         text = stringResource(buttonTitleRes),
-        enabled = isEnabled
+        isEnabled = isEnabled
       )
     }
   }

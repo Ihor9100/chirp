@@ -79,7 +79,7 @@ fun RegisterSuccessScreenContent(
             text = stringResource(content.primaryButtonTitleRes),
             style = content.primaryButtonStyle,
             isLoading = false,
-            enabled = !content.hasOngoingRequest,
+            isEnabled = !content.hasOngoingRequest,
             onClick = { onAction(RegisterSuccessScreenAction.PrimaryButtonClick) }
           )
         },
@@ -89,7 +89,7 @@ fun RegisterSuccessScreenContent(
             text = stringResource(content.secondaryButtonTitleRes),
             style = content.secondaryButtonStyle,
             isLoading = false,
-            enabled = !content.hasOngoingRequest,
+            isEnabled = !content.hasOngoingRequest,
             onClick = { onAction(RegisterSuccessScreenAction.SecondaryButtonClick) }
           )
           if (content.secondaryButtonErrorRes != null) {

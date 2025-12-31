@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.MarkChatRead
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +19,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
 import chirp.core.designsystem.generated.resources.failed
+import chirp.core.designsystem.generated.resources.ic_check
+import chirp.core.designsystem.generated.resources.ic_cross
 import chirp.core.designsystem.generated.resources.sent
 import com.plcoding.core.designsystem.components.Sender.Other
 import com.plcoding.core.designsystem.components.Sender.You
@@ -31,6 +30,7 @@ import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -105,7 +105,7 @@ fun ChatMessage(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
       ) {
         Icon(
-          modifier = modifier.size(16.dp),
+          modifier = modifier.size(12.dp),
           imageVector = it.icon,
           contentDescription = null,
           tint = it.color
@@ -199,7 +199,7 @@ data class Status private constructor(
     val success: Status
       @Composable
       get() = Status(
-        icon = Icons.Default.MarkChatRead,
+        icon = vectorResource(Res.drawable.ic_check),
         titleRes = Res.string.sent,
         color = MaterialTheme.colorScheme.extended.textTertiary,
       )
@@ -207,7 +207,7 @@ data class Status private constructor(
     val error: Status
       @Composable
       get() = Status(
-        icon = Icons.Default.Error,
+        icon = vectorResource(Res.drawable.ic_cross),
         titleRes = Res.string.failed,
         color = MaterialTheme.colorScheme.error,
       )

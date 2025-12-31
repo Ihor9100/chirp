@@ -35,7 +35,7 @@ fun Button(
   text: String,
   style: ButtonStyle = ButtonStyle.PRIMARY,
   isLoading: Boolean = false,
-  enabled: Boolean = true,
+  isEnabled: Boolean = true,
   onClick: () -> Unit = {},
   leadingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -77,11 +77,11 @@ fun Button(
     color = MaterialTheme.colorScheme.extended.disabledOutline,
   )
   val borderStroke = when {
-    style == ButtonStyle.PRIMARY && !enabled -> defaultBorderColor
+    style == ButtonStyle.PRIMARY && !isEnabled -> defaultBorderColor
     style == ButtonStyle.SECONDARY -> defaultBorderColor
-    style == ButtonStyle.DESTRUCTIVE_PRIMARY && !enabled -> defaultBorderColor
-    style == ButtonStyle.DESTRUCTIVE_SECONDARY && !enabled -> {
-      val color = if (enabled) {
+    style == ButtonStyle.DESTRUCTIVE_PRIMARY && !isEnabled -> defaultBorderColor
+    style == ButtonStyle.DESTRUCTIVE_SECONDARY && !isEnabled -> {
+      val color = if (isEnabled) {
         MaterialTheme.colorScheme.extended.destructiveSecondaryOutline
       } else {
         MaterialTheme.colorScheme.extended.disabledOutline
@@ -97,7 +97,7 @@ fun Button(
   Button(
     onClick = onClick,
     modifier = modifier,
-    enabled = enabled,
+    enabled = isEnabled,
     shape = RoundedCornerShape(8.dp),
     colors = colors,
     border = borderStroke,
@@ -138,7 +138,7 @@ fun ButtonThemed(
     Button(
       text = "Click",
       style = style,
-      enabled = isEnabled,
+      isEnabled = isEnabled,
     )
   }
 }
