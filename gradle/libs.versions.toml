@@ -56,8 +56,8 @@ datastore = "1.2.0"
 firebase-bom = "34.6.0"
 adaptive = "1.2.0"
 jetbrains-savedstate = "1.4.0"
-coil = "3.3.0"
-coil-network = "3.3.0"
+coil-compose = "3.3.0"
+coil-network-ktor = "3.3.0"
 moko = "0.20.1"
 buildkonfig = "0.17.1"
 
@@ -155,8 +155,8 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 
 # Coil
-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-network" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-compose" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-network-ktor" }
 
 #Permission handling
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko" }

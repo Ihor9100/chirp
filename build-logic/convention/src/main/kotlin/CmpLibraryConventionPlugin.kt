@@ -26,6 +26,9 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-extended").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-components-ui-tooling-preview").get())
 
+        "commonMainImplementation"(libs.findLibrary("coil-compose").get())
+        "commonMainImplementation"(libs.findLibrary("coil-network-ktor").get())
+
         "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel").get())
 
         "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
