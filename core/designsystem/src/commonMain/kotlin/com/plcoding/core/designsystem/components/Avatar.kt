@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -29,12 +30,6 @@ data class AvatarPm(
   val imageUrl: String?,
   val avatarSize: AvatarSize,
 ) {
-
-  constructor() : this(
-    fullName = "Ihor Bohdanovskyi",
-    imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
-    avatarSize = AvatarSize.MEDIUM,
-  )
 
   fun getInitials(): String {
     if (fullName.isBlank()) return "?"
@@ -71,6 +66,7 @@ fun Avatar(
     Text(
       text = avatarPm.getInitials(),
       color = MaterialTheme.colorScheme.extended.textPlaceholder,
+      textAlign = TextAlign.Center,
       style = MaterialTheme.typography.titleMedium,
     )
     AsyncImage(
@@ -86,14 +82,17 @@ fun Avatar(
 @Composable
 private fun AvatarThemed(
   isDarkMode: Boolean,
-  avatarPm: AvatarPm,
 ) {
   Theme(
     isDarkMode = isDarkMode,
   ) {
     Avatar(
       modifier = Modifier,
-      avatarPm = avatarPm,
+      avatarPm = AvatarPm(
+        fullName = "Ihor Bohdanovskyi",
+        imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
+        avatarSize = AvatarSize.MEDIUM,
+      ),
     )
   }
 }
@@ -103,7 +102,6 @@ private fun AvatarThemed(
 private fun DarkPreview() {
   AvatarThemed(
     isDarkMode = true,
-    avatarPm = AvatarPm(),
   )
 }
 
@@ -112,6 +110,5 @@ private fun DarkPreview() {
 private fun LightPreview() {
   AvatarThemed(
     isDarkMode = false,
-    avatarPm = AvatarPm(),
   )
 }

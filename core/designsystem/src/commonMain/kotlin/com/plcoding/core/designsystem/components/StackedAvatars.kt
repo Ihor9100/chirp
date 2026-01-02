@@ -23,7 +23,7 @@ fun StackedAvatars(
 
   Row(
     modifier = modifier,
-    horizontalArrangement = Arrangement.spacedBy(-horizontalOffsetDp)
+    horizontalArrangement = Arrangement.spacedBy(horizontalOffsetDp.unaryMinus())
   ) {
     avatarsPm
       .take(maxVisibleCount)
@@ -37,8 +37,8 @@ fun StackedAvatars(
     if (invisibleCount > 0) {
       Avatar(
         modifier = Modifier,
-        AvatarPm(
-          fullName = "$invisibleCount+",
+        avatarPm = AvatarPm(
+          fullName = "$invisibleCount +",
           imageUrl = null,
           avatarSize = AvatarSize.MEDIUM,
         )
@@ -50,14 +50,34 @@ fun StackedAvatars(
 @Composable
 private fun StackedAvatarsThemed(
   isDarkMode: Boolean,
-  avatarPm: AvatarPm,
 ) {
   Theme(
     isDarkMode = isDarkMode,
   ) {
     StackedAvatars(
       modifier = Modifier,
-      avatarPm = avatarPm,
+      avatarsPm = listOf(
+        AvatarPm(
+          fullName = "Ihor A",
+          imageUrl = "1",
+          avatarSize = AvatarSize.MEDIUM,
+        ),
+        AvatarPm(
+          fullName = "Ihor B",
+          imageUrl = "2",
+          avatarSize = AvatarSize.MEDIUM,
+        ),
+        AvatarPm(
+          fullName = "Ihor C",
+          imageUrl = "3",
+          avatarSize = AvatarSize.MEDIUM,
+        ),
+        AvatarPm(
+          fullName = "Ihor D",
+          imageUrl = "4",
+          avatarSize = AvatarSize.MEDIUM,
+        ),
+      ),
     )
   }
 }
@@ -67,7 +87,6 @@ private fun StackedAvatarsThemed(
 private fun DarkPreview() {
   StackedAvatarsThemed(
     isDarkMode = true,
-    avatarPm = AvatarPm(),
   )
 }
 
@@ -76,6 +95,5 @@ private fun DarkPreview() {
 private fun LightPreview() {
   StackedAvatarsThemed(
     isDarkMode = false,
-    avatarPm = AvatarPm(),
   )
 }
