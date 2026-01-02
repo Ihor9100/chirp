@@ -33,6 +33,40 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+sealed interface Sender {
+
+  val name: String
+
+  data class You(override val name: String) : Sender
+  data class Other(override val name: String) : Sender
+}
+
+@ConsistentCopyVisibility
+data class Status private constructor(
+  val icon: ImageVector,
+  val titleRes: StringResource,
+  val color: Color,
+) {
+
+  companion object {
+    val success: Status
+      @Composable
+      get() = Status(
+        icon = vectorResource(Res.drawable.ic_check),
+        titleRes = Res.string.sent,
+        color = MaterialTheme.colorScheme.extended.textTertiary,
+      )
+
+    val error: Status
+      @Composable
+      get() = Status(
+        icon = vectorResource(Res.drawable.ic_cross),
+        titleRes = Res.string.failed,
+        color = MaterialTheme.colorScheme.error,
+      )
+  }
+}
+
 @Composable
 fun ChatMessage(
   modifier: Modifier = Modifier,
@@ -122,7 +156,7 @@ fun ChatMessage(
 
 @Composable
 @Preview
-fun ChatMessageThemed(
+private fun ChatMessageThemed(
   isDarkMode: Boolean,
   sender: Sender,
   status: Status,
@@ -142,7 +176,7 @@ fun ChatMessageThemed(
 
 @Composable
 @Preview
-fun ChatMessageYouDarkPreview() {
+private fun YouSuccessDarkPreview() {
   ChatMessageThemed(
     isDarkMode = true,
     sender = Sender.You("Ihor"),
@@ -152,7 +186,37 @@ fun ChatMessageYouDarkPreview() {
 
 @Composable
 @Preview
-fun ChatMessageYouLightPreview() {
+private fun YouErrorDarkPreview() {
+  ChatMessageThemed(
+    isDarkMode = true,
+    sender = Sender.You("Ihor"),
+    status = Status.error
+  )
+}
+
+@Composable
+@Preview
+private fun OtherSuccessDarkPreview() {
+  ChatMessageThemed(
+    isDarkMode = true,
+    sender = Sender.You("Bohdana"),
+    status = Status.success
+  )
+}
+
+@Composable
+@Preview
+private fun OtherErrorDarkPreview() {
+  ChatMessageThemed(
+    isDarkMode = true,
+    sender = Sender.You("Bohdana"),
+    status = Status.error
+  )
+}
+
+@Composable
+@Preview
+private fun YouSuccessLightPreview() {
   ChatMessageThemed(
     isDarkMode = false,
     sender = Sender.You("Ihor"),
@@ -162,54 +226,30 @@ fun ChatMessageYouLightPreview() {
 
 @Composable
 @Preview
-fun ChatMessageOtherDarkPreview() {
+private fun YouErrorLightPreview() {
   ChatMessageThemed(
-    isDarkMode = true,
-    sender = Sender.Other("Bohdana"),
+    isDarkMode = false,
+    sender = Sender.You("Ihor"),
     status = Status.error
   )
 }
 
 @Composable
 @Preview
-fun ChatMessageOtherLightPreview() {
+private fun OtherSuccessLightPreview() {
   ChatMessageThemed(
     isDarkMode = false,
-    sender = Sender.Other("Bohdana"),
-    status = Status.error
+    sender = Sender.You("Bohdana"),
+    status = Status.success
   )
 }
 
-sealed interface Sender {
-
-  val name: String
-
-  data class You(override val name: String) : Sender
-  data class Other(override val name: String) : Sender
-}
-
-@ConsistentCopyVisibility
-data class Status private constructor(
-  val icon: ImageVector,
-  val titleRes: StringResource,
-  val color: Color,
-) {
-
-  companion object {
-    val success: Status
-      @Composable
-      get() = Status(
-        icon = vectorResource(Res.drawable.ic_check),
-        titleRes = Res.string.sent,
-        color = MaterialTheme.colorScheme.extended.textTertiary,
-      )
-
-    val error: Status
-      @Composable
-      get() = Status(
-        icon = vectorResource(Res.drawable.ic_cross),
-        titleRes = Res.string.failed,
-        color = MaterialTheme.colorScheme.error,
-      )
-  }
+@Composable
+@Preview
+private fun OtherErrorLightPreview() {
+  ChatMessageThemed(
+    isDarkMode = false,
+    sender = Sender.You("Bohdana"),
+    status = Status.error
+  )
 }
