@@ -16,13 +16,14 @@ fun StackedAvatars(
   horizontalOffset: Float = 0.4f,
 ) {
   val invisibleCount = avatarsPm.size - maxVisibleCount
-  val horizontalOffsetDp = avatarsPm.firstOrNull()?.avatarSize?.dp
+  val horizontalOffsetDp = avatarsPm.firstOrNull()
+    ?.avatarSize?.dp
     ?.times(horizontalOffset)
     ?: 0.dp
 
   Row(
     modifier = modifier,
-    horizontalArrangement = Arrangement.spacedBy(-horizontalOffset)
+    horizontalArrangement = Arrangement.spacedBy(-horizontalOffsetDp)
   ) {
     avatarsPm
       .take(maxVisibleCount)
