@@ -24,6 +24,7 @@ import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
+import com.plcoding.core.presentation.screen.base.BaseScreenState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -109,13 +110,36 @@ fun LoginScreenContent(
   }
 }
 
+@Composable
+private fun Themed(
+  isDarkTheme: Boolean,
+) {
+  val baseScreenState = BaseScreenState(LoginScreenContent())
+
+  Theme(isDarkTheme) {
+    BaseScreenContent(
+      baseContent = baseScreenState.baseContent
+    ) {
+      LoginScreenContent(
+        content = baseScreenState.content,
+        onAction = {}
+      )
+    }
+  }
+}
+
 @Preview
 @Composable
-private fun LoginScreenPreview() {
-  Theme {
-    LoginScreenContent(
-      content = LoginScreenContent(),
-      onAction = {}
-    )
-  }
+private fun LightPreview() {
+  Themed(
+    isDarkTheme = false,
+  )
+}
+
+@Preview
+@Composable
+private fun DarkPreview() {
+  Themed(
+    isDarkTheme = true
+  )
 }
