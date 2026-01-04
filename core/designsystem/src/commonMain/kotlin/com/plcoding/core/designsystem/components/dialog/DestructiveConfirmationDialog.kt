@@ -106,7 +106,7 @@ fun DestructiveConfirmationDialog(
 }
 
 @Composable
-fun DestructiveConfirmationDialogThemed(
+private fun Themed(
   isDarkTheme: Boolean,
 ) {
   Theme(isDarkTheme) {
@@ -124,8 +124,8 @@ fun DestructiveConfirmationDialogThemed(
 
 @Composable
 @Preview
-fun LightPreview() {
-  DestructiveConfirmationDialogThemed(
+private fun LightPreview() {
+  Themed(
     isDarkTheme = false,
   )
 }
@@ -133,8 +133,8 @@ fun LightPreview() {
 
 @Composable
 @Preview
-fun DarkPreview() {
-  DestructiveConfirmationDialogThemed(
+private fun DarkPreview() {
+  Themed(
     isDarkTheme = true,
   )
 }

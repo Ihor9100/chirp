@@ -38,4 +38,7 @@ enum class DeviceConfiguration {
       }
     }
   }
+
+  val isMobile: Boolean
+    get() = this == MOBILE_PORTRAIT || this == MOBILE_LANDSCAPE
 }

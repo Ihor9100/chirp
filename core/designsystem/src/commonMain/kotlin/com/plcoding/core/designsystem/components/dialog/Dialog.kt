@@ -1,37 +1,36 @@
 package com.plcoding.core.designsystem.components.dialog
 
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(
+fun Dialog(
   modifier: Modifier = Modifier,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
-  val sheetState = rememberModalBottomSheetState(
-    skipPartiallyExpanded = true
-  )
-  LaunchedEffect(sheetState.isVisible) {
-    if (sheetState.isVisible) {
-      sheetState.expand()
-    }
-  }
-
-  ModalBottomSheet(
-    modifier = modifier,
-    sheetState = sheetState,
+  Dialog(
     onDismissRequest = onDismiss,
-    dragHandle = null,
   ) {
-    content ()
+    Surface(
+      modifier = modifier
+        .fillMaxWidth()
+        .background(
+          color = MaterialTheme.colorScheme.surface,
+          shape = RoundedCornerShape(16.dp),
+        )
+    ) {
+      content()
+    }
   }
 }
 
@@ -40,7 +39,7 @@ private fun Themed(
   isDarkTheme: Boolean,
 ) {
   Theme(isDarkTheme) {
-    BottomSheet(
+    Dialog(
       onDismiss = {},
       content = {},
     )
@@ -54,6 +53,7 @@ private fun LightPreview() {
     isDarkTheme = false,
   )
 }
+
 
 @Composable
 @Preview
