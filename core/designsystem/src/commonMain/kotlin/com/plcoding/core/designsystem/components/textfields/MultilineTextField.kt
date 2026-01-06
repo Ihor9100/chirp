@@ -49,7 +49,7 @@ fun MultilineTextField(
         if (deviceConfiguration == DeviceConfiguration.DESKTOP) {
           Modifier
             .shadow(
-              elevation = 4.dp,
+              elevation = 1.dp,
               shape = RoundedCornerShape(16.dp),
               clip = false,
             )
@@ -57,7 +57,7 @@ fun MultilineTextField(
               color = MaterialTheme.colorScheme.surface,
               shape = RoundedCornerShape(16.dp),
             )
-            .padding(4.dp)
+            .padding(8.dp)
         } else {
           Modifier
         }

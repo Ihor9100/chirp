@@ -2,11 +2,18 @@
 
 package com.plcoding.feature.chat.presentation.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -24,7 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.send
+import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.style.Theme
+import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
 import com.plcoding.core.presentation.utils.DeviceConfiguration
@@ -80,39 +91,40 @@ private fun ChatScreenContent(
     }
   }
 
-  Theme {
-    ListDetailPaneScaffold(
-      directive = scaffoldDirective,
-      value = navigator.scaffoldValue,
-      listPane = { ChatScreenListContent(content, navigator, onAction) },
-      detailPane = { ChatScreenDetailsContent(content, navigator, onAction) },
-    )
-  }
+  ListDetailPaneScaffold(
+    directive = scaffoldDirective,
+    value = navigator.scaffoldValue,
+    listPane = { ChatScreenListContent(content, navigator, deviceConfiguration, onAction) },
+    detailPane = { ChatScreenDetailsContent(content, navigator, deviceConfiguration, onAction) },
+  )
 }
 
 @Composable
 private fun ChatScreenListContent(
   content: ChatScreenContent,
   navigator: ThreePaneScaffoldNavigator<Any>,
+  deviceConfiguration: DeviceConfiguration,
   onAction: (ChatScreenAction) -> Unit,
 ) {
   val coroutineScope = rememberCoroutineScope()
 
   LazyColumn(
-    modifier = Modifier
-      .fillMaxSize(),
-    verticalArrangement = Arrangement.spacedBy(8.dp),
+    modifier = Modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
     items(100) { index ->
       Text(
         text = "Item $index",
         modifier = Modifier
+          .fillMaxWidth()
           .clickable {
             coroutineScope.launch {
               onAction(ChatScreenAction.OnChatClick("$index"))
               navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
             }
-          }
+          },
+        color = MaterialTheme.colorScheme.extended.textPrimary,
+        style = MaterialTheme.typography.titleLarge
       )
     }
   }
@@ -122,15 +134,36 @@ private fun ChatScreenListContent(
 private fun ChatScreenDetailsContent(
   content: ChatScreenContent,
   navigator: ThreePaneScaffoldNavigator<Any>,
+  deviceConfiguration: DeviceConfiguration,
   onAction: (ChatScreenAction) -> Unit,
 ) {
-  Box(
+  Column(
     modifier = Modifier
-      .fillMaxSize(),
-    contentAlignment = Alignment.Center,
+      .fillMaxSize()
+      .padding(16.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
-    Text(
-      text = content.chatId ?: "Empty"
+    Box(
+      modifier = Modifier
+        .fillMaxWidth()
+        .background(
+          color = MaterialTheme.colorScheme.surface,
+          shape = RoundedCornerShape(16.dp)
+        )
+        .weight(1f),
+      contentAlignment = Alignment.Center
+    ) {
+      Text(
+        text = content.chatId ?: "Empty",
+        color = MaterialTheme.colorScheme.extended.textPrimary,
+        style = MaterialTheme.typography.displayLarge
+      )
+    }
+    MultilineTextField(
+      deviceConfiguration = deviceConfiguration,
+      textFieldState = TextFieldState(),
+      inputPlaceholder = "Placeholder",
+      buttonTitleRes = Res.string.send,
     )
   }
 }
@@ -138,6 +171,7 @@ private fun ChatScreenDetailsContent(
 @Composable
 private fun Themed(
   isDarkTheme: Boolean,
+  deviceConfiguration: DeviceConfiguration,
 ) {
   val baseScreenState = BaseScreenState(ChatScreenContent())
 
@@ -147,25 +181,51 @@ private fun Themed(
     ) {
       ChatScreenContent(
         content = baseScreenState.content,
-        deviceConfiguration = getDeviceConfiguration(),
+        deviceConfiguration = deviceConfiguration,
         onAction = {}
       )
     }
   }
 }
 
-@Preview
 @Composable
-private fun LightPreview() {
+@Preview
+fun MobileLightPreview() {
   Themed(
     isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT
   )
 }
 
-@Preview
 @Composable
-private fun DarkPreview() {
+@Preview
+fun MobileDarkPreview() {
   Themed(
-    isDarkTheme = true
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 2000,
+  heightDp = 1500,
+)
+fun DesktopLightPreview() {
+  Themed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.DESKTOP
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 2000,
+  heightDp = 1500,
+)
+fun DesktopDarkPreview() {
+  Themed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.DESKTOP
   )
 }
