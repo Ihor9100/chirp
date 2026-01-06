@@ -1,7 +1,5 @@
 package com.plcoding.core.designsystem.components.dialog
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,12 +20,9 @@ fun Dialog(
     onDismissRequest = onDismiss,
   ) {
     Surface(
-      modifier = modifier
-        .fillMaxWidth()
-        .background(
-          color = MaterialTheme.colorScheme.surface,
-          shape = RoundedCornerShape(16.dp),
-        )
+      modifier = modifier,
+      shape = RoundedCornerShape(16.dp),
+      color = MaterialTheme.colorScheme.surface
     ) {
       content()
     }
