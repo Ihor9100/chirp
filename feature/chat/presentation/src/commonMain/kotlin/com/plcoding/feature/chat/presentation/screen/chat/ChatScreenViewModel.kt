@@ -1,4 +1,4 @@
-package com.plcoding.feature.chat.presentation.screen
+package com.plcoding.feature.chat.presentation.screen.chat
 
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 

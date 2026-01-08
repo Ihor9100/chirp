@@ -20,12 +20,13 @@ import com.plcoding.core.presentation.utils.clearFocusOnTab
 fun BaseScreenContent(
   modifier: Modifier = Modifier,
   baseContent: BaseContent,
+  backgroundColor: Color = MaterialTheme.colorScheme.background,
   content: @Composable BoxScope.() -> Unit,
 ) {
   Box(
     modifier = modifier
       .fillMaxSize()
-      .background(MaterialTheme.colorScheme.background)
+      .background(backgroundColor)
       .clearFocusOnTab()
       .safeDrawingPadding(),
     contentAlignment = Alignment.Center,

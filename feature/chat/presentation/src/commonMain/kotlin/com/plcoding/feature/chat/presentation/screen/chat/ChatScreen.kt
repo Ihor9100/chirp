@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalComposeUiApi::class)
 
-package com.plcoding.feature.chat.presentation.screen
+package com.plcoding.feature.chat.presentation.screen.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
