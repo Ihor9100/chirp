@@ -25,15 +25,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun TextFieldPlain(
   modifier: Modifier = Modifier,
-  topTitle: String,
+  topTitle: String? = null,
   textFieldState: TextFieldState,
   inputPlaceholder: String,
-  bottomTitle: String?,
-  keyboardType: KeyboardType,
+  bottomTitle: String? = null,
+  keyboardType: KeyboardType = KeyboardType.Text,
   isError: Boolean = false,
   isEnabled: Boolean = true,
   isSingleLineInput: Boolean = true,
-  onFocusChanged: ((Boolean) -> Unit) = {},
+  onFocusChanged: ((isFocused: Boolean) -> Unit)? = null,
 ) {
   TextFieldLayout(
     modifier = modifier,

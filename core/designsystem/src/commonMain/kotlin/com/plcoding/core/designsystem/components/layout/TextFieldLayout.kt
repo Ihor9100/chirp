@@ -19,16 +19,16 @@ import com.plcoding.core.designsystem.style.extended
 @Composable
 fun TextFieldLayout(
   modifier: Modifier = Modifier,
-  topTitle: String,
-  bottomTitle: String?,
+  topTitle: String? = null,
+  bottomTitle: String? = null,
   isError: Boolean = false,
   isEnabled: Boolean = true,
-  onFocusChanged: ((Boolean) -> Unit) = {},
+  onFocusChanged: ((isFocused: Boolean) -> Unit)? = null,
   textField: @Composable (TextStyle, MutableInteractionSource, isFocused: Boolean) -> Unit,
 ) {
   val interactionSource = remember { MutableInteractionSource() }
   val isFocused by interactionSource.collectIsFocusedAsState()
-  LaunchedEffect(isFocused) { onFocusChanged(isFocused) }
+  LaunchedEffect(isFocused) { onFocusChanged?.invoke(isFocused) }
 
   val inputTextStyle = MaterialTheme.typography.bodyMedium.copy(
     color = if (isEnabled) {
@@ -41,7 +41,7 @@ fun TextFieldLayout(
   Column(
     modifier = modifier,
   ) {
-    if (topTitle.isNotBlank()) {
+    if (!topTitle.isNullOrBlank()) {
       Text(
         text = topTitle,
         color = MaterialTheme.colorScheme.extended.textSecondary,
