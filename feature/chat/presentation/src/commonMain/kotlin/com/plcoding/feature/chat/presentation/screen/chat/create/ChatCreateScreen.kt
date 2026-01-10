@@ -59,7 +59,7 @@ fun ChatCreateScreen(
     ) {
       ChatCreateScreenContent(
         content = state.content,
-        onAction = viewModel::onAction
+        onAction = { navController.popBackStack() }
       )
     }
   }

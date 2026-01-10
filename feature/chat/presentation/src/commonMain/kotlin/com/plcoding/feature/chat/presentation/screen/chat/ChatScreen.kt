@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.send
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
@@ -40,12 +41,14 @@ import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
 import com.plcoding.core.presentation.utils.DeviceConfiguration
 import com.plcoding.core.presentation.utils.getDeviceConfiguration
+import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatScreen(
+  navController: NavController,
   viewModel: ChatScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
@@ -56,7 +59,9 @@ fun ChatScreen(
     ChatScreenContent(
       content = state.content,
       deviceConfiguration = getDeviceConfiguration(),
-      onAction = viewModel::onAction
+      onAction = {
+        navController.navigate(ChatRoute.ChatCreate)
+      }
     )
   }
 }
