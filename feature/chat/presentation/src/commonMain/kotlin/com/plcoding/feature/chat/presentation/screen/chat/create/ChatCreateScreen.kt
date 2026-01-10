@@ -23,10 +23,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.add
+import chirp.feature.chat.presentation.generated.resources.cancel
 import chirp.feature.chat.presentation.generated.resources.create_chat
 import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.invite_by_username_or_email
 import com.plcoding.core.designsystem.components.Avatar
+import com.plcoding.core.designsystem.components.AvatarPm
+import com.plcoding.core.designsystem.components.AvatarSize
 import com.plcoding.core.designsystem.components.HorizontalDivider
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.button.ButtonStyle
@@ -36,6 +39,7 @@ import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.titleXSmall
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
+import com.plcoding.feature.chat.presentation.model.ChatParticipantPm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -112,13 +116,13 @@ fun ChatCreateScreenContent(
         style = ButtonStyle.SECONDARY,
       )
     }
+    HorizontalDivider()
     Box(
-      modifier = Modifier.padding(
-        horizontal = 16.dp,
-        vertical = 12.dp,
-      )
+      modifier = Modifier.padding(16.dp)
     ) {
-      LazyColumn {
+      LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+      ) {
         items(
           count = content.chatParticipantsPm.size,
           key = { content.chatParticipantsPm[it].id },
@@ -142,6 +146,28 @@ fun ChatCreateScreenContent(
         }
       }
     }
+    HorizontalDivider()
+    Row(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(
+          horizontal = 16.dp,
+          vertical = 20.dp,
+        ),
+      horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      Button(
+        modifier = Modifier,
+        text = stringResource(Res.string.cancel),
+        style = ButtonStyle.SECONDARY,
+      )
+      Button(
+        modifier = Modifier,
+        text = stringResource(Res.string.create_chat),
+        style = ButtonStyle.PRIMARY,
+      )
+    }
   }
 }
 
@@ -149,7 +175,30 @@ fun ChatCreateScreenContent(
 private fun Themed(
   isDarkTheme: Boolean,
 ) {
-  val baseScreenState = BaseScreenState(ChatCreateScreenContent())
+  val baseScreenState = BaseScreenState(
+    content = ChatCreateScreenContent(
+      chatParticipantsPm = listOf(
+        ChatParticipantPm(
+          id = "1",
+          avatarPm = AvatarPm(
+            fullName = "Ihor A",
+            imageUrl = "1",
+            avatarSize = AvatarSize.MEDIUM,
+          ),
+          fullName = "Ihor Bohdanovskyi"
+        ),
+        ChatParticipantPm(
+          id = "2",
+          avatarPm = AvatarPm(
+            fullName = "Ihor B",
+            imageUrl = "1",
+            avatarSize = AvatarSize.MEDIUM,
+          ),
+          fullName = "Ihor Bohdanovskyi"
+        ),
+      ),
+    ),
+  )
 
   Theme(isDarkTheme) {
     BaseScreenContent(
