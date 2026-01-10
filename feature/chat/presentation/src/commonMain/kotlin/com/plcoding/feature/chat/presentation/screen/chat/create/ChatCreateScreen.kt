@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.add
@@ -33,6 +32,7 @@ import com.plcoding.core.designsystem.components.AvatarSize
 import com.plcoding.core.designsystem.components.HorizontalDivider
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.components.dialog.AdaptiveDialogSheetLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
@@ -47,17 +47,21 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun ChatCreateScreen(
   navController: NavController,
-  viewModel: ChatCreateScreenViewModel = viewModel()
+  viewModel: ChatCreateScreenViewModel = ChatCreateScreenViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
   BaseScreenContent(
     baseContent = state.baseContent,
   ) {
-    ChatCreateScreenContent(
-      content = state.content,
-      onAction = viewModel::onAction
-    )
+    AdaptiveDialogSheetLayout(
+      onDismiss = navController::popBackStack
+    ) {
+      ChatCreateScreenContent(
+        content = state.content,
+        onAction = viewModel::onAction
+      )
+    }
   }
 }
 
