@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.AppLogo
 import com.plcoding.core.designsystem.components.button.Button
-import com.plcoding.core.designsystem.components.layout.AdaptiveFormLayout
+import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.layout.SnackbarLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.style.Theme

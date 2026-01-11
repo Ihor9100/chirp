@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,13 +31,14 @@ import com.plcoding.core.designsystem.components.AvatarSize
 import com.plcoding.core.designsystem.components.HorizontalDivider
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.button.ButtonStyle
-import com.plcoding.core.designsystem.components.dialog.AdaptiveDialogSheetLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.titleXSmall
-import com.plcoding.core.presentation.screen.base.BaseScreenContent
+import com.plcoding.core.presentation.screen.base.BaseContent
+import com.plcoding.core.presentation.screen.base.BaseScreenDialogContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
+import com.plcoding.core.presentation.screen.base.Overlay
 import com.plcoding.feature.chat.presentation.model.ChatParticipantPm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -51,17 +51,14 @@ fun ChatCreateScreen(
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
-  BaseScreenContent(
+  BaseScreenDialogContent(
     baseContent = state.baseContent,
+    onDismiss = navController::popBackStack,
   ) {
-    AdaptiveDialogSheetLayout(
-      onDismiss = navController::popBackStack
-    ) {
-      ChatCreateScreenContent(
-        content = state.content,
-        onAction = { navController.popBackStack() }
-      )
-    }
+    ChatCreateScreenContent(
+      content = state.content,
+      onAction = { navController.popBackStack() }
+    )
   }
 }
 
@@ -71,7 +68,7 @@ fun ChatCreateScreenContent(
   onAction: (ChatCreateScreenAction) -> Unit,
 ) {
   Column(
-    modifier = Modifier.fillMaxSize()
+    modifier = Modifier.fillMaxWidth()
   ) {
     Row(
       modifier = Modifier
@@ -202,11 +199,13 @@ private fun Themed(
         ),
       ),
     ),
+    baseContent = BaseContent(setOf(Overlay.LOADABLE))
   )
 
   Theme(isDarkTheme) {
-    BaseScreenContent(
-      baseContent = baseScreenState.baseContent
+    BaseScreenDialogContent(
+      baseContent = baseScreenState.baseContent,
+      onDismiss = {},
     ) {
       ChatCreateScreenContent(
         content = baseScreenState.content,

@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.layout.PaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
@@ -37,10 +36,10 @@ import chirp.feature.chat.presentation.generated.resources.send
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
+import com.plcoding.core.designsystem.utils.DeviceConfiguration
+import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
-import com.plcoding.core.presentation.utils.DeviceConfiguration
-import com.plcoding.core.presentation.utils.getDeviceConfiguration
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -125,7 +124,7 @@ private fun ChatScreenListContent(
           .clickable {
             coroutineScope.launch {
               onAction(ChatScreenAction.OnChatClick("$index"))
-              navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
+//              navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
             }
           },
         color = MaterialTheme.colorScheme.extended.textPrimary,

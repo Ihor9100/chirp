@@ -1,4 +1,4 @@
-package com.plcoding.core.designsystem.components.layout
+package com.plcoding.core.designsystem.components.layout.adaptive
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,10 +24,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.AppLogo
 import com.plcoding.core.designsystem.components.Title
+import com.plcoding.core.designsystem.components.layout.FormLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.presentation.utils.DeviceConfiguration
-import com.plcoding.core.presentation.utils.getDeviceConfiguration
+import com.plcoding.core.designsystem.utils.DeviceConfiguration
+import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

@@ -15,7 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.ChirError
 import com.plcoding.core.designsystem.components.SuccessIcon
 import com.plcoding.core.designsystem.components.button.Button
-import com.plcoding.core.designsystem.components.layout.AdaptiveResultLayout
+import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.components.layout.ResultLayout
 import com.plcoding.core.designsystem.components.layout.SnackbarLayout
 import com.plcoding.core.designsystem.style.Theme

@@ -31,7 +31,7 @@ fun BottomSheet(
     onDismissRequest = onDismiss,
     dragHandle = null,
   ) {
-    content ()
+    content()
   }
 }
 

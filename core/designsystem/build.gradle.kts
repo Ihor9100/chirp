@@ -11,7 +11,6 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation(projects.core.presentation)
       }
     }
 

@@ -26,8 +26,8 @@ import chirp.core.designsystem.generated.resources.sent
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.presentation.utils.DeviceConfiguration
-import com.plcoding.core.presentation.utils.getDeviceConfiguration
+import com.plcoding.core.designsystem.utils.DeviceConfiguration
+import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource

@@ -19,7 +19,7 @@ import chirp.feature.auth.presentation.generated.resources.forgot_password
 import com.plcoding.core.designsystem.components.AppLogo
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.button.ButtonStyle
-import com.plcoding.core.designsystem.components.layout.AdaptiveFormLayout
+import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme

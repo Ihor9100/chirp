@@ -1,4 +1,4 @@
-package com.plcoding.core.presentation.utils
+package com.plcoding.core.designsystem.utils
 
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable

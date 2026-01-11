@@ -1,4 +1,4 @@
-package com.plcoding.core.designsystem.components.dialog
+package com.plcoding.core.presentation.screen.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,8 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import chirp.core.designsystem.generated.resources.Res
-import chirp.core.designsystem.generated.resources.ic_cross
+import chirp.core.presentation.generated.resources.Res
+import chirp.core.presentation.generated.resources.ic_cross
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.designsystem.style.Theme

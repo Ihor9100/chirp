@@ -1,10 +1,12 @@
-package com.plcoding.core.designsystem.components.dialog
+package com.plcoding.core.designsystem.components.layout.adaptive
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.plcoding.core.designsystem.components.dialog.BottomSheet
+import com.plcoding.core.designsystem.components.dialog.Dialog
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.utils.DeviceConfiguration
-import com.plcoding.core.presentation.utils.getDeviceConfiguration
+import com.plcoding.core.designsystem.utils.DeviceConfiguration
+import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
