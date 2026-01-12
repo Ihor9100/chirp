@@ -1,6 +1,7 @@
 package com.plcoding.feature.chat.presentation.screen.chat.create
 
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
+import kotlinx.coroutines.delay
 
 class ChatCreateScreenViewModel : BaseScreenViewModel<ChatCreateScreenContent>() {
 
@@ -10,7 +11,11 @@ class ChatCreateScreenViewModel : BaseScreenViewModel<ChatCreateScreenContent>()
 
   fun onAction(action: ChatCreateScreenAction) {
     when (action) {
-      else -> TODO("Handle actions")
+      else -> {
+        launchLoadable {
+          delay(5000)
+        }
+      }
     }
   }
 }

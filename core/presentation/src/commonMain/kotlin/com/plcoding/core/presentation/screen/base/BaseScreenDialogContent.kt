@@ -13,41 +13,46 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveDialogSheetLayout
+import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.presentation.utils.clearFocusOnTab
 
 @Composable
 fun BaseScreenDialogContent(
   modifier: Modifier = Modifier,
   baseContent: BaseContent,
+  deviceConfiguration: DeviceConfiguration,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
-  Box(
-    modifier = modifier
-      .background(MaterialTheme.colorScheme.surface)
-      .clearFocusOnTab()
-      .safeDrawingPadding(),
-    contentAlignment = Alignment.Center,
+  AdaptiveDialogSheetLayout(
+    onDismiss = onDismiss,
+    containerColor = MaterialTheme.colorScheme.surface,
+    deviceConfiguration = deviceConfiguration,
   ) {
-    AdaptiveDialogSheetLayout(
-      onDismiss = onDismiss,
-      content = content,
-    )
+    Box(
+      modifier = modifier
+        .clearFocusOnTab()
+        .safeDrawingPadding(),
+      contentAlignment = Alignment.Center,
+    ) {
+      content()
 
-    baseContent.overlays?.forEach { overlay ->
-      when (overlay) {
-        Overlay.BLOCKABLE -> {
-          Box(
-            modifier = Modifier
-              .background(Color.Black.copy(alpha = 0.2f))
-              .pointerInput(Unit) {}
-          )
-        }
-        Overlay.LOADABLE -> {
-          CircularProgressIndicator(
-            modifier = Modifier.size(64.dp),
-            color = MaterialTheme.colorScheme.primary,
-          )
+      Box(
+        modifier = Modifier
+          .matchParentSize()
+          .background(Color.Black.copy(alpha = 0.2f))
+          .pointerInput(Unit) {}
+      )
+      CircularProgressIndicator(
+        modifier = Modifier.size(64.dp),
+        color = MaterialTheme.colorScheme.primary,
+      )
+      baseContent.overlays?.forEach { overlay ->
+        when (overlay) {
+          Overlay.BLOCKABLE -> {
+          }
+          Overlay.LOADABLE -> {
+          }
         }
       }
     }

@@ -1,11 +1,13 @@
 package com.plcoding.core.designsystem.components.dialog
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -13,6 +15,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun BottomSheet(
   modifier: Modifier = Modifier,
+  containerColor: Color,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -27,8 +30,9 @@ fun BottomSheet(
 
   ModalBottomSheet(
     modifier = modifier,
-    sheetState = sheetState,
     onDismissRequest = onDismiss,
+    sheetState = sheetState,
+    containerColor = containerColor,
     dragHandle = null,
   ) {
     content()
@@ -41,6 +45,7 @@ private fun Themed(
 ) {
   Theme(isDarkTheme) {
     BottomSheet(
+      containerColor = MaterialTheme.colorScheme.surface,
       onDismiss = {},
       content = {},
     )

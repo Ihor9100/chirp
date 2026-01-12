@@ -35,6 +35,8 @@ import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.titleXSmall
+import com.plcoding.core.designsystem.utils.DeviceConfiguration
+import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseContent
 import com.plcoding.core.presentation.screen.base.BaseScreenDialogContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
@@ -53,11 +55,12 @@ fun ChatCreateScreen(
 
   BaseScreenDialogContent(
     baseContent = state.baseContent,
+    deviceConfiguration = getDeviceConfiguration(),
     onDismiss = navController::popBackStack,
   ) {
     ChatCreateScreenContent(
       content = state.content,
-      onAction = { navController.popBackStack() }
+      onAction = viewModel::onAction
     )
   }
 }
@@ -174,7 +177,8 @@ fun ChatCreateScreenContent(
 
 @Composable
 private fun Themed(
-  isDarkTheme: Boolean,
+  isDarkTheme: Boolean = false,
+  deviceConfiguration: DeviceConfiguration,
 ) {
   val baseScreenState = BaseScreenState(
     content = ChatCreateScreenContent(
@@ -205,6 +209,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     BaseScreenDialogContent(
       baseContent = baseScreenState.baseContent,
+      deviceConfiguration = deviceConfiguration,
       onDismiss = {},
     ) {
       ChatCreateScreenContent(
@@ -215,18 +220,50 @@ private fun Themed(
   }
 }
 
-@Preview
 @Composable
-private fun LightPreview() {
+@Preview(
+  widthDp = 450,
+  heightDp = 1000,
+)
+fun MobileLightPreview() {
   Themed(
     isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
 }
 
-@Preview
 @Composable
-private fun DarkPreview() {
+@Preview(
+  widthDp = 450,
+  heightDp = 1000,
+)
+fun MobileDarkPreview() {
   Themed(
-    isDarkTheme = true
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 750,
+  heightDp = 1200,
+)
+fun TabletLightPreview() {
+  Themed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
+  )
+}
+
+@Composable
+@Preview(
+  widthDp = 750,
+  heightDp = 1200,
+)
+fun TabletDarkPreview() {
+  Themed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
 }
