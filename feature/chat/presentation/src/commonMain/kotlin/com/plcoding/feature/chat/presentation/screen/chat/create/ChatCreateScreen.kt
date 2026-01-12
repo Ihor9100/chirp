@@ -59,6 +59,7 @@ fun ChatCreateScreen(
     onDismiss = navController::popBackStack,
   ) {
     ChatCreateScreenContent(
+      baseContent = state.baseContent,
       content = state.content,
       onAction = viewModel::onAction
     )
@@ -67,6 +68,7 @@ fun ChatCreateScreen(
 
 @Composable
 fun ChatCreateScreenContent(
+  baseContent: BaseContent,
   content: ChatCreateScreenContent,
   onAction: (ChatCreateScreenAction) -> Unit,
 ) {
@@ -170,6 +172,7 @@ fun ChatCreateScreenContent(
         modifier = Modifier,
         text = stringResource(Res.string.create_chat),
         style = ButtonStyle.PRIMARY,
+        isLoading = !baseContent.overlays.isNullOrEmpty(),
       )
     }
   }
@@ -203,7 +206,7 @@ private fun Themed(
         ),
       ),
     ),
-    baseContent = BaseContent(setOf(Overlay.LOADABLE))
+    baseContent = BaseContent(setOf(Overlay.BLOCKABLE, Overlay.LOADABLE))
   )
 
   Theme(isDarkTheme) {
@@ -213,6 +216,7 @@ private fun Themed(
       onDismiss = {},
     ) {
       ChatCreateScreenContent(
+        baseContent = baseScreenState.baseContent,
         content = baseScreenState.content,
         onAction = {}
       )
