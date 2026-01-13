@@ -5,4 +5,6 @@
 	<string name="send">Send</string>
 	<string name="create_chat">Create Chat</string>
 	<string name="invite_by_username_or_email">Invite by Username or Email</string>
+	<string name="no_members">No Members</string>
+	<string name="add_members_to_your_chat">Add members to your chat</string>
 </resources>

@@ -21,10 +21,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.add
+import chirp.feature.chat.presentation.generated.resources.add_members_to_your_chat
 import chirp.feature.chat.presentation.generated.resources.cancel
 import chirp.feature.chat.presentation.generated.resources.create_chat
 import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.invite_by_username_or_email
+import chirp.feature.chat.presentation.generated.resources.no_members
 import com.plcoding.core.designsystem.components.Avatar
 import com.plcoding.core.designsystem.components.AvatarPm
 import com.plcoding.core.designsystem.components.AvatarSize
@@ -45,11 +47,12 @@ import com.plcoding.feature.chat.presentation.model.ChatParticipantPm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatCreateScreen(
   navController: NavController,
-  viewModel: ChatCreateScreenViewModel = ChatCreateScreenViewModel()
+  viewModel: ChatCreateScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -59,7 +62,6 @@ fun ChatCreateScreen(
     onDismiss = navController::popBackStack,
   ) {
     ChatCreateScreenContent(
-      baseContent = state.baseContent,
       content = state.content,
       onAction = viewModel::onAction
     )
@@ -68,12 +70,11 @@ fun ChatCreateScreen(
 
 @Composable
 fun ChatCreateScreenContent(
-  baseContent: BaseContent,
   content: ChatCreateScreenContent,
   onAction: (ChatCreateScreenAction) -> Unit,
 ) {
   Column(
-    modifier = Modifier.fillMaxWidth()
+    modifier = Modifier.fillMaxWidth(),
   ) {
     Row(
       modifier = Modifier
@@ -123,12 +124,37 @@ fun ChatCreateScreenContent(
       )
     }
     HorizontalDivider()
-    Box(
-      modifier = Modifier.padding(16.dp)
+    LazyColumn(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(
+          horizontal = 16.dp,
+          vertical = 12.dp,
+        ),
+      verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-      LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-      ) {
+      if (content.chatParticipantsPm.isEmpty()) {
+        item {
+          Column(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(vertical = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically)
+          ) {
+            Text(
+              text = stringResource(Res.string.no_members),
+              color = MaterialTheme.colorScheme.extended.textPrimary,
+              style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+              text = stringResource(Res.string.add_members_to_your_chat),
+              color = MaterialTheme.colorScheme.extended.textSecondary,
+              style = MaterialTheme.typography.bodyMedium,
+            )
+          }
+        }
+      } else {
         items(
           count = content.chatParticipantsPm.size,
           key = { content.chatParticipantsPm[it].id },
@@ -172,7 +198,6 @@ fun ChatCreateScreenContent(
         modifier = Modifier,
         text = stringResource(Res.string.create_chat),
         style = ButtonStyle.PRIMARY,
-        isLoading = !baseContent.overlays.isNullOrEmpty(),
       )
     }
   }
@@ -206,7 +231,6 @@ private fun Themed(
         ),
       ),
     ),
-    baseContent = BaseContent(setOf(Overlay.BLOCKABLE, Overlay.LOADABLE))
   )
 
   Theme(isDarkTheme) {
@@ -216,7 +240,6 @@ private fun Themed(
       onDismiss = {},
     ) {
       ChatCreateScreenContent(
-        baseContent = baseScreenState.baseContent,
         content = baseScreenState.content,
         onAction = {}
       )
