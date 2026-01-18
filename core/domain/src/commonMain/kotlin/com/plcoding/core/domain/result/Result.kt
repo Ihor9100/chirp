@@ -1,5 +1,10 @@
 package com.plcoding.core.domain.result
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
+
 typealias Empty<E> = Result<Unit, E>
 
 sealed interface Result<out D, out E : Error> {
@@ -14,8 +19,20 @@ inline fun <D, E : Error, R> Result<D, E>.map(transform: (D) -> R): Result<R, E>
   }
 }
 
+suspend inline fun <D, E : Error, R> Result<D, E>.mapOn(
+  dispatcher: CoroutineDispatcher = Dispatchers.IO,
+  crossinline transform: (D) -> R,
+): Result<R, E> {
+  return withContext(dispatcher) {
+    when (this@mapOn) {
+      is Result.Failure -> this@mapOn
+      is Result.Success -> Result.Success(transform(data))
+    }
+  }
+}
+
 fun <D, E : Error> Result<D, E>.asEmpty(): Empty<E> {
- return map {  }
+  return map { }
 }
 
 inline fun <D, E : Error> Result<D, E>.onSuccess(action: (D) -> Unit): Result<D, E> {

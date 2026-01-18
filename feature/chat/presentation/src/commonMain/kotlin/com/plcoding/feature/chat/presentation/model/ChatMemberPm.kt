@@ -2,8 +2,8 @@ package com.plcoding.feature.chat.presentation.model
 
 import com.plcoding.core.designsystem.components.AvatarPm
 
-data class ChatParticipantPm(
+data class ChatMemberPm(
   val id: String,
-  val avatarPm: AvatarPm,
   val fullName: String,
+  val avatarPm: AvatarPm,
 )

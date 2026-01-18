@@ -1,9 +1,10 @@
 package com.plcoding.feature.chat.presentation.screen.chat.create
 
 import androidx.compose.foundation.text.input.TextFieldState
-import com.plcoding.feature.chat.presentation.model.ChatParticipantPm
+import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 
 data class ChatCreateScreenContent(
   val searchTextFieldState: TextFieldState = TextFieldState(),
-  val chatParticipantsPm: List<ChatParticipantPm> = listOf(),
+  val chatMemberPm: ChatMemberPm? = null,
+  val chatParticipantsPm: List<ChatMemberPm> = listOf(),
 )

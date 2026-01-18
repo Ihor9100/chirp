@@ -38,7 +38,7 @@ fun StackedAvatars(
       Avatar(
         modifier = Modifier,
         avatarPm = AvatarPm(
-          fullName = "$invisibleCount +",
+          initials = "$invisibleCount +",
           imageUrl = null,
           avatarSize = AvatarSize.MEDIUM,
         )
@@ -58,22 +58,22 @@ private fun StackedAvatarsThemed(
       modifier = Modifier,
       avatarsPm = listOf(
         AvatarPm(
-          fullName = "Ihor A",
+          initials = "Ihor A",
           imageUrl = "1",
           avatarSize = AvatarSize.MEDIUM,
         ),
         AvatarPm(
-          fullName = "Ihor B",
+          initials = "Ihor B",
           imageUrl = "2",
           avatarSize = AvatarSize.MEDIUM,
         ),
         AvatarPm(
-          fullName = "Ihor C",
+          initials = "Ihor C",
           imageUrl = "3",
           avatarSize = AvatarSize.MEDIUM,
         ),
         AvatarPm(
-          fullName = "Ihor D",
+          initials = "Ihor D",
           imageUrl = "4",
           avatarSize = AvatarSize.MEDIUM,
         ),

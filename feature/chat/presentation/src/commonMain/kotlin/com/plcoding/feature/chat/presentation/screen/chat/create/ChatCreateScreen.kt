@@ -1,7 +1,6 @@
 package com.plcoding.feature.chat.presentation.screen.chat.create
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,11 +38,9 @@ import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.titleXSmall
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
-import com.plcoding.core.presentation.screen.base.BaseContent
 import com.plcoding.core.presentation.screen.base.BaseScreenDialogContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
-import com.plcoding.core.presentation.screen.base.Overlay
-import com.plcoding.feature.chat.presentation.model.ChatParticipantPm
+import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -211,19 +208,19 @@ private fun Themed(
   val baseScreenState = BaseScreenState(
     content = ChatCreateScreenContent(
       chatParticipantsPm = listOf(
-        ChatParticipantPm(
+        ChatMemberPm(
           id = "1",
           avatarPm = AvatarPm(
-            fullName = "Ihor A",
+            initials = "Ihor A",
             imageUrl = "1",
             avatarSize = AvatarSize.MEDIUM,
           ),
           fullName = "Ihor Bohdanovskyi"
         ),
-        ChatParticipantPm(
+        ChatMemberPm(
           id = "2",
           avatarPm = AvatarPm(
-            fullName = "Ihor B",
+            initials = "Ihor B",
             imageUrl = "1",
             avatarSize = AvatarSize.MEDIUM,
           ),

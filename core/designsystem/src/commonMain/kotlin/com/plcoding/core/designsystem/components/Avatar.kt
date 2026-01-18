@@ -26,23 +26,10 @@ enum class AvatarSize(val dp: Dp) {
 }
 
 data class AvatarPm(
-  val fullName: String,
+  val initials: String,
   val imageUrl: String?,
   val avatarSize: AvatarSize,
-) {
-
-  fun getInitials(): String {
-    if (fullName.isBlank()) return "?"
-
-    return fullName
-      .split(" ")
-      .take(2)
-      .joinToString(
-        separator = "",
-        transform = { it.first().uppercase() },
-      )
-  }
-}
+)
 
 @Composable
 fun Avatar(
@@ -89,7 +76,7 @@ private fun AvatarThemed(
     Avatar(
       modifier = Modifier,
       avatarPm = AvatarPm(
-        fullName = "Ihor Bohdanovskyi",
+        initials = "Ihor Bohdanovskyi",
         imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
         avatarSize = AvatarSize.MEDIUM,
       ),
