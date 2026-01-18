@@ -5,5 +5,4 @@ import org.jetbrains.compose.resources.StringResource
 
 data class BaseContent(
   val overlays: Set<Overlay>? = null,
-  val snackbarEvent: Event<StringResource>? = null,
 )

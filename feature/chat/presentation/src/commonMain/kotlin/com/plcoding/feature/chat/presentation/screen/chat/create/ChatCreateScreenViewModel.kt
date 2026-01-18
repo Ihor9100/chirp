@@ -12,6 +12,7 @@ import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
+import com.plcoding.core.presentation.screen.base.Overlay
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.repository.remote.ChatRemoteRepository
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
@@ -67,7 +68,7 @@ class ChatCreateScreenViewModel(
       else -> error.getStringRes()
     }
     updateBaseContent {
-      copy(snackbarEvent = Event(errorRes))
+      copy(overlays = setOf(Overlay.Snackbar(Event(errorRes))))
     }
   }
 

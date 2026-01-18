@@ -59,7 +59,8 @@ fun ChatScreen(
       content = state.content,
       deviceConfiguration = getDeviceConfiguration(),
       onAction = {
-        navController.navigate(ChatRoute.ChatCreate)
+        viewModel.onAction(it)
+//        navController.navigate(ChatRoute.ChatCreate)
       }
     )
   }

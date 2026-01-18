@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -41,7 +42,11 @@ fun BaseScreenDialogContent(
         .safeDrawingPadding(),
       contentAlignment = Alignment.Center,
     ) {
+      val snackbarHostState = remember { SnackbarHostState() }
+      val coroutineScope = rememberCoroutineScope()
+
       content()
+
 
       baseContent.overlays?.forEach { overlay ->
         when (overlay) {
@@ -60,18 +65,19 @@ fun BaseScreenDialogContent(
             )
           }
           is Overlay.Snackbar -> {
-            val snackbarHostState = remember { SnackbarHostState() }
-
-            rememberCoroutineScope().launch {
+            LaunchedEffect(overlay.event) {
               overlay.event.consumeAsync {
                 snackbarHostState.showSnackbar(getString(it))
               }
             }
-            
-            SnackbarHost(snackbarHostState)
           }
         }
       }
+
+      SnackbarHost(
+        hostState = snackbarHostState,
+        modifier = Modifier.align(Alignment.BottomCenter)
+      )
     }
   }
 }

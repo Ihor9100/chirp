@@ -63,7 +63,9 @@ fun BaseScreenContent(
             }
           }
 
-          SnackbarHost(snackbarHostState)
+          SnackbarHost(
+            snackbarHostState,
+            modifier= Modifier.align(Alignment.BottomCenter))
         }
       }
     }
