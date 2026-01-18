@@ -24,8 +24,9 @@ val coreDataDiModule = module {
 
   single<Json> { Json { ignoreUnknownKeys = true } }
   single<Logger> { KermitLogger }
-  single<HttpClient> { HttpClientFactory(get(), get(), get()).create(get()) }
+  single<HttpClient> { get<HttpClientFactory>().create() }
 
+  singleOf(::HttpClientFactory)
   singleOf(::AuthRemoteDataRepository) bind AuthRemoteRepository::class
   singleOf(::PreferencesLocalDataRepository) bind PreferencesLocalRepository::class
 

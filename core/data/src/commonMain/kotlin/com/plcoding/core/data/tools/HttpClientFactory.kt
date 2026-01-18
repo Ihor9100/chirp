@@ -1,6 +1,8 @@
 package com.plcoding.core.data.tools
 
 import com.plcoding.core.data.BuildKonfig
+import com.plcoding.core.data.mapper.AuthInfoMapper
+import com.plcoding.core.data.model.AuthInfoAm
 import com.plcoding.core.data.model.RefreshRequestAm
 import com.plcoding.core.data.repository.local.PreferencesLocalDataRepository
 import com.plcoding.core.domain.model.AuthInfo
@@ -31,9 +33,11 @@ class HttpClientFactory(
   private val json: Json,
   private val chirpLogger: ChirpLogger,
   private val preferencesLocalDataRepository: PreferencesLocalDataRepository,
+  private val authInfoMapper: AuthInfoMapper,
+  private val httpClientEngine: HttpClientEngine,
 ) {
 
-  fun create(httpClientEngine: HttpClientEngine): HttpClient {
+  fun create(): HttpClient {
     return HttpClient(httpClientEngine) {
       install(ContentNegotiation) {
         json(json)
@@ -81,12 +85,12 @@ class HttpClientFactory(
 
             var bearerTokens: BearerTokens? = null
 
-            client.post<RefreshRequestAm, AuthInfo>(
+            client.post<RefreshRequestAm, AuthInfoAm>(
               route = "/auth/refresh",
               request = RefreshRequestAm(authInfo.refreshToken),
               builder = { markAsRefreshTokenRequest() }
             ).onSuccess {
-              preferencesLocalDataRepository.saveAuthInfo(it)
+              preferencesLocalDataRepository.saveAuthInfo(authInfoMapper.map(it, Unit))
               bearerTokens = BearerTokens(it.accessToken, it.refreshToken)
             }.onFailure {
               preferencesLocalDataRepository.saveAuthInfo(null)

@@ -19,6 +19,7 @@ import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.seconds
@@ -30,6 +31,7 @@ class ChatCreateScreenViewModel(
 
   private val searchQueryFlow = snapshotFlow { state.value.content.searchTextFieldState.text }
     .debounce(1.seconds)
+    .filter { it.isNotBlank() }
     .onEach(::searchMember)
 
   override fun getInitialContent(): ChatCreateScreenContent {

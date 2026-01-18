@@ -17,7 +17,7 @@ class ChatRemoteDataRepository(
 
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
     return httpClient.get<ChatMemberAm>(
-      route = "/participant",
+      route = "/participants",
       params = mapOf("query" to query),
     ).map {
       chatMemberMapper.map(it, Unit)

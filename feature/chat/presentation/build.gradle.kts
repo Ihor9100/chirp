@@ -11,7 +11,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation(projects.feature.chat.data)
+        implementation(projects.feature.chat.domain)
       }
     }
 
