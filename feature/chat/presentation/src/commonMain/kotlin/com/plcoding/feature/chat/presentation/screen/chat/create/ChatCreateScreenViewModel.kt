@@ -46,8 +46,13 @@ class ChatCreateScreenViewModel(
 
   fun onAction(action: ChatCreateScreenAction) {
     when (action) {
-      else -> launchLoadable {
-        delay(5000)
+      else -> {
+//        updateBaseContent {
+//          copy(overlays = setOf(Overlay.Snackbar(Event(Res.string.no_participant_found))))
+//        }
+        launchLoadable {
+          delay(5000)
+        }
       }
     }
   }
@@ -59,6 +64,8 @@ class ChatCreateScreenViewModel(
         .mapOn { chatMemberPmMapper.map(it, Unit) }
         .onFailure(::handleFailure)
         .onSuccess(::handleSuccess)
+
+      delay(5000)
     }
   }
 
