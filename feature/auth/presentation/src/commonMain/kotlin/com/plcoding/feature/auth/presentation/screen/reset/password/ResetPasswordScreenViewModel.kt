@@ -37,7 +37,7 @@ class ResetPasswordScreenViewModel(
   private fun subscribeToState() {
     combine(
       snapshotFlow { state.value.content.passwordState.text.toString() },
-      state.map { it.isLoading() }.distinctUntilChanged(),
+      state.map { it.hasLoader() }.distinctUntilChanged(),
     ) { password, isLoading ->
       updateContent {
         copy(primaryButtonIsEnable = PasswordValidator.validate(password) && !isLoading)

@@ -38,7 +38,7 @@ class LoginScreenViewModel(
     combine(
       snapshotFlow { state.value.content.emailState.text.toString() },
       snapshotFlow { state.value.content.passwordState.text.toString() },
-      state.map { it.isLoading() }.distinctUntilChanged(),
+      state.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, password, isLoading ->
       val primaryButtonIsEnable = EmailValidator.validate(email) &&
         password.isNotBlank() &&

@@ -5,11 +5,11 @@ data class BaseScreenState<Content>(
   val baseContent: BaseContent = BaseContent(),
 ) {
 
-  fun isBlocking(): Boolean {
-    return baseContent.overlays?.contains(Overlay.BLOCKABLE) == true
+  fun hasBlocker(): Boolean {
+    return baseContent.overlays?.contains(Overlay.Blocker) == true
   }
 
-  fun isLoading(): Boolean {
-    return baseContent.overlays?.contains(Overlay.LOADABLE) == true
+  fun hasLoader(): Boolean {
+    return baseContent.overlays?.contains(Overlay.Loader) == true
   }
 }

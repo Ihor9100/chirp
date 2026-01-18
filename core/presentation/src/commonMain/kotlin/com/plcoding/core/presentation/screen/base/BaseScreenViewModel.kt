@@ -42,17 +42,9 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
     }
   }
 
-  protected fun launchBlockable(block: suspend () -> Unit) {
-    launch {
-      updateBaseContent { copy(overlays = setOf(Overlay.BLOCKABLE)) }
-      block()
-      updateBaseContent { copy(overlays = null) }
-    }
-  }
-
   protected fun launchLoadable(block: suspend () -> Unit) {
     launch {
-      updateBaseContent { copy(overlays = setOf(Overlay.BLOCKABLE, Overlay.LOADABLE)) }
+      updateBaseContent { copy(overlays = setOf(Overlay.Blocker, Overlay.Loader)) }
       block()
       updateBaseContent { copy(overlays = null) }
     }

@@ -8,13 +8,19 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.presentation.utils.clearFocusOnTab
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @Composable
 fun BaseScreenContent(
@@ -34,19 +40,30 @@ fun BaseScreenContent(
 
     baseContent.overlays?.forEach { overlay ->
       when (overlay) {
-        Overlay.BLOCKABLE -> {
+        Overlay.Blocker -> {
           Box(
             modifier = Modifier
-              .fillMaxSize()
+              .matchParentSize()
               .background(Color.Black.copy(alpha = 0.2f))
               .pointerInput(Unit) {}
           )
         }
-        Overlay.LOADABLE -> {
+        Overlay.Loader -> {
           CircularProgressIndicator(
             modifier = Modifier.size(64.dp),
             color = MaterialTheme.colorScheme.primary,
           )
+        }
+        is Overlay.Snackbar -> {
+          val snackbarHostState = remember { SnackbarHostState() }
+
+          rememberCoroutineScope().launch {
+            overlay.event.consumeAsync {
+              snackbarHostState.showSnackbar(getString(it))
+            }
+          }
+
+          SnackbarHost(snackbarHostState)
         }
       }
     }

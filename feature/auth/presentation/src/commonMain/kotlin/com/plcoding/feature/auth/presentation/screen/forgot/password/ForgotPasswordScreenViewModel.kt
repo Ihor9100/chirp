@@ -33,7 +33,7 @@ class ForgotPasswordScreenViewModel(
   private fun subscribeToState() {
     combine(
       snapshotFlow { state.value.content.emailState.text.toString() },
-      state.map { it.isLoading() }.distinctUntilChanged(),
+      state.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, isLoading ->
       updateContent {
         copy(primaryButtonIsEnable = EmailValidator.validate(email) && !isLoading)
