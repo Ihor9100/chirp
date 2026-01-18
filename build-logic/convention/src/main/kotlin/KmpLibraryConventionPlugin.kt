@@ -31,7 +31,9 @@ open class KmpLibraryConventionPlugin : Plugin<Project> {
         "commonMainImplementation"(libs.findLibrary("kotlinx-coroutines-core").get())
         "commonMainImplementation"(libs.findLibrary("kotlinx-serialization-json").get())
 
+        // TODO: remove 
         "commonMainImplementation"(libs.findLibrary("koin-core").get())
+        "commonMainImplementation"(libs.findLibrary("ktor-client-core").get())
 
         "commonTestImplementation"(libs.findLibrary("kotlin-test").get())
       }

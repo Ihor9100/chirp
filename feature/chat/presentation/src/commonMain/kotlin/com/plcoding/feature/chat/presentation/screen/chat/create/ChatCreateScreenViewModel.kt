@@ -3,12 +3,13 @@
 package com.plcoding.feature.chat.presentation.screen.chat.create
 
 import androidx.compose.runtime.snapshotFlow
+import androidx.lifecycle.viewModelScope
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.no_participant_found
 import com.plcoding.core.domain.result.DataError
-import com.plcoding.core.domain.result.map
 import com.plcoding.core.domain.result.mapOn
 import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
@@ -18,6 +19,7 @@ import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.seconds
 
@@ -34,6 +36,11 @@ class ChatCreateScreenViewModel(
     return ChatCreateScreenContent()
   }
 
+  override fun onInitialized() {
+    super.onInitialized()
+    searchQueryFlow.launchIn(viewModelScope)
+  }
+
   fun onAction(action: ChatCreateScreenAction) {
     when (action) {
       else -> launchLoadable {
@@ -48,12 +55,8 @@ class ChatCreateScreenViewModel(
         .searchMember(searchQuery.toString())
         .mapOn { chatMemberPmMapper.map(it, Unit) }
         .onFailure(::handleFailure)
-        .onSuccessго { }
+        .onSuccess(::handleSuccess)
     }
-  }
-
-  private fun getChatMemberPm(): ChatMemberPm {
-
   }
 
   private fun handleFailure(error: DataError.Remote) {
@@ -66,9 +69,9 @@ class ChatCreateScreenViewModel(
     }
   }
 
-  private fun handleSuccess(chat) {
+  private fun handleSuccess(chatMemberPm: ChatMemberPm) {
     updateContent {
-      copy(snackbarEvent = Event(chirp.feature.auth.presentation.generated.resources.Res.string.resent_verification_email))
+      copy(chatMemberPm = chatMemberPm)
     }
   }
 }

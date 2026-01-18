@@ -51,7 +51,7 @@ fun Avatar(
     contentAlignment = Alignment.Center,
   ) {
     Text(
-      text = avatarPm.getInitials(),
+      text = avatarPm.initials,
       color = MaterialTheme.colorScheme.extended.textPlaceholder,
       textAlign = TextAlign.Center,
       style = MaterialTheme.typography.titleMedium,

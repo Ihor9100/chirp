@@ -22,7 +22,7 @@ class ChatMemberPmMapper : Mapper<ChatMember, ChatMemberPm, Unit> {
     }
   }
 
-  fun getInitials(fullName: String): String {
+  private fun getInitials(fullName: String): String {
     if (fullName.isBlank()) return "?"
 
     return fullName
