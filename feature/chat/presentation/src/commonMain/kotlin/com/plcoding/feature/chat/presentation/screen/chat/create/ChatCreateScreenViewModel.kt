@@ -67,13 +67,13 @@ class ChatCreateScreenViewModel(
 
   private fun searchMember(searchQuery: CharSequence) {
     launchLoadable {
+      updateContent { copy(chatMemberPm = null) }
+
       chatRemoteRepository
         .searchMember(searchQuery.toString())
         .mapOn { chatMemberPmMapper.map(it, Unit) }
         .onFailure(::handleFailure)
         .onSuccess(::handleSuccess)
-
-      delay(5000)
     }
   }
 
