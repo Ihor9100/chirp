@@ -2,6 +2,7 @@
 
 package com.plcoding.feature.chat.presentation.screen.chat.create
 
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
 import chirp.feature.chat.presentation.generated.resources.Res
@@ -46,14 +47,21 @@ class ChatCreateScreenViewModel(
 
   fun onAction(action: ChatCreateScreenAction) {
     when (action) {
-      else -> {
-//        updateBaseContent {
-//          copy(overlays = setOf(Overlay.Snackbar(Event(Res.string.no_participant_found))))
-//        }
-        launchLoadable {
-          delay(5000)
-        }
-      }
+      ChatCreateScreenAction.OnAddClick -> handleAddClick()
+      else -> Unit
+    }
+  }
+
+  private fun handleAddClick() {
+    updateContent {
+      if (chatMemberPm == null || chatMembersPm.contains(chatMemberPm))
+        return@updateContent this
+
+      copy(
+        searchTextFieldState = searchTextFieldState.also { it.clearText() },
+        chatMemberPm = null,
+        chatMembersPm = chatMembersPm + chatMemberPm,
+      )
     }
   }
 

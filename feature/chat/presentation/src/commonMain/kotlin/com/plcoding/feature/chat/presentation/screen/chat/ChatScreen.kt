@@ -59,8 +59,7 @@ fun ChatScreen(
       content = state.content,
       deviceConfiguration = getDeviceConfiguration(),
       onAction = {
-        viewModel.onAction(it)
-//        navController.navigate(ChatRoute.ChatCreate)
+        navController.navigate(ChatRoute.ChatCreate)
       }
     )
   }
@@ -125,7 +124,7 @@ private fun ChatScreenListContent(
           .clickable {
             coroutineScope.launch {
               onAction(ChatScreenAction.OnChatClick("$index"))
-//              navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
+              //              navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
             }
           },
         color = MaterialTheme.colorScheme.extended.textPrimary,

@@ -6,5 +6,5 @@ import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 data class ChatCreateScreenContent(
   val searchTextFieldState: TextFieldState = TextFieldState(),
   val chatMemberPm: ChatMemberPm? = null,
-  val chatParticipantsPm: List<ChatMemberPm> = listOf(),
+  val chatMembersPm: List<ChatMemberPm> = listOf(),
 )

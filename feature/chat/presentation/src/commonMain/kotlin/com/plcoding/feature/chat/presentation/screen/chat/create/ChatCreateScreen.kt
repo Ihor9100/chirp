@@ -26,7 +26,6 @@ import chirp.feature.chat.presentation.generated.resources.create_chat
 import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.invite_by_username_or_email
 import chirp.feature.chat.presentation.generated.resources.no_members
-import com.plcoding.core.designsystem.components.Avatar
 import com.plcoding.core.designsystem.components.AvatarPm
 import com.plcoding.core.designsystem.components.AvatarSize
 import com.plcoding.core.designsystem.components.HorizontalDivider
@@ -35,11 +34,11 @@ import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.designsystem.style.titleXSmall
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreenDialogContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
+import com.plcoding.feature.chat.presentation.composable.ChatMember
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -60,7 +59,12 @@ fun ChatCreateScreen(
   ) {
     ChatCreateScreenContent(
       content = state.content,
-      onAction = viewModel::onAction
+      onAction = {
+        when (it) {
+          ChatCreateScreenAction.OnDismiss -> navController.popBackStack()
+          else -> viewModel.onAction(it)
+        }
+      }
     )
   }
 }
@@ -118,6 +122,15 @@ fun ChatCreateScreenContent(
       Button(
         text = stringResource(Res.string.add),
         style = ButtonStyle.SECONDARY,
+        onClick = { onAction(ChatCreateScreenAction.OnAddClick) }
+      )
+    }
+    content.chatMemberPm?.apply {
+      ChatMember(
+        modifier = Modifier
+          .padding(horizontal = 16.dp)
+          .padding(bottom = 12.dp),
+        chatMemberPm = this,
       )
     }
     HorizontalDivider()
@@ -130,7 +143,7 @@ fun ChatCreateScreenContent(
         ),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-      if (content.chatParticipantsPm.isEmpty()) {
+      if (content.chatMembersPm.isEmpty()) {
         item {
           Column(
             modifier = Modifier
@@ -153,25 +166,13 @@ fun ChatCreateScreenContent(
         }
       } else {
         items(
-          count = content.chatParticipantsPm.size,
-          key = { content.chatParticipantsPm[it].id },
+          count = content.chatMembersPm.size,
+          key = { content.chatMembersPm[it].id },
         ) { index ->
-          Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-          ) {
-            val chatParticipantPm = content.chatParticipantsPm[index]
-
-            Avatar(
-              avatarPm = chatParticipantPm.avatarPm
-            )
-            Text(
-              text = chatParticipantPm.fullName,
-              color = MaterialTheme.colorScheme.extended.textPrimary,
-              style = MaterialTheme.typography.titleXSmall,
-            )
-          }
+          ChatMember(
+            modifier = Modifier,
+            chatMemberPm = content.chatMembersPm[index],
+          )
         }
       }
     }
@@ -207,7 +208,7 @@ private fun Themed(
 ) {
   val baseScreenState = BaseScreenState(
     content = ChatCreateScreenContent(
-      chatParticipantsPm = listOf(
+      chatMembersPm = listOf(
         ChatMemberPm(
           id = "1",
           avatarPm = AvatarPm(
