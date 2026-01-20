@@ -11,8 +11,10 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.mapOn
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
+import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.repository.remote.ChatRemoteRepository
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
@@ -45,6 +47,7 @@ class ChatCreateScreenViewModel(
   fun onAction(action: ChatCreateScreenAction) {
     when (action) {
       ChatCreateScreenAction.OnAddClick -> handleAddClick()
+      ChatCreateScreenAction.OnCreateClick -> handleCreateClick()
       else -> Unit
     }
   }
@@ -62,6 +65,24 @@ class ChatCreateScreenViewModel(
     }
   }
 
+  private fun handleCreateClick() {
+    val memberIds = state.value.content.chatMembersPm.map { it.id }
+    if (memberIds.isEmpty()) return
+
+    launchLoadable {
+      chatRemoteRepository
+        .createChat(memberIds)
+        .onFailure { showSnackbar(it.getStringRes()) }
+        .onSuccess(::handleCreateSuccess)
+    }
+  }
+
+  private fun handleCreateSuccess(chat: Chat) {
+    updateContent {
+      copy(chatCreatedEvent = Event(chat))
+    }
+  }
+
   private fun searchMember(searchQuery: CharSequence) {
     launchLoadable {
       updateContent { copy(chatMemberPm = null) }
@@ -69,12 +90,12 @@ class ChatCreateScreenViewModel(
       chatRemoteRepository
         .searchMember(searchQuery.toString())
         .mapOn { chatMemberPmMapper.map(it, Unit) }
-        .onFailure(::handleFailure)
-        .onSuccess(::handleSuccess)
+        .onFailure(::handleSearchMemberFailure)
+        .onSuccess(::handleSearchMemberSuccess)
     }
   }
 
-  private fun handleFailure(error: DataError.Remote) {
+  private fun handleSearchMemberFailure(error: DataError.Remote) {
     val errorRes = when (error) {
       DataError.Remote.NOT_FOUND -> Res.string.no_participant_found
       else -> error.getStringRes()
@@ -82,7 +103,7 @@ class ChatCreateScreenViewModel(
     showSnackbar(errorRes)
   }
 
-  private fun handleSuccess(chatMemberPm: ChatMemberPm) {
+  private fun handleSearchMemberSuccess(chatMemberPm: ChatMemberPm) {
     updateContent {
       copy(chatMemberPm = chatMemberPm)
     }

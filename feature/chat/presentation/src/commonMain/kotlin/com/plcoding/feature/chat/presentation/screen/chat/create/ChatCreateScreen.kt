@@ -196,6 +196,7 @@ fun ChatCreateScreenContent(
         modifier = Modifier,
         text = stringResource(Res.string.create_chat),
         style = ButtonStyle.PRIMARY,
+        onClick = { onAction(ChatCreateScreenAction.OnCreateClick) }
       )
     }
   }
