@@ -2,12 +2,14 @@ package com.plcoding.core.presentation.screen.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.plcoding.core.presentation.event.Event
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.StringResource
 
 abstract class BaseScreenViewModel<Content>() : ViewModel() {
 
@@ -44,9 +46,10 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
 
   protected fun launchLoadable(block: suspend () -> Unit) {
     launch {
-      updateBaseContent { copy(overlays = setOf(Overlay.Blocker, Overlay.Loader)) }
+      val overlays = setOf(Overlay.Blocker, Overlay.Loader)
+      updateBaseContent { copy(overlays = this.overlays?.plus(overlays) ?: overlays) }
       block()
-      updateBaseContent { copy(overlays = null) }
+      updateBaseContent { copy(overlays = this.overlays?.minus(overlays)) }
     }
   }
 
@@ -56,5 +59,12 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
 
   protected inline fun updateBaseContent(block: BaseContent.() -> BaseContent) {
     return mutableState.update { it.copy(baseContent = block(it.baseContent)) }
+  }
+
+  protected fun showSnackbar(messageRes: StringResource) {
+    return updateBaseContent {
+      val overlays = setOf(Overlay.Snackbar(Event(messageRes)))
+      copy(overlays = this.overlays?.plus(overlays) ?: overlays)
+    }
   }
 }

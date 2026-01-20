@@ -11,15 +11,12 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.mapOn
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
-import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.screen.base.Overlay
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.repository.remote.ChatRemoteRepository
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -82,9 +79,7 @@ class ChatCreateScreenViewModel(
       DataError.Remote.NOT_FOUND -> Res.string.no_participant_found
       else -> error.getStringRes()
     }
-    updateBaseContent {
-      copy(overlays = setOf(Overlay.Snackbar(Event(errorRes))))
-    }
+    showSnackbar(errorRes)
   }
 
   private fun handleSuccess(chatMemberPm: ChatMemberPm) {
