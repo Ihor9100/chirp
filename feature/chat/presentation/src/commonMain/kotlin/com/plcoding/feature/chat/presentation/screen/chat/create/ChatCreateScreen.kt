@@ -38,7 +38,7 @@ import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreenDialogContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
-import com.plcoding.core.presentation.utils.LocalNavResult
+import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.feature.chat.presentation.composable.ChatMember
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import org.jetbrains.compose.resources.stringResource
@@ -49,10 +49,10 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ChatCreateScreen(
   navController: NavController,
+  navResult: NavResult,
   viewModel: ChatCreateScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
-  val navResult = LocalNavResult.current
 
   BaseScreenDialogContent(
     baseContent = state.baseContent,
@@ -64,7 +64,8 @@ fun ChatCreateScreen(
       onAction = {
         when (it) {
           ChatCreateScreenAction.OnDismiss -> {
-            navResult.setResult("arg", Unit)
+            navResult.setResult("arg", "Result")
+            navController.popBackStack()
           }
           else -> viewModel.onAction(it)
         }

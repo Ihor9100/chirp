@@ -40,7 +40,7 @@ import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
-import com.plcoding.core.presentation.utils.LocalNavResult
+import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -49,10 +49,15 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ChatScreen(
   navController: NavController,
+  navResult: NavResult,
   viewModel: ChatScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
-  val result = LocalNavResult.current.getResult<Unit>("arg")
+
+  navResult.addListener<String>("arg") {
+    println("lol $it")
+  }
+
   BaseScreenContent(
     baseContent = state.baseContent
   ) {
@@ -60,7 +65,7 @@ fun ChatScreen(
       content = state.content,
       deviceConfiguration = getDeviceConfiguration(),
       onAction = {
-        viewModel.onAction(result, it)
+        viewModel.onAction(it)
         navController.navigate(ChatRoute.ChatCreate)
       }
     )
