@@ -9,7 +9,7 @@ class ChatScreenViewModel() : BaseScreenViewModel<ChatScreenContent>() {
     return ChatScreenContent()
   }
 
-  fun onAction(action: ChatScreenAction) {
+  fun onAction(result: Unit?, action: ChatScreenAction) {
     when (action) {
       is ChatScreenAction.OnChatClick -> {
         launchLoadable {
