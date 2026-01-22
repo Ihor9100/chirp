@@ -17,9 +17,6 @@ class CmpFeatureConventionPlugin : CmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-backhandler").get())
 
-        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3-adaptive-layout").get())
-        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3-adaptive-navigation").get())
-
         "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-runtime-compose").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel-compose").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-viewmodel-savedstate").get())

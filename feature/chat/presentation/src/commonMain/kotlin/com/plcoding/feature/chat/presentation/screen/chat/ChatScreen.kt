@@ -2,6 +2,7 @@
 
 package com.plcoding.feature.chat.presentation.screen.chat
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
-import androidx.compose.material3.adaptive.layout.PaneScaffoldDirective
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
@@ -28,11 +29,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.ic_plus
 import chirp.feature.chat.presentation.generated.resources.send
+import com.plcoding.core.designsystem.components.button.FloatingActionButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
@@ -41,8 +45,11 @@ import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreenContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
 import com.plcoding.core.presentation.utils.NavResult
+import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
+import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -54,8 +61,19 @@ fun ChatScreen(
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
-  navResult.addListener<String>("arg") {
-    println("lol $it")
+  val deviceConfiguration = getDeviceConfiguration()
+  val scaffoldDirective = getPaneScaffoldDirective(deviceConfiguration, currentWindowAdaptiveInfo())
+  val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(scaffoldDirective)
+  val coroutineScope = rememberCoroutineScope()
+
+  BackHandler(enabled = scaffoldNavigator.canNavigateBack()) {
+    coroutineScope.launch {
+      scaffoldNavigator.navigateBack()
+    }
+  }
+
+  navResult.addListener<Chat>("arg") {
+    viewModel.onResult(it)
   }
 
   BaseScreenContent(
@@ -63,10 +81,17 @@ fun ChatScreen(
   ) {
     ChatScreenContent(
       content = state.content,
-      deviceConfiguration = getDeviceConfiguration(),
+      scaffoldNavigator = scaffoldNavigator,
+      deviceConfiguration = deviceConfiguration,
       onAction = {
-        viewModel.onAction(it)
-        navController.navigate(ChatRoute.ChatCreate)
+        when (it) {
+          is ChatScreenAction.OnChatClick -> coroutineScope.launch {
+            scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
+          }
+          is ChatScreenAction.OnChatCreateClick -> navController.navigate(
+            ChatRoute.ChatCreate,
+          )
+        }
       }
     )
   }
@@ -75,38 +100,15 @@ fun ChatScreen(
 @Composable
 private fun ChatScreenContent(
   content: ChatScreenContent,
+  scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   deviceConfiguration: DeviceConfiguration,
   onAction: (ChatScreenAction) -> Unit,
 ) {
-  val isTabletop = currentWindowAdaptiveInfo().windowPosture.isTabletop
-  val scaffoldDirective = PaneScaffoldDirective(
-    maxHorizontalPartitions = when (deviceConfiguration) {
-      DeviceConfiguration.MOBILE_PORTRAIT,
-      DeviceConfiguration.MOBILE_LANDSCAPE,
-      DeviceConfiguration.TABLET_PORTRAIT -> 1
-      DeviceConfiguration.TABLET_LANDSCAPE,
-      DeviceConfiguration.DESKTOP -> 2
-    },
-    horizontalPartitionSpacerSize = 0.dp,
-    maxVerticalPartitions = if (isTabletop) 2 else 1,
-    verticalPartitionSpacerSize = if (isTabletop) 24.dp else 0.dp,
-    defaultPanePreferredWidth = 360.dp,
-    excludedBounds = emptyList(),
-  )
-  val navigator = rememberListDetailPaneScaffoldNavigator(scaffoldDirective)
-  val coroutineScope = rememberCoroutineScope()
-
-  BackHandler(enabled = navigator.canNavigateBack()) {
-    coroutineScope.launch {
-      navigator.navigateBack()
-    }
-  }
-
   ListDetailPaneScaffold(
-    directive = scaffoldDirective,
-    value = navigator.scaffoldValue,
-    listPane = { ChatScreenListContent(content, navigator, deviceConfiguration, onAction) },
-    detailPane = { ChatScreenDetailsContent(content, navigator, deviceConfiguration, onAction) },
+    directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
+    value = scaffoldNavigator.scaffoldValue,
+    listPane = { ChatScreenListContent(content, scaffoldNavigator, onAction) },
+    detailPane = { ChatScreenDetailsContent(content, scaffoldNavigator, deviceConfiguration) },
   )
 }
 
@@ -114,28 +116,43 @@ private fun ChatScreenContent(
 private fun ChatScreenListContent(
   content: ChatScreenContent,
   navigator: ThreePaneScaffoldNavigator<Any>,
-  deviceConfiguration: DeviceConfiguration,
   onAction: (ChatScreenAction) -> Unit,
 ) {
   val coroutineScope = rememberCoroutineScope()
 
-  LazyColumn(
+  Box(
     modifier = Modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
+    contentAlignment = Alignment.Center,
   ) {
-    items(100) { index ->
-      Text(
-        text = "Item $index",
-        modifier = Modifier
-          .fillMaxWidth()
-          .clickable {
-            coroutineScope.launch {
-              onAction(ChatScreenAction.OnChatClick("$index"))
-              //              navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
-            }
-          },
-        color = MaterialTheme.colorScheme.extended.textPrimary,
-        style = MaterialTheme.typography.titleLarge
+    LazyColumn(
+      modifier = Modifier.fillMaxSize(),
+      verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+      items(100) { index ->
+        Text(
+          text = "Item $index",
+          modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+              coroutineScope.launch {
+                navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
+              }
+            },
+          color = MaterialTheme.colorScheme.extended.textPrimary,
+          style = MaterialTheme.typography.titleLarge
+        )
+      }
+    }
+    FloatingActionButton(
+      modifier = Modifier
+        .padding(16.dp)
+        .align(Alignment.BottomEnd),
+      onClick = { onAction(ChatScreenAction.OnChatCreateClick) },
+    ) {
+      Image(
+        imageVector = vectorResource(Res.drawable.ic_plus),
+        contentDescription = null,
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
       )
     }
   }
@@ -144,9 +161,8 @@ private fun ChatScreenListContent(
 @Composable
 private fun ChatScreenDetailsContent(
   content: ChatScreenContent,
-  navigator: ThreePaneScaffoldNavigator<Any>,
+  scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   deviceConfiguration: DeviceConfiguration,
-  onAction: (ChatScreenAction) -> Unit,
 ) {
   Column(
     modifier = Modifier
@@ -165,7 +181,7 @@ private fun ChatScreenDetailsContent(
       contentAlignment = Alignment.Center
     ) {
       Text(
-        text = content.chatId ?: "Empty",
+        text = content.chat?.id ?: "Empty",
         color = MaterialTheme.colorScheme.extended.textPrimary,
         style = MaterialTheme.typography.displayLarge
       )
@@ -192,6 +208,7 @@ private fun Themed(
     ) {
       ChatScreenContent(
         content = baseScreenState.content,
+        scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(),
         deviceConfiguration = deviceConfiguration,
         onAction = {}
       )
@@ -201,7 +218,7 @@ private fun Themed(
 
 @Composable
 @Preview
-fun MobileLightPreview() {
+private fun MobileLightPreview() {
   Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT
@@ -210,7 +227,7 @@ fun MobileLightPreview() {
 
 @Composable
 @Preview
-fun MobileDarkPreview() {
+private fun MobileDarkPreview() {
   Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT
@@ -222,7 +239,7 @@ fun MobileDarkPreview() {
   widthDp = 2000,
   heightDp = 1500,
 )
-fun DesktopLightPreview() {
+private fun DesktopLightPreview() {
   Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.DESKTOP
@@ -234,7 +251,7 @@ fun DesktopLightPreview() {
   widthDp = 2000,
   heightDp = 1500,
 )
-fun DesktopDarkPreview() {
+private fun DesktopDarkPreview() {
   Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.DESKTOP

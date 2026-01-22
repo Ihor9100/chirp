@@ -1,9 +1,12 @@
 package com.plcoding.feature.chat.presentation.screen.chat
 
+import androidx.lifecycle.SavedStateHandle
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import kotlinx.coroutines.delay
+import com.plcoding.feature.chat.domain.model.Chat
 
-class ChatScreenViewModel() : BaseScreenViewModel<ChatScreenContent>() {
+class ChatScreenViewModel(
+  private val savedStateHandle: SavedStateHandle,
+) : BaseScreenViewModel<ChatScreenContent>() {
 
   override fun getInitialContent(): ChatScreenContent {
     return ChatScreenContent()
@@ -11,11 +14,17 @@ class ChatScreenViewModel() : BaseScreenViewModel<ChatScreenContent>() {
 
   fun onAction(action: ChatScreenAction) {
     when (action) {
-      is ChatScreenAction.OnChatClick -> {
-        launchLoadable {
-          delay(5000)
-        }
+      else -> {
+        println("lol arg = ${savedStateHandle.get<String>("arg")}")
       }
+    }
+  }
+
+  fun onResult(chat: Chat?) {
+    updateContent {
+      copy(
+        chat = chat,
+      )
     }
   }
 }

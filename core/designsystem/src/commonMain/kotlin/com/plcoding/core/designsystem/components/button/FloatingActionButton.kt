@@ -13,9 +13,9 @@ import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChirFloatingActionButton(
-  onClick: () -> Unit,
+fun FloatingActionButton(
   modifier: Modifier = Modifier,
+  onClick: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   FloatingActionButton(
@@ -33,7 +33,7 @@ fun ChirFloatingActionButtonThemed(
   isDarkTheme: Boolean,
 ) {
   Theme(isDarkTheme) {
-    ChirFloatingActionButton(
+    com.plcoding.core.designsystem.components.button.FloatingActionButton(
       onClick = {},
       content = {
         Image(

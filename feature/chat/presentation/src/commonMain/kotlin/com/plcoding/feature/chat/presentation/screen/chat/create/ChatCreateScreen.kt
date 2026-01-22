@@ -54,6 +54,10 @@ fun ChatCreateScreen(
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
+  state.content.chatCreatedEvent?.consume {
+    // TODO:
+  }
+
   BaseScreenDialogContent(
     baseContent = state.baseContent,
     deviceConfiguration = getDeviceConfiguration(),

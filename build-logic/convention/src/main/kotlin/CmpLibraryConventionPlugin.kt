@@ -27,6 +27,8 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material-icons-extended").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-components-ui-tooling-preview").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3-adaptive").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3-adaptive-layout").get())
+        "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3-adaptive-navigation").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-compose-navigation").get())
 
         "commonMainImplementation"(libs.findLibrary("coil-compose").get())
