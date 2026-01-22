@@ -55,7 +55,8 @@ fun ChatCreateScreen(
   val state by viewModel.state.collectAsStateWithLifecycle()
 
   state.content.chatCreatedEvent?.consume {
-    // TODO:
+    navResult.setResult("arg", it)
+    navController.popBackStack()
   }
 
   BaseScreenDialogContent(
