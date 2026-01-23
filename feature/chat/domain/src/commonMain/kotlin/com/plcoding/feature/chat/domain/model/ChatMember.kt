@@ -4,4 +4,9 @@ data class ChatMember(
   val userId: String,
   val username: String,
   val profilePictureUrl: String?
-)
+) {
+
+  companion object {
+    val mock get() =
+  }
+}

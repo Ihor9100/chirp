@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.presentation.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,18 +13,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.Avatar
 import com.plcoding.core.designsystem.components.StackedAvatars
+import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveDialogSheetLayout
+import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.titleXSmall
+import com.plcoding.core.designsystem.utils.DeviceConfiguration
+import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import com.plcoding.feature.chat.presentation.model.ChatPm
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChatMember(
+fun Chat(
   modifier: Modifier,
   chatPm: ChatPm,
 ) {
   Column(
-    modifier = modifier.fillMaxWidth(),
+    modifier = modifier
+      .fillMaxWidth()
+      .background(MaterialTheme.colorScheme.background),
     horizontalAlignment = Alignment.Start,
     verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
@@ -58,4 +66,32 @@ fun ChatMember(
       )
     }
   }
+}
+
+@Composable
+private fun Themed(
+  isDarkTheme: Boolean = false,
+) {
+  Theme(isDarkTheme) {
+    Chat(
+      modifier = Modifier,
+      chatPm = ChatPm.mock
+    )
+  }
+}
+
+@Composable
+@Preview
+fun LightPreview() {
+  Themed(
+    isDarkTheme = false
+  )
+}
+
+@Composable
+@Preview
+fun DarkPreview() {
+  Themed(
+    isDarkTheme = true
+  )
 }
