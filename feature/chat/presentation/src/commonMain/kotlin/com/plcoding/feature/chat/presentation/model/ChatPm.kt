@@ -8,5 +8,5 @@ data class ChatPm(
   val avatarsPm: List<AvatarPm>,
   val title: TextProvider,
   val description: String?,
-  val content: String,
+  val content: String?,
 )

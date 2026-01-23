@@ -9,5 +9,6 @@
 	<string name="add_members_to_your_chat">Add members to your chat</string>
 	<string name="no_participant_found">No participant found</string>
 	<string name="group_chat">Group chat</string>
-	<string name="you">You</string>
+	<string name="you_and_others">You, %1$s</string>
+	<string name="your_message">You: %1$s</string>
 </resources>

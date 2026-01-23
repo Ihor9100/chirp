@@ -5,4 +5,7 @@ data class Chat(
   val members: List<ChatMember>,
   val lastActivityAt: String,
   val lastMessage: ChatMessage?
-)
+) {
+
+  val isGroup = members.size > 2
+}
