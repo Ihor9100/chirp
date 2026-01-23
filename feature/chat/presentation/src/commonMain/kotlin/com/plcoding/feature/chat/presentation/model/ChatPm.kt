@@ -2,6 +2,9 @@ package com.plcoding.feature.chat.presentation.model
 
 import com.plcoding.core.designsystem.components.AvatarPm
 import com.plcoding.core.presentation.utils.TextProvider
+import com.plcoding.feature.chat.domain.model.Chat
+import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
+import com.plcoding.feature.chat.presentation.mapper.ChatPmMapper
 
 data class ChatPm(
   val id: String,
@@ -13,12 +16,11 @@ data class ChatPm(
 
   companion object {
     val mock
-      get() = ChatPm(
-        id = "1",
-        avatarsPm = AvatarPm.mocks,
-        title = TextProvider.Dynamic("Test Title"),
-        description = TextProvider.Dynamic("Test Description"),
-        content = TextProvider.Dynamic("TestTestTestTestTestTestTestTestTestTestTestTest"),
+      get() = ChatPmMapper(
+        ChatMemberPmMapper(),
+      ).map(
+        Chat.mock,
+        ChatPmMapper.Params(yourId = "1"),
       )
   }
 }

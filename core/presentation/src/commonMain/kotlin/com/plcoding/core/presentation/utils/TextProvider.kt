@@ -13,7 +13,7 @@ sealed interface TextProvider {
   fun get(): String {
     return when (this) {
       is Dynamic -> value
-      is Resource -> stringResource(id, args)
+      is Resource -> stringResource(id, *args.toTypedArray())
     }
   }
 

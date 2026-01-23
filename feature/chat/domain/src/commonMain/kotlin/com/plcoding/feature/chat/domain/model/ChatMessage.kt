@@ -6,4 +6,16 @@ data class ChatMessage(
   val senderId: String,
   val content: String,
   val createdAt: String,
-)
+) {
+
+  companion object {
+    val mock
+      get() = ChatMessage(
+        id = "1",
+        chatId = "1",
+        senderId = "1",
+        content = "TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest",
+        createdAt = "1",
+      )
+  }
+}

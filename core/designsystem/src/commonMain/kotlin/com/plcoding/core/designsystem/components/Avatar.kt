@@ -29,19 +29,7 @@ data class AvatarPm(
   val initials: String,
   val imageUrl: String?,
   val avatarSize: AvatarSize,
-) {
-
-  companion object {
-    val mocks
-      get() = List(5) { index ->
-        AvatarPm(
-          initials = "U$index",
-          imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
-          avatarSize = AvatarSize.MEDIUM,
-        )
-      }
-  }
-}
+)
 
 @Composable
 fun Avatar(
@@ -87,7 +75,11 @@ private fun AvatarThemed(
   ) {
     Avatar(
       modifier = Modifier,
-      avatarPm = AvatarPm.mocks.first(),
+      avatarPm = AvatarPm(
+        initials = "IB",
+        imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
+        avatarSize = AvatarSize.MEDIUM,
+      ),
     )
   }
 }

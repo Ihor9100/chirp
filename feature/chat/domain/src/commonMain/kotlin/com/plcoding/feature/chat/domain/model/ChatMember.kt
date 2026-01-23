@@ -7,6 +7,13 @@ data class ChatMember(
 ) {
 
   companion object {
-    val mock get() =
+    val mocks
+      get() = List(5) { index ->
+        ChatMember(
+          userId = "$index",
+          username = "User $index",
+          profilePictureUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
+        )
+      }
   }
 }

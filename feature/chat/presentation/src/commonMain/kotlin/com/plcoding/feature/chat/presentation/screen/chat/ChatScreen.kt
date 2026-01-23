@@ -4,7 +4,6 @@ package com.plcoding.feature.chat.presentation.screen.chat
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +46,7 @@ import com.plcoding.core.presentation.screen.base.BaseScreenState
 import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.domain.model.Chat
+import com.plcoding.feature.chat.presentation.model.ChatPm
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
@@ -128,18 +128,10 @@ private fun ChatScreenListContent(
       modifier = Modifier.fillMaxSize(),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-      items(100) { index ->
-        Text(
-          text = "Item $index",
-          modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-              coroutineScope.launch {
-                navigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
-              }
-            },
-          color = MaterialTheme.colorScheme.extended.textPrimary,
-          style = MaterialTheme.typography.titleLarge
+      items(5) { _ ->
+        com.plcoding.feature.chat.presentation.composable.Chat(
+          modifier = Modifier,
+          chatPm = ChatPm.mock
         )
       }
     }

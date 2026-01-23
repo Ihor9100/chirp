@@ -11,15 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.Avatar
 import com.plcoding.core.designsystem.components.StackedAvatars
-import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveDialogSheetLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.titleXSmall
-import com.plcoding.core.designsystem.utils.DeviceConfiguration
-import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import com.plcoding.feature.chat.presentation.model.ChatPm
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -82,7 +77,7 @@ private fun Themed(
 
 @Composable
 @Preview
-fun LightPreview() {
+private fun LightPreview() {
   Themed(
     isDarkTheme = false
   )
@@ -90,7 +85,7 @@ fun LightPreview() {
 
 @Composable
 @Preview
-fun DarkPreview() {
+private fun DarkPreview() {
   Themed(
     isDarkTheme = true
   )
