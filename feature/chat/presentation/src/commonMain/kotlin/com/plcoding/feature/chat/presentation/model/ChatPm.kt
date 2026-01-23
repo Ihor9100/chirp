@@ -7,6 +7,18 @@ data class ChatPm(
   val id: String,
   val avatarsPm: List<AvatarPm>,
   val title: TextProvider,
-  val description: String?,
-  val content: String?,
-)
+  val description: TextProvider?,
+  val content: TextProvider?,
+) {
+
+  companion object {
+    val mock
+      get() = ChatPm(
+        id = "1",
+        avatarsPm = AvatarPm.mocks,
+        title = TextProvider.Dynamic("Test Title"),
+        description = TextProvider.Dynamic("Test Description"),
+        content = TextProvider.Dynamic("TestTestTestTestTestTestTestTestTestTestTestTest"),
+      )
+  }
+}

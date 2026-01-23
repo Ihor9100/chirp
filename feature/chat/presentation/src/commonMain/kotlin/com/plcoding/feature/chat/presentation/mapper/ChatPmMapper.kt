@@ -1,21 +1,14 @@
 package com.plcoding.feature.chat.presentation.mapper
 
-import androidx.compose.animation.core.rememberTransition
-import androidx.compose.ui.text.buildAnnotatedString
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.group_chat
-import chirp.feature.chat.presentation.generated.resources.you
 import chirp.feature.chat.presentation.generated.resources.you_and_others
-import com.plcoding.core.designsystem.components.AvatarPm
-import com.plcoding.core.designsystem.components.AvatarSize
+import chirp.feature.chat.presentation.generated.resources.your_message
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import com.plcoding.feature.chat.presentation.model.ChatPm
-import org.jetbrains.compose.resources.getString
-import org.jetbrains.compose.resources.stringResource
 
 class ChatPmMapper(
   private val chatMemberPmMapper: ChatMemberPmMapper,
@@ -37,19 +30,19 @@ class ChatPmMapper(
 
   private fun getTitle(from: Chat, params: Params): TextProvider {
     return if (from.isGroup) {
-      TextProvider.Resource(Res.string.group_chat)
+      TextProvider.Resource(Res.string.group_chat, listOf())
     } else {
       val member = from.members.first { it.userId != params.yourId }
       TextProvider.Dynamic(member.username)
     }
   }
 
-  private fun getDescription(from: Chat, params: Params): String? {
+  private fun getDescription(from: Chat, params: Params): TextProvider? {
     if (!from.isGroup) return null
 
     val members = from.members.filter { it.userId != params.yourId }
     val others = members.joinToString { it.username }
-    return TextProvider.Resource(Res.string.you_and_others, others)
+    return TextProvider.Resource(Res.string.you_and_others, listOf(others))
   }
 
   private fun getContent(

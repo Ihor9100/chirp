@@ -37,23 +37,25 @@ fun ChatMember(
       )
       Column {
         Text(
-          text = chatPm.title,
+          text = chatPm.title.get(),
           color = MaterialTheme.colorScheme.extended.textPrimary,
           style = MaterialTheme.typography.titleXSmall,
         )
         chatPm.description?.let {
           Text(
-            text = it,
+            text = it.get(),
             color = MaterialTheme.colorScheme.extended.textPlaceholder,
             style = MaterialTheme.typography.bodySmall,
           )
         }
       }
     }
-    Text(
-      text = chatPm.content,
-      color = MaterialTheme.colorScheme.extended.textSecondary,
-      style = MaterialTheme.typography.bodySmall,
-    )
+    chatPm.content?.let {
+      Text(
+        text = it.get(),
+        color = MaterialTheme.colorScheme.extended.textSecondary,
+        style = MaterialTheme.typography.bodySmall,
+      )
+    }
   }
 }
