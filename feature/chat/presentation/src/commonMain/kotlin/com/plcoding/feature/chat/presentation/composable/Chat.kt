@@ -56,6 +56,7 @@ fun Chat(
     chatPm.content?.let {
       Text(
         text = it.get(),
+        maxLines = 3,
         color = MaterialTheme.colorScheme.extended.textSecondary,
         style = MaterialTheme.typography.bodySmall,
       )
