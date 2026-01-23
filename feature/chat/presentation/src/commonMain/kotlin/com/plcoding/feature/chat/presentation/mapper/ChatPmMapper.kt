@@ -56,7 +56,7 @@ class ChatPmMapper(
     return if (member?.userId == params.yourId) {
       from.lastMessage?.let { TextProvider.Resource(Res.string.your_message, listOf(it.content)) }
     } else {
-      from.lastMessage?.let { TextProvider.Dynamic("${member?.username}:${it.content}") }
+      from.lastMessage?.let { TextProvider.Dynamic("${member?.username}: ${it.content}") }
     }
   }
 

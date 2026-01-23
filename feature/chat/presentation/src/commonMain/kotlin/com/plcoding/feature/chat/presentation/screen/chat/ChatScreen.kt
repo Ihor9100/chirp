@@ -7,8 +7,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +37,7 @@ import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_plus
 import chirp.feature.chat.presentation.generated.resources.send
+import com.plcoding.core.designsystem.components.HorizontalDivider
 import com.plcoding.core.designsystem.components.button.FloatingActionButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.style.Theme
@@ -46,6 +49,7 @@ import com.plcoding.core.presentation.screen.base.BaseScreenState
 import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.domain.model.Chat
+import com.plcoding.feature.chat.presentation.component.ChatPc
 import com.plcoding.feature.chat.presentation.model.ChatPm
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
@@ -121,18 +125,25 @@ private fun ChatScreenListContent(
   val coroutineScope = rememberCoroutineScope()
 
   Box(
-    modifier = Modifier.fillMaxSize(),
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(top = 16.dp),
     contentAlignment = Alignment.Center,
   ) {
     LazyColumn(
       modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.spacedBy(16.dp),
+      verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-      items(5) { _ ->
-        com.plcoding.feature.chat.presentation.composable.Chat(
-          modifier = Modifier,
+      items(5) { index ->
+        ChatPc(
+          modifier = Modifier.padding(horizontal = 16.dp),
           chatPm = ChatPm.mock
         )
+        // TODO: use last index
+        if (index != 4) {
+          Spacer(modifier = Modifier.height(16.dp))
+          HorizontalDivider()
+        }
       }
     }
     FloatingActionButton(

@@ -1,4 +1,4 @@
-package com.plcoding.feature.chat.presentation.composable
+package com.plcoding.feature.chat.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,7 @@ import com.plcoding.feature.chat.presentation.model.ChatPm
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun Chat(
+fun ChatPc(
   modifier: Modifier,
   chatPm: ChatPm,
 ) {
@@ -69,7 +69,7 @@ private fun Themed(
   isDarkTheme: Boolean = false,
 ) {
   Theme(isDarkTheme) {
-    Chat(
+    ChatPc(
       modifier = Modifier,
       chatPm = ChatPm.mock
     )

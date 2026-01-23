@@ -39,7 +39,7 @@ import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreenDialogContent
 import com.plcoding.core.presentation.screen.base.BaseScreenState
 import com.plcoding.core.presentation.utils.NavResult
-import com.plcoding.feature.chat.presentation.composable.ChatMember
+import com.plcoding.feature.chat.presentation.component.ChatMemberPc
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -136,7 +136,7 @@ fun ChatCreateScreenContent(
       )
     }
     content.chatMemberPm?.apply {
-      ChatMember(
+      ChatMemberPc(
         modifier = Modifier
           .padding(horizontal = 16.dp)
           .padding(bottom = 12.dp),
@@ -179,7 +179,7 @@ fun ChatCreateScreenContent(
           count = content.chatMembersPm.size,
           key = { content.chatMembersPm[it].id },
         ) { index ->
-          ChatMember(
+          ChatMemberPc(
             modifier = Modifier,
             chatMemberPm = content.chatMembersPm[index],
           )

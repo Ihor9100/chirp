@@ -1,4 +1,4 @@
-package com.plcoding.feature.chat.presentation.composable
+package com.plcoding.feature.chat.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +18,7 @@ import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChatMember(
+fun ChatMemberPc(
   modifier: Modifier,
   chatMemberPm: ChatMemberPm,
 ) {
@@ -33,6 +33,7 @@ fun ChatMember(
       avatarPm = chatMemberPm.avatarPm
     )
     Text(
+      modifier = Modifier.fillMaxWidth(),
       text = chatMemberPm.fullName,
       color = MaterialTheme.colorScheme.extended.textPrimary,
       style = MaterialTheme.typography.titleXSmall,
@@ -45,7 +46,7 @@ private fun Themed(
   isDarkTheme: Boolean = false,
 ) {
   Theme(isDarkTheme) {
-    ChatMember(
+    ChatMemberPc(
       modifier = Modifier,
       chatMemberPm = ChatMemberPm.mock,
     )
