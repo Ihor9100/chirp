@@ -1,36 +1,43 @@
 package com.plcoding.feature.chat.presentation.mapper
 
+import chirp.feature.chat.presentation.generated.resources.Res
 import com.plcoding.core.designsystem.components.AvatarPm
 import com.plcoding.core.designsystem.components.AvatarSize
 import com.plcoding.core.domain.mapper.Mapper
+import com.plcoding.core.presentation.utils.TextProvider
+import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
+import com.plcoding.feature.chat.presentation.model.ChatPm
 
-class ChatPmMapper : Mapper<ChatMember, ChatMemberPm, Unit> {
+class ChatPmMapper(
+  private val chatMemberPmMapper: ChatMemberPmMapper,
+) : Mapper<Chat, ChatPm, Unit> {
 
-  override fun map(from: ChatMember, params: Unit): ChatMemberPm {
+  override fun map(from: Chat, params: Unit): ChatPm {
     return with(from) {
-      ChatMemberPm(
-        id = userId,
-        fullName = username,
-        avatarPm = AvatarPm(
-          initials = getInitials(username),
-          imageUrl = profilePictureUrl,
-          avatarSize = AvatarSize.MEDIUM,
-        ),
+      ChatPm(
+        id = id,
+        avatarsPm = chatMemberPmMapper
+          .map(members, Unit)
+          .map(ChatMemberPm::avatarPm),
+        title = getTitle(this),
+        description = getDescription(from),
+        content = lastMessage?.content,
       )
     }
   }
 
-  private fun getInitials(fullName: String): String {
-    if (fullName.isBlank()) return "?"
+  private fun getTitle(from: Chat): TextProvider {
+    return if (from.members.size > 1) {
+      TextProvider.Resource(Res.string.group_chat)
+    } else {
+      TextProvider.Dynamic(from.members.first().username)
+    }
+  }
 
-    return fullName
-      .split(" ")
-      .take(2)
-      .joinToString(
-        separator = "",
-        transform = { it.first().uppercase() },
-      )
+  private fun getDescription(from: Chat): String? {
+    if (from.members.size < 2) return null
+    return from.members.joinToString { it.username }
   }
 }
