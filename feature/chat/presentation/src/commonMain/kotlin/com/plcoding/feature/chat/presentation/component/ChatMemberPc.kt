@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.Avatar
+import com.plcoding.core.designsystem.components.AvatarPc
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.titleXSmall
@@ -29,7 +29,7 @@ fun ChatMemberPc(
     horizontalArrangement = Arrangement.spacedBy(12.dp),
     verticalAlignment = Alignment.CenterVertically,
   ) {
-    Avatar(
+    AvatarPc(
       avatarPm = chatMemberPm.avatarPm
     )
     Text(

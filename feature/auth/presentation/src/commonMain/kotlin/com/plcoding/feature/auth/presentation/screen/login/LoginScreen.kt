@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.forgot_password
-import com.plcoding.core.designsystem.components.AppLogo
-import com.plcoding.core.designsystem.components.button.Button
-import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.components.AppLogoPc
+import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
@@ -62,7 +62,7 @@ fun LoginScreenContent(
 ) {
   AdaptiveFormLayout(
     modifier = Modifier.fillMaxSize(),
-    logo = { AppLogo() },
+    logo = { AppLogoPc() },
     title = stringResource(content.titleRes),
     error = content.errorRes?.let { stringResource(it) },
   ) {
@@ -94,17 +94,17 @@ fun LoginScreenContent(
       style = MaterialTheme.typography.bodySmall,
     )
     Spacer(Modifier.height(32.dp))
-    Button(
+    ButtonPc(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(content.primaryButtonTitleRes),
-      style = ButtonStyle.PRIMARY,
+      style = ButtonPcStyle.PRIMARY,
       isEnabled = content.primaryButtonIsEnable,
       onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
     )
-    Button(
+    ButtonPc(
       modifier = Modifier.fillMaxWidth(),
       text = stringResource(content.secondaryButtonTitleRes),
-      style = ButtonStyle.SECONDARY,
+      style = ButtonPcStyle.SECONDARY,
       onClick = { onAction(LoginScreenAction.OnSecondaryButtonClick) }
     )
   }

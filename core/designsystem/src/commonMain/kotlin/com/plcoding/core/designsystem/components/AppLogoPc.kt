@@ -9,7 +9,7 @@ import chirp.core.designsystem.generated.resources.ic_logo_chirp
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
-fun AppLogo(
+fun AppLogoPc(
   modifier: Modifier = Modifier,
 ) {
   Icon(

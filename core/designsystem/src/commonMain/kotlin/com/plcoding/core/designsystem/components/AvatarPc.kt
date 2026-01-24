@@ -13,26 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.plcoding.core.designsystem.model.AvatarPm
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-enum class AvatarSize(val dp: Dp) {
-  MEDIUM(40.dp),
-  LARGE(64.dp),
-}
-
-data class AvatarPm(
-  val initials: String,
-  val imageUrl: String?,
-  val avatarSize: AvatarSize,
-)
-
 @Composable
-fun Avatar(
+fun AvatarPc(
   modifier: Modifier = Modifier,
   avatarPm: AvatarPm,
 ) {
@@ -73,13 +62,9 @@ private fun AvatarThemed(
   Theme(
     isDarkMode = isDarkMode,
   ) {
-    Avatar(
+    AvatarPc(
       modifier = Modifier,
-      avatarPm = AvatarPm(
-        initials = "IB",
-        imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
-        avatarSize = AvatarSize.MEDIUM,
-      ),
+      avatarPm = AvatarPm.mock,
     )
   }
 }

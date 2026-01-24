@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.AppLogo
-import com.plcoding.core.designsystem.components.button.Button
-import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.components.AppLogoPc
+import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
@@ -60,7 +60,7 @@ fun RegisterScreenContent(
   Theme {
     AdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { AppLogo() },
+      logo = { AppLogoPc() },
       title = stringResource(content.titleRes),
       error = content.errorRes?.let { stringResource(it) },
     ) {
@@ -119,16 +119,16 @@ fun RegisterScreenContent(
         onSecureToggleClick = { onAction(RegisterScreenAction.OnTextFieldSecureToggleClick) }
       )
       Spacer(Modifier.height(32.dp))
-      Button(
+      ButtonPc(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
-        style = ButtonStyle.PRIMARY,
+        style = ButtonPcStyle.PRIMARY,
         onClick = { onAction(RegisterScreenAction.OnPrimaryButtonClick) }
       )
-      Button(
+      ButtonPc(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.secondaryButtonTitleRes),
-        style = ButtonStyle.SECONDARY,
+        style = ButtonPcStyle.SECONDARY,
         onClick = { onAction(RegisterScreenAction.OnSecondaryButtonClick) }
       )
     }

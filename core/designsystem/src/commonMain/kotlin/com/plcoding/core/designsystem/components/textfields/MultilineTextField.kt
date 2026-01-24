@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
 import chirp.core.designsystem.generated.resources.ic_cloud_off
 import chirp.core.designsystem.generated.resources.sent
-import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonPc
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
@@ -110,7 +110,7 @@ fun MultilineTextField(
         contentDescription = null,
         tint = MaterialTheme.colorScheme.extended.textDisabled
       )
-      Button(
+      ButtonPc(
         text = stringResource(buttonTitleRes),
         isEnabled = isEnabled
       )

@@ -11,4 +11,6 @@
 	<string name="group_chat">Group chat</string>
 	<string name="you_and_others">You, %1$s</string>
 	<string name="your_message">You: %1$s</string>
+	<string name="profile_settings">Profile Settings</string>
+	<string name="log_out">Log out</string>
 </resources>

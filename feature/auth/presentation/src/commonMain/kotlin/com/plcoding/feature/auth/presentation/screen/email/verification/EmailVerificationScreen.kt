@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.SuccessIcon
-import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonPc
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.components.layout.ResultLayout
 import com.plcoding.core.designsystem.style.Theme
@@ -85,10 +85,10 @@ fun EmailVerificationScreenFailedContent(
     description = stringResource(content.descriptionRes),
     contentOffset = 0.dp,
     primaryButton = {
-      Button(
+      ButtonPc(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
-        style = content.primaryButtonStyle,
+        style = content.primaryButtonPcStyle,
         onClick = { onAction(EmailVerificationScreenAction.OnCloseClick) }
       )
     },
@@ -129,10 +129,10 @@ fun EmailVerificationScreenSuccessContent(
     title = stringResource(content.titleRes),
     description = stringResource(content.descriptionRes),
     primaryButton = {
-      Button(
+      ButtonPc(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
-        style = content.primaryButtonStyle,
+        style = content.primaryButtonPcStyle,
         onClick = { onAction(EmailVerificationScreenAction.OnLogInClick) }
       )
     },

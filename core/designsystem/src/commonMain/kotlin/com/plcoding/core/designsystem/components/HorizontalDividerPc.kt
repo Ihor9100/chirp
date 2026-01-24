@@ -9,7 +9,7 @@ import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun HorizontalDivider(
+fun HorizontalDividerPc(
   modifier: Modifier = Modifier
 ) {
   HorizontalDivider(
@@ -22,6 +22,6 @@ fun HorizontalDivider(
 @Preview
 fun Preview() {
   Theme {
-    HorizontalDivider()
+    HorizontalDividerPc()
   }
 }

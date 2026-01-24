@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.plcoding.core.designsystem.model.AvatarPm
+import com.plcoding.core.designsystem.model.AvatarSize
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -28,14 +30,14 @@ fun StackedAvatars(
     avatarsPm
       .take(maxVisibleCount)
       .forEach {
-        Avatar(
+        AvatarPc(
           modifier = Modifier,
           avatarPm = it
         )
       }
 
     if (invisibleCount > 0) {
-      Avatar(
+      AvatarPc(
         modifier = Modifier,
         avatarPm = AvatarPm(
           initials = "$invisibleCount +",

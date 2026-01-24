@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+	<string name="chirp">Chirp</string>
 	<string name="error_disk_full">Oops, it looks like your storage is full!</string>
 	<string name="error_not_found">Couldn't find the requested item</string>
 	<string name="error_unknown">An unknown error happened</string>

@@ -1,6 +1,6 @@
 package com.plcoding.feature.chat.presentation.model
 
-import com.plcoding.core.designsystem.components.AvatarPm
+import com.plcoding.core.designsystem.model.AvatarPm
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
 

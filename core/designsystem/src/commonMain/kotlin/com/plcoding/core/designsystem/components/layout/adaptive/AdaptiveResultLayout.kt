@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.AppLogoPc
 import com.plcoding.core.designsystem.components.layout.FormLayout
 import com.plcoding.core.designsystem.components.layout.ResultLayoutMock
 import com.plcoding.core.designsystem.style.Theme
@@ -35,7 +35,7 @@ fun AdaptiveResultLayout(
     FormLayout(
       modifier = modifier,
       contentColumnTopSpaceDp = 0.dp,
-      logo = { AppLogo() },
+      logo = { AppLogoPc() },
     ) {
       content()
     }
@@ -46,7 +46,7 @@ fun AdaptiveResultLayout(
     ) {
       if (deviceConfiguration != DeviceConfiguration.MOBILE_LANDSCAPE) {
         Spacer(Modifier.height(32.dp))
-        AppLogo()
+        AppLogoPc()
       }
       Spacer(Modifier.height(32.dp))
       Column(

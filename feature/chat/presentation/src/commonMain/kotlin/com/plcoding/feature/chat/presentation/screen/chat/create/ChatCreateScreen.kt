@@ -26,12 +26,12 @@ import chirp.feature.chat.presentation.generated.resources.create_chat
 import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.invite_by_username_or_email
 import chirp.feature.chat.presentation.generated.resources.no_members
-import com.plcoding.core.designsystem.components.AvatarPm
-import com.plcoding.core.designsystem.components.AvatarSize
-import com.plcoding.core.designsystem.components.HorizontalDivider
-import com.plcoding.core.designsystem.components.button.Button
-import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.components.HorizontalDividerPc
+import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
+import com.plcoding.core.designsystem.model.AvatarPm
+import com.plcoding.core.designsystem.model.AvatarSize
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
@@ -113,7 +113,7 @@ fun ChatCreateScreenContent(
         )
       }
     }
-    HorizontalDivider()
+    HorizontalDividerPc()
     Row(
       modifier = Modifier
         .fillMaxWidth()
@@ -129,9 +129,9 @@ fun ChatCreateScreenContent(
         textFieldState = content.searchTextFieldState,
         inputPlaceholder = stringResource(Res.string.invite_by_username_or_email),
       )
-      Button(
+      ButtonPc(
         text = stringResource(Res.string.add),
-        style = ButtonStyle.SECONDARY,
+        style = ButtonPcStyle.SECONDARY,
         onClick = { onAction(ChatCreateScreenAction.OnAddClick) }
       )
     }
@@ -143,7 +143,7 @@ fun ChatCreateScreenContent(
         chatMemberPm = this,
       )
     }
-    HorizontalDivider()
+    HorizontalDividerPc()
     LazyColumn(
       modifier = Modifier
         .fillMaxWidth()
@@ -186,7 +186,7 @@ fun ChatCreateScreenContent(
         }
       }
     }
-    HorizontalDivider()
+    HorizontalDividerPc()
     Row(
       modifier = Modifier
         .fillMaxWidth()
@@ -197,15 +197,15 @@ fun ChatCreateScreenContent(
       horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      Button(
+      ButtonPc(
         modifier = Modifier,
         text = stringResource(Res.string.cancel),
-        style = ButtonStyle.SECONDARY,
+        style = ButtonPcStyle.SECONDARY,
       )
-      Button(
+      ButtonPc(
         modifier = Modifier,
         text = stringResource(Res.string.create_chat),
-        style = ButtonStyle.PRIMARY,
+        style = ButtonPcStyle.PRIMARY,
         onClick = { onAction(ChatCreateScreenAction.OnCreateClick) }
       )
     }

@@ -1,16 +1,17 @@
 package com.plcoding.feature.auth.presentation.screen.register
 
 import androidx.compose.foundation.text.input.TextFieldState
+import chirp.core.presentation.generated.resources.chirp
 import chirp.feature.auth.presentation.generated.resources.Res
-import chirp.feature.auth.presentation.generated.resources.chirp
 import chirp.feature.auth.presentation.generated.resources.email
 import chirp.feature.auth.presentation.generated.resources.log_in
 import chirp.feature.auth.presentation.generated.resources.password
 import chirp.feature.auth.presentation.generated.resources.register
 import chirp.feature.auth.presentation.generated.resources.username
 import chirp.feature.auth.presentation.generated.resources.welcome_to_chirp
-import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import org.jetbrains.compose.resources.StringResource
+import chirp.core.presentation.generated.resources.Res as CoreRes
 
 data class RegisterScreenContent(
   val titleRes: StringResource = Res.string.welcome_to_chirp,
@@ -18,7 +19,7 @@ data class RegisterScreenContent(
 
   val usernameTopTitleRes: StringResource = Res.string.username,
   val usernameState: TextFieldState = TextFieldState(),
-  val usernamePlaceholderRes: StringResource = Res.string.chirp,
+  val usernamePlaceholderRes: StringResource = CoreRes.string.chirp,
   val usernameBottomTitleRes: StringResource? = null,
   val usernameIsError: Boolean = false,
 
@@ -36,8 +37,8 @@ data class RegisterScreenContent(
   val passwordIsSecureMode: Boolean = false,
 
   val primaryButtonTitleRes: StringResource = Res.string.register,
-  val primaryButtonStyle: ButtonStyle = ButtonStyle.PRIMARY,
+  val primaryButtonPcStyle: ButtonPcStyle = ButtonPcStyle.PRIMARY,
 
   val secondaryButtonTitleRes: StringResource = Res.string.log_in,
-  val secondaryButtonStyle: ButtonStyle = ButtonStyle.SECONDARY,
+  val secondaryButtonPcStyle: ButtonPcStyle = ButtonPcStyle.SECONDARY,
 )

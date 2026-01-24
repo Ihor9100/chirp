@@ -14,8 +14,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.SuccessIcon
-import com.plcoding.core.designsystem.components.button.Button
-import com.plcoding.core.designsystem.components.button.ButtonStyle
+import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -82,16 +82,16 @@ fun ResultLayoutMock() {
     title = "Chirp successfully created!",
     description = "We’ve sent verification email to olivia@chirp.chat",
     primaryButton = {
-      Button(
+      ButtonPc(
         modifier = Modifier.fillMaxWidth(),
         text = "Log in",
       )
     },
     secondaryButton = {
-      Button(
+      ButtonPc(
         modifier = Modifier.fillMaxWidth(),
         text = "Resend verification email",
-        style = ButtonStyle.SECONDARY,
+        style = ButtonPcStyle.SECONDARY,
       )
     },
   )

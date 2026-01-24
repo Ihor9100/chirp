@@ -37,7 +37,7 @@ import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_plus
 import chirp.feature.chat.presentation.generated.resources.send
-import com.plcoding.core.designsystem.components.HorizontalDivider
+import com.plcoding.core.designsystem.components.HorizontalDividerPc
 import com.plcoding.core.designsystem.components.button.FloatingActionButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.style.Theme
@@ -142,7 +142,7 @@ private fun ChatScreenListContent(
         // TODO: use last index
         if (index != 4) {
           Spacer(modifier = Modifier.height(16.dp))
-          HorizontalDivider()
+          HorizontalDividerPc()
         }
       }
     }

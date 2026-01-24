@@ -18,10 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import chirp.core.presentation.generated.resources.Res
-import chirp.core.presentation.generated.resources.ic_cross
-import com.plcoding.core.designsystem.components.button.Button
-import com.plcoding.core.designsystem.components.button.ButtonStyle
+import chirp.core.designsystem.generated.resources.Res
+import chirp.core.designsystem.generated.resources.ic_cross
+import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.vectorResource
@@ -88,16 +88,16 @@ fun DestructiveConfirmationDialog(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End)
       ) {
-        Button(
+        ButtonPc(
           modifier = Modifier,
           text = cancelButtonText,
-          style = ButtonStyle.SECONDARY,
+          style = ButtonPcStyle.SECONDARY,
           onClick = onCancelClick,
         )
-        Button(
+        ButtonPc(
           modifier = Modifier,
           text = confirmButtonText,
-          style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+          style = ButtonPcStyle.DESTRUCTIVE_PRIMARY,
           onClick = onConfirmClick,
         )
       }

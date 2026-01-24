@@ -21,7 +21,7 @@ import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-enum class ButtonStyle {
+enum class ButtonPcStyle {
   TEXT,
   PRIMARY,
   SECONDARY,
@@ -30,41 +30,41 @@ enum class ButtonStyle {
 }
 
 @Composable
-fun Button(
+fun ButtonPc(
   modifier: Modifier = Modifier,
   text: String,
-  style: ButtonStyle = ButtonStyle.PRIMARY,
+  style: ButtonPcStyle = ButtonPcStyle.PRIMARY,
   isLoading: Boolean = false,
   isEnabled: Boolean = true,
   onClick: () -> Unit = {},
   leadingIcon: @Composable (() -> Unit)? = null,
 ) {
   val colors = when (style) {
-    ButtonStyle.TEXT -> ButtonDefaults.buttonColors(
+    ButtonPcStyle.TEXT -> ButtonDefaults.buttonColors(
       containerColor = Color.Transparent,
       contentColor = MaterialTheme.colorScheme.tertiary,
       disabledContainerColor = Color.Transparent,
       disabledContentColor = MaterialTheme.colorScheme.extended.textDisabled,
     )
-    ButtonStyle.PRIMARY -> ButtonDefaults.buttonColors(
+    ButtonPcStyle.PRIMARY -> ButtonDefaults.buttonColors(
       containerColor = MaterialTheme.colorScheme.primary,
       contentColor = MaterialTheme.colorScheme.onPrimary,
       disabledContainerColor = MaterialTheme.colorScheme.extended.disabledFill,
       disabledContentColor = MaterialTheme.colorScheme.extended.textDisabled,
     )
-    ButtonStyle.SECONDARY -> ButtonDefaults.buttonColors(
+    ButtonPcStyle.SECONDARY -> ButtonDefaults.buttonColors(
       containerColor = Color.Transparent,
       contentColor = MaterialTheme.colorScheme.extended.textSecondary,
       disabledContainerColor = Color.Transparent,
       disabledContentColor = MaterialTheme.colorScheme.extended.textDisabled,
     )
-    ButtonStyle.DESTRUCTIVE_PRIMARY -> ButtonDefaults.buttonColors(
+    ButtonPcStyle.DESTRUCTIVE_PRIMARY -> ButtonDefaults.buttonColors(
       containerColor = MaterialTheme.colorScheme.error,
       contentColor = MaterialTheme.colorScheme.onError,
       disabledContainerColor = MaterialTheme.colorScheme.extended.disabledFill,
       disabledContentColor = MaterialTheme.colorScheme.extended.textDisabled,
     )
-    ButtonStyle.DESTRUCTIVE_SECONDARY -> ButtonDefaults.buttonColors(
+    ButtonPcStyle.DESTRUCTIVE_SECONDARY -> ButtonDefaults.buttonColors(
       containerColor = Color.Transparent,
       contentColor = MaterialTheme.colorScheme.error,
       disabledContainerColor = Color.Transparent,
@@ -77,10 +77,10 @@ fun Button(
     color = MaterialTheme.colorScheme.extended.disabledOutline,
   )
   val borderStroke = when {
-    style == ButtonStyle.PRIMARY && !isEnabled -> defaultBorderColor
-    style == ButtonStyle.SECONDARY -> defaultBorderColor
-    style == ButtonStyle.DESTRUCTIVE_PRIMARY && !isEnabled -> defaultBorderColor
-    style == ButtonStyle.DESTRUCTIVE_SECONDARY && !isEnabled -> {
+    style == ButtonPcStyle.PRIMARY && !isEnabled -> defaultBorderColor
+    style == ButtonPcStyle.SECONDARY -> defaultBorderColor
+    style == ButtonPcStyle.DESTRUCTIVE_PRIMARY && !isEnabled -> defaultBorderColor
+    style == ButtonPcStyle.DESTRUCTIVE_SECONDARY && !isEnabled -> {
       val color = if (isEnabled) {
         MaterialTheme.colorScheme.extended.destructiveSecondaryOutline
       } else {
@@ -129,13 +129,13 @@ fun Button(
 }
 
 @Composable
-fun ButtonThemed(
+private fun ButtonPcThemed(
   isDarkTheme: Boolean,
-  style: ButtonStyle,
+  style: ButtonPcStyle,
   isEnabled: Boolean,
 ) {
   Theme(isDarkTheme) {
-    Button(
+    ButtonPc(
       text = "Click",
       style = style,
       isEnabled = isEnabled,
@@ -145,200 +145,200 @@ fun ButtonThemed(
 
 @Composable
 @Preview
-fun TextEnabledLightPreview() {
-  ButtonThemed(
+private fun TextEnabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.TEXT,
+    style = ButtonPcStyle.TEXT,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun TextDisabledLightPreview() {
-  ButtonThemed(
+private fun TextDisabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.TEXT,
+    style = ButtonPcStyle.TEXT,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun TextEnabledDarkPreview() {
-  ButtonThemed(
+private fun TextEnabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.TEXT,
+    style = ButtonPcStyle.TEXT,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun TextDisabledDarkPreview() {
-  ButtonThemed(
+private fun TextDisabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.TEXT,
+    style = ButtonPcStyle.TEXT,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun PrimaryEnabledLightPreview() {
-  ButtonThemed(
+private fun PrimaryEnabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.PRIMARY,
+    style = ButtonPcStyle.PRIMARY,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun PrimaryDisabledLightPreview() {
-  ButtonThemed(
+private fun PrimaryDisabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.PRIMARY,
+    style = ButtonPcStyle.PRIMARY,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun PrimaryEnabledDarkPreview() {
-  ButtonThemed(
+private fun PrimaryEnabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.PRIMARY,
+    style = ButtonPcStyle.PRIMARY,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun PrimaryDisabledDarkPreview() {
-  ButtonThemed(
+private fun PrimaryDisabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.PRIMARY,
+    style = ButtonPcStyle.PRIMARY,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun SecondaryEnabledLightPreview() {
-  ButtonThemed(
+private fun SecondaryEnabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.SECONDARY,
+    style = ButtonPcStyle.SECONDARY,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun SecondaryDisabledLightPreview() {
-  ButtonThemed(
+private fun SecondaryDisabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.SECONDARY,
+    style = ButtonPcStyle.SECONDARY,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun SecondaryEnabledDarkPreview() {
-  ButtonThemed(
+private fun SecondaryEnabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.SECONDARY,
+    style = ButtonPcStyle.SECONDARY,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun SecondaryDisabledDarkPreview() {
-  ButtonThemed(
+private fun SecondaryDisabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.SECONDARY,
+    style = ButtonPcStyle.SECONDARY,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun DestructivePrimaryEnabledLightPreview() {
-  ButtonThemed(
+private fun DestructivePrimaryEnabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+    style = ButtonPcStyle.DESTRUCTIVE_PRIMARY,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun DestructivePrimaryDisabledLightPreview() {
-  ButtonThemed(
+private fun DestructivePrimaryDisabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+    style = ButtonPcStyle.DESTRUCTIVE_PRIMARY,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun DestructivePrimaryEnabledDarkPreview() {
-  ButtonThemed(
+private fun DestructivePrimaryEnabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+    style = ButtonPcStyle.DESTRUCTIVE_PRIMARY,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun DestructivePrimaryDisabledDarkPreview() {
-  ButtonThemed(
+private fun DestructivePrimaryDisabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.DESTRUCTIVE_PRIMARY,
+    style = ButtonPcStyle.DESTRUCTIVE_PRIMARY,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun DestructiveSecondaryEnabledLightPreview() {
-  ButtonThemed(
+private fun DestructiveSecondaryEnabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.DESTRUCTIVE_SECONDARY,
+    style = ButtonPcStyle.DESTRUCTIVE_SECONDARY,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun DestructiveSecondaryDisabledLightPreview() {
-  ButtonThemed(
+private fun DestructiveSecondaryDisabledLightPreview() {
+  ButtonPcThemed(
     isDarkTheme = false,
-    style = ButtonStyle.DESTRUCTIVE_SECONDARY,
+    style = ButtonPcStyle.DESTRUCTIVE_SECONDARY,
     isEnabled = false,
   )
 }
 
 @Composable
 @Preview
-fun DestructiveSecondaryEnabledDarkPreview() {
-  ButtonThemed(
+private fun DestructiveSecondaryEnabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.DESTRUCTIVE_SECONDARY,
+    style = ButtonPcStyle.DESTRUCTIVE_SECONDARY,
     isEnabled = true,
   )
 }
 
 @Composable
 @Preview
-fun DestructiveSecondaryDisabledDarkPreview() {
-  ButtonThemed(
+private fun DestructiveSecondaryDisabledDarkPreview() {
+  ButtonPcThemed(
     isDarkTheme = true,
-    style = ButtonStyle.DESTRUCTIVE_SECONDARY,
+    style = ButtonPcStyle.DESTRUCTIVE_SECONDARY,
     isEnabled = false,
   )
 }

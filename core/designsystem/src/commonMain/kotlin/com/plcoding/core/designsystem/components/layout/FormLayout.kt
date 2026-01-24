@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -18,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.AppLogoPc
 import com.plcoding.core.designsystem.components.Title
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -67,7 +66,7 @@ fun FormLayoutThemed(
   Theme(isDarkTheme) {
     FormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { AppLogo(modifier = Modifier) },
+      logo = { AppLogoPc(modifier = Modifier) },
       content = {
         Title(
           text = "Welcome to Chirp!",

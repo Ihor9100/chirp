@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.AppLogoPc
 import com.plcoding.core.designsystem.components.Title
 import com.plcoding.core.designsystem.components.layout.FormLayout
 import com.plcoding.core.designsystem.style.Theme
@@ -72,7 +72,7 @@ fun AdaptiveFormLayout(
             .fillMaxHeight(),
         ) {
           Spacer(Modifier.height(32.dp))
-          AppLogo()
+          AppLogoPc()
           Spacer(Modifier.height(32.dp))
           Title(
             text = title,
@@ -133,7 +133,7 @@ fun AdaptiveFormLayoutThemed(
       modifier = Modifier
         .fillMaxSize(),
       deviceConfiguration = deviceConfiguration,
-      logo = ::AppLogo,
+      logo = ::AppLogoPc,
       title = "Hello World",
       error = "Invalid Data",
       form = {

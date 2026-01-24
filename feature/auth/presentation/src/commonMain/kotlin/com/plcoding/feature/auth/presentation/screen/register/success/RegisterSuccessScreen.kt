@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.ChirError
 import com.plcoding.core.designsystem.components.SuccessIcon
-import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonPc
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.components.layout.ResultLayout
 import com.plcoding.core.designsystem.components.layout.SnackbarLayout
@@ -74,20 +74,20 @@ fun RegisterSuccessScreenContent(
         title = stringResource(content.titleRes),
         description = content.description?.get(),
         primaryButton = {
-          Button(
+          ButtonPc(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(content.primaryButtonTitleRes),
-            style = content.primaryButtonStyle,
+            style = content.primaryButtonPcStyle,
             isLoading = false,
             isEnabled = !content.hasOngoingRequest,
             onClick = { onAction(RegisterSuccessScreenAction.PrimaryButtonClick) }
           )
         },
         secondaryButton = {
-          Button(
+          ButtonPc(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(content.secondaryButtonTitleRes),
-            style = content.secondaryButtonStyle,
+            style = content.secondaryButtonPcStyle,
             isLoading = false,
             isEnabled = !content.hasOngoingRequest,
             onClick = { onAction(RegisterSuccessScreenAction.SecondaryButtonClick) }
