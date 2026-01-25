@@ -12,15 +12,16 @@ data class ChatPm(
   val title: TextProvider,
   val description: TextProvider?,
   val content: TextProvider?,
+  val isSelected: Boolean,
 ) {
 
   companion object {
-    val mock
+    val mocks
       get() = ChatPmMapper(
         ChatMemberPmMapper(),
       ).map(
-        Chat.mock,
-        ChatPmMapper.Params(yourId = "1"),
+        Chat.mocks,
+        ChatPmMapper.Params(yourId = "1", "1"),
       )
   }
 }

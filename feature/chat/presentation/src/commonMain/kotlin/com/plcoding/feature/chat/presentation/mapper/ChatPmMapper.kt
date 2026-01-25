@@ -24,6 +24,7 @@ class ChatPmMapper(
         title = getTitle(this, params),
         description = getDescription(from, params),
         content = getContent(from, params),
+        isSelected = id == params.selectedChatId,
       )
     }
   }
@@ -62,5 +63,6 @@ class ChatPmMapper(
 
   data class Params(
     val yourId: String,
+    val selectedChatId: String,
   )
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,6 +41,7 @@ import chirp.feature.chat.presentation.generated.resources.send
 import com.plcoding.core.designsystem.components.HorizontalDividerPc
 import com.plcoding.core.designsystem.components.button.FloatingActionButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
+import com.plcoding.core.designsystem.model.AvatarPm
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
@@ -50,7 +52,7 @@ import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.component.ChatPc
-import com.plcoding.feature.chat.presentation.model.ChatPm
+import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
@@ -124,39 +126,49 @@ private fun ChatScreenListContent(
 ) {
   val coroutineScope = rememberCoroutineScope()
 
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(top = 16.dp),
-    contentAlignment = Alignment.Center,
+  Column(
+    modifier = Modifier.fillMaxSize(),
   ) {
-    LazyColumn(
+    ChatsHeaderPc(
+      showMenu = false,
+      avatarPm = AvatarPm.mock,
+      onAvatarClick = {},
+      onSettingsClick = {},
+      onLogoutClick = {},
+      onDismissClick = {},
+    )
+    Box(
       modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.spacedBy(16.dp)
+      contentAlignment = Alignment.Center,
     ) {
-      items(5) { index ->
-        ChatPc(
-          modifier = Modifier.padding(horizontal = 16.dp),
-          chatPm = ChatPm.mock
-        )
-        // TODO: use last index
-        if (index != 4) {
-          Spacer(modifier = Modifier.height(16.dp))
-          HorizontalDividerPc()
+      LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(top = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+      ) {
+        items(content.chatsPm.size) { index ->
+          ChatPc(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            chatPm = content.chatsPm[index]
+          )
+          if (content.chatsPm.lastIndex != index) {
+            Spacer(modifier = Modifier.height(16.dp))
+            HorizontalDividerPc()
+          }
         }
       }
-    }
-    FloatingActionButton(
-      modifier = Modifier
-        .padding(16.dp)
-        .align(Alignment.BottomEnd),
-      onClick = { onAction(ChatScreenAction.OnChatCreateClick) },
-    ) {
-      Image(
-        imageVector = vectorResource(Res.drawable.ic_plus),
-        contentDescription = null,
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
-      )
+      FloatingActionButton(
+        modifier = Modifier
+          .padding(16.dp)
+          .align(Alignment.BottomEnd),
+        onClick = { onAction(ChatScreenAction.OnChatCreateClick) },
+      ) {
+        Image(
+          imageVector = vectorResource(Res.drawable.ic_plus),
+          contentDescription = null,
+          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
+        )
+      }
     }
   }
 }

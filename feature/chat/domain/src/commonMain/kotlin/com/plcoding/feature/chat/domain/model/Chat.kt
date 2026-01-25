@@ -8,13 +8,15 @@ data class Chat(
 ) {
 
   companion object {
-    val mock
-      get() = Chat(
-        id = "1",
-        members = ChatMember.mocks,
-        lastActivityAt = "lastActivityAt",
-        lastMessage = ChatMessage.mock,
-      )
+    val mocks
+      get() = List(10) { index ->
+        Chat(
+          id = "$index",
+          members = ChatMember.mocks,
+          lastActivityAt = "lastActivityAt",
+          lastMessage = ChatMessage.mock,
+        )
+      }
   }
 
   val isGroup = members.size > 2

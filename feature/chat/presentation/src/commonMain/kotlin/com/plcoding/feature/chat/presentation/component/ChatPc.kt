@@ -71,7 +71,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     ChatPc(
       modifier = Modifier,
-      chatPm = ChatPm.mock
+      chatPm = ChatPm.mocks
     )
   }
 }

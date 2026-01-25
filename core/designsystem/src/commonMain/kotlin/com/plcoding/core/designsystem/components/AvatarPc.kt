@@ -2,6 +2,7 @@ package com.plcoding.core.designsystem.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,10 +25,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun AvatarPc(
   modifier: Modifier = Modifier,
   avatarPm: AvatarPm,
+  onClick: (() -> Unit)? = null,
 ) {
   Box(
     modifier = modifier
       .size(avatarPm.avatarSize.dp)
+      .clickable { onClick?.invoke() }
       .background(
         color = MaterialTheme.colorScheme.extended.secondaryFill,
         shape = CircleShape,

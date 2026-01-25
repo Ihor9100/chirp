@@ -20,9 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.ic_settings
-import chirp.core.presentation.generated.resources.Res
-import chirp.core.designsystem.generated.resources.Res as DesignSystemRes
 import chirp.core.presentation.generated.resources.chirp
+import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.ic_log_out
 import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.profile_settings
 import com.plcoding.core.designsystem.components.AppLogoPc
@@ -34,6 +34,8 @@ import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import chirp.core.designsystem.generated.resources.Res as DesignSystemRes
+import chirp.core.presentation.generated.resources.Res as CorePresentationRes
 
 @Composable
 fun ChatsHeaderPc(
@@ -61,7 +63,7 @@ fun ChatsHeaderPc(
       AppLogoPc()
       Text(
         modifier = Modifier.weight(1f),
-        text = stringResource(Res.string.chirp),
+        text = stringResource(CorePresentationRes.string.chirp),
         color = MaterialTheme.colorScheme.extended.textPrimary,
         style = MaterialTheme.typography.titleMedium,
       )
@@ -69,6 +71,7 @@ fun ChatsHeaderPc(
         AvatarPc(
           modifier = Modifier,
           avatarPm = avatarPm,
+          onClick = onAvatarClick,
         )
         DropdownMenu(
           expanded = showMenu,
@@ -103,7 +106,7 @@ fun ChatsHeaderPc(
           )
           HorizontalDividerPc()
           DropdownMenuItem(
-            onClick = onSettingsClick,
+            onClick = onLogoutClick,
             colors = MenuDefaults.itemColors().copy(
               textColor = MaterialTheme.colorScheme.extended.destructiveHover,
               leadingIconColor = MaterialTheme.colorScheme.extended.destructiveHover,
@@ -117,7 +120,7 @@ fun ChatsHeaderPc(
             leadingIcon = {
               Icon(
                 modifier = Modifier.size(16.dp),
-                imageVector = vectorResource(DesignSystemRes.drawable.ic_settings),
+                imageVector = vectorResource(Res.drawable.ic_log_out),
                 contentDescription = null,
               )
             },
@@ -130,7 +133,7 @@ fun ChatsHeaderPc(
 }
 
 @Composable
-private fun AvatarThemed(
+private fun Themed(
   isDarkMode: Boolean,
 ) {
   Theme(
@@ -148,17 +151,17 @@ private fun AvatarThemed(
 }
 
 @Composable
-@Preview
+@Preview(heightDp = 250)
 private fun DarkPreview() {
-  AvatarThemed(
+  Themed(
     isDarkMode = true,
   )
 }
 
 @Composable
-@Preview
+@Preview(heightDp = 250)
 private fun LightPreview() {
-  AvatarThemed(
+  Themed(
     isDarkMode = false,
   )
 }
