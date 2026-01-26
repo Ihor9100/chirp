@@ -59,7 +59,7 @@ fun AvatarPc(
 }
 
 @Composable
-private fun AvatarThemed(
+private fun Themed(
   isDarkMode: Boolean,
 ) {
   Theme(
@@ -75,7 +75,7 @@ private fun AvatarThemed(
 @Composable
 @Preview
 private fun DarkPreview() {
-  AvatarThemed(
+  Themed(
     isDarkMode = true,
   )
 }
@@ -83,7 +83,7 @@ private fun DarkPreview() {
 @Composable
 @Preview
 private fun LightPreview() {
-  AvatarThemed(
+  Themed(
     isDarkMode = false,
   )
 }

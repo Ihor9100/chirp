@@ -11,6 +11,6 @@ data class ChatMemberPm(
 ) {
 
   companion object {
-    val mock get() = ChatMemberPmMapper().map(ChatMember.mocks.first(), Unit)
+    val mocks get() = ChatMemberPmMapper().map(ChatMember.mocks, Unit)
   }
 }

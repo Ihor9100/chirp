@@ -48,7 +48,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     ChatMemberPc(
       modifier = Modifier,
-      chatMemberPm = ChatMemberPm.mock,
+      chatMemberPm = ChatMemberPm.mocks.first(),
     )
   }
 }

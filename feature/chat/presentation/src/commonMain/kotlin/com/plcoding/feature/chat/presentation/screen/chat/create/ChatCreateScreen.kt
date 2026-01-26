@@ -27,11 +27,10 @@ import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.invite_by_username_or_email
 import chirp.feature.chat.presentation.generated.resources.no_members
 import com.plcoding.core.designsystem.components.HorizontalDividerPc
+import com.plcoding.core.designsystem.components.TitleDescriptionPc
 import com.plcoding.core.designsystem.components.button.ButtonPc
 import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
-import com.plcoding.core.designsystem.model.AvatarPm
-import com.plcoding.core.designsystem.model.AvatarSize
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
@@ -155,24 +154,11 @@ fun ChatCreateScreenContent(
     ) {
       if (content.chatMembersPm.isEmpty()) {
         item {
-          Column(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically)
-          ) {
-            Text(
-              text = stringResource(Res.string.no_members),
-              color = MaterialTheme.colorScheme.extended.textPrimary,
-              style = MaterialTheme.typography.titleMedium,
-            )
-            Text(
-              text = stringResource(Res.string.add_members_to_your_chat),
-              color = MaterialTheme.colorScheme.extended.textSecondary,
-              style = MaterialTheme.typography.bodyMedium,
-            )
-          }
+          TitleDescriptionPc(
+            modifier = Modifier.padding(vertical = 24.dp),
+            titleRes = Res.string.no_members,
+            descriptionRes = Res.string.add_members_to_your_chat,
+          )
         }
       } else {
         items(
@@ -219,26 +205,7 @@ private fun Themed(
 ) {
   val baseScreenState = BaseScreenState(
     content = ChatCreateScreenContent(
-      chatMembersPm = listOf(
-        ChatMemberPm(
-          id = "1",
-          avatarPm = AvatarPm(
-            initials = "Ihor A",
-            imageUrl = "1",
-            avatarSize = AvatarSize.MEDIUM,
-          ),
-          fullName = "Ihor Bohdanovskyi"
-        ),
-        ChatMemberPm(
-          id = "2",
-          avatarPm = AvatarPm(
-            initials = "Ihor B",
-            imageUrl = "1",
-            avatarSize = AvatarSize.MEDIUM,
-          ),
-          fullName = "Ihor Bohdanovskyi"
-        ),
-      ),
+      chatMembersPm = ChatMemberPm.mocks,
     ),
   )
 
