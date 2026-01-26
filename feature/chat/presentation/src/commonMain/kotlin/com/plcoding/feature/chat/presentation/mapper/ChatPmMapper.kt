@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.presentation.mapper
 
+import androidx.compose.material3.MaterialTheme
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.group_chat
 import chirp.feature.chat.presentation.generated.resources.you_and_others
