@@ -8,19 +8,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.HorizontalDividerPc
 import com.plcoding.core.designsystem.components.StackedAvatars
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
+import com.plcoding.core.designsystem.style.getColor
 import com.plcoding.core.designsystem.style.titleXSmall
 import com.plcoding.feature.chat.presentation.model.ChatPm
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -30,32 +30,24 @@ fun ChatPc(
   modifier: Modifier,
   chatPm: ChatPm,
 ) {
-  val backgroundColor: Color
-  val verticalDividerColor: Color?
-
-  if (chatPm.isSelected) {
-    backgroundColor = MaterialTheme.colorScheme.surface
-    verticalDividerColor = MaterialTheme.colorScheme.primary
-  } else {
-    backgroundColor = MaterialTheme.colorScheme.background
-    verticalDividerColor = null
-  }
-
   Row(
     modifier = modifier
       .fillMaxWidth()
-      .height(IntrinsicSize.Min)
-      .background(backgroundColor),
+      .height(IntrinsicSize.Min),
   ) {
     Column(
       modifier = modifier
         .fillMaxWidth()
-        .weight(1f),
+        .weight(1f)
+        .background(chatPm.backgroundColorToken.getColor())
+        .padding(top = 16.dp),
       horizontalAlignment = Alignment.Start,
       verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
       Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
       ) {
@@ -79,19 +71,22 @@ fun ChatPc(
       }
       chatPm.content?.let {
         Text(
+          modifier = Modifier.padding(horizontal = 16.dp),
           text = it.get(),
           maxLines = 3,
           color = MaterialTheme.colorScheme.extended.textSecondary,
           style = MaterialTheme.typography.bodySmall,
         )
       }
+      if (chatPm.showHorizontalDivider) {
+        HorizontalDividerPc()
+      }
     }
-    verticalDividerColor?.let {
+    if (chatPm.showVerticalDivider) {
       VerticalDivider(
-        modifier = Modifier
-          .width(1.dp)
-          .fillMaxHeight(),
-        color = it
+        modifier = Modifier.fillMaxHeight(),
+        thickness = 3.dp,
+        color = MaterialTheme.colorScheme.primary
       )
     }
   }

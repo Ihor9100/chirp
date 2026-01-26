@@ -1,6 +1,7 @@
 package com.plcoding.feature.chat.presentation.model
 
 import com.plcoding.core.designsystem.model.AvatarPm
+import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
@@ -12,7 +13,9 @@ data class ChatPm(
   val title: TextProvider,
   val description: TextProvider?,
   val content: TextProvider?,
-  val isSelected: Boolean,
+  val backgroundColorToken: ColorToken,
+  val showVerticalDivider: Boolean,
+  val showHorizontalDivider: Boolean,
 ) {
 
   companion object {
@@ -21,7 +24,11 @@ data class ChatPm(
         ChatMemberPmMapper(),
       ).map(
         Chat.mocks,
-        ChatPmMapper.Params(yourId = "1", "1"),
+        ChatPmMapper.Params(
+          yourId = "1",
+          selectedChatId = "1",
+          lastChatId = Chat.mocks.last().id,
+        ),
       )
   }
 }

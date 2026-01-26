@@ -1,10 +1,10 @@
 package com.plcoding.feature.chat.presentation.mapper
 
-import androidx.compose.material3.MaterialTheme
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.group_chat
 import chirp.feature.chat.presentation.generated.resources.you_and_others
 import chirp.feature.chat.presentation.generated.resources.your_message
+import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.feature.chat.domain.model.Chat
@@ -17,6 +17,8 @@ class ChatPmMapper(
 
   override fun map(from: Chat, params: Params): ChatPm {
     return with(from) {
+      val isSelected = id == params.selectedChatId
+
       ChatPm(
         id = id,
         avatarsPm = chatMemberPmMapper
@@ -25,7 +27,9 @@ class ChatPmMapper(
         title = getTitle(this, params),
         description = getDescription(from, params),
         content = getContent(from, params),
-        isSelected = id == params.selectedChatId,
+        backgroundColorToken = if (isSelected) ColorToken.Surface else ColorToken.Background,
+        showVerticalDivider = isSelected,
+        showHorizontalDivider = id != params.lastChatId,
       )
     }
   }
@@ -65,5 +69,6 @@ class ChatPmMapper(
   data class Params(
     val yourId: String,
     val selectedChatId: String,
+    val lastChatId: String,
   )
 }

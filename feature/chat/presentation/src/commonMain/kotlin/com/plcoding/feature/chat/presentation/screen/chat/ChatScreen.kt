@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +36,6 @@ import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_plus
 import chirp.feature.chat.presentation.generated.resources.send
-import com.plcoding.core.designsystem.components.HorizontalDividerPc
 import com.plcoding.core.designsystem.components.button.FloatingActionButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.model.AvatarPm
@@ -144,17 +141,12 @@ private fun ChatScreenListContent(
       LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(top = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
       ) {
         items(content.chatsPm.size) { index ->
           ChatPc(
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier,
             chatPm = content.chatsPm[index]
           )
-          if (content.chatsPm.lastIndex != index) {
-            Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDividerPc()
-          }
         }
       }
       FloatingActionButton(
