@@ -93,12 +93,16 @@ fun ChatsScreen(
       deviceConfiguration = deviceConfiguration,
       onAction = {
         when (it) {
-          is ChatsScreenAction.OnChatsClick -> coroutineScope.launch {
+          is ChatsScreenAction.OnChatClick -> coroutineScope.launch {
             scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
           }
-          is ChatsScreenAction.OnChatsCreateClick -> navController.navigate(
-            ChatRoute.ChatCreate,
-          )
+          is ChatsScreenAction.OnPlusClick -> {
+            viewModel.onAction {
+              navController.navigate(
+                ChatRoute.ChatCreate,
+              )
+            }
+          }
         }
       }
     )
@@ -174,7 +178,7 @@ private fun ChatsPane(
         modifier = Modifier
           .padding(16.dp)
           .align(Alignment.BottomEnd),
-        onClick = { onAction(ChatsScreenAction.OnChatsCreateClick) },
+        onClick = { onAction(ChatsScreenAction.OnPlusClick) },
       ) {
         Image(
           imageVector = vectorResource(Res.drawable.ic_plus),

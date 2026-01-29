@@ -1,6 +1,8 @@
 package com.plcoding.feature.chat.presentation.screen.chats
 
 import androidx.lifecycle.SavedStateHandle
+import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.group_chat
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.feature.chat.domain.model.Chat
 
@@ -9,14 +11,12 @@ class ChatsScreenViewModel(
 ) : BaseScreenViewModel<ChatsScreenContentPm>() {
 
   override fun getContentPm(): ChatsScreenContentPm {
-    return ChatsScreenContentPm()
+    return ChatsScreenContentPm.mock
   }
 
-  fun onAction(action: ChatsScreenAction) {
-    when (action) {
-      else -> {
-        println("lol arg = ${savedStateHandle.get<String>("arg")}")
-      }
+  fun onAction(onDismiss: () -> Unit) {
+    showSnackbar(Res.string.group_chat) {
+      onDismiss()
     }
   }
 
