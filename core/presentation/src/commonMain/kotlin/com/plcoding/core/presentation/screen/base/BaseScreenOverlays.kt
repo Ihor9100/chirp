@@ -62,12 +62,14 @@ fun BaseScreenOverlays(
                       shape = RoundedCornerShape(8.dp),
                       color = MaterialTheme.colorScheme.outline,
                     )
-                    .padding(16.dp)
+                    .padding(24.dp)
+                    .size(24.dp)
                 } else {
                   Modifier
                 }
               ),
             color = MaterialTheme.colorScheme.onPrimary,
+            strokeWidth = 3.dp,
           )
         }
         is Overlay.Snackbar -> {

@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 class EmailVerificationScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<EmailVerificationScreenContent>() {
+) : BaseScreenViewModel<EmailVerificationScreenContentPm>() {
 
   private val token = savedStateHandle.get<String>("token")
 
-  override fun getContentPm(): EmailVerificationScreenContent {
-    return EmailVerificationScreenContent.Loading()
+  override fun getContentPm(): EmailVerificationScreenContentPm {
+    return EmailVerificationScreenContentPm.Loading()
   }
 
   override fun onInitialized() {
@@ -28,8 +28,8 @@ class EmailVerificationScreenViewModel(
     viewModelScope.launch {
       authRemoteRepository
         .verifyEmail(token ?: "")
-        .onFailure { updateContent { EmailVerificationScreenContent.Failed() } }
-        .onSuccess { updateContent { EmailVerificationScreenContent.Success() } }
+        .onFailure { updateContent { EmailVerificationScreenContentPm.Failed() } }
+        .onSuccess { updateContent { EmailVerificationScreenContentPm.Success() } }
     }
   }
 

@@ -38,7 +38,7 @@ fun EmailVerificationScreen(
   BaseScreen(
     baseContentPm = state.baseContentPm
   ) {
-    EmailVerificationScreenContent(
+    Content(
       content = state.contentPm,
       onAction = { openLogin() },
     )
@@ -46,18 +46,18 @@ fun EmailVerificationScreen(
 }
 
 @Composable
-fun EmailVerificationScreenContent(
-  content: EmailVerificationScreenContent,
+private fun Content(
+  content: EmailVerificationScreenContentPm,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   AdaptiveResultLayout {
     when (content) {
-      is EmailVerificationScreenContent.Failed -> EmailVerificationScreenFailedContent(
+      is EmailVerificationScreenContentPm.Failed -> FailedContent(
         content,
         onAction
       )
-      is EmailVerificationScreenContent.Loading -> EmailVerificationScreenLoadingContent(content)
-      is EmailVerificationScreenContent.Success -> EmailVerificationScreenSuccessContent(
+      is EmailVerificationScreenContentPm.Loading -> LoadingContent(content)
+      is EmailVerificationScreenContentPm.Success -> SuccessContent(
         content,
         onAction
       )
@@ -66,8 +66,8 @@ fun EmailVerificationScreenContent(
 }
 
 @Composable
-fun EmailVerificationScreenFailedContent(
-  content: EmailVerificationScreenContent.Failed,
+private fun FailedContent(
+  content: EmailVerificationScreenContentPm.Failed,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   ResultLayout(
@@ -97,8 +97,8 @@ fun EmailVerificationScreenFailedContent(
 }
 
 @Composable
-fun EmailVerificationScreenLoadingContent(
-  content: EmailVerificationScreenContent.Loading,
+private fun LoadingContent(
+  content: EmailVerificationScreenContentPm.Loading,
 ) {
   Column(
     modifier = Modifier.heightIn(min = 200.dp),
@@ -120,8 +120,8 @@ fun EmailVerificationScreenLoadingContent(
 }
 
 @Composable
-fun EmailVerificationScreenSuccessContent(
-  content: EmailVerificationScreenContent.Success,
+private fun SuccessContent(
+  content: EmailVerificationScreenContentPm.Success,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   ResultLayout(
@@ -141,11 +141,11 @@ fun EmailVerificationScreenSuccessContent(
 }
 
 @Composable
-private fun EmailVerificationScreenThemed(
-  content: EmailVerificationScreenContent,
+private fun Themed(
+  content: EmailVerificationScreenContentPm,
 ) {
   Theme {
-    EmailVerificationScreenContent(
+    Content(
       content = content,
       onAction = {}
     )
@@ -154,18 +154,18 @@ private fun EmailVerificationScreenThemed(
 
 @Preview
 @Composable
-private fun EmailVerificationScreenLoadingPreview() {
-  EmailVerificationScreenThemed(EmailVerificationScreenContent.Loading())
+private fun LoadingPreview() {
+  Themed(EmailVerificationScreenContentPm.Loading())
 }
 
 @Preview
 @Composable
-private fun EmailVerificationScreenFailedLoadingPreview() {
-  EmailVerificationScreenThemed(EmailVerificationScreenContent.Failed())
+private fun FailedPreview() {
+  Themed(EmailVerificationScreenContentPm.Failed())
 }
 
 @Preview
 @Composable
-private fun EmailVerificationScreenFailedSuccessPreview() {
-  EmailVerificationScreenThemed(EmailVerificationScreenContent.Success())
+private fun SuccessPreview() {
+  Themed(EmailVerificationScreenContentPm.Success())
 }
