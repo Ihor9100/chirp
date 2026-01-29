@@ -5,6 +5,6 @@ import org.jetbrains.compose.resources.StringResource
 
 sealed interface Overlay {
   data object Blocker : Overlay
-  data object Loader : Overlay
+  data class Loader(val showBackground: Boolean) : Overlay
   data class Snackbar(val event: Event<StringResource>) : Overlay
 }

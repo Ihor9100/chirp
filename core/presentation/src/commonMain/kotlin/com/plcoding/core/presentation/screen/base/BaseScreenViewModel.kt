@@ -46,7 +46,7 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
 
   protected fun launchLoadable(block: suspend () -> Unit) {
     launch {
-      val overlays = setOf(Overlay.Blocker, Overlay.Loader)
+      val overlays = setOf(Overlay.Blocker, Overlay.Loader(showBackground = false))
       updateBaseContent { copy(overlays = this.overlays?.plus(overlays) ?: overlays) }
       block()
       updateBaseContent { copy(overlays = this.overlays?.minus(overlays)) }

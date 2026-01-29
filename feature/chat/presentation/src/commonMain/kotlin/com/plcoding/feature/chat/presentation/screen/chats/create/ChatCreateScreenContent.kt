@@ -1,4 +1,4 @@
-package com.plcoding.feature.chat.presentation.screen.chat.create
+package com.plcoding.feature.chat.presentation.screen.chats.create
 
 import androidx.compose.foundation.text.input.TextFieldState
 import com.plcoding.core.presentation.event.Event

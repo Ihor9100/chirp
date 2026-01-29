@@ -1,18 +1,18 @@
-package com.plcoding.feature.chat.presentation.screen.chat
+package com.plcoding.feature.chat.presentation.screen.chats
 
 import androidx.lifecycle.SavedStateHandle
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.feature.chat.domain.model.Chat
 
-class ChatScreenViewModel(
+class ChatsScreenViewModel(
   private val savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<ChatScreenContent>() {
+) : BaseScreenViewModel<ChatsScreenContent>() {
 
-  override fun getInitialContent(): ChatScreenContent {
-    return ChatScreenContent()
+  override fun getInitialContent(): ChatsScreenContent {
+    return ChatsScreenContent()
   }
 
-  fun onAction(action: ChatScreenAction) {
+  fun onAction(action: ChatsScreenAction) {
     when (action) {
       else -> {
         println("lol arg = ${savedStateHandle.get<String>("arg")}")

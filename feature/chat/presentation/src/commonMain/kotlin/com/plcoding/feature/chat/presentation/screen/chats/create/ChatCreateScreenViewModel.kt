@@ -1,6 +1,6 @@
 @file:OptIn(FlowPreview::class)
 
-package com.plcoding.feature.chat.presentation.screen.chat.create
+package com.plcoding.feature.chat.presentation.screen.chats.create
 
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow

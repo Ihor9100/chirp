@@ -1,4 +1,4 @@
-package com.plcoding.feature.chat.presentation.screen.chat.create
+package com.plcoding.feature.chat.presentation.screen.chats.create
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.plcoding.feature.chat.presentation.screen.chat.create
+package com.plcoding.feature.chat.presentation.screen.chats.create
 
 sealed interface ChatCreateScreenAction {
   data object OnDismiss : ChatCreateScreenAction

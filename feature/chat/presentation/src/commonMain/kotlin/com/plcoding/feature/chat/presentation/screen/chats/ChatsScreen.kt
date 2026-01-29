@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalComposeUiApi::class)
 
-package com.plcoding.feature.chat.presentation.screen.chat
+package com.plcoding.feature.chat.presentation.screen.chats
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,7 +35,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_plus
+import chirp.feature.chat.presentation.generated.resources.img_chat
+import chirp.feature.chat.presentation.generated.resources.no_messages
+import chirp.feature.chat.presentation.generated.resources.no_messages_subtitle
 import chirp.feature.chat.presentation.generated.resources.send
+import com.plcoding.core.designsystem.components.TitleDescriptionPc
 import com.plcoding.core.designsystem.components.button.FloatingActionButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.model.AvatarPm
@@ -52,15 +56,16 @@ import com.plcoding.feature.chat.presentation.component.ChatPc
 import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ChatScreen(
+fun ChatsScreen(
   navController: NavController,
   navResult: NavResult,
-  viewModel: ChatScreenViewModel = koinViewModel()
+  viewModel: ChatsScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -82,16 +87,16 @@ fun ChatScreen(
   BaseScreenContent(
     baseContent = state.baseContent
   ) {
-    ChatScreenContent(
+    ChatsScreenContent(
       content = state.content,
       scaffoldNavigator = scaffoldNavigator,
       deviceConfiguration = deviceConfiguration,
       onAction = {
         when (it) {
-          is ChatScreenAction.OnChatClick -> coroutineScope.launch {
+          is ChatsScreenAction.OnChatsClick -> coroutineScope.launch {
             scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
           }
-          is ChatScreenAction.OnChatCreateClick -> navController.navigate(
+          is ChatsScreenAction.OnChatsCreateClick -> navController.navigate(
             ChatRoute.ChatCreate,
           )
         }
@@ -101,25 +106,25 @@ fun ChatScreen(
 }
 
 @Composable
-private fun ChatScreenContent(
-  content: ChatScreenContent,
+private fun ChatsScreenContent(
+  content: ChatsScreenContent,
   scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   deviceConfiguration: DeviceConfiguration,
-  onAction: (ChatScreenAction) -> Unit,
+  onAction: (ChatsScreenAction) -> Unit,
 ) {
   ListDetailPaneScaffold(
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
-    listPane = { ChatScreenListContent(content, scaffoldNavigator, onAction) },
-    detailPane = { ChatScreenDetailsContent(content, scaffoldNavigator, deviceConfiguration) },
+    listPane = { ChatsPane(content, scaffoldNavigator, onAction) },
+    detailPane = { ChatDetailsPane(content, scaffoldNavigator, deviceConfiguration) },
   )
 }
 
 @Composable
-private fun ChatScreenListContent(
-  content: ChatScreenContent,
+private fun ChatsPane(
+  content: ChatsScreenContent,
   navigator: ThreePaneScaffoldNavigator<Any>,
-  onAction: (ChatScreenAction) -> Unit,
+  onAction: (ChatsScreenAction) -> Unit,
 ) {
   val coroutineScope = rememberCoroutineScope()
 
@@ -138,22 +143,38 @@ private fun ChatScreenListContent(
       modifier = Modifier.fillMaxSize(),
       contentAlignment = Alignment.Center,
     ) {
-      LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(top = 16.dp),
-      ) {
-        items(content.chatsPm.size) { index ->
-          ChatPc(
-            modifier = Modifier,
-            chatPm = content.chatsPm[index]
+      if (content.chatsPm.isEmpty()) {
+        Column(
+          verticalArrangement = Arrangement.spacedBy(16.dp),
+          horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+          Image(
+            painter = painterResource(Res.drawable.img_chat),
+            contentDescription = null,
           )
+          TitleDescriptionPc(
+            titleRes = Res.string.no_messages,
+            descriptionRes = Res.string.no_messages_subtitle
+          )
+        }
+      } else {
+        LazyColumn(
+          modifier = Modifier.fillMaxSize(),
+          contentPadding = PaddingValues(top = 16.dp),
+        ) {
+          items(content.chatsPm.size) { index ->
+            ChatPc(
+              modifier = Modifier,
+              chatPm = content.chatsPm[index]
+            )
+          }
         }
       }
       FloatingActionButton(
         modifier = Modifier
           .padding(16.dp)
           .align(Alignment.BottomEnd),
-        onClick = { onAction(ChatScreenAction.OnChatCreateClick) },
+        onClick = { onAction(ChatsScreenAction.OnChatsCreateClick) },
       ) {
         Image(
           imageVector = vectorResource(Res.drawable.ic_plus),
@@ -166,8 +187,8 @@ private fun ChatScreenListContent(
 }
 
 @Composable
-private fun ChatScreenDetailsContent(
-  content: ChatScreenContent,
+private fun ChatDetailsPane(
+  content: ChatsScreenContent,
   scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   deviceConfiguration: DeviceConfiguration,
 ) {
@@ -207,13 +228,13 @@ private fun Themed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
-  val baseScreenState = BaseScreenState(ChatScreenContent())
+  val baseScreenState = BaseScreenState(ChatsScreenContent.mock)
 
   Theme(isDarkTheme) {
     BaseScreenContent(
       baseContent = baseScreenState.baseContent
     ) {
-      ChatScreenContent(
+      ChatsScreenContent(
         content = baseScreenState.content,
         scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(),
         deviceConfiguration = deviceConfiguration,
