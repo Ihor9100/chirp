@@ -9,7 +9,7 @@ import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.presentation.event.Event
 import org.jetbrains.compose.resources.StringResource
 
-data class ForgotPasswordScreenContent(
+data class ForgotPasswordScreenContentPm(
   val titleRes: StringResource = Res.string.forgot_password,
   val errorRes: StringResource? = null,
 

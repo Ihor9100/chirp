@@ -16,10 +16,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.AppLogoPc
 import com.plcoding.core.designsystem.components.button.ButtonPc
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
-import com.plcoding.core.designsystem.components.layout.SnackbarLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -42,58 +42,73 @@ fun ForgotPasswordScreen(
   BaseScreen(
     baseContentPm = state.baseContentPm
   ) {
-    ForgotPasswordScreenContent(
-      content = state.contentPm,
-      snackbarHostState = snackbarHostState,
+    Content(
+      contentPm = state.contentPm,
       onAction = viewModel::onAction
     )
   }
 }
 
 @Composable
-fun ForgotPasswordScreenContent(
-  content: ForgotPasswordScreenContent,
-  snackbarHostState: SnackbarHostState,
+private fun Content(
+  contentPm: ForgotPasswordScreenContentPm,
   onAction: (ForgotPasswordScreenAction) -> Unit,
 ) {
-  SnackbarLayout(
-    modifier = Modifier.fillMaxSize(),
-    snackbarHostState = snackbarHostState,
-  ) {
     AdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
       logo = { AppLogoPc() },
-      title = stringResource(content.titleRes),
-      error = content.errorRes?.let { stringResource(it) },
+      title = stringResource(contentPm.titleRes),
+      error = contentPm.errorRes?.let { stringResource(it) },
     ) {
       TextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(content.emailTopTitleRes),
-        textFieldState = content.emailState,
-        inputPlaceholder = stringResource(content.emailPlaceholderRes),
+        topTitle = stringResource(contentPm.emailTopTitleRes),
+        textFieldState = contentPm.emailState,
+        inputPlaceholder = stringResource(contentPm.emailPlaceholderRes),
         bottomTitle = null,
         keyboardType = KeyboardType.Email,
       )
       Spacer(Modifier.height(32.dp))
       ButtonPc(
         modifier = Modifier.fillMaxWidth(),
-        text = stringResource(content.primaryButtonTitleRes),
-        style = content.primaryButtonPcStyle,
-        isEnabled = content.primaryButtonIsEnable,
+        text = stringResource(contentPm.primaryButtonTitleRes),
+        style = contentPm.primaryButtonPcStyle,
+        isEnabled = contentPm.primaryButtonIsEnable,
         onClick = { onAction(ForgotPasswordScreenAction.OnSubmitClick) },
+      )
+  }
+}
+
+@Composable
+private fun Themed(
+  isDarkTheme: Boolean,
+) {
+  val screenStatePm = ScreenStatePm(ForgotPasswordScreenContentPm())
+
+  Theme(isDarkTheme) {
+    BaseScreen(
+      baseContentPm = screenStatePm.baseContentPm
+    ) {
+      Content(
+        contentPm = screenStatePm.contentPm,
+        onAction = {}
       )
     }
   }
 }
 
-@Preview
 @Composable
-private fun ForgotPasswordScreenPreview() {
-  Theme {
-    ForgotPasswordScreenContent(
-      content = ForgotPasswordScreenContent(),
-      snackbarHostState = SnackbarHostState(),
-      onAction = {},
-    )
-  }
+@Preview
+private fun LightPreview() {
+  Themed(
+    isDarkTheme = false,
+  )
+}
+
+@Composable
+@Preview
+private fun DarkPreview() {
+  Themed(
+    isDarkTheme = true,
+  )
 }

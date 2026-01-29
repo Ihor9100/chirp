@@ -4,23 +4,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.AppLogoPc
 import com.plcoding.core.designsystem.components.button.ButtonPc
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
-import com.plcoding.core.designsystem.components.layout.SnackbarLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.getString
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -31,61 +26,63 @@ fun ResetPasswordScreen(
   openLogin: () -> Unit,
 ) {
   val state by viewModel.screenState.collectAsStateWithLifecycle()
-  val snackbarHostState = remember { SnackbarHostState() }
-
-  rememberCoroutineScope().launch {
-    state.contentPm.resetSuccessEvent?.consumeAsync {
-      val result = snackbarHostState.showSnackbar(getString(it))
-      viewModel.onAction(ResetPasswordScreenAction.OnSnackbarDisappeared(result))
-    }
-  }
-
   state.contentPm.navigateToLoginEvent?.run(openLogin)
 
   BaseScreen(
     baseContentPm = state.baseContentPm
   ) {
-    ResetPasswordScreenContent(
-      content = state.contentPm,
-      snackbarHostState = snackbarHostState,
+    Content(
+      contentPm = state.contentPm,
       onAction = viewModel::onAction
     )
   }
 }
 
 @Composable
-fun ResetPasswordScreenContent(
-  content: ResetPasswordScreenContent,
-  snackbarHostState: SnackbarHostState,
+private fun Content(
+  contentPm: ResetPasswordScreenContentPm,
   onAction: (ResetPasswordScreenAction) -> Unit,
 ) {
-  SnackbarLayout(
+  AdaptiveFormLayout(
     modifier = Modifier.fillMaxSize(),
-    snackbarHostState = snackbarHostState,
+    logo = { AppLogoPc() },
+    title = stringResource(contentPm.titleRes),
+    error = contentPm.errorRes?.let { stringResource(it) },
   ) {
-    AdaptiveFormLayout(
-      modifier = Modifier.fillMaxSize(),
-      logo = { AppLogoPc() },
-      title = stringResource(content.titleRes),
-      error = content.errorRes?.let { stringResource(it) },
+    TextFieldPassword(
+      modifier = Modifier.fillMaxWidth(),
+      topTitle = stringResource(contentPm.passwordTopTitleRes),
+      textFieldState = contentPm.passwordState,
+      inputPlaceholder = stringResource(contentPm.passwordPlaceholderRes),
+      bottomTitle = stringResource(contentPm.passwordBottomTitleRes),
+      isError = contentPm.passwordIsError,
+      isSecureMode = contentPm.passwordIsSecureMode,
+      onSecureToggleClick = { onAction(ResetPasswordScreenAction.OnTextFieldSecureToggleClick) }
+    )
+    Spacer(Modifier.height(32.dp))
+    ButtonPc(
+      modifier = Modifier.fillMaxWidth(),
+      text = stringResource(contentPm.primaryButtonTitleRes),
+      style = contentPm.primaryButtonPcStyle,
+      isEnabled = contentPm.primaryButtonIsEnable,
+      onClick = { onAction(ResetPasswordScreenAction.OnPrimaryButtonClick) }
+    )
+  }
+}
+
+@Composable
+private fun Themed(
+  isDarkTheme: Boolean,
+) {
+  val screenStatePm = ScreenStatePm(ResetPasswordScreenContentPm())
+
+  Theme(isDarkTheme) {
+    BaseScreen(
+      baseContentPm = screenStatePm.baseContentPm
     ) {
-      TextFieldPassword(
-        modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(content.passwordTopTitleRes),
-        textFieldState = content.passwordState,
-        inputPlaceholder = stringResource(content.passwordPlaceholderRes),
-        bottomTitle =  stringResource(content.passwordBottomTitleRes),
-        isError = content.passwordIsError,
-        isSecureMode = content.passwordIsSecureMode,
-        onSecureToggleClick = { onAction(ResetPasswordScreenAction.OnTextFieldSecureToggleClick) }
-      )
-      Spacer(Modifier.height(32.dp))
-      ButtonPc(
-        modifier = Modifier.fillMaxWidth(),
-        text = stringResource(content.primaryButtonTitleRes),
-        style = content.primaryButtonPcStyle,
-        isEnabled = content.primaryButtonIsEnable,
-        onClick = { onAction(ResetPasswordScreenAction.OnPrimaryButtonClick) }
+      Content(
+        contentPm = screenStatePm.contentPm,
+        onAction = {}
       )
     }
   }
@@ -93,12 +90,16 @@ fun ResetPasswordScreenContent(
 
 @Preview
 @Composable
-private fun ResetPasswordScreenPreview() {
-  Theme {
-    ResetPasswordScreenContent(
-      content = ResetPasswordScreenContent(),
-      snackbarHostState = SnackbarHostState(),
-      onAction = {}
-    )
-  }
+private fun LightPreview() {
+  Themed(
+    isDarkTheme = false,
+  )
+}
+
+@Preview
+@Composable
+private fun DarkPreview() {
+  Themed(
+    isDarkTheme = true
+  )
 }

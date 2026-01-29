@@ -38,7 +38,7 @@ class AppScreenViewModel(
         ChatRoute.Graph
       }
 
-      updateContent {
+      updateContentPm {
         copy(
           startDestination = startDestination,
           removeSplashScreenEvent = Event(Unit),
@@ -52,7 +52,7 @@ class AppScreenViewModel(
       .observeAuthInfo()
       .onEach { authInfo ->
         if (this.authInfo != null && authInfo == null) {
-          updateContent { copy(logoutEvent = Event(Unit)) }
+          updateContentPm { copy(logoutEvent = Event(Unit)) }
         }
         this.authInfo = authInfo
       }

@@ -23,10 +23,10 @@ import kotlinx.coroutines.flow.map
 class LoginScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   private val preferencesLocalRepository: PreferencesLocalRepository,
-) : BaseScreenViewModel<LoginScreenContent>() {
+) : BaseScreenViewModel<LoginScreenContentPm>() {
 
-  override fun getContentPm(): LoginScreenContent {
-    return LoginScreenContent()
+  override fun getContentPm(): LoginScreenContentPm {
+    return LoginScreenContentPm()
   }
 
   override fun onInitialized() {
@@ -44,7 +44,7 @@ class LoginScreenViewModel(
         password.isNotBlank() &&
         !isLoading
 
-      updateContent {
+      updateContentPm {
         copy(primaryButtonIsEnable = primaryButtonIsEnable)
       }
     }.launchIn(viewModelScope)
@@ -52,7 +52,7 @@ class LoginScreenViewModel(
 
   fun onAction(action: LoginScreenAction) {
     when (action) {
-      is LoginScreenAction.OnTextFieldSecureToggleClick -> updateContent {
+      is LoginScreenAction.OnTextFieldSecureToggleClick -> updateContentPm {
         copy(passwordIsSecureMode = !passwordIsSecureMode)
       }
       is LoginScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
@@ -78,14 +78,14 @@ class LoginScreenViewModel(
       DataError.Remote.FORBIDDEN -> Res.string.error_email_not_verified
       else -> error.getStringRes()
     }
-    updateContent {
+    updateContentPm {
       copy(errorRes = errorRes)
     }
   }
 
   private suspend fun handleSuccess(authInfo: AuthInfo) {
     preferencesLocalRepository.saveAuthInfo(authInfo)
-    updateContent {
+    updateContentPm {
       copy(logInSuccessEvent = Event(Unit))
     }
   }

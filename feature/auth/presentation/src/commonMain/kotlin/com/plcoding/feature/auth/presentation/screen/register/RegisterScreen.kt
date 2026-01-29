@@ -18,6 +18,7 @@ import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import com.plcoding.core.presentation.utils.CollectEvent
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -40,8 +41,8 @@ fun RegisterScreen(
   BaseScreen(
     baseContentPm = state.baseContentPm
   ) {
-    RegisterScreenContent(
-      content = state.contentPm,
+    Content(
+      contentPm = state.contentPm,
       onAction = {
         when (it) {
           RegisterScreenAction.OnSecondaryButtonClick -> openLogin()
@@ -53,25 +54,24 @@ fun RegisterScreen(
 }
 
 @Composable
-fun RegisterScreenContent(
-  content: RegisterScreenContent,
+private fun Content(
+  contentPm: RegisterScreenContentPm,
   onAction: (RegisterScreenAction) -> Unit,
 ) {
-  Theme {
     AdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
       logo = { AppLogoPc() },
-      title = stringResource(content.titleRes),
-      error = content.errorRes?.let { stringResource(it) },
+      title = stringResource(contentPm.titleRes),
+      error = contentPm.errorRes?.let { stringResource(it) },
     ) {
       TextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(content.usernameTopTitleRes),
-        textFieldState = content.usernameState,
-        inputPlaceholder = stringResource(content.usernamePlaceholderRes),
-        bottomTitle = content.usernameBottomTitleRes?.let { stringResource(it) },
+        topTitle = stringResource(contentPm.usernameTopTitleRes),
+        textFieldState = contentPm.usernameState,
+        inputPlaceholder = stringResource(contentPm.usernamePlaceholderRes),
+        bottomTitle = contentPm.usernameBottomTitleRes?.let { stringResource(it) },
         keyboardType = KeyboardType.Text,
-        isError = content.usernameIsError,
+        isError = contentPm.usernameIsError,
         onFocusChanged = {
           onAction(
             RegisterScreenAction.OnTextFieldFocusGain(
@@ -84,12 +84,12 @@ fun RegisterScreenContent(
       Spacer(Modifier.height(20.dp))
       TextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(content.emailTopTitleRes),
-        textFieldState = content.emailState,
-        inputPlaceholder = stringResource(content.emailPlaceholderRes),
-        bottomTitle = content.emailBottomTitleRes?.let { stringResource(it) },
+        topTitle = stringResource(contentPm.emailTopTitleRes),
+        textFieldState = contentPm.emailState,
+        inputPlaceholder = stringResource(contentPm.emailPlaceholderRes),
+        bottomTitle = contentPm.emailBottomTitleRes?.let { stringResource(it) },
         keyboardType = KeyboardType.Text,
-        isError = content.emailIsError,
+        isError = contentPm.emailIsError,
         onFocusChanged = {
           onAction(
             RegisterScreenAction.OnTextFieldFocusGain(
@@ -102,12 +102,12 @@ fun RegisterScreenContent(
       Spacer(Modifier.height(20.dp))
       TextFieldPassword(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(content.passwordTopTitleRes),
-        textFieldState = content.passwordState,
-        inputPlaceholder = stringResource(content.passwordPlaceholderRes),
-        bottomTitle = content.passwordBottomTitleRes?.let { stringResource(it) },
-        isError = content.passwordIsError,
-        isSecureMode = content.passwordIsSecureMode,
+        topTitle = stringResource(contentPm.passwordTopTitleRes),
+        textFieldState = contentPm.passwordState,
+        inputPlaceholder = stringResource(contentPm.passwordPlaceholderRes),
+        bottomTitle = contentPm.passwordBottomTitleRes?.let { stringResource(it) },
+        isError = contentPm.passwordIsError,
+        isSecureMode = contentPm.passwordIsSecureMode,
         onFocusChanged = {
           onAction(
             RegisterScreenAction.OnTextFieldFocusGain(
@@ -121,15 +121,32 @@ fun RegisterScreenContent(
       Spacer(Modifier.height(32.dp))
       ButtonPc(
         modifier = Modifier.fillMaxWidth(),
-        text = stringResource(content.primaryButtonTitleRes),
+        text = stringResource(contentPm.primaryButtonTitleRes),
         style = ButtonPcStyle.PRIMARY,
         onClick = { onAction(RegisterScreenAction.OnPrimaryButtonClick) }
       )
       ButtonPc(
         modifier = Modifier.fillMaxWidth(),
-        text = stringResource(content.secondaryButtonTitleRes),
+        text = stringResource(contentPm.secondaryButtonTitleRes),
         style = ButtonPcStyle.SECONDARY,
         onClick = { onAction(RegisterScreenAction.OnSecondaryButtonClick) }
+      )
+    }
+}
+
+@Composable
+private fun Themed(
+  isDarkTheme: Boolean,
+) {
+  val screenStatePm = ScreenStatePm(RegisterScreenContentPm())
+
+  Theme(isDarkTheme) {
+    BaseScreen(
+      baseContentPm = screenStatePm.baseContentPm
+    ) {
+      Content(
+        contentPm = screenStatePm.contentPm,
+        onAction = {}
       )
     }
   }
@@ -137,11 +154,16 @@ fun RegisterScreenContent(
 
 @Preview
 @Composable
-private fun RegisterScreenPreview() {
-  Theme {
-    RegisterScreenContent(
-      content = RegisterScreenContent(),
-      onAction = {}
-    )
-  }
+private fun LightPreview() {
+  Themed(
+    isDarkTheme = false,
+  )
+}
+
+@Preview
+@Composable
+private fun DarkPreview() {
+  Themed(
+    isDarkTheme = true
+  )
 }

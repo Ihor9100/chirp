@@ -77,6 +77,7 @@ fun BaseScreenOverlays(
 
           LaunchedEffect(overlay.event) {
             overlay.event.consumeAsync { snackbarHostState.showSnackbar(getString(it)) }
+            overlay.onDismiss?.invoke()
           }
 
           SnackbarHost(

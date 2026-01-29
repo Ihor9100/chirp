@@ -19,10 +19,10 @@ import kotlinx.coroutines.flow.map
 
 class ForgotPasswordScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
-) : BaseScreenViewModel<ForgotPasswordScreenContent>() {
+) : BaseScreenViewModel<ForgotPasswordScreenContentPm>() {
 
-  override fun getContentPm(): ForgotPasswordScreenContent {
-    return ForgotPasswordScreenContent()
+  override fun getContentPm(): ForgotPasswordScreenContentPm {
+    return ForgotPasswordScreenContentPm()
   }
 
   override fun onInitialized() {
@@ -35,7 +35,7 @@ class ForgotPasswordScreenViewModel(
       snapshotFlow { screenState.value.contentPm.emailState.text.toString() },
       screenState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, isLoading ->
-      updateContent {
+      updateContentPm {
         copy(primaryButtonIsEnable = EmailValidator.validate(email) && !isLoading)
       }
     }.launchIn(viewModelScope)
@@ -57,13 +57,13 @@ class ForgotPasswordScreenViewModel(
   }
 
   private fun handleFailure(error: DataError.Remote) {
-    updateContent {
+    updateContentPm {
       copy(errorRes = error.getStringRes())
     }
   }
 
   private fun handleSuccess() {
-    updateContent {
+    updateContentPm {
       copy(snackbarEvent = Event(Res.string.forgot_password_email_sent_successfully))
     }
   }

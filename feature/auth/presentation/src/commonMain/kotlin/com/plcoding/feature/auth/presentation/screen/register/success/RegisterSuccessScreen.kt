@@ -4,24 +4,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.ChirError
 import com.plcoding.core.designsystem.components.SuccessIcon
 import com.plcoding.core.designsystem.components.button.ButtonPc
-import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.components.layout.ResultLayout
-import com.plcoding.core.designsystem.components.layout.SnackbarLayout
+import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.getString
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -32,20 +27,12 @@ fun RegisterSuccessScreen(
   openLogin: () -> Unit,
 ) {
   val state by viewModel.screenState.collectAsStateWithLifecycle()
-  val snackbarHostState = remember { SnackbarHostState() }
-
-  rememberCoroutineScope().launch {
-    state.contentPm.snackbarEvent?.consumeAsync {
-      snackbarHostState.showSnackbar(getString(it))
-    }
-  }
 
   BaseScreen(
     baseContentPm = state.baseContentPm
   ) {
-    RegisterSuccessScreenContent(
-      content = state.contentPm,
-      snackbarHostState = snackbarHostState,
+    Content(
+      contentPm = state.contentPm,
       onAction = {
         when (it) {
           is RegisterSuccessScreenAction.PrimaryButtonClick -> openLogin()
@@ -57,46 +44,58 @@ fun RegisterSuccessScreen(
 }
 
 @Composable
-fun RegisterSuccessScreenContent(
-  content: RegisterSuccessScreenContent,
-  snackbarHostState: SnackbarHostState,
+private fun Content(
+  contentPm: RegisterSuccessScreenContentPm,
   onAction: (RegisterSuccessScreenAction) -> Unit,
 ) {
-  SnackbarLayout(
-    modifier = Modifier.fillMaxSize(),
-    snackbarHostState = snackbarHostState,
+  AdaptiveResultLayout(
+    modifier = Modifier.fillMaxSize()
   ) {
-    AdaptiveResultLayout(
-      modifier = Modifier.fillMaxSize()
-    ) {
-      ResultLayout(
-        icon = { SuccessIcon() },
-        title = stringResource(content.titleRes),
-        description = content.description?.get(),
-        primaryButton = {
-          ButtonPc(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(content.primaryButtonTitleRes),
-            style = content.primaryButtonPcStyle,
-            isLoading = false,
-            isEnabled = !content.hasOngoingRequest,
-            onClick = { onAction(RegisterSuccessScreenAction.PrimaryButtonClick) }
-          )
-        },
-        secondaryButton = {
-          ButtonPc(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(content.secondaryButtonTitleRes),
-            style = content.secondaryButtonPcStyle,
-            isLoading = false,
-            isEnabled = !content.hasOngoingRequest,
-            onClick = { onAction(RegisterSuccessScreenAction.SecondaryButtonClick) }
-          )
-          if (content.secondaryButtonErrorRes != null) {
-            Spacer(Modifier.height(6.dp))
-            ChirError(error = stringResource(content.secondaryButtonErrorRes))
-          }
+    ResultLayout(
+      icon = { SuccessIcon() },
+      title = stringResource(contentPm.titleRes),
+      description = contentPm.description?.get(),
+      primaryButton = {
+        ButtonPc(
+          modifier = Modifier.fillMaxWidth(),
+          text = stringResource(contentPm.primaryButtonTitleRes),
+          style = contentPm.primaryButtonPcStyle,
+          isLoading = false,
+          isEnabled = !contentPm.hasOngoingRequest,
+          onClick = { onAction(RegisterSuccessScreenAction.PrimaryButtonClick) }
+        )
+      },
+      secondaryButton = {
+        ButtonPc(
+          modifier = Modifier.fillMaxWidth(),
+          text = stringResource(contentPm.secondaryButtonTitleRes),
+          style = contentPm.secondaryButtonPcStyle,
+          isLoading = false,
+          isEnabled = !contentPm.hasOngoingRequest,
+          onClick = { onAction(RegisterSuccessScreenAction.SecondaryButtonClick) }
+        )
+        if (contentPm.secondaryButtonErrorRes != null) {
+          Spacer(Modifier.height(6.dp))
+          ChirError(error = stringResource(contentPm.secondaryButtonErrorRes))
         }
+      }
+    )
+  }
+}
+
+@Composable
+private fun Themed(
+  isDarkTheme: Boolean,
+) {
+  val screenStatePm = ScreenStatePm(RegisterSuccessScreenContentPm())
+
+  Theme(isDarkTheme) {
+    BaseScreen(
+      baseContentPm = screenStatePm.baseContentPm
+    ) {
+      Content(
+        contentPm = screenStatePm.contentPm,
+        onAction = {}
       )
     }
   }
@@ -104,12 +103,16 @@ fun RegisterSuccessScreenContent(
 
 @Preview
 @Composable
-private fun RegisterSuccessScreenPreview() {
-  Theme {
-    RegisterSuccessScreenContent(
-      content = RegisterSuccessScreenContent(),
-      snackbarHostState = SnackbarHostState(),
-      onAction = {},
-    )
-  }
+private fun LightPreview() {
+  Themed(
+    isDarkTheme = false,
+  )
+}
+
+@Preview
+@Composable
+private fun DarkPreview() {
+  Themed(
+    isDarkTheme = true
+  )
 }

@@ -21,7 +21,7 @@ class ChatsScreenViewModel(
   }
 
   fun onResult(chat: Chat?) {
-    updateContent {
+    updateContentPm {
       copy(
         chat = chat,
       )

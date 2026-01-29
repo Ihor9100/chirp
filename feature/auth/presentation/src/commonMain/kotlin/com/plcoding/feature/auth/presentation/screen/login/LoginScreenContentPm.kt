@@ -13,7 +13,7 @@ import com.plcoding.core.presentation.event.Event
 import org.jetbrains.compose.resources.StringResource
 import chirp.core.presentation.generated.resources.Res as CoreRes
 
-data class LoginScreenContent(
+data class LoginScreenContentPm(
   val titleRes: StringResource = Res.string.welcome_back,
   val errorRes: StringResource? = null,
 

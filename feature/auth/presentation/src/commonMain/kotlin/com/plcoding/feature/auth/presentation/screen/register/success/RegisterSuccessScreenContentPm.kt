@@ -9,7 +9,7 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.utils.TextProvider
 import org.jetbrains.compose.resources.StringResource
 
-data class RegisterSuccessScreenContent(
+data class RegisterSuccessScreenContentPm(
   val titleRes: StringResource = Res.string.account_successfully_created,
   val description: TextProvider? = null,
 
@@ -21,6 +21,5 @@ data class RegisterSuccessScreenContent(
   val secondaryButtonPcStyle: ButtonPcStyle = ButtonPcStyle.SECONDARY,
   val secondaryButtonErrorRes: StringResource? = null,
 
-  val snackbarEvent: Event<StringResource>? = null,
   val hasOngoingRequest: Boolean = false
 )

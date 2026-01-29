@@ -9,6 +9,8 @@ import chirp.feature.auth.presentation.generated.resources.error_same_password
 import chirp.feature.auth.presentation.generated.resources.forgot_password_email_sent_successfully
 import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.result.DataError
+import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.PasswordValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
@@ -21,12 +23,12 @@ import kotlinx.coroutines.flow.map
 class ResetPasswordScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<ResetPasswordScreenContent>() {
+) : BaseScreenViewModel<ResetPasswordScreenContentPm>() {
 
   private val token: String = savedStateHandle["token"] ?: error("Token should be passed")
 
-  override fun getContentPm(): ResetPasswordScreenContent {
-    return ResetPasswordScreenContent()
+  override fun getContentPm(): ResetPasswordScreenContentPm {
+    return ResetPasswordScreenContentPm()
   }
 
   override fun onInitialized() {
@@ -39,7 +41,7 @@ class ResetPasswordScreenViewModel(
       snapshotFlow { screenState.value.contentPm.passwordState.text.toString() },
       screenState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { password, isLoading ->
-      updateContent {
+      updateContentPm {
         copy(primaryButtonIsEnable = PasswordValidator.validate(password) && !isLoading)
       }
     }.launchIn(viewModelScope)
@@ -49,12 +51,11 @@ class ResetPasswordScreenViewModel(
     when (action) {
       is ResetPasswordScreenAction.OnTextFieldSecureToggleClick -> handleTextFieldSecureToggleClick()
       is ResetPasswordScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
-      is ResetPasswordScreenAction.OnSnackbarDisappeared -> handleSnackbarDisappeared()
     }
   }
 
   private fun handleTextFieldSecureToggleClick() {
-    updateContent {
+    updateContentPm {
       copy(passwordIsSecureMode = !passwordIsSecureMode)
     }
   }
@@ -62,10 +63,10 @@ class ResetPasswordScreenViewModel(
   private fun handlePrimaryButtonClick() {
     launchLoadable {
       handleSuccess()
-//      authRemoteRepository
-//        .resetPassword(state.value.content.passwordState.text.toString(), token)
-//        .onFailure(::handleFailure)
-//        .onSuccess { handleSuccess() }
+      authRemoteRepository
+        .resetPassword(screenState.value.contentPm.passwordState.text.toString(), token)
+        .onFailure(::handleFailure)
+        .onSuccess { handleSuccess() }
     }
   }
 
@@ -75,20 +76,14 @@ class ResetPasswordScreenViewModel(
       DataError.Remote.CONFLICT -> Res.string.error_same_password
       else -> error.getStringRes()
     }
-    updateContent {
+    updateContentPm {
       copy(errorRes = errorRes)
     }
   }
 
   private fun handleSuccess() {
-    updateContent {
-      copy(resetSuccessEvent = Event(Res.string.forgot_password_email_sent_successfully))
-    }
-  }
-
-  private fun handleSnackbarDisappeared() {
-    updateContent {
-      copy(navigateToLoginEvent = Event(Unit))
+    showSnackbar(Res.string.forgot_password_email_sent_successfully) {
+      updateContentPm { copy(navigateToLoginEvent = Event(Unit)) }
     }
   }
 }

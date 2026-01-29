@@ -53,9 +53,9 @@ class ChatCreateDialogScreenViewModel(
   }
 
   private fun handleAddClick() {
-    updateContent {
+    updateContentPm {
       if (chatMemberPm == null || chatMembersPm.contains(chatMemberPm))
-        return@updateContent this
+        return@updateContentPm this
 
       copy(
         searchTextFieldState = searchTextFieldState.also { it.clearText() },
@@ -78,14 +78,14 @@ class ChatCreateDialogScreenViewModel(
   }
 
   private fun handleCreateSuccess(chat: Chat) {
-    updateContent {
+    updateContentPm {
       copy(chatCreatedEvent = Event(chat))
     }
   }
 
   private fun searchMember(searchQuery: CharSequence) {
     launchLoadable {
-      updateContent { copy(chatMemberPm = null) }
+      updateContentPm { copy(chatMemberPm = null) }
 
       chatRemoteRepository
         .searchMember(searchQuery.toString())
@@ -104,7 +104,7 @@ class ChatCreateDialogScreenViewModel(
   }
 
   private fun handleSearchMemberSuccess(chatMemberPm: ChatMemberPm) {
-    updateContent {
+    updateContentPm {
       copy(chatMemberPm = chatMemberPm)
     }
   }

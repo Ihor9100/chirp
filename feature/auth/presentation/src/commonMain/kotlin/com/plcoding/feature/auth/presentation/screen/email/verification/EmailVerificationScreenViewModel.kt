@@ -28,8 +28,8 @@ class EmailVerificationScreenViewModel(
     viewModelScope.launch {
       authRemoteRepository
         .verifyEmail(token ?: "")
-        .onFailure { updateContent { EmailVerificationScreenContentPm.Failed() } }
-        .onSuccess { updateContent { EmailVerificationScreenContentPm.Success() } }
+        .onFailure { updateContentPm { EmailVerificationScreenContentPm.Failed() } }
+        .onSuccess { updateContentPm { EmailVerificationScreenContentPm.Success() } }
     }
   }
 

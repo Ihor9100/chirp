@@ -42,8 +42,8 @@ fun LoginScreen(
   BaseScreen(
     baseContentPm = state.baseContentPm,
   ) {
-    LoginScreenContent(
-      content = state.contentPm,
+    Content(
+      contentPm = state.contentPm,
       onAction = {
         when (it) {
           is LoginScreenAction.OnForgotPasswordClick -> openForgotPassword()
@@ -56,32 +56,32 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginScreenContent(
-  content: LoginScreenContent,
+private fun Content(
+  contentPm: LoginScreenContentPm,
   onAction: (LoginScreenAction) -> Unit,
 ) {
   AdaptiveFormLayout(
     modifier = Modifier.fillMaxSize(),
     logo = { AppLogoPc() },
-    title = stringResource(content.titleRes),
-    error = content.errorRes?.let { stringResource(it) },
+    title = stringResource(contentPm.titleRes),
+    error = contentPm.errorRes?.let { stringResource(it) },
   ) {
     TextFieldPlain(
       modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(content.emailTopTitleRes),
-      textFieldState = content.emailState,
-      inputPlaceholder = stringResource(content.emailPlaceholderRes),
+      topTitle = stringResource(contentPm.emailTopTitleRes),
+      textFieldState = contentPm.emailState,
+      inputPlaceholder = stringResource(contentPm.emailPlaceholderRes),
       bottomTitle = null,
       keyboardType = KeyboardType.Text,
     )
     Spacer(Modifier.height(20.dp))
     TextFieldPassword(
       modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(content.passwordTopTitleRes),
-      textFieldState = content.passwordState,
-      inputPlaceholder = stringResource(content.passwordPlaceholderRes),
+      topTitle = stringResource(contentPm.passwordTopTitleRes),
+      textFieldState = contentPm.passwordState,
+      inputPlaceholder = stringResource(contentPm.passwordPlaceholderRes),
       bottomTitle = null,
-      isSecureMode = content.passwordIsSecureMode,
+      isSecureMode = contentPm.passwordIsSecureMode,
       onSecureToggleClick = { onAction(LoginScreenAction.OnTextFieldSecureToggleClick) }
     )
     Spacer(Modifier.height(20.dp))
@@ -96,14 +96,14 @@ fun LoginScreenContent(
     Spacer(Modifier.height(32.dp))
     ButtonPc(
       modifier = Modifier.fillMaxWidth(),
-      text = stringResource(content.primaryButtonTitleRes),
+      text = stringResource(contentPm.primaryButtonTitleRes),
       style = ButtonPcStyle.PRIMARY,
-      isEnabled = content.primaryButtonIsEnable,
+      isEnabled = contentPm.primaryButtonIsEnable,
       onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
     )
     ButtonPc(
       modifier = Modifier.fillMaxWidth(),
-      text = stringResource(content.secondaryButtonTitleRes),
+      text = stringResource(contentPm.secondaryButtonTitleRes),
       style = ButtonPcStyle.SECONDARY,
       onClick = { onAction(LoginScreenAction.OnSecondaryButtonClick) }
     )
@@ -114,14 +114,14 @@ fun LoginScreenContent(
 private fun Themed(
   isDarkTheme: Boolean,
 ) {
-  val screenStatePm = ScreenStatePm(LoginScreenContent())
+  val screenStatePm = ScreenStatePm(LoginScreenContentPm())
 
   Theme(isDarkTheme) {
     BaseScreen(
       baseContentPm = screenStatePm.baseContentPm
     ) {
-      LoginScreenContent(
-        content = screenStatePm.contentPm,
+      Content(
+        contentPm = screenStatePm.contentPm,
         onAction = {}
       )
     }

@@ -11,7 +11,7 @@ import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.presentation.event.Event
 import org.jetbrains.compose.resources.StringResource
 
-data class ResetPasswordScreenContent(
+data class ResetPasswordScreenContentPm(
   val titleRes: StringResource = Res.string.set_new_password,
   val errorRes: StringResource? = null,
 
@@ -26,6 +26,5 @@ data class ResetPasswordScreenContent(
   val primaryButtonPcStyle: ButtonPcStyle = ButtonPcStyle.PRIMARY,
   val primaryButtonIsEnable: Boolean = false,
 
-  val resetSuccessEvent: Event<StringResource>? = null,
   val navigateToLoginEvent: Event<Unit>? = null,
 )

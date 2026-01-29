@@ -8,7 +8,6 @@ import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
-import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.core.presentation.utils.getStringRes
@@ -16,12 +15,12 @@ import com.plcoding.core.presentation.utils.getStringRes
 class RegisterSuccessScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
   savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<RegisterSuccessScreenContent>() {
+) : BaseScreenViewModel<RegisterSuccessScreenContentPm>() {
 
   private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
 
-  override fun getContentPm(): RegisterSuccessScreenContent {
-    return RegisterSuccessScreenContent(
+  override fun getContentPm(): RegisterSuccessScreenContentPm {
+    return RegisterSuccessScreenContentPm(
       description = TextProvider.Resource(
         id = Res.string.verification_email_sent_to_x,
         args = listOf(email),
@@ -41,19 +40,13 @@ class RegisterSuccessScreenViewModel(
       authRemoteRepository
         .resendVerificationEmail(email)
         .onFailure { handleFailure(it) }
-        .onSuccess { handleSuccess() }
+        .onSuccess { showSnackbar(Res.string.resent_verification_email) }
     }
   }
 
   private fun handleFailure(error: DataError.Remote) {
-    updateContent {
+    updateContentPm {
       copy(secondaryButtonErrorRes = error.getStringRes())
-    }
-  }
-
-  private fun handleSuccess() {
-    updateContent {
-      copy(snackbarEvent = Event(Res.string.resent_verification_email))
     }
   }
 }

@@ -19,11 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.SuccessIcon
 import com.plcoding.core.designsystem.components.button.ButtonPc
-import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.components.layout.ResultLayout
+import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.screen.base.BaseScreen
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -39,7 +40,7 @@ fun EmailVerificationScreen(
     baseContentPm = state.baseContentPm
   ) {
     Content(
-      content = state.contentPm,
+      contentPm = state.contentPm,
       onAction = { openLogin() },
     )
   }
@@ -47,18 +48,18 @@ fun EmailVerificationScreen(
 
 @Composable
 private fun Content(
-  content: EmailVerificationScreenContentPm,
+  contentPm: EmailVerificationScreenContentPm,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   AdaptiveResultLayout {
-    when (content) {
+    when (contentPm) {
       is EmailVerificationScreenContentPm.Failed -> FailedContent(
-        content,
+        contentPm,
         onAction
       )
-      is EmailVerificationScreenContentPm.Loading -> LoadingContent(content)
+      is EmailVerificationScreenContentPm.Loading -> LoadingContent(contentPm)
       is EmailVerificationScreenContentPm.Success -> SuccessContent(
-        content,
+        contentPm,
         onAction
       )
     }
@@ -144,11 +145,17 @@ private fun SuccessContent(
 private fun Themed(
   content: EmailVerificationScreenContentPm,
 ) {
-  Theme {
-    Content(
-      content = content,
-      onAction = {}
-    )
+  val screenStatePm = ScreenStatePm(content)
+
+  Theme(isDarkMode = true) {
+    BaseScreen(
+      baseContentPm = screenStatePm.baseContentPm
+    ) {
+      Content(
+        contentPm = screenStatePm.contentPm,
+        onAction = {}
+      )
+    }
   }
 }
 

@@ -19,13 +19,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 class RegisterScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
-) : BaseScreenViewModel<RegisterScreenContent>() {
+) : BaseScreenViewModel<RegisterScreenContentPm>() {
 
   private val _event = Channel<RegisterScreenEvent>()
   val event = _event.receiveAsFlow()
 
-  override fun getContentPm(): RegisterScreenContent {
-    return RegisterScreenContent()
+  override fun getContentPm(): RegisterScreenContentPm {
+    return RegisterScreenContentPm()
   }
 
   fun onAction(action: RegisterScreenAction) {
@@ -39,7 +39,7 @@ class RegisterScreenViewModel(
 
   private fun clearInputFieldError(action: RegisterScreenAction.OnTextFieldFocusGain) {
     if (action.isFocused) {
-      updateContent {
+      updateContentPm {
         when (action.inputField) {
           InputField.USERNAME -> copy(
             usernameIsError = false,
@@ -59,7 +59,7 @@ class RegisterScreenViewModel(
   }
 
   private fun handleTextFieldSecureToggleClick() {
-    updateContent {
+    updateContentPm {
       copy(passwordIsSecureMode = !passwordIsSecureMode)
     }
   }
@@ -86,7 +86,7 @@ class RegisterScreenViewModel(
       DataError.Remote.CONFLICT -> Res.string.error_account_exists
       else -> error.getStringRes()
     }
-    updateContent { copy(errorRes = errorRes) }
+    updateContentPm { copy(errorRes = errorRes) }
   }
 
   private fun areFieldsValid(): Boolean {
@@ -104,7 +104,7 @@ class RegisterScreenViewModel(
     val emailError = if (!isEmailValid) Res.string.error_invalid_email else null
     val passwordError = if (!isPasswordValid) Res.string.error_invalid_password else null
 
-    updateContent {
+    updateContentPm {
       copy(
         usernameIsError = usernameError != null,
         usernameBottomTitleRes = usernameError,

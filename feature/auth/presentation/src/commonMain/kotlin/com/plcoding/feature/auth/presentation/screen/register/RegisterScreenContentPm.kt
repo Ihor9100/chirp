@@ -13,7 +13,7 @@ import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import org.jetbrains.compose.resources.StringResource
 import chirp.core.presentation.generated.resources.Res as CoreRes
 
-data class RegisterScreenContent(
+data class RegisterScreenContentPm(
   val titleRes: StringResource = Res.string.welcome_to_chirp,
   val errorRes: StringResource? = null,
 
