@@ -7,12 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveDialogSheetLayout
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
+import com.plcoding.core.presentation.screen.model.BaseContentPm
 import com.plcoding.core.presentation.utils.clearFocusOnTab
 
 @Composable
-fun BaseScreenDialogContent(
+fun BaseDialogScreen(
   modifier: Modifier = Modifier,
-  baseContent: BaseContent,
+  baseContentPm: BaseContentPm,
   deviceConfiguration: DeviceConfiguration,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
@@ -22,11 +23,11 @@ fun BaseScreenDialogContent(
     containerColor = MaterialTheme.colorScheme.surface,
     deviceConfiguration = deviceConfiguration,
   ) {
-    BaseScreenOverlaysContent(
+    BaseScreenOverlays(
       modifier = modifier
         .clearFocusOnTab()
         .safeDrawingPadding(),
-      baseContent = baseContent,
+      baseContentPm = baseContentPm,
       content = content,
     )
   }

@@ -15,7 +15,7 @@ class EmailVerificationScreenViewModel(
 
   private val token = savedStateHandle.get<String>("token")
 
-  override fun getInitialContent(): EmailVerificationScreenContent {
+  override fun getContentPm(): EmailVerificationScreenContent {
     return EmailVerificationScreenContent.Loading()
   }
 

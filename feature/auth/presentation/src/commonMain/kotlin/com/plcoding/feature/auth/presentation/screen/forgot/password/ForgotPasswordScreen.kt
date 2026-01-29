@@ -19,7 +19,7 @@ import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLay
 import com.plcoding.core.designsystem.components.layout.SnackbarLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.screen.base.BaseScreenContent
+import com.plcoding.core.presentation.screen.base.BaseScreen
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -30,20 +30,20 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ForgotPasswordScreen(
   viewModel: ForgotPasswordScreenViewModel = koinViewModel()
 ) {
-  val state by viewModel.state.collectAsStateWithLifecycle()
+  val state by viewModel.screenState.collectAsStateWithLifecycle()
   val snackbarHostState = remember { SnackbarHostState() }
 
   rememberCoroutineScope().launch {
-    state.content.snackbarEvent?.consumeAsync {
+    state.contentPm.snackbarEvent?.consumeAsync {
       snackbarHostState.showSnackbar(getString(it))
     }
   }
 
-  BaseScreenContent(
-    baseContent = state.baseContent
+  BaseScreen(
+    baseContentPm = state.baseContentPm
   ) {
     ForgotPasswordScreenContent(
-      content = state.content,
+      content = state.contentPm,
       snackbarHostState = snackbarHostState,
       onAction = viewModel::onAction
     )

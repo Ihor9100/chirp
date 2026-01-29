@@ -21,7 +21,7 @@ class ForgotPasswordScreenViewModel(
   private val authRemoteRepository: AuthRemoteRepository,
 ) : BaseScreenViewModel<ForgotPasswordScreenContent>() {
 
-  override fun getInitialContent(): ForgotPasswordScreenContent {
+  override fun getContentPm(): ForgotPasswordScreenContent {
     return ForgotPasswordScreenContent()
   }
 
@@ -32,8 +32,8 @@ class ForgotPasswordScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { state.value.content.emailState.text.toString() },
-      state.map { it.hasLoader() }.distinctUntilChanged(),
+      snapshotFlow { screenState.value.contentPm.emailState.text.toString() },
+      screenState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, isLoading ->
       updateContent {
         copy(primaryButtonIsEnable = EmailValidator.validate(email) && !isLoading)
@@ -50,7 +50,7 @@ class ForgotPasswordScreenViewModel(
   private fun handleSubmitClick() {
     launchLoadable {
       authRemoteRepository
-        .forgotPassword(state.value.content.emailState.text.toString())
+        .forgotPassword(screenState.value.contentPm.emailState.text.toString())
         .onFailure(::handleFailure)
         .onSuccess { handleSuccess() }
     }

@@ -3,6 +3,9 @@ package com.plcoding.core.presentation.screen.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.screen.model.BaseContentPm
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
+import com.plcoding.core.presentation.screen.model.Overlay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -11,12 +14,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.StringResource
 
-abstract class BaseScreenViewModel<Content>() : ViewModel() {
+abstract class BaseScreenViewModel<ContentPm> : ViewModel() {
 
-  protected abstract fun getInitialContent(): Content
+  protected abstract fun getContentPm(): ContentPm
 
-  protected val mutableState = MutableStateFlow(getInitialBaseScreenState())
-  val state = mutableState
+  val mutableScreenState = MutableStateFlow(ScreenStatePm(getBaseContentPm(), getContentPm()))
+  val screenState = mutableScreenState
     .onStart {
       if (!isInitialized) {
         isInitialized = true
@@ -26,17 +29,15 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
     .stateIn(
       scope = viewModelScope,
       started = SharingStarted.WhileSubscribed(5_000L),
-      initialValue = getInitialBaseScreenState()
+      initialValue = ScreenStatePm(getBaseContentPm(), getContentPm())
     )
 
   private var isInitialized = false
 
+  protected open fun getBaseContentPm() = BaseContentPm()
+  protected open fun getScreenStatePm() = ScreenStatePm(getBaseContentPm(), getContentPm())
+
   protected open fun onInitialized() = Unit
-  protected open fun getInitialBaseContent() = BaseContent()
-  protected open fun getInitialBaseScreenState() = BaseScreenState(
-    getInitialContent(),
-    getInitialBaseContent(),
-  )
 
   protected fun launch(block: suspend () -> Unit) {
     viewModelScope.launch {
@@ -53,12 +54,12 @@ abstract class BaseScreenViewModel<Content>() : ViewModel() {
     }
   }
 
-  protected inline fun updateContent(block: Content.() -> Content) {
-    return mutableState.update { it.copy(content = block(it.content)) }
+  protected inline fun updateContent(block: ContentPm.() -> ContentPm) {
+    return mutableScreenState.update { it.copy(contentPm = block(it.contentPm)) }
   }
 
-  protected inline fun updateBaseContent(block: BaseContent.() -> BaseContent) {
-    return mutableState.update { it.copy(baseContent = block(it.baseContent)) }
+  protected inline fun updateBaseContent(block: BaseContentPm.() -> BaseContentPm) {
+    return mutableScreenState.update { it.copy(baseContentPm = block(it.baseContentPm)) }
   }
 
   protected fun showSnackbar(messageRes: StringResource) {

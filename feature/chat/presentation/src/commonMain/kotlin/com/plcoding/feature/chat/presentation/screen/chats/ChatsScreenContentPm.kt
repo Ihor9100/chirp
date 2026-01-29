@@ -3,7 +3,7 @@ package com.plcoding.feature.chat.presentation.screen.chats
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.model.ChatPm
 
-data class ChatsScreenContent(
+data class ChatsScreenContentPm(
   val chatId: String? = null,
   val chat: Chat? = null,
   val chatsPm: List<ChatPm> = emptyList(),
@@ -11,7 +11,7 @@ data class ChatsScreenContent(
 
   companion object {
     val mock
-      get() = ChatsScreenContent(
+      get() = ChatsScreenContentPm(
         chatsPm = ChatPm.mocks
       )
   }

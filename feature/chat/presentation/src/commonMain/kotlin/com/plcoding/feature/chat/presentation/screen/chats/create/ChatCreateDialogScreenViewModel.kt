@@ -25,18 +25,18 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.seconds
 
-class ChatCreateScreenViewModel(
+class ChatCreateDialogScreenViewModel(
   private val chatRemoteRepository: ChatRemoteRepository,
   private val chatMemberPmMapper: ChatMemberPmMapper,
-) : BaseScreenViewModel<ChatCreateScreenContent>() {
+) : BaseScreenViewModel<ChatCreateDialogScreenContentPm>() {
 
-  private val searchQueryFlow = snapshotFlow { state.value.content.searchTextFieldState.text }
+  private val searchQueryFlow = snapshotFlow { screenState.value.contentPm.searchTextFieldState.text }
     .debounce(1.seconds)
     .filter { it.isNotBlank() }
     .onEach(::searchMember)
 
-  override fun getInitialContent(): ChatCreateScreenContent {
-    return ChatCreateScreenContent()
+  override fun getContentPm(): ChatCreateDialogScreenContentPm {
+    return ChatCreateDialogScreenContentPm()
   }
 
   override fun onInitialized() {
@@ -44,10 +44,10 @@ class ChatCreateScreenViewModel(
     searchQueryFlow.launchIn(viewModelScope)
   }
 
-  fun onAction(action: ChatCreateScreenAction) {
+  fun onAction(action: ChatCreateDialogScreenAction) {
     when (action) {
-      ChatCreateScreenAction.OnAddClick -> handleAddClick()
-      ChatCreateScreenAction.OnCreateClick -> handleCreateClick()
+      ChatCreateDialogScreenAction.OnAddClick -> handleAddClick()
+      ChatCreateDialogScreenAction.OnCreateDialogClick -> handleCreateClick()
       else -> Unit
     }
   }
@@ -66,7 +66,7 @@ class ChatCreateScreenViewModel(
   }
 
   private fun handleCreateClick() {
-    val memberIds = state.value.content.chatMembersPm.map { it.id }
+    val memberIds = screenState.value.contentPm.chatMembersPm.map { it.id }
     if (memberIds.isEmpty()) return
 
     launchLoadable {

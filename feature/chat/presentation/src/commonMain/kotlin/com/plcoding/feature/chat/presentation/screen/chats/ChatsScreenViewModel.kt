@@ -6,10 +6,10 @@ import com.plcoding.feature.chat.domain.model.Chat
 
 class ChatsScreenViewModel(
   private val savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<ChatsScreenContent>() {
+) : BaseScreenViewModel<ChatsScreenContentPm>() {
 
-  override fun getInitialContent(): ChatsScreenContent {
-    return ChatsScreenContent()
+  override fun getContentPm(): ChatsScreenContentPm {
+    return ChatsScreenContentPm()
   }
 
   fun onAction(action: ChatsScreenAction) {

@@ -11,7 +11,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -21,14 +20,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.designsystem.utils.DeviceConfiguration
+import com.plcoding.core.presentation.screen.model.BaseContentPm
+import com.plcoding.core.presentation.screen.model.Overlay
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun BaseScreenOverlaysContent(
+fun BaseScreenOverlays(
   modifier: Modifier = Modifier,
-  baseContent: BaseContent,
+  baseContentPm: BaseContentPm,
   content: @Composable () -> Unit,
 ) {
   Box(
@@ -37,7 +37,7 @@ fun BaseScreenOverlaysContent(
   ) {
     content()
 
-    baseContent.overlays?.forEach { overlay ->
+    baseContentPm.overlays?.forEach { overlay ->
       when (overlay) {
         is Overlay.Blocker -> {
           Box(
@@ -50,7 +50,6 @@ fun BaseScreenOverlaysContent(
         is Overlay.Loader -> {
           CircularProgressIndicator(
             modifier = Modifier
-              .size(24.dp)
               .then(
                 if (overlay.showBackground) {
                   Modifier
@@ -68,7 +67,7 @@ fun BaseScreenOverlaysContent(
                   Modifier
                 }
               ),
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimary,
           )
         }
         is Overlay.Snackbar -> {
@@ -94,9 +93,9 @@ private fun Themed(
   isDarkTheme: Boolean,
 ) {
   Theme(isDarkTheme) {
-    BaseScreenOverlaysContent(
+    BaseScreenOverlays(
       modifier = Modifier.fillMaxSize(),
-      baseContent = BaseContent.mock,
+      baseContentPm = BaseContentPm.mock,
       content = { },
     )
   }

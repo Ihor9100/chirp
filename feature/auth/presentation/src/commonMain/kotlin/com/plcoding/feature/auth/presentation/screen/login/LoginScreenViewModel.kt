@@ -25,7 +25,7 @@ class LoginScreenViewModel(
   private val preferencesLocalRepository: PreferencesLocalRepository,
 ) : BaseScreenViewModel<LoginScreenContent>() {
 
-  override fun getInitialContent(): LoginScreenContent {
+  override fun getContentPm(): LoginScreenContent {
     return LoginScreenContent()
   }
 
@@ -36,9 +36,9 @@ class LoginScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { state.value.content.emailState.text.toString() },
-      snapshotFlow { state.value.content.passwordState.text.toString() },
-      state.map { it.hasLoader() }.distinctUntilChanged(),
+      snapshotFlow { screenState.value.contentPm.emailState.text.toString() },
+      snapshotFlow { screenState.value.contentPm.passwordState.text.toString() },
+      screenState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, password, isLoading ->
       val primaryButtonIsEnable = EmailValidator.validate(email) &&
         password.isNotBlank() &&
@@ -64,8 +64,8 @@ class LoginScreenViewModel(
     launchLoadable {
       authRemoteRepository
         .login(
-          email = state.value.content.emailState.text.toString(),
-          password = state.value.content.passwordState.text.toString(),
+          email = screenState.value.contentPm.emailState.text.toString(),
+          password = screenState.value.contentPm.passwordState.text.toString(),
         )
         .onFailure { handleFailure(it) }
         .onSuccess { handleSuccess(it) }

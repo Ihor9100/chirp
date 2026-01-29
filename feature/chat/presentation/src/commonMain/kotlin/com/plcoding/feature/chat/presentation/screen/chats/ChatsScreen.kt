@@ -47,8 +47,8 @@ import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
-import com.plcoding.core.presentation.screen.base.BaseScreenContent
-import com.plcoding.core.presentation.screen.base.BaseScreenState
+import com.plcoding.core.presentation.screen.base.BaseScreen
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.domain.model.Chat
@@ -67,7 +67,7 @@ fun ChatsScreen(
   navResult: NavResult,
   viewModel: ChatsScreenViewModel = koinViewModel()
 ) {
-  val state by viewModel.state.collectAsStateWithLifecycle()
+  val state by viewModel.screenState.collectAsStateWithLifecycle()
 
   val deviceConfiguration = getDeviceConfiguration()
   val scaffoldDirective = getPaneScaffoldDirective(deviceConfiguration, currentWindowAdaptiveInfo())
@@ -84,11 +84,11 @@ fun ChatsScreen(
     viewModel.onResult(it)
   }
 
-  BaseScreenContent(
-    baseContent = state.baseContent
+  BaseScreen(
+    baseContentPm = state.baseContentPm
   ) {
-    ChatsScreenContent(
-      content = state.content,
+    Content(
+      contentPm = state.contentPm,
       scaffoldNavigator = scaffoldNavigator,
       deviceConfiguration = deviceConfiguration,
       onAction = {
@@ -106,8 +106,8 @@ fun ChatsScreen(
 }
 
 @Composable
-private fun ChatsScreenContent(
-  content: ChatsScreenContent,
+private fun Content(
+  contentPm: ChatsScreenContentPm,
   scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   deviceConfiguration: DeviceConfiguration,
   onAction: (ChatsScreenAction) -> Unit,
@@ -115,14 +115,14 @@ private fun ChatsScreenContent(
   ListDetailPaneScaffold(
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
-    listPane = { ChatsPane(content, scaffoldNavigator, onAction) },
-    detailPane = { ChatDetailsPane(content, scaffoldNavigator, deviceConfiguration) },
+    listPane = { ChatsPane(contentPm, scaffoldNavigator, onAction) },
+    detailPane = { ChatDetailsPane(contentPm, scaffoldNavigator, deviceConfiguration) },
   )
 }
 
 @Composable
 private fun ChatsPane(
-  content: ChatsScreenContent,
+  content: ChatsScreenContentPm,
   navigator: ThreePaneScaffoldNavigator<Any>,
   onAction: (ChatsScreenAction) -> Unit,
 ) {
@@ -188,7 +188,7 @@ private fun ChatsPane(
 
 @Composable
 private fun ChatDetailsPane(
-  content: ChatsScreenContent,
+  content: ChatsScreenContentPm,
   scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   deviceConfiguration: DeviceConfiguration,
 ) {
@@ -228,14 +228,14 @@ private fun Themed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
-  val baseScreenState = BaseScreenState(ChatsScreenContent.mock)
+  val screenStatePm = ScreenStatePm(ChatsScreenContentPm.mock)
 
   Theme(isDarkTheme) {
-    BaseScreenContent(
-      baseContent = baseScreenState.baseContent
+    BaseScreen(
+      baseContentPm = screenStatePm.baseContentPm
     ) {
-      ChatsScreenContent(
-        content = baseScreenState.content,
+      Content(
+        contentPm = screenStatePm.contentPm,
         scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(),
         deviceConfiguration = deviceConfiguration,
         onAction = {}

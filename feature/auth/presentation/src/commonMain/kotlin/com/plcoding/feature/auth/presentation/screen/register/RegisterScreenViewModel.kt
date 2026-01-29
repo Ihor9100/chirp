@@ -24,7 +24,7 @@ class RegisterScreenViewModel(
   private val _event = Channel<RegisterScreenEvent>()
   val event = _event.receiveAsFlow()
 
-  override fun getInitialContent(): RegisterScreenContent {
+  override fun getContentPm(): RegisterScreenContent {
     return RegisterScreenContent()
   }
 
@@ -68,13 +68,13 @@ class RegisterScreenViewModel(
     if (!areFieldsValid()) return
 
     launchLoadable {
-      val email = state.value.content.emailState.text.toString()
+      val email = screenState.value.contentPm.emailState.text.toString()
 
       authRemoteRepository
         .register(
-          username = state.value.content.usernameState.text.toString(),
+          username = screenState.value.contentPm.usernameState.text.toString(),
           email = email,
-          password = state.value.content.passwordState.text.toString(),
+          password = screenState.value.contentPm.passwordState.text.toString(),
         )
         .onFailure(::handleFailure)
         .onSuccess { _event.send(RegisterScreenEvent.Success(email)) }
@@ -91,13 +91,13 @@ class RegisterScreenViewModel(
 
   private fun areFieldsValid(): Boolean {
     val isUsernameValid = UsernameValidator.validate(
-      state.value.content.usernameState.text.toString()
+      screenState.value.contentPm.usernameState.text.toString()
     )
     val isEmailValid = EmailValidator.validate(
-      state.value.content.emailState.text.toString()
+      screenState.value.contentPm.emailState.text.toString()
     )
     val isPasswordValid = PasswordValidator.validate(
-      state.value.content.passwordState.text.toString()
+      screenState.value.contentPm.passwordState.text.toString()
     )
 
     val usernameError = if (!isUsernameValid) Res.string.error_invalid_username else null

@@ -18,14 +18,14 @@ fun AppScreen(
   appViewModel: AppScreenViewModel = koinViewModel(),
   removeSplashScreen: (() -> Unit)? = null,
 ) {
-  val state by appViewModel.state.collectAsStateWithLifecycle()
-  val startDestination = state.content.startDestination
+  val state by appViewModel.screenState.collectAsStateWithLifecycle()
+  val startDestination = state.contentPm.startDestination
   val navController = rememberNavController()
 
-  state.content.removeSplashScreenEvent?.run {
+  state.contentPm.removeSplashScreenEvent?.run {
     removeSplashScreen?.invoke()
   }
-  state.content.logoutEvent?.run {
+  state.contentPm.logoutEvent?.run {
     navController.navigateNewRoot(AuthRoute.Graph)
   }
 

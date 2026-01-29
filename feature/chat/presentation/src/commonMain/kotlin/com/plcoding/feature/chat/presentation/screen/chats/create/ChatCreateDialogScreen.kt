@@ -35,8 +35,8 @@ import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
-import com.plcoding.core.presentation.screen.base.BaseScreenDialogContent
-import com.plcoding.core.presentation.screen.base.BaseScreenState
+import com.plcoding.core.presentation.screen.base.BaseDialogScreen
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.feature.chat.presentation.component.ChatMemberPc
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
@@ -46,28 +46,28 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ChatCreateScreen(
+fun ChatCreateDialogScreen(
   navController: NavController,
   navResult: NavResult,
-  viewModel: ChatCreateScreenViewModel = koinViewModel()
+  viewModel: ChatCreateDialogScreenViewModel = koinViewModel()
 ) {
-  val state by viewModel.state.collectAsStateWithLifecycle()
+  val state by viewModel.screenState.collectAsStateWithLifecycle()
 
-  state.content.chatCreatedEvent?.consume {
+  state.contentPm.chatCreatedEvent?.consume {
     navResult.setResult("arg", it)
     navController.popBackStack()
   }
 
-  BaseScreenDialogContent(
-    baseContent = state.baseContent,
+  BaseDialogScreen(
+    baseContentPm = state.baseContentPm,
     deviceConfiguration = getDeviceConfiguration(),
     onDismiss = navController::popBackStack,
   ) {
-    ChatCreateScreenContent(
-      content = state.content,
+    Content(
+      contentPm = state.contentPm,
       onAction = {
         when (it) {
-          ChatCreateScreenAction.OnDismiss -> {
+          ChatCreateDialogScreenAction.OnDismiss -> {
             navResult.setResult("arg", "Result")
             navController.popBackStack()
           }
@@ -79,9 +79,9 @@ fun ChatCreateScreen(
 }
 
 @Composable
-fun ChatCreateScreenContent(
-  content: ChatCreateScreenContent,
-  onAction: (ChatCreateScreenAction) -> Unit,
+private fun Content(
+  contentPm: ChatCreateDialogScreenContentPm,
+  onAction: (ChatCreateDialogScreenAction) -> Unit,
 ) {
   Column(
     modifier = Modifier.fillMaxWidth(),
@@ -102,7 +102,7 @@ fun ChatCreateScreenContent(
         style = MaterialTheme.typography.titleMedium,
       )
       IconButton(
-        onClick = { onAction(ChatCreateScreenAction.OnDismiss) }
+        onClick = { onAction(ChatCreateDialogScreenAction.OnDismiss) }
       ) {
         Icon(
           modifier = Modifier.size(24.dp),
@@ -125,16 +125,16 @@ fun ChatCreateScreenContent(
     ) {
       TextFieldPlain(
         modifier = Modifier.weight(1f),
-        textFieldState = content.searchTextFieldState,
+        textFieldState = contentPm.searchTextFieldState,
         inputPlaceholder = stringResource(Res.string.invite_by_username_or_email),
       )
       ButtonPc(
         text = stringResource(Res.string.add),
         style = ButtonPcStyle.SECONDARY,
-        onClick = { onAction(ChatCreateScreenAction.OnAddClick) }
+        onClick = { onAction(ChatCreateDialogScreenAction.OnAddClick) }
       )
     }
-    content.chatMemberPm?.apply {
+    contentPm.chatMemberPm?.apply {
       ChatMemberPc(
         modifier = Modifier
           .padding(horizontal = 16.dp)
@@ -152,7 +152,7 @@ fun ChatCreateScreenContent(
         ),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-      if (content.chatMembersPm.isEmpty()) {
+      if (contentPm.chatMembersPm.isEmpty()) {
         item {
           TitleDescriptionPc(
             modifier = Modifier.padding(vertical = 24.dp),
@@ -162,12 +162,12 @@ fun ChatCreateScreenContent(
         }
       } else {
         items(
-          count = content.chatMembersPm.size,
-          key = { content.chatMembersPm[it].id },
+          count = contentPm.chatMembersPm.size,
+          key = { contentPm.chatMembersPm[it].id },
         ) { index ->
           ChatMemberPc(
             modifier = Modifier,
-            chatMemberPm = content.chatMembersPm[index],
+            chatMemberPm = contentPm.chatMembersPm[index],
           )
         }
       }
@@ -192,7 +192,7 @@ fun ChatCreateScreenContent(
         modifier = Modifier,
         text = stringResource(Res.string.create_chat),
         style = ButtonPcStyle.PRIMARY,
-        onClick = { onAction(ChatCreateScreenAction.OnCreateClick) }
+        onClick = { onAction(ChatCreateDialogScreenAction.OnCreateDialogClick) }
       )
     }
   }
@@ -203,20 +203,20 @@ private fun Themed(
   isDarkTheme: Boolean = false,
   deviceConfiguration: DeviceConfiguration,
 ) {
-  val baseScreenState = BaseScreenState(
-    content = ChatCreateScreenContent(
+  val screenStatePm = ScreenStatePm(
+    contentPm = ChatCreateDialogScreenContentPm(
       chatMembersPm = ChatMemberPm.mocks,
     ),
   )
 
   Theme(isDarkTheme) {
-    BaseScreenDialogContent(
-      baseContent = baseScreenState.baseContent,
+    BaseDialogScreen(
+      baseContentPm = screenStatePm.baseContentPm,
       deviceConfiguration = deviceConfiguration,
       onDismiss = {},
     ) {
-      ChatCreateScreenContent(
-        content = baseScreenState.content,
+      Content(
+        contentPm = screenStatePm.contentPm,
         onAction = {}
       )
     }
@@ -228,7 +228,7 @@ private fun Themed(
   widthDp = 450,
   heightDp = 1000,
 )
-fun MobileLightPreview() {
+private fun MobileLightPreview() {
   Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
@@ -264,7 +264,7 @@ fun TabletLightPreview() {
   widthDp = 750,
   heightDp = 1200,
 )
-fun TabletDarkPreview() {
+private fun TabletDarkPreview() {
   Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,

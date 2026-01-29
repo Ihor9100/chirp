@@ -25,7 +25,7 @@ class ResetPasswordScreenViewModel(
 
   private val token: String = savedStateHandle["token"] ?: error("Token should be passed")
 
-  override fun getInitialContent(): ResetPasswordScreenContent {
+  override fun getContentPm(): ResetPasswordScreenContent {
     return ResetPasswordScreenContent()
   }
 
@@ -36,8 +36,8 @@ class ResetPasswordScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { state.value.content.passwordState.text.toString() },
-      state.map { it.hasLoader() }.distinctUntilChanged(),
+      snapshotFlow { screenState.value.contentPm.passwordState.text.toString() },
+      screenState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { password, isLoading ->
       updateContent {
         copy(primaryButtonIsEnable = PasswordValidator.validate(password) && !isLoading)

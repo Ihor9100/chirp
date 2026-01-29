@@ -17,7 +17,7 @@ import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLay
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.screen.base.BaseScreenContent
+import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.utils.CollectEvent
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -29,7 +29,7 @@ fun RegisterScreen(
   openRegisterSuccess: (String) -> Unit,
   openLogin: () -> Unit,
 ) {
-  val state by viewModel.state.collectAsStateWithLifecycle()
+  val state by viewModel.screenState.collectAsStateWithLifecycle()
 
   viewModel.event.CollectEvent { event ->
     when (event) {
@@ -37,11 +37,11 @@ fun RegisterScreen(
     }
   }
 
-  BaseScreenContent(
-    baseContent = state.baseContent
+  BaseScreen(
+    baseContentPm = state.baseContentPm
   ) {
     RegisterScreenContent(
-      content = state.content,
+      content = state.contentPm,
       onAction = {
         when (it) {
           RegisterScreenAction.OnSecondaryButtonClick -> openLogin()

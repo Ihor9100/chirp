@@ -17,7 +17,7 @@ class AppScreenViewModel(
 
   private var authInfo: AuthInfo? = null
 
-  override fun getInitialContent(): AppScreenContent {
+  override fun getContentPm(): AppScreenContent {
     return AppScreenContent()
   }
 

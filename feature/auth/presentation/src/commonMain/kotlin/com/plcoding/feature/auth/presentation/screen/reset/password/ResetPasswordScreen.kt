@@ -18,7 +18,7 @@ import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLay
 import com.plcoding.core.designsystem.components.layout.SnackbarLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.screen.base.BaseScreenContent
+import com.plcoding.core.presentation.screen.base.BaseScreen
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -30,23 +30,23 @@ fun ResetPasswordScreen(
   viewModel: ResetPasswordScreenViewModel = koinViewModel(),
   openLogin: () -> Unit,
 ) {
-  val state by viewModel.state.collectAsStateWithLifecycle()
+  val state by viewModel.screenState.collectAsStateWithLifecycle()
   val snackbarHostState = remember { SnackbarHostState() }
 
   rememberCoroutineScope().launch {
-    state.content.resetSuccessEvent?.consumeAsync {
+    state.contentPm.resetSuccessEvent?.consumeAsync {
       val result = snackbarHostState.showSnackbar(getString(it))
       viewModel.onAction(ResetPasswordScreenAction.OnSnackbarDisappeared(result))
     }
   }
 
-  state.content.navigateToLoginEvent?.run(openLogin)
+  state.contentPm.navigateToLoginEvent?.run(openLogin)
 
-  BaseScreenContent(
-    baseContent = state.baseContent
+  BaseScreen(
+    baseContentPm = state.baseContentPm
   ) {
     ResetPasswordScreenContent(
-      content = state.content,
+      content = state.contentPm,
       snackbarHostState = snackbarHostState,
       onAction = viewModel::onAction
     )

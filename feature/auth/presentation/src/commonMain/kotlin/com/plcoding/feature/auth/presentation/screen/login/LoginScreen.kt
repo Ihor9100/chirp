@@ -23,8 +23,8 @@ import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLay
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.screen.base.BaseScreenContent
-import com.plcoding.core.presentation.screen.base.BaseScreenState
+import com.plcoding.core.presentation.screen.base.BaseScreen
+import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -36,14 +36,14 @@ fun LoginScreen(
   openForgotPassword: () -> Unit,
   openRegisterScreen: () -> Unit,
 ) {
-  val state by viewModel.state.collectAsStateWithLifecycle()
-  state.content.logInSuccessEvent?.run(openChat)
+  val state by viewModel.screenState.collectAsStateWithLifecycle()
+  state.contentPm.logInSuccessEvent?.run(openChat)
 
-  BaseScreenContent(
-    baseContent = state.baseContent,
+  BaseScreen(
+    baseContentPm = state.baseContentPm,
   ) {
     LoginScreenContent(
-      content = state.content,
+      content = state.contentPm,
       onAction = {
         when (it) {
           is LoginScreenAction.OnForgotPasswordClick -> openForgotPassword()
@@ -114,14 +114,14 @@ fun LoginScreenContent(
 private fun Themed(
   isDarkTheme: Boolean,
 ) {
-  val baseScreenState = BaseScreenState(LoginScreenContent())
+  val screenStatePm = ScreenStatePm(LoginScreenContent())
 
   Theme(isDarkTheme) {
-    BaseScreenContent(
-      baseContent = baseScreenState.baseContent
+    BaseScreen(
+      baseContentPm = screenStatePm.baseContentPm
     ) {
       LoginScreenContent(
-        content = baseScreenState.content,
+        content = screenStatePm.contentPm,
         onAction = {}
       )
     }

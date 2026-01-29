@@ -1,12 +1,12 @@
-package com.plcoding.core.presentation.screen.base
+package com.plcoding.core.presentation.screen.model
 
-data class BaseContent(
+data class BaseContentPm(
   val overlays: Set<Overlay>? = null,
 ) {
 
   companion object {
     val mock
-      get() = BaseContent(
+      get() = BaseContentPm(
         overlays = setOf(Overlay.Blocker, Overlay.Loader(showBackground = true))
       )
   }

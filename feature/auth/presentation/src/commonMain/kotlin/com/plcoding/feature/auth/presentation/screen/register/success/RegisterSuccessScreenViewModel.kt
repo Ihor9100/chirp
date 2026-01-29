@@ -20,7 +20,7 @@ class RegisterSuccessScreenViewModel(
 
   private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
 
-  override fun getInitialContent(): RegisterSuccessScreenContent {
+  override fun getContentPm(): RegisterSuccessScreenContent {
     return RegisterSuccessScreenContent(
       description = TextProvider.Resource(
         id = Res.string.verification_email_sent_to_x,

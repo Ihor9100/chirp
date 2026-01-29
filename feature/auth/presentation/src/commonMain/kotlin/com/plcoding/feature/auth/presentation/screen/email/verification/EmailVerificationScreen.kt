@@ -23,7 +23,7 @@ import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultL
 import com.plcoding.core.designsystem.components.layout.ResultLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.presentation.screen.base.BaseScreenContent
+import com.plcoding.core.presentation.screen.base.BaseScreen
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -33,13 +33,13 @@ fun EmailVerificationScreen(
   viewModel: EmailVerificationScreenViewModel = koinViewModel(),
   openLogin: () -> Unit,
 ) {
-  val state by viewModel.state.collectAsStateWithLifecycle()
+  val state by viewModel.screenState.collectAsStateWithLifecycle()
 
-  BaseScreenContent(
-    baseContent = state.baseContent
+  BaseScreen(
+    baseContentPm = state.baseContentPm
   ) {
     EmailVerificationScreenContent(
-      content = state.content,
+      content = state.contentPm,
       onAction = { openLogin() },
     )
   }
