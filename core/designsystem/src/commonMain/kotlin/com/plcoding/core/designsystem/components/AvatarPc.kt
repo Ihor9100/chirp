@@ -29,7 +29,7 @@ fun AvatarPc(
 ) {
   Box(
     modifier = modifier
-      .size(avatarPm.avatarSize.dp)
+      .size(avatarPm.avatarSizePm.dp)
       .clickable { onClick?.invoke() }
       .background(
         color = MaterialTheme.colorScheme.extended.secondaryFill,

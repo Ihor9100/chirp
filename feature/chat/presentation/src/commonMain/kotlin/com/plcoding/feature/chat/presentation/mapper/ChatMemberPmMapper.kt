@@ -1,7 +1,7 @@
 package com.plcoding.feature.chat.presentation.mapper
 
 import com.plcoding.core.designsystem.model.AvatarPm
-import com.plcoding.core.designsystem.model.AvatarSize
+import com.plcoding.core.designsystem.model.AvatarSizePm
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
@@ -16,7 +16,7 @@ class ChatMemberPmMapper : Mapper<ChatMember, ChatMemberPm, Unit> {
         avatarPm = AvatarPm(
           initials = getInitials(username),
           imageUrl = profilePictureUrl,
-          avatarSize = AvatarSize.MEDIUM,
+          avatarSizePm = AvatarSizePm.MEDIUM,
         ),
       )
     }

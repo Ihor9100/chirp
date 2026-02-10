@@ -14,61 +14,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import chirp.core.designsystem.generated.resources.Res
-import chirp.core.designsystem.generated.resources.failed
-import chirp.core.designsystem.generated.resources.ic_check
-import chirp.core.designsystem.generated.resources.ic_cross
-import chirp.core.designsystem.generated.resources.sent
-import com.plcoding.core.designsystem.components.Sender.Other
-import com.plcoding.core.designsystem.components.Sender.You
+import com.plcoding.core.designsystem.model.Sender
+import com.plcoding.core.designsystem.model.Status
 import com.plcoding.core.designsystem.shape.AnchorPosition
 import com.plcoding.core.designsystem.shape.ChatMessageShape
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-sealed interface Sender {
-
-  val name: String
-
-  data class You(override val name: String) : Sender
-  data class Other(override val name: String) : Sender
-}
-
-@ConsistentCopyVisibility
-data class Status private constructor(
-  val icon: ImageVector,
-  val titleRes: StringResource,
-  val color: Color,
-) {
-
-  companion object {
-    val success: Status
-      @Composable
-      get() = Status(
-        icon = vectorResource(Res.drawable.ic_check),
-        titleRes = Res.string.sent,
-        color = MaterialTheme.colorScheme.extended.textTertiary,
-      )
-
-    val error: Status
-      @Composable
-      get() = Status(
-        icon = vectorResource(Res.drawable.ic_cross),
-        titleRes = Res.string.failed,
-        color = MaterialTheme.colorScheme.error,
-      )
-  }
-}
-
 @Composable
-fun ChatMessage(
+fun ChatMessagePc(
   modifier: Modifier = Modifier,
   sender: Sender,
   date: String,
@@ -82,12 +40,12 @@ fun ChatMessage(
   val endPadding: Dp
 
   val anchorPosition = when (sender) {
-    is You -> {
+    is Sender.You -> {
       startPadding = horizontalPadding
       endPadding = horizontalPadding * 2
       AnchorPosition.RIGHT
     }
-    is Other -> {
+    is Sender.Other -> {
       startPadding = horizontalPadding * 2
       endPadding = horizontalPadding
       AnchorPosition.LEFT
@@ -156,7 +114,7 @@ fun ChatMessage(
 
 @Composable
 @Preview
-private fun ChatMessageThemed(
+private fun Themed(
   isDarkMode: Boolean,
   sender: Sender,
   status: Status,
@@ -164,7 +122,7 @@ private fun ChatMessageThemed(
   Theme(
     isDarkMode = isDarkMode,
   ) {
-    ChatMessage(
+    ChatMessagePc(
       sender = sender,
       date = "today",
       message = "Hello World",
@@ -177,7 +135,7 @@ private fun ChatMessageThemed(
 @Composable
 @Preview
 private fun YouSuccessDarkPreview() {
-  ChatMessageThemed(
+  Themed(
     isDarkMode = true,
     sender = Sender.You("Ihor"),
     status = Status.success
@@ -187,7 +145,7 @@ private fun YouSuccessDarkPreview() {
 @Composable
 @Preview
 private fun YouErrorDarkPreview() {
-  ChatMessageThemed(
+  Themed(
     isDarkMode = true,
     sender = Sender.You("Ihor"),
     status = Status.error
@@ -197,7 +155,7 @@ private fun YouErrorDarkPreview() {
 @Composable
 @Preview
 private fun OtherSuccessDarkPreview() {
-  ChatMessageThemed(
+  Themed(
     isDarkMode = true,
     sender = Sender.You("Bohdana"),
     status = Status.success
@@ -207,7 +165,7 @@ private fun OtherSuccessDarkPreview() {
 @Composable
 @Preview
 private fun OtherErrorDarkPreview() {
-  ChatMessageThemed(
+  Themed(
     isDarkMode = true,
     sender = Sender.You("Bohdana"),
     status = Status.error
@@ -217,7 +175,7 @@ private fun OtherErrorDarkPreview() {
 @Composable
 @Preview
 private fun YouSuccessLightPreview() {
-  ChatMessageThemed(
+  Themed(
     isDarkMode = false,
     sender = Sender.You("Ihor"),
     status = Status.success
@@ -227,7 +185,7 @@ private fun YouSuccessLightPreview() {
 @Composable
 @Preview
 private fun YouErrorLightPreview() {
-  ChatMessageThemed(
+  Themed(
     isDarkMode = false,
     sender = Sender.You("Ihor"),
     status = Status.error
@@ -237,7 +195,7 @@ private fun YouErrorLightPreview() {
 @Composable
 @Preview
 private fun OtherSuccessLightPreview() {
-  ChatMessageThemed(
+  Themed(
     isDarkMode = false,
     sender = Sender.You("Bohdana"),
     status = Status.success
@@ -247,7 +205,7 @@ private fun OtherSuccessLightPreview() {
 @Composable
 @Preview
 private fun OtherErrorLightPreview() {
-  ChatMessageThemed(
+  Themed(
     isDarkMode = false,
     sender = Sender.You("Bohdana"),
     status = Status.error

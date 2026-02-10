@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.model.AvatarPm
-import com.plcoding.core.designsystem.model.AvatarSize
+import com.plcoding.core.designsystem.model.AvatarSizePm
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -19,7 +19,7 @@ fun StackedAvatars(
 ) {
   val invisibleCount = avatarsPm.size - maxVisibleCount
   val horizontalOffsetDp = avatarsPm.firstOrNull()
-    ?.avatarSize?.dp
+    ?.avatarSizePm?.dp
     ?.times(horizontalOffset)
     ?: 0.dp
 
@@ -42,7 +42,7 @@ fun StackedAvatars(
         avatarPm = AvatarPm(
           initials = "$invisibleCount +",
           imageUrl = null,
-          avatarSize = AvatarSize.MEDIUM,
+          avatarSizePm = AvatarSizePm.MEDIUM,
         )
       )
     }
@@ -62,22 +62,22 @@ private fun StackedAvatarsThemed(
         AvatarPm(
           initials = "Ihor A",
           imageUrl = "1",
-          avatarSize = AvatarSize.MEDIUM,
+          avatarSizePm = AvatarSizePm.MEDIUM,
         ),
         AvatarPm(
           initials = "Ihor B",
           imageUrl = "2",
-          avatarSize = AvatarSize.MEDIUM,
+          avatarSizePm = AvatarSizePm.MEDIUM,
         ),
         AvatarPm(
           initials = "Ihor C",
           imageUrl = "3",
-          avatarSize = AvatarSize.MEDIUM,
+          avatarSizePm = AvatarSizePm.MEDIUM,
         ),
         AvatarPm(
           initials = "Ihor D",
           imageUrl = "4",
-          avatarSize = AvatarSize.MEDIUM,
+          avatarSizePm = AvatarSizePm.MEDIUM,
         ),
       ),
     )
