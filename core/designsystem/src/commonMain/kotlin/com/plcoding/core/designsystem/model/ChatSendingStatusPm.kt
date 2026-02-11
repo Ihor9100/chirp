@@ -14,24 +14,24 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.vectorResource
 
 @ConsistentCopyVisibility
-data class Status private constructor(
+data class ChatSendingStatusPm private constructor(
   val icon: ImageVector,
   val titleRes: StringResource,
   val color: Color,
 ) {
 
   companion object {
-    val success: Status
+    val success: ChatSendingStatusPm
       @Composable
-      get() = Status(
+      get() = ChatSendingStatusPm(
         icon = vectorResource(Res.drawable.ic_check),
         titleRes = Res.string.sent,
         color = MaterialTheme.colorScheme.extended.textTertiary,
       )
 
-    val error: Status
+    val error: ChatSendingStatusPm
       @Composable
-      get() = Status(
+      get() = ChatSendingStatusPm(
         icon = vectorResource(Res.drawable.ic_cross),
         titleRes = Res.string.failed,
         color = MaterialTheme.colorScheme.error,

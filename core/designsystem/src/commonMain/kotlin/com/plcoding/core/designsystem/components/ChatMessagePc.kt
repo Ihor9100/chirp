@@ -13,12 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.model.Sender
-import com.plcoding.core.designsystem.model.Status
-import com.plcoding.core.designsystem.shape.AnchorPosition
+import com.plcoding.core.designsystem.model.AnchorPositionPm
+import com.plcoding.core.designsystem.model.ChatMessagePm
 import com.plcoding.core.designsystem.shape.ChatMessageShape
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
@@ -28,35 +26,29 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun ChatMessagePc(
   modifier: Modifier = Modifier,
-  sender: Sender,
-  date: String,
-  message: String,
-  status: Status?,
-  backgroundColor: Color,
+  chatMessagePm: ChatMessagePm,
 ) {
   val horizontalPadding = 16.dp
   val verticalPadding = 12.dp
   val startPadding: Dp
   val endPadding: Dp
 
-  val anchorPosition = when (sender) {
-    is Sender.You -> {
-      startPadding = horizontalPadding
-      endPadding = horizontalPadding * 2
-      AnchorPosition.RIGHT
-    }
-    is Sender.Other -> {
+  when (chatMessagePm.anchorPositionPm) {
+    AnchorPositionPm.LEFT -> {
       startPadding = horizontalPadding * 2
       endPadding = horizontalPadding
-      AnchorPosition.LEFT
+    }
+    AnchorPositionPm.RIGHT -> {
+      startPadding = horizontalPadding
+      endPadding = horizontalPadding * 2
     }
   }
 
   Column(
     modifier = modifier
       .background(
-        color = backgroundColor,
-        shape = ChatMessageShape(anchorPosition, horizontalPadding)
+        color = MaterialTheme.colorScheme.surface,
+        shape = ChatMessageShape(chatMessagePm.anchorPositionPm, horizontalPadding)
       )
       .padding(
         start = startPadding,
@@ -74,23 +66,23 @@ fun ChatMessagePc(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Text(
-        text = sender.name,
+        text = chatMessagePm.sender,
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.extended.textSecondary
       )
       Text(
-        text = date,
+        text = chatMessagePm.date,
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.extended.textSecondary
       )
     }
     Text(
       modifier = Modifier.fillMaxWidth(),
-      text = message,
+      text = chatMessagePm.message,
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.extended.textPrimary
     )
-    status?.let {
+    chatMessagePm.chatSendingStatusPm?.let {
       Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -116,98 +108,32 @@ fun ChatMessagePc(
 @Preview
 private fun Themed(
   isDarkMode: Boolean,
-  sender: Sender,
-  status: Status,
+  chatMessagePm: ChatMessagePm
 ) {
   Theme(
     isDarkMode = isDarkMode,
   ) {
     ChatMessagePc(
-      sender = sender,
-      date = "today",
-      message = "Hello World",
-      status = status,
-      backgroundColor = MaterialTheme.colorScheme.surface
+      modifier = Modifier,
+      chatMessagePm = chatMessagePm,
     )
   }
 }
 
 @Composable
 @Preview
-private fun YouSuccessDarkPreview() {
+private fun DarkPreview() {
   Themed(
     isDarkMode = true,
-    sender = Sender.You("Ihor"),
-    status = Status.success
+    chatMessagePm = ChatMessagePm.mocks[0]
   )
 }
 
 @Composable
 @Preview
-private fun YouErrorDarkPreview() {
-  Themed(
-    isDarkMode = true,
-    sender = Sender.You("Ihor"),
-    status = Status.error
-  )
-}
-
-@Composable
-@Preview
-private fun OtherSuccessDarkPreview() {
-  Themed(
-    isDarkMode = true,
-    sender = Sender.You("Bohdana"),
-    status = Status.success
-  )
-}
-
-@Composable
-@Preview
-private fun OtherErrorDarkPreview() {
-  Themed(
-    isDarkMode = true,
-    sender = Sender.You("Bohdana"),
-    status = Status.error
-  )
-}
-
-@Composable
-@Preview
-private fun YouSuccessLightPreview() {
+private fun LightPreview() {
   Themed(
     isDarkMode = false,
-    sender = Sender.You("Ihor"),
-    status = Status.success
-  )
-}
-
-@Composable
-@Preview
-private fun YouErrorLightPreview() {
-  Themed(
-    isDarkMode = false,
-    sender = Sender.You("Ihor"),
-    status = Status.error
-  )
-}
-
-@Composable
-@Preview
-private fun OtherSuccessLightPreview() {
-  Themed(
-    isDarkMode = false,
-    sender = Sender.You("Bohdana"),
-    status = Status.success
-  )
-}
-
-@Composable
-@Preview
-private fun OtherErrorLightPreview() {
-  Themed(
-    isDarkMode = false,
-    sender = Sender.You("Bohdana"),
-    status = Status.error
+    chatMessagePm = ChatMessagePm.mocks[1]
   )
 }
