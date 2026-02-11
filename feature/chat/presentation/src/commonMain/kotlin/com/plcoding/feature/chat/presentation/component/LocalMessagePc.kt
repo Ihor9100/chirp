@@ -1,40 +1,45 @@
 package com.plcoding.feature.chat.presentation.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.ic_cross
+import com.plcoding.core.designsystem.components.ChatMessagePc
 import com.plcoding.core.designsystem.components.HorizontalDividerPc
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.feature.chat.presentation.model.DateDividerPm
+import com.plcoding.feature.chat.presentation.model.LocalMessagePm
+import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LocalMessagePc(
   modifier: Modifier,
-  dateDividerPm: DateDividerPm,
+  localMessagePm: LocalMessagePm,
 ) {
   Row(
     modifier = modifier.fillMaxWidth(),
-    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(4.dp),
+    verticalAlignment = Alignment.Bottom,
   ) {
-    HorizontalDividerPc(
-      modifier = modifier.weight(1f)
+    ChatMessagePc(
+      modifier = modifier,
+      chatMessagePm = localMessagePm.chatMessagePm,
     )
-    Text(
-      modifier = Modifier.padding(horizontal = 32.dp),
-      text = dateDividerPm.date,
-      color = MaterialTheme.colorScheme.extended.textPlaceholder,
-      style = MaterialTheme.typography.labelSmall,
-    )
-    HorizontalDividerPc(
-      modifier = modifier.weight(1f)
+    Icon(
+      // TODO:
+      imageVector = vectorResource(Res.drawable.ic_cross),
+      contentDescription = null,
     )
   }
 }
@@ -46,7 +51,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     LocalMessagePc(
       modifier = Modifier,
-      dateDividerPm = DateDividerPm.mock,
+      localMessagePm = LocalMessagePm.mock,
     )
   }
 }
