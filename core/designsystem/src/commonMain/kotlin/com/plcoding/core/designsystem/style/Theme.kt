@@ -72,6 +72,7 @@ val LightExtendedColorScheme = ExtendedColorScheme(
   textSecondary = Base900,
   textPlaceholder = Base700,
   textDisabled = Base400,
+  textDestructive = Red600,
 
   surfaceLower = Base100,
   surfaceHigher = Base100,
@@ -149,6 +150,7 @@ val DarkExtendedColorScheme = ExtendedColorScheme(
   textSecondary = Base150,
   textPlaceholder = Base400,
   textDisabled = Base500,
+  textDestructive = Red200,
 
   surfaceLower = Base1000,
   surfaceHigher = Base900,

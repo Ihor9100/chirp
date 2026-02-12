@@ -1,4 +1,4 @@
-package com.plcoding.core.designsystem.model
+package com.plcoding.feature.chat.presentation.model
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

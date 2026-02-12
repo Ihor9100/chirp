@@ -16,55 +16,35 @@ import chirp.core.designsystem.generated.resources.ic_reload
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.ic_reload
+import com.plcoding.core.designsystem.components.AvatarPc
 import com.plcoding.core.designsystem.components.ChatMessagePc
 import com.plcoding.core.designsystem.components.HorizontalDividerPc
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.feature.chat.presentation.model.DateDividerPm
 import com.plcoding.feature.chat.presentation.model.LocalMessagePm
+import com.plcoding.feature.chat.presentation.model.RemoteMessagePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun LocalMessagePc(
+fun RemoteMessagePc(
   modifier: Modifier,
-  localMessagePm: LocalMessagePm,
+  remoteMessagePm: RemoteMessagePm,
 ) {
   Row(
     modifier = modifier,
     horizontalArrangement = Arrangement.spacedBy(4.dp),
     verticalAlignment = Alignment.Bottom,
   ) {
+    AvatarPc(
+      modifier = Modifier,
+      avatarPm = remoteMessagePm.avatarPm,
+    )
     ChatMessagePc(
       modifier = modifier.weight(1f),
-      chatMessagePm = localMessagePm.chatMessagePm,
-    ) {
-      localMessagePm.chatSendingStatusPm?.let {
-        Row(
-          modifier = Modifier.fillMaxWidth(),
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-          Icon(
-            modifier = Modifier.size(12.dp),
-            imageVector = it.icon,
-            contentDescription = null,
-            tint = it.color
-          )
-          Text(
-            text = stringResource(it.titleRes),
-            style = MaterialTheme.typography.labelSmall,
-            color = it.color,
-          )
-        }
-      }
-    }
-    Icon(
-      modifier = Modifier.size(24.dp),
-      imageVector = vectorResource(Res.drawable.ic_reload),
-      contentDescription = null,
-      tint = MaterialTheme.colorScheme.extended.textDestructive
+      chatMessagePm = remoteMessagePm.chatMessagePm,
     )
   }
 }
@@ -74,9 +54,9 @@ private fun Themed(
   isDarkTheme: Boolean = false,
 ) {
   Theme(isDarkTheme) {
-    LocalMessagePc(
+    RemoteMessagePc(
       modifier = Modifier,
-      localMessagePm = LocalMessagePm.mock,
+      remoteMessagePm = RemoteMessagePm.mock,
     )
   }
 }

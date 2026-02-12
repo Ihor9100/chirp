@@ -1,21 +1,20 @@
 package com.plcoding.feature.chat.presentation.model
 
 import androidx.compose.runtime.Composable
+import com.plcoding.core.designsystem.model.AvatarPm
 import com.plcoding.core.designsystem.model.ChatMessagePm
 
-data class LocalMessagePm(
+class RemoteMessagePm(
+  val avatarPm: AvatarPm,
   val chatMessagePm: ChatMessagePm,
-  val chatSendingStatusPm: ChatSendingStatusPm?,
-  val showRetryIcon: Boolean,
 ) : ChatDetailsPm {
 
   companion object {
     val mock
       @Composable
-      get() = LocalMessagePm(
-        chatMessagePm = ChatMessagePm.mocks[1],
-        chatSendingStatusPm = ChatSendingStatusPm.error,
-        showRetryIcon = true,
+      get() = RemoteMessagePm(
+        avatarPm = AvatarPm.mock,
+        chatMessagePm = ChatMessagePm.mocks[0]
       )
   }
 }

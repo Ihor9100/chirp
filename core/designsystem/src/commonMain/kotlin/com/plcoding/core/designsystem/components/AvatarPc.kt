@@ -49,8 +49,7 @@ fun AvatarPc(
       style = MaterialTheme.typography.titleMedium,
     )
     AsyncImage(
-      modifier = Modifier
-        .clip(CircleShape),
+      modifier = Modifier.clip(CircleShape),
       model = avatarPm.imageUrl,
       contentDescription = null,
       contentScale = ContentScale.Crop,

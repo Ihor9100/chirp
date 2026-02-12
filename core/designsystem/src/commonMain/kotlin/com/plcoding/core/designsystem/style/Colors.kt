@@ -93,6 +93,7 @@ data class ExtendedColorScheme(
   val textSecondary: Color,
   val textPlaceholder: Color,
   val textDisabled: Color,
+  val textDestructive: Color,
 
   // Surface variants
   val surfaceLower: Color,

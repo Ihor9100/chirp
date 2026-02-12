@@ -4,10 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,13 +19,13 @@ import com.plcoding.core.designsystem.model.ChatMessagePm
 import com.plcoding.core.designsystem.shape.ChatMessageShape
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ChatMessagePc(
   modifier: Modifier = Modifier,
   chatMessagePm: ChatMessagePm,
+  statusPc: @Composable (() -> Unit)? = null,
 ) {
   val horizontalPadding = 16.dp
   val verticalPadding = 12.dp
@@ -82,25 +81,7 @@ fun ChatMessagePc(
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.extended.textPrimary
     )
-    chatMessagePm.chatSendingStatusPm?.let {
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-      ) {
-        Icon(
-          modifier = modifier.size(12.dp),
-          imageVector = it.icon,
-          contentDescription = null,
-          tint = it.color
-        )
-        Text(
-          text = stringResource(it.titleRes),
-          style = MaterialTheme.typography.labelSmall,
-          color = it.color,
-        )
-      }
-    }
+    statusPc?.invoke()
   }
 }
 
