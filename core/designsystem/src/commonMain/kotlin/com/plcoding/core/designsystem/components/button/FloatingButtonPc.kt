@@ -2,61 +2,62 @@ package com.plcoding.core.designsystem.components.button
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import chirp.core.designsystem.generated.resources.Res
+import chirp.core.designsystem.generated.resources.ic_plus
 import com.plcoding.core.designsystem.style.Theme
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun FloatingActionButton(
+fun FloatingButtonPc(
   modifier: Modifier = Modifier,
+  iconRes: DrawableResource,
   onClick: () -> Unit,
-  content: @Composable () -> Unit,
 ) {
   FloatingActionButton(
-    onClick = onClick,
     modifier = modifier,
     shape = RoundedCornerShape(8.dp),
     containerColor = MaterialTheme.colorScheme.primary,
     contentColor = MaterialTheme.colorScheme.onPrimary,
-    content = content,
-  )
+    onClick = onClick,
+  ) {
+    Image(
+      imageVector = vectorResource(iconRes),
+      contentDescription = null,
+    )
+  }
 }
 
 @Composable
-fun ChirFloatingActionButtonThemed(
+private fun Themed(
   isDarkTheme: Boolean,
 ) {
   Theme(isDarkTheme) {
-    com.plcoding.core.designsystem.components.button.FloatingActionButton(
-      onClick = {},
-      content = {
-        Image(
-          imageVector = Icons.Default.Add,
-          contentDescription = null,
-        )
-      }
+    FloatingButtonPc(
+      iconRes = Res.drawable.ic_plus,
+      onClick = {}
     )
   }
 }
 
 @Composable
 @Preview
-fun ChirFloatingActionButtonLightPreview() {
-  ChirFloatingActionButtonThemed(
+private fun LightPreview() {
+  Themed(
     isDarkTheme = false
   )
 }
 
 @Composable
 @Preview
-fun ChirFloatingActionButtonDarkPreview() {
-  ChirFloatingActionButtonThemed(
+private fun DarkPreview() {
+  Themed(
     isDarkTheme = true
   )
 }

@@ -13,7 +13,7 @@ class RemoteMessagePm(
     val mock
       @Composable
       get() = RemoteMessagePm(
-        avatarPm = AvatarPm.mock,
+        avatarPm = AvatarPm.mocks[0],
         chatMessagePm = ChatMessagePm.mocks[0]
       )
   }

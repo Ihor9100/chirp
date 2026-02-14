@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,18 +30,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.ic_arrow_left
+import chirp.feature.chat.presentation.generated.resources.ic_dots
 import chirp.feature.chat.presentation.generated.resources.ic_plus
 import chirp.feature.chat.presentation.generated.resources.img_chat
 import chirp.feature.chat.presentation.generated.resources.no_messages
 import chirp.feature.chat.presentation.generated.resources.no_messages_subtitle
 import chirp.feature.chat.presentation.generated.resources.send
 import com.plcoding.core.designsystem.components.TitleDescriptionPc
-import com.plcoding.core.designsystem.components.button.FloatingActionButton
+import com.plcoding.core.designsystem.components.button.FloatingButtonPc
+import com.plcoding.core.designsystem.components.button.IconButtonPc
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.model.AvatarPm
 import com.plcoding.core.designsystem.style.Theme
@@ -59,7 +62,6 @@ import com.plcoding.feature.chat.presentation.model.ChatHeaderPm
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -145,50 +147,40 @@ private fun ChatsPane(
       onLogoutClick = {},
       onDismissClick = {},
     )
-    Box(
+    LazyColumn(
       modifier = Modifier.fillMaxSize(),
-      contentAlignment = Alignment.Center,
+      contentPadding = PaddingValues(top = 16.dp),
     ) {
       if (content.chatsPm.isEmpty()) {
-        Column(
-          verticalArrangement = Arrangement.spacedBy(16.dp),
-          horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-          Image(
-            painter = painterResource(Res.drawable.img_chat),
-            contentDescription = null,
-          )
-          TitleDescriptionPc(
-            titleRes = Res.string.no_messages,
-            descriptionRes = Res.string.no_messages_subtitle
-          )
-        }
-      } else {
-        LazyColumn(
-          modifier = Modifier.fillMaxSize(),
-          contentPadding = PaddingValues(top = 16.dp),
-        ) {
-          items(content.chatsPm.size) { index ->
-            ChatPc(
-              modifier = Modifier,
-              chatPm = content.chatsPm[index]
+        item {
+          Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+          ) {
+            Image(
+              painter = painterResource(Res.drawable.img_chat),
+              contentDescription = null,
+            )
+            TitleDescriptionPc(
+              titleRes = Res.string.no_messages,
+              descriptionRes = Res.string.no_messages_subtitle
             )
           }
         }
-      }
-      FloatingActionButton(
-        modifier = Modifier
-          .padding(16.dp)
-          .align(Alignment.BottomEnd),
-        onClick = { onAction(ChatsScreenAction.OnPlusClick) },
-      ) {
-        Image(
-          imageVector = vectorResource(Res.drawable.ic_plus),
-          contentDescription = null,
-          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
-        )
+      } else {
+        items(content.chatsPm.size) { index ->
+          ChatPc(
+            modifier = Modifier,
+            chatPm = content.chatsPm[index]
+          )
+        }
       }
     }
+    FloatingButtonPc(
+      modifier = Modifier.padding(16.dp),
+      iconRes = Res.drawable.ic_plus,
+      onClick = { onAction(ChatsScreenAction.OnPlusClick) },
+    )
   }
 }
 
@@ -200,13 +192,33 @@ private fun ChatDetailsPane(
 ) {
   Column(
     modifier = Modifier
-      .fillMaxSize()
-      .padding(16.dp),
+      .fillMaxSize(),
   ) {
-    ChatHeaderPc(
-      modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-      chatHeaderPm = ChatHeaderPm.mock,
-    )
+    Row(
+      modifier = Modifier
+        .fillMaxWidth()
+        .background(
+          color = MaterialTheme.colorScheme.surface,
+          shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+        ),
+      horizontalArrangement = Arrangement.spacedBy(16.dp),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      IconButtonPc(
+        modifier = Modifier,
+        iconRes = Res.drawable.ic_arrow_left,
+        onClick = {}
+      )
+      ChatHeaderPc(
+        modifier = Modifier.weight(1f),
+        chatHeaderPm = ChatHeaderPm.mock,
+      )
+      IconButtonPc(
+        modifier = Modifier,
+        iconRes = Res.drawable.ic_dots,
+        onClick = {}
+      )
+    }
     Box(
       modifier = Modifier
         .fillMaxWidth()
@@ -224,6 +236,7 @@ private fun ChatDetailsPane(
       )
     }
     MultilineTextField(
+      modifier = Modifier.padding(top = 16.dp),
       deviceConfiguration = deviceConfiguration,
       textFieldState = TextFieldState(),
       inputPlaceholder = "Placeholder",
