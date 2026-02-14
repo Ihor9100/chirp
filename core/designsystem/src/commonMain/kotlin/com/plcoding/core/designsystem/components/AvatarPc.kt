@@ -66,7 +66,7 @@ private fun Themed(
   ) {
     AvatarPc(
       modifier = Modifier,
-      avatarPm = AvatarPm.mock,
+      avatarPm = AvatarPm.mocks[0],
     )
   }
 }

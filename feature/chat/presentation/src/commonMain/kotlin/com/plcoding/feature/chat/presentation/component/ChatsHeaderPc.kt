@@ -140,7 +140,7 @@ private fun Themed(
     isDarkMode = isDarkMode,
   ) {
     ChatsHeaderPc(
-      avatarPm = AvatarPm.mock,
+      avatarPm = AvatarPm.mocks[0],
       showMenu = true,
       onAvatarClick = {},
       onSettingsClick = {},

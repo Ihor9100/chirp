@@ -52,8 +52,10 @@ import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.domain.model.Chat
+import com.plcoding.feature.chat.presentation.component.ChatHeaderPc
 import com.plcoding.feature.chat.presentation.component.ChatPc
 import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
+import com.plcoding.feature.chat.presentation.model.ChatHeaderPm
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
@@ -137,7 +139,7 @@ private fun ChatsPane(
   ) {
     ChatsHeaderPc(
       showMenu = false,
-      avatarPm = AvatarPm.mock,
+      avatarPm = AvatarPm.mocks[0],
       onAvatarClick = {},
       onSettingsClick = {},
       onLogoutClick = {},
@@ -200,8 +202,11 @@ private fun ChatDetailsPane(
     modifier = Modifier
       .fillMaxSize()
       .padding(16.dp),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
+    ChatHeaderPc(
+      modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+      chatHeaderPm = ChatHeaderPm.mock,
+    )
     Box(
       modifier = Modifier
         .fillMaxWidth()

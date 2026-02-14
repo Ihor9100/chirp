@@ -7,11 +7,18 @@ data class AvatarPm(
 ) {
 
   companion object {
-    val mock
-      get() = AvatarPm(
-        initials = "IB",
-        imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
-        avatarSizePm = AvatarSizePm.MEDIUM,
+    val mocks
+      get() = listOf(
+        AvatarPm(
+          initials = "IB",
+          imageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
+          avatarSizePm = AvatarSizePm.MEDIUM,
+        ),
+        AvatarPm(
+          initials = "BI",
+          imageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg",
+          avatarSizePm = AvatarSizePm.MEDIUM,
+        ),
       )
   }
 }

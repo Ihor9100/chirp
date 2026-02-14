@@ -17,11 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.HorizontalDividerPc
-import com.plcoding.core.designsystem.components.StackedAvatars
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.getColor
-import com.plcoding.core.designsystem.style.titleXSmall
 import com.plcoding.feature.chat.presentation.model.ChatPm
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -44,31 +42,10 @@ fun ChatPc(
       horizontalAlignment = Alignment.Start,
       verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-      Row(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        StackedAvatars(
-          avatarsPm = chatPm.avatarsPm,
-        )
-        Column {
-          Text(
-            text = chatPm.title.get(),
-            color = MaterialTheme.colorScheme.extended.textPrimary,
-            style = MaterialTheme.typography.titleXSmall,
-          )
-          chatPm.description?.let {
-            Text(
-              text = it.get(),
-              color = MaterialTheme.colorScheme.extended.textPlaceholder,
-              style = MaterialTheme.typography.bodySmall,
-            )
-          }
-        }
-      }
+      ChatHeaderPc(
+        modifier = Modifier,
+        chatHeaderPm = chatPm.chatHeaderPm,
+      )
       chatPm.content?.let {
         Text(
           modifier = Modifier.padding(horizontal = 16.dp),

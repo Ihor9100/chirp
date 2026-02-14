@@ -18,6 +18,4 @@ data class Chat(
         )
       }
   }
-
-  val isGroup = members.size > 2
 }

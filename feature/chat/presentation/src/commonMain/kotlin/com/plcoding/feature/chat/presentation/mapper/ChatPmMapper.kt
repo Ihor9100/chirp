@@ -1,18 +1,15 @@
 package com.plcoding.feature.chat.presentation.mapper
 
 import chirp.feature.chat.presentation.generated.resources.Res
-import chirp.feature.chat.presentation.generated.resources.group_chat
-import chirp.feature.chat.presentation.generated.resources.you_and_others
 import chirp.feature.chat.presentation.generated.resources.your_message
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import com.plcoding.feature.chat.presentation.model.ChatPm
 
 class ChatPmMapper(
-  private val chatMemberPmMapper: ChatMemberPmMapper,
+  private val chatHeaderPmMapper: ChatHeaderPmMapper,
 ) : Mapper<Chat, ChatPm, ChatPmMapper.Params> {
 
   override fun map(from: Chat, params: Params): ChatPm {
@@ -21,34 +18,16 @@ class ChatPmMapper(
 
       ChatPm(
         id = id,
-        avatarsPm = chatMemberPmMapper
-          .map(members, Unit)
-          .map(ChatMemberPm::avatarPm),
-        title = getTitle(this, params),
-        description = getDescription(from, params),
-        content = getContent(from, params),
+        chatHeaderPm = chatHeaderPmMapper.map(
+          from = members,
+          params = ChatHeaderPmMapper.Params(params.yourId),
+        ),
+        content = getContent(this, params),
         backgroundColorToken = if (isSelected) ColorToken.Surface else ColorToken.Background,
         showVerticalDivider = isSelected,
         showHorizontalDivider = id != params.lastChatId,
       )
     }
-  }
-
-  private fun getTitle(from: Chat, params: Params): TextProvider {
-    return if (from.isGroup) {
-      TextProvider.Resource(Res.string.group_chat, listOf())
-    } else {
-      val member = from.members.first { it.userId != params.yourId }
-      TextProvider.Dynamic(member.username)
-    }
-  }
-
-  private fun getDescription(from: Chat, params: Params): TextProvider? {
-    if (!from.isGroup) return null
-
-    val members = from.members.filter { it.userId != params.yourId }
-    val others = members.joinToString { it.username }
-    return TextProvider.Resource(Res.string.you_and_others, listOf(others))
   }
 
   private fun getContent(

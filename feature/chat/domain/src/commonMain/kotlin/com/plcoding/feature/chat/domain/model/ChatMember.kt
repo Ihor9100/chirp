@@ -12,8 +12,15 @@ data class ChatMember(
         ChatMember(
           userId = "$index",
           username = "User $index",
-          profilePictureUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg",
+          profilePictureUrl = if (index % 2 == 0) {
+            "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"
+          } else {
+            "https://upload.wikimedia.org/wikipedia/commons/a/a3/June_odd-eyed-cat.jpg"
+          },
         )
       }
+
+    val List<ChatMember>.isGroup
+      get() = size > 2
   }
 }
