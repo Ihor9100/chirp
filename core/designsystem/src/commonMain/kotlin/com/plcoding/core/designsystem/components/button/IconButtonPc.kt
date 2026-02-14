@@ -26,7 +26,7 @@ fun IconButtonPc(
 ) {
   OutlinedIconButton(
     onClick = onClick,
-    modifier = modifier.size(45.dp),
+    modifier = modifier.size(40.dp),
     shape = RoundedCornerShape(8.dp),
     border = BorderStroke(
       width = 1.dp,

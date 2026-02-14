@@ -3,7 +3,6 @@ package com.plcoding.feature.chat.presentation.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -12,15 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import chirp.core.designsystem.generated.resources.ic_reload
 import chirp.feature.chat.presentation.generated.resources.Res
-import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.ic_reload
 import com.plcoding.core.designsystem.components.ChatMessagePc
-import com.plcoding.core.designsystem.components.HorizontalDividerPc
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.feature.chat.presentation.model.DateDividerPm
 import com.plcoding.feature.chat.presentation.model.LocalMessagePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -48,14 +43,14 @@ fun LocalMessagePc(
         ) {
           Icon(
             modifier = Modifier.size(12.dp),
-            imageVector = it.icon,
+            imageVector = it.iconRes,
             contentDescription = null,
-            tint = it.color
+            tint = it.colorToken
           )
           Text(
             text = stringResource(it.titleRes),
             style = MaterialTheme.typography.labelSmall,
-            color = it.color,
+            color = it.colorToken,
           )
         }
       }

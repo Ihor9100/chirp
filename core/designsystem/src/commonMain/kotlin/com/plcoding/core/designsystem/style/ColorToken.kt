@@ -12,6 +12,7 @@ enum class ColorToken {
 
   TextPrimary,
   TextSecondary,
+  TextTertiary,
 
   Background,
   Surface,
@@ -28,6 +29,7 @@ fun ColorToken.getColor(): Color {
     ColorToken.OnSecondary -> MaterialTheme.colorScheme.onSecondary
     ColorToken.TextPrimary -> MaterialTheme.colorScheme.extended.textPrimary
     ColorToken.TextSecondary -> MaterialTheme.colorScheme.extended.textSecondary
+    ColorToken.TextTertiary -> MaterialTheme.colorScheme.extended.textTertiary
     ColorToken.Background -> MaterialTheme.colorScheme.background
     ColorToken.Surface -> MaterialTheme.colorScheme.surface
     ColorToken.Error -> MaterialTheme.colorScheme.error

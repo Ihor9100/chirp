@@ -53,6 +53,7 @@ fun DropDownMenuPc(
               modifier = Modifier.size(16.dp),
               imageVector = vectorResource(it),
               contentDescription = null,
+              tint = itemPm.color
             )
           }
         },

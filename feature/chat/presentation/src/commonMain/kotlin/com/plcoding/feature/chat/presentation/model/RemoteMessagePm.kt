@@ -11,7 +11,6 @@ class RemoteMessagePm(
 
   companion object {
     val mock
-      @Composable
       get() = RemoteMessagePm(
         avatarPm = AvatarPm.mocks[0],
         chatMessagePm = ChatMessagePm.mocks[0]

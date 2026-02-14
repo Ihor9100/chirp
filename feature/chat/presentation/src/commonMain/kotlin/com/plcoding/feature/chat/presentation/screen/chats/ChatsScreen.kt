@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -55,9 +57,11 @@ import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.domain.model.Chat
+import com.plcoding.feature.chat.presentation.component.ChatDetailsPc
 import com.plcoding.feature.chat.presentation.component.ChatHeaderPc
 import com.plcoding.feature.chat.presentation.component.ChatPc
 import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
+import com.plcoding.feature.chat.presentation.model.ChatDetailsPm
 import com.plcoding.feature.chat.presentation.model.ChatHeaderPm
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
@@ -140,6 +144,7 @@ private fun ChatsPane(
     modifier = Modifier.fillMaxSize(),
   ) {
     ChatsHeaderPc(
+      modifier = Modifier.padding(top = 24.dp),
       showMenu = false,
       avatarPm = AvatarPm.mocks[0],
       onAvatarClick = {},
@@ -192,7 +197,9 @@ private fun ChatDetailsPane(
 ) {
   Column(
     modifier = Modifier
-      .fillMaxSize(),
+      .fillMaxSize()
+      .padding(vertical = 8.dp)
+      .padding(end = 8.dp),
   ) {
     Row(
       modifier = Modifier
@@ -200,7 +207,8 @@ private fun ChatDetailsPane(
         .background(
           color = MaterialTheme.colorScheme.surface,
           shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-        ),
+        )
+        .padding(16.dp),
       horizontalArrangement = Arrangement.spacedBy(16.dp),
       verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -219,22 +227,11 @@ private fun ChatDetailsPane(
         onClick = {}
       )
     }
-    Box(
-      modifier = Modifier
-        .fillMaxWidth()
-        .background(
-          color = MaterialTheme.colorScheme.surface,
-          shape = RoundedCornerShape(16.dp)
-        )
-        .weight(1f),
-      contentAlignment = Alignment.Center
-    ) {
-      Text(
-        text = content.chat?.id ?: "Empty",
-        color = MaterialTheme.colorScheme.extended.textPrimary,
-        style = MaterialTheme.typography.displayLarge
-      )
-    }
+    HorizontalDivider()
+    ChatDetailsPc(
+      modifier = Modifier,
+      chatMessagesPm =
+    )
     MultilineTextField(
       modifier = Modifier.padding(top = 16.dp),
       deviceConfiguration = deviceConfiguration,

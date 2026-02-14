@@ -11,7 +11,6 @@ data class LocalMessagePm(
 
   companion object {
     val mock
-      @Composable
       get() = LocalMessagePm(
         chatMessagePm = ChatMessagePm.mocks[1],
         chatSendingStatusPm = ChatSendingStatusPm.error,
