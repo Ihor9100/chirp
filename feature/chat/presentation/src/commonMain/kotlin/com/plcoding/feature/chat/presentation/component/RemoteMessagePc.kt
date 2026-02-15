@@ -43,7 +43,7 @@ fun RemoteMessagePc(
       avatarPm = remoteMessagePm.avatarPm,
     )
     ChatMessagePc(
-      modifier = modifier.weight(1f),
+      modifier = Modifier,
       chatMessagePm = remoteMessagePm.chatMessagePm,
     )
   }

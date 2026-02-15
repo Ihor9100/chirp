@@ -21,7 +21,7 @@ enum class ColorToken {
 }
 
 @Composable
-fun ColorToken.getColor(): Color {
+fun ColorToken. getColor(): Color {
   return when (this) {
     ColorToken.Primary -> MaterialTheme.colorScheme.primary
     ColorToken.Secondary -> MaterialTheme.colorScheme.secondary

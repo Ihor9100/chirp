@@ -5,7 +5,6 @@ package com.plcoding.feature.chat.presentation.screen.chats
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,12 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
@@ -48,8 +45,8 @@ import com.plcoding.core.designsystem.components.button.FloatingButtonPc
 import com.plcoding.core.designsystem.components.button.IconButtonPc
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.model.AvatarPm
+import com.plcoding.core.designsystem.model.ChatMessagePm
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreen
@@ -229,8 +226,8 @@ private fun ChatDetailsPane(
     }
     HorizontalDivider()
     ChatDetailsPc(
-      modifier = Modifier,
-      chatMessagesPm =
+      modifier = Modifier.weight(1f),
+      chatDetailsPm = ChatDetailsPm.mocks,
     )
     MultilineTextField(
       modifier = Modifier.padding(top = 16.dp),

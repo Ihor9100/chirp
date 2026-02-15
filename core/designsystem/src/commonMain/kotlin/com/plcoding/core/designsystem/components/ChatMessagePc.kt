@@ -76,7 +76,7 @@ fun ChatMessagePc(
       )
     }
     Text(
-      modifier = Modifier.fillMaxWidth(),
+      modifier = Modifier,
       text = chatMessagePm.message,
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.extended.textPrimary

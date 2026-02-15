@@ -1,7 +1,6 @@
 package com.plcoding.feature.chat.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,14 +18,14 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun ChatDetailsPc(
   modifier: Modifier,
-  chatMessagesPm: List<ChatDetailsPm>,
+  chatDetailsPm: List<ChatDetailsPm>,
 ) {
   LazyColumn(
-    modifier = modifier.fillMaxWidth(),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
+    modifier = modifier,
+    verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    items(chatMessagesPm) {
+    items(chatDetailsPm) {
       when (it) {
         is DateDividerPm -> DateDividerPc(
           modifier = Modifier,
@@ -52,7 +51,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     ChatDetailsPc(
       modifier = Modifier,
-      chatMessagesPm = ChatDetailsPm.mocks,
+      chatDetailsPm = ChatDetailsPm.mocks,
     )
   }
 }

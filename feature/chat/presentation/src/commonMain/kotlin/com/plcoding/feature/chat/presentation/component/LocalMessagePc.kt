@@ -16,6 +16,7 @@ import chirp.feature.chat.presentation.generated.resources.ic_reload
 import com.plcoding.core.designsystem.components.ChatMessagePc
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
+import com.plcoding.core.designsystem.style.getColor
 import com.plcoding.feature.chat.presentation.model.LocalMessagePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -37,20 +38,20 @@ fun LocalMessagePc(
     ) {
       localMessagePm.chatSendingStatusPm?.let {
         Row(
-          modifier = Modifier.fillMaxWidth(),
+          modifier = Modifier,
           verticalAlignment = Alignment.CenterVertically,
           horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
           Icon(
             modifier = Modifier.size(12.dp),
-            imageVector = it.iconRes,
+            imageVector = vectorResource(it.iconRes),
             contentDescription = null,
-            tint = it.colorToken
+            tint = it.colorToken.getColor()
           )
           Text(
             text = stringResource(it.titleRes),
             style = MaterialTheme.typography.labelSmall,
-            color = it.colorToken,
+            color = it.colorToken.getColor(),
           )
         }
       }
