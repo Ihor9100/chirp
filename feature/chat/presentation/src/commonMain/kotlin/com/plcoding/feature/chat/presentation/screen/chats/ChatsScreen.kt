@@ -45,7 +45,6 @@ import com.plcoding.core.designsystem.components.button.FloatingButtonPc
 import com.plcoding.core.designsystem.components.button.IconButtonPc
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.model.AvatarPm
-import com.plcoding.core.designsystem.model.ChatMessagePm
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration

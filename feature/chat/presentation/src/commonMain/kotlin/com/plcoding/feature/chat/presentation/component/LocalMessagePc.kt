@@ -28,12 +28,12 @@ fun LocalMessagePc(
   localMessagePm: LocalMessagePm,
 ) {
   Row(
-    modifier = modifier,
-    horizontalArrangement = Arrangement.spacedBy(4.dp),
+    modifier = modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
     verticalAlignment = Alignment.Bottom,
   ) {
     ChatMessagePc(
-      modifier = modifier,
+      modifier = Modifier.weight(1f, fill = false),
       chatMessagePm = localMessagePm.chatMessagePm,
     ) {
       localMessagePm.chatSendingStatusPm?.let {
