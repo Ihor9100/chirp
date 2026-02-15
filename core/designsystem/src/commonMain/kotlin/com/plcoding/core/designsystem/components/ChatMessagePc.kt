@@ -70,6 +70,7 @@ fun ChatMessagePc(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Text(
+        modifier = Modifier.padding(end = 24.dp),
         text = chatMessagePm.sender,
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.extended.textSecondary
@@ -82,7 +83,7 @@ fun ChatMessagePc(
     }
     Text(
       modifier = Modifier,
-      text = chatMessagePm.message + "pwekcpwekpowekjcpw",
+      text = chatMessagePm.message,
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.extended.textPrimary
     )
