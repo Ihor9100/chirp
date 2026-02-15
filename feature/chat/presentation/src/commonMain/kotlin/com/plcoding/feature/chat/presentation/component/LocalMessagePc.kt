@@ -33,7 +33,7 @@ fun LocalMessagePc(
     verticalAlignment = Alignment.Bottom,
   ) {
     ChatMessagePc(
-      modifier = modifier.weight(1f),
+      modifier = modifier,
       chatMessagePm = localMessagePm.chatMessagePm,
     ) {
       localMessagePm.chatSendingStatusPm?.let {

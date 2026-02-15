@@ -3,10 +3,15 @@ package com.plcoding.core.designsystem.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,6 +50,7 @@ fun ChatMessagePc(
 
   Column(
     modifier = modifier
+      .width(IntrinsicSize.Max)
       .background(
         color = MaterialTheme.colorScheme.surface,
         shape = ChatMessageShape(chatMessagePm.anchorPositionPm, horizontalPadding)
@@ -59,8 +65,7 @@ fun ChatMessagePc(
     horizontalAlignment = Alignment.Start,
   ) {
     Row(
-      modifier = Modifier
-        .fillMaxWidth(),
+      modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.SpaceBetween,
       verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -77,7 +82,7 @@ fun ChatMessagePc(
     }
     Text(
       modifier = Modifier,
-      text = chatMessagePm.message,
+      text = chatMessagePm.message + "pwekcpwekpowekjcpw",
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.extended.textPrimary
     )
