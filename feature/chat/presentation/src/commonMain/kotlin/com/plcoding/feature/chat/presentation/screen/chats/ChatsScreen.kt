@@ -195,8 +195,16 @@ private fun ChatDetailsPane(
   Column(
     modifier = Modifier
       .fillMaxSize()
-      .padding(vertical = 8.dp)
-      .padding(end = 8.dp),
+      .then(
+        if (deviceConfiguration.isWideScreen) {
+          Modifier
+            .padding(vertical = 8.dp)
+            .padding(end = 8.dp)
+        } else {
+          Modifier
+            .background(MaterialTheme.colorScheme.surface)
+        }
+      ),
   ) {
     Row(
       modifier = Modifier
@@ -226,11 +234,30 @@ private fun ChatDetailsPane(
     }
     HorizontalDivider()
     ChatDetailsPc(
-      modifier = Modifier.weight(1f),
+      modifier = Modifier
+        .weight(1f)
+        .background(
+          color = MaterialTheme.colorScheme.surface,
+          shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+        )
+        .then(
+          if (deviceConfiguration.isWideScreen) {
+            Modifier.padding(24.dp)
+          } else {
+            Modifier.padding(horizontal = 16.dp)
+          }
+        ),
       chatDetailsPm = ChatDetailsPm.mocks,
     )
     MultilineTextField(
-      modifier = Modifier.padding(top = 16.dp),
+      modifier = Modifier
+        .then(
+          if (deviceConfiguration.isWideScreen) {
+            Modifier.padding(top = 8.dp)
+          } else {
+            Modifier
+          }
+        ),
       deviceConfiguration = deviceConfiguration,
       textFieldState = TextFieldState(),
       inputPlaceholder = "Placeholder",

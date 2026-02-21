@@ -46,7 +46,7 @@ fun MultilineTextField(
     modifier = modifier
       .fillMaxWidth()
       .then(
-        if (deviceConfiguration == DeviceConfiguration.DESKTOP) {
+        if (deviceConfiguration.isWideScreen) {
           Modifier
             .shadow(
               elevation = 1.dp,
@@ -60,6 +60,7 @@ fun MultilineTextField(
             .padding(8.dp)
         } else {
           Modifier
+            .padding(16.dp)
         }
       )
       .border(

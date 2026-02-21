@@ -18,10 +18,20 @@ enum class ColorToken {
   Surface,
 
   Error,
+
+  CakeViolet,
+  CakeGreen,
+  CakePink,
+  CakeOrange,
+  CakeBlue,
+  CakeYellow,
+  CakePurple,
+  CakeRed,
+  CakeMint,
 }
 
 @Composable
-fun ColorToken. getColor(): Color {
+fun ColorToken.getColor(): Color {
   return when (this) {
     ColorToken.Primary -> MaterialTheme.colorScheme.primary
     ColorToken.Secondary -> MaterialTheme.colorScheme.secondary
@@ -33,5 +43,14 @@ fun ColorToken. getColor(): Color {
     ColorToken.Background -> MaterialTheme.colorScheme.background
     ColorToken.Surface -> MaterialTheme.colorScheme.surface
     ColorToken.Error -> MaterialTheme.colorScheme.error
+    ColorToken.CakeViolet -> MaterialTheme.colorScheme.extended.cakeViolet
+    ColorToken.CakeGreen -> MaterialTheme.colorScheme.extended.cakeGreen
+    ColorToken.CakePink -> MaterialTheme.colorScheme.extended.cakePink
+    ColorToken.CakeOrange -> MaterialTheme.colorScheme.extended.cakeOrange
+    ColorToken.CakeBlue -> MaterialTheme.colorScheme.extended.cakeBlue
+    ColorToken.CakeYellow -> MaterialTheme.colorScheme.extended.cakeYellow
+    ColorToken.CakePurple -> MaterialTheme.colorScheme.extended.cakePurple
+    ColorToken.CakeRed -> MaterialTheme.colorScheme.extended.cakeRed
+    ColorToken.CakeMint -> MaterialTheme.colorScheme.extended.cakeMint
   }
 }

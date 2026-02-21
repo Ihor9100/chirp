@@ -20,6 +20,7 @@ import com.plcoding.core.designsystem.model.ChatMessagePm
 import com.plcoding.core.designsystem.shape.ChatMessageShape
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
+import com.plcoding.core.designsystem.style.getColor
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -48,7 +49,7 @@ fun ChatMessagePc(
     modifier = modifier
       .width(IntrinsicSize.Max)
       .background(
-        color = MaterialTheme.colorScheme.surface,
+        color = chatMessagePm.colorToken.getColor(),
         shape = ChatMessageShape(chatMessagePm.anchorPositionPm, horizontalPadding)
       )
       .padding(
