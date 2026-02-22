@@ -22,25 +22,20 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
 import chirp.core.designsystem.generated.resources.ic_cloud_off
-import chirp.core.designsystem.generated.resources.sent
 import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.model.MultilineTextFieldPm
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
-import com.plcoding.core.designsystem.utils.getDeviceConfiguration
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MultilineTextField(
+fun MultilineTextFieldPc(
   modifier: Modifier = Modifier,
-  deviceConfiguration: DeviceConfiguration = getDeviceConfiguration(),
-  textFieldState: TextFieldState,
-  inputPlaceholder: String,
-  buttonTitleRes: StringResource,
-  isEnabled: Boolean = true,
+  deviceConfiguration: DeviceConfiguration,
+  multilineTextFieldPm: MultilineTextFieldPm,
 ) {
   Column(
     modifier = modifier
@@ -60,7 +55,6 @@ fun MultilineTextField(
             .padding(8.dp)
         } else {
           Modifier
-            .padding(16.dp)
         }
       )
       .border(
@@ -79,18 +73,17 @@ fun MultilineTextField(
     verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
     BasicTextField(
-      state = textFieldState,
-      modifier = Modifier
-        .fillMaxWidth(),
-      enabled = isEnabled,
+      state = multilineTextFieldPm.textFieldState,
+      modifier = Modifier.fillMaxWidth(),
+      enabled = multilineTextFieldPm.isEnabled,
       textStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.extended.textPrimary
       ),
       cursorBrush = SolidColor(MaterialTheme.colorScheme.extended.textPrimary),
       decorator = { innerBox ->
-        if (textFieldState.text.isBlank() && inputPlaceholder.isNotBlank()) {
+        if (multilineTextFieldPm.textFieldState.text.isBlank()) {
           Text(
-            text = inputPlaceholder,
+            text = stringResource(multilineTextFieldPm.inputPlaceholderRes),
             color = MaterialTheme.colorScheme.extended.textPlaceholder,
             style = MaterialTheme.typography.bodyMedium,
           )
@@ -99,119 +92,74 @@ fun MultilineTextField(
       }
     )
     Row(
-      modifier = Modifier
-        .fillMaxWidth(),
+      modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Icon(
-        modifier = modifier
-          .size(24.dp),
+        modifier = modifier.size(24.dp),
         imageVector = vectorResource(Res.drawable.ic_cloud_off),
         contentDescription = null,
         tint = MaterialTheme.colorScheme.extended.textDisabled
       )
       ButtonPc(
-        text = stringResource(buttonTitleRes),
-        isEnabled = isEnabled
+        text = stringResource(multilineTextFieldPm.buttonTitleRes),
+        isEnabled = multilineTextFieldPm.isEnabled
       )
     }
   }
 }
 
 @Composable
-fun MultilineTextFieldThemed(
+private fun Themed(
   isDarkTheme: Boolean,
-  isEnabled: Boolean,
   deviceConfiguration: DeviceConfiguration,
+  multilineTextFieldPm: MultilineTextFieldPm,
 ) {
   Theme(isDarkTheme) {
-    MultilineTextField(
-      textFieldState = TextFieldState(),
-      inputPlaceholder = "Enter your message",
-      buttonTitleRes = Res.string.sent,
-      isEnabled = isEnabled,
+    MultilineTextFieldPc(
       deviceConfiguration = deviceConfiguration,
+      multilineTextFieldPm = multilineTextFieldPm,
     )
   }
 }
 
 @Composable
 @Preview
-fun EnabledNotDesktopLightPreview() {
-  MultilineTextFieldThemed(
+private fun LightPreview() {
+  Themed(
     isDarkTheme = false,
-    isEnabled = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+    multilineTextFieldPm = MultilineTextFieldPm.mock,
   )
 }
 
 @Composable
 @Preview
-fun DisabledNotDesktopLightPreview() {
-  MultilineTextFieldThemed(
+private fun DarkPreview() {
+  Themed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+    multilineTextFieldPm = MultilineTextFieldPm.mock,
+  )
+}
+
+@Composable
+@Preview
+private fun WideLightPreview() {
+  Themed(
     isDarkTheme = false,
-    isEnabled = false,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+    deviceConfiguration = DeviceConfiguration.DESKTOP,
+    multilineTextFieldPm = MultilineTextFieldPm.mock,
   )
 }
 
 @Composable
 @Preview
-fun EnabledDesktopLightPreview() {
-  MultilineTextFieldThemed(
-    isDarkTheme = false,
-    isEnabled = true,
-    deviceConfiguration = DeviceConfiguration.DESKTOP
-  )
-}
-
-@Composable
-@Preview
-fun DisabledDesktopLightPreview() {
-  MultilineTextFieldThemed(
-    isDarkTheme = false,
-    isEnabled = false,
-    deviceConfiguration = DeviceConfiguration.DESKTOP
-  )
-}
-
-@Composable
-@Preview
-fun EnabledNotDesktopDarkPreview() {
-  MultilineTextFieldThemed(
+private fun WideDarkPreview() {
+  Themed(
     isDarkTheme = true,
-    isEnabled = true,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview
-fun DisabledNotDesktopDarkPreview() {
-  MultilineTextFieldThemed(
-    isDarkTheme = true,
-    isEnabled = false,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-  )
-}
-
-@Composable
-@Preview
-fun EnabledDesktopDarkPreview() {
-  MultilineTextFieldThemed(
-    isDarkTheme = true,
-    isEnabled = true,
-    deviceConfiguration = DeviceConfiguration.DESKTOP
-  )
-}
-
-@Composable
-@Preview
-fun DisabledDesktopDarkPreview() {
-  MultilineTextFieldThemed(
-    isDarkTheme = true,
-    isEnabled = false,
-    deviceConfiguration = DeviceConfiguration.DESKTOP
+    deviceConfiguration = DeviceConfiguration.DESKTOP,
+    multilineTextFieldPm = MultilineTextFieldPm.mock,
   )
 }

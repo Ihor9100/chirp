@@ -4,4 +4,5 @@
 	<string name="show_password">Show password</string>
 	<string name="sent">Sent</string>
 	<string name="failed">Failed</string>
+	<string name="enter_your_message">Enter your message</string>
 </resources>

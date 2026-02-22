@@ -21,6 +21,7 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldDestinationItem
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
@@ -44,8 +45,9 @@ import chirp.feature.chat.presentation.generated.resources.send
 import com.plcoding.core.designsystem.components.TitleDescriptionPc
 import com.plcoding.core.designsystem.components.button.FloatingButtonPc
 import com.plcoding.core.designsystem.components.button.IconButtonPc
-import com.plcoding.core.designsystem.components.textfields.MultilineTextField
+import com.plcoding.core.designsystem.components.textfields.MultilineTextFieldPc
 import com.plcoding.core.designsystem.model.AvatarPm
+import com.plcoding.core.designsystem.model.MultilineTextFieldPm
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
@@ -94,8 +96,8 @@ fun ChatsScreen(
   ) {
     Content(
       contentPm = state.contentPm,
-      scaffoldNavigator = scaffoldNavigator,
       deviceConfiguration = deviceConfiguration,
+      scaffoldNavigator = scaffoldNavigator,
       onAction = {
         when (it) {
           is ChatsScreenAction.OnChatClick -> coroutineScope.launch {
@@ -117,15 +119,15 @@ fun ChatsScreen(
 @Composable
 private fun Content(
   contentPm: ChatsScreenContentPm,
-  scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   deviceConfiguration: DeviceConfiguration,
+  scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   onAction: (ChatsScreenAction) -> Unit,
 ) {
   ListDetailPaneScaffold(
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
     listPane = { ChatsPane(contentPm, scaffoldNavigator, onAction) },
-    detailPane = { ChatDetailsPane(contentPm, scaffoldNavigator, deviceConfiguration) },
+    detailPane = { ChatDetailsPane(contentPm, deviceConfiguration, scaffoldNavigator) },
   )
 }
 
@@ -189,8 +191,8 @@ private fun ChatsPane(
 @Composable
 private fun ChatDetailsPane(
   content: ChatsScreenContentPm,
-  scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   deviceConfiguration: DeviceConfiguration,
+  scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
 ) {
   Column(
     modifier = Modifier
@@ -249,19 +251,17 @@ private fun ChatDetailsPane(
         ),
       chatDetailsPm = ChatDetailsPm.mocks,
     )
-    MultilineTextField(
+    MultilineTextFieldPc(
       modifier = Modifier
         .then(
           if (deviceConfiguration.isWideScreen) {
             Modifier.padding(top = 8.dp)
           } else {
-            Modifier
+            Modifier.padding(16.dp)
           }
         ),
       deviceConfiguration = deviceConfiguration,
-      textFieldState = TextFieldState(),
-      inputPlaceholder = "Placeholder",
-      buttonTitleRes = Res.string.send,
+      multilineTextFieldPm = MultilineTextFieldPm.mock,
     )
   }
 }
@@ -270,6 +270,7 @@ private fun ChatDetailsPane(
 private fun Themed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
+  scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
 ) {
   val screenStatePm = ScreenStatePm(ChatsScreenContentPm.mock)
 
@@ -279,7 +280,7 @@ private fun Themed(
     ) {
       Content(
         contentPm = screenStatePm.contentPm,
-        scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(),
+        scaffoldNavigator = scaffoldNavigator,
         deviceConfiguration = deviceConfiguration,
         onAction = {}
       )
@@ -289,19 +290,53 @@ private fun Themed(
 
 @Composable
 @Preview
-private fun MobileLightPreview() {
+private fun ListLightPreview() {
   Themed(
     isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+    scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(),
   )
 }
 
 @Composable
 @Preview
-private fun MobileDarkPreview() {
+private fun ListDarkPreview() {
   Themed(
     isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+    scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(),
+  )
+}
+
+@Composable
+@Preview
+private fun DetailLightPreview() {
+  Themed(
+    isDarkTheme = false,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+    scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(
+      initialDestinationHistory = listOf(
+        ThreePaneScaffoldDestinationItem(
+          ListDetailPaneScaffoldRole.Detail
+        )
+      )
+    ),
+  )
+}
+
+@Composable
+@Preview
+private fun DetailDarkPreview() {
+  Themed(
+    isDarkTheme = true,
+    deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
+    scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(
+      initialDestinationHistory = listOf(
+        ThreePaneScaffoldDestinationItem(
+          ListDetailPaneScaffoldRole.Detail
+        )
+      )
+    ),
   )
 }
 
@@ -313,7 +348,8 @@ private fun MobileDarkPreview() {
 private fun DesktopLightPreview() {
   Themed(
     isDarkTheme = false,
-    deviceConfiguration = DeviceConfiguration.DESKTOP
+    deviceConfiguration = DeviceConfiguration.DESKTOP,
+    scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(),
   )
 }
 
@@ -325,6 +361,7 @@ private fun DesktopLightPreview() {
 private fun DesktopDarkPreview() {
   Themed(
     isDarkTheme = true,
-    deviceConfiguration = DeviceConfiguration.DESKTOP
+    deviceConfiguration = DeviceConfiguration.DESKTOP,
+    scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(),
   )
 }
