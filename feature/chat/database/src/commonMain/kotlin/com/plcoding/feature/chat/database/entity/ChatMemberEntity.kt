@@ -1,4 +1,4 @@
-package com.plcoding.feature.chat.database.model
+package com.plcoding.feature.chat.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
