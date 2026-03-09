@@ -3,7 +3,9 @@ package com.plcoding.feature.chat.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(
+  tableName = "chat_members"
+)
 data class ChatMemberEntity(
   @PrimaryKey val id: String,
   val name: String,

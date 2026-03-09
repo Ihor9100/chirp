@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 
 @Entity(
+  tableName = "chats_and_members",
   primaryKeys = ["chatId, memberId"],
   foreignKeys = [
     ForeignKey(
