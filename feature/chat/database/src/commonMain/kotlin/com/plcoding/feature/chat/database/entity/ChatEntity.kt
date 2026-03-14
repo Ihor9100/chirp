@@ -8,6 +8,5 @@ import androidx.room.PrimaryKey
 )
 data class ChatEntity(
   @PrimaryKey val id: String,
-  val lastMessage: String?,
   val lastActivityAt: Long,
 )
