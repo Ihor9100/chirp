@@ -28,6 +28,8 @@ open class KmpLibraryConventionPlugin : Plugin<Project> {
       configureTargets()
 
       dependencies {
+        "androidMainImplementation"(libs.findLibrary("koin-android").get())
+
         "commonMainImplementation"(libs.findLibrary("kotlinx-coroutines-core").get())
         "commonMainImplementation"(libs.findLibrary("kotlinx-serialization-json").get())
 

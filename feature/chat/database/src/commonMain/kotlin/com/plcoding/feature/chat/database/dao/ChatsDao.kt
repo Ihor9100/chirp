@@ -29,7 +29,7 @@ interface ChatsDao {
   @Query("SELECT * FROM chats WHERE id = :id")
   fun getChatAndMembersAndParticipants(id: String): ChatAndMembersAndMessagesRelation?
 
-  @Query("SELECT * FROM chats ORDER BY lastActivityAt DESC")
+  @Query("SELECT * FROM chats_and_members")
   fun subscribeToChatsAndMembers(): Flow<List<ChatAndMemberEntity>>
 
   @Query("DELETE FROM chats WHERE id = :id")

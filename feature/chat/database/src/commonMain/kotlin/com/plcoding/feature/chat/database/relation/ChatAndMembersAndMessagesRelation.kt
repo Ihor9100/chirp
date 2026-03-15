@@ -1,8 +1,6 @@
 package com.plcoding.feature.chat.database.relation
 
 import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.Relation
 import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity

@@ -5,7 +5,7 @@ import androidx.room.ForeignKey
 
 @Entity(
   tableName = "chats_and_members",
-  primaryKeys = ["chatId, memberId"],
+  primaryKeys = ["chatId", "memberId"],
   foreignKeys = [
     ForeignKey(
       entity = ChatEntity::class,
