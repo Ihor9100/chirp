@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -139,49 +140,53 @@ private fun ChatsPane(
 ) {
   val coroutineScope = rememberCoroutineScope()
 
-  Column(
-    modifier = Modifier.fillMaxSize(),
-  ) {
-    ChatsHeaderPc(
-      modifier = Modifier.padding(top = 24.dp),
-      showMenu = false,
-      avatarPm = AvatarPm.mocks[0],
-      onAvatarClick = {},
-      onSettingsClick = {},
-      onLogoutClick = {},
-      onDismissClick = {},
-    )
-    LazyColumn(
+  Box {
+    Column(
       modifier = Modifier.fillMaxSize(),
-      contentPadding = PaddingValues(top = 16.dp),
     ) {
-      if (content.chatsPm.isEmpty()) {
-        item {
-          Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-          ) {
-            Image(
-              painter = painterResource(Res.drawable.img_chat),
-              contentDescription = null,
-            )
-            TitleDescriptionPc(
-              titleRes = Res.string.no_messages,
-              descriptionRes = Res.string.no_messages_subtitle
+      ChatsHeaderPc(
+        modifier = Modifier.padding(top = 24.dp),
+        showMenu = false,
+        avatarPm = AvatarPm.mocks[0],
+        onAvatarClick = {},
+        onSettingsClick = {},
+        onLogoutClick = {},
+        onDismissClick = {},
+      )
+      LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(top = 16.dp),
+      ) {
+        if (content.chatsPm.isEmpty()) {
+          item {
+            Column(
+              verticalArrangement = Arrangement.spacedBy(16.dp),
+              horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+              Image(
+                painter = painterResource(Res.drawable.img_chat),
+                contentDescription = null,
+              )
+              TitleDescriptionPc(
+                titleRes = Res.string.no_messages,
+                descriptionRes = Res.string.no_messages_subtitle
+              )
+            }
+          }
+        } else {
+          items(content.chatsPm.size) { index ->
+            ChatPc(
+              modifier = Modifier.clickable { onAction(ChatsScreenAction.OnChatClick("1")) },
+              chatPm = content.chatsPm[index]
             )
           }
-        }
-      } else {
-        items(content.chatsPm.size) { index ->
-          ChatPc(
-            modifier = Modifier.clickable { onAction(ChatsScreenAction.OnChatClick("1")) },
-            chatPm = content.chatsPm[index]
-          )
         }
       }
     }
     FloatingButtonPc(
-      modifier = Modifier.padding(16.dp),
+      modifier = Modifier
+        .align(Alignment.BottomEnd)
+        .padding(16.dp),
       iconRes = Res.drawable.ic_plus,
       onClick = { onAction(ChatsScreenAction.OnPlusClick) },
     )

@@ -7,7 +7,7 @@ import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.error_reset_password_token_invalid
 import chirp.feature.auth.presentation.generated.resources.error_same_password
 import chirp.feature.auth.presentation.generated.resources.forgot_password_email_sent_successfully
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 
 class ResetPasswordScreenViewModel(
-  private val authRemoteRepository: AuthRemoteRepository,
+  private val authRepository: AuthRepository,
   savedStateHandle: SavedStateHandle,
 ) : BaseScreenViewModel<ResetPasswordScreenContentPm>() {
 
@@ -31,8 +31,8 @@ class ResetPasswordScreenViewModel(
     return ResetPasswordScreenContentPm()
   }
 
-  override fun onInitialized() {
-    super.onInitialized()
+  override fun onInitialize() {
+    super.onInitialize()
     subscribeToState()
   }
 
@@ -63,7 +63,7 @@ class ResetPasswordScreenViewModel(
   private fun handlePrimaryButtonClick() {
     launchLoadable {
       handleSuccess()
-      authRemoteRepository
+      authRepository
         .resetPassword(screenState.value.contentPm.passwordState.text.toString(), token)
         .onFailure(::handleFailure)
         .onSuccess { handleSuccess() }

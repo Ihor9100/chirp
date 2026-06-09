@@ -15,7 +15,7 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.domain.repository.remote.ChatRemoteRepository
+import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import kotlinx.coroutines.FlowPreview
@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.seconds
 
 class ChatCreateDialogScreenViewModel(
-  private val chatRemoteRepository: ChatRemoteRepository,
+  private val chatRepository: ChatRepository,
   private val chatMemberPmMapper: ChatMemberPmMapper,
 ) : BaseScreenViewModel<ChatCreateDialogScreenContentPm>() {
 
@@ -39,8 +39,8 @@ class ChatCreateDialogScreenViewModel(
     return ChatCreateDialogScreenContentPm()
   }
 
-  override fun onInitialized() {
-    super.onInitialized()
+  override fun onInitialize() {
+    super.onInitialize()
     searchQueryFlow.launchIn(viewModelScope)
   }
 
@@ -70,7 +70,7 @@ class ChatCreateDialogScreenViewModel(
     if (memberIds.isEmpty()) return
 
     launchLoadable {
-      chatRemoteRepository
+      chatRepository
         .createChat(memberIds)
         .onFailure { showSnackbar(it.getStringRes()) }
         .onSuccess(::handleCreateSuccess)
@@ -87,7 +87,7 @@ class ChatCreateDialogScreenViewModel(
     launchLoadable {
       updateContentPm { copy(chatMemberPm = null) }
 
-      chatRemoteRepository
+      chatRepository
         .searchMember(searchQuery.toString())
         .mapOn { chatMemberPmMapper.map(it, Unit) }
         .onFailure(::handleSearchMemberFailure)

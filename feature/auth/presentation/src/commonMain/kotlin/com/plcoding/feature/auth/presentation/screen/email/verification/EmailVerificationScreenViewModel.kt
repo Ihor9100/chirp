@@ -2,14 +2,14 @@ package com.plcoding.feature.auth.presentation.screen.email.verification
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import kotlinx.coroutines.launch
 
 class EmailVerificationScreenViewModel(
-  private val authRemoteRepository: AuthRemoteRepository,
+  private val authRepository: AuthRepository,
   savedStateHandle: SavedStateHandle,
 ) : BaseScreenViewModel<EmailVerificationScreenContentPm>() {
 
@@ -19,14 +19,14 @@ class EmailVerificationScreenViewModel(
     return EmailVerificationScreenContentPm.Loading()
   }
 
-  override fun onInitialized() {
-    super.onInitialized()
+  override fun onInitialize() {
+    super.onInitialize()
     verifyEmail()
   }
 
   private fun verifyEmail() {
     viewModelScope.launch {
-      authRemoteRepository
+      authRepository
         .verifyEmail(token ?: "")
         .onFailure { updateContentPm { EmailVerificationScreenContentPm.Failed() } }
         .onSuccess { updateContentPm { EmailVerificationScreenContentPm.Success() } }

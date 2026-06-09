@@ -3,12 +3,12 @@ package com.plcoding.core.data.di
 import com.plcoding.core.data.logger.KermitLogger
 import com.plcoding.core.data.mapper.AuthInfoMapper
 import com.plcoding.core.data.mapper.UserMapper
-import com.plcoding.core.data.repository.local.PreferencesLocalDataRepository
-import com.plcoding.core.data.repository.remote.AuthRemoteDataRepository
+import com.plcoding.core.data.repository.PreferencesDataRepository
+import com.plcoding.core.data.repository.AuthDataRepository
 import com.plcoding.core.data.tools.HttpClientFactory
 import com.plcoding.core.domain.logger.Logger
-import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.PreferencesRepository
+import com.plcoding.core.domain.repository.AuthRepository
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
@@ -27,8 +27,8 @@ val coreDataDiModule = module {
   single<HttpClient> { get<HttpClientFactory>().create() }
 
   singleOf(::HttpClientFactory)
-  singleOf(::AuthRemoteDataRepository) bind AuthRemoteRepository::class
-  singleOf(::PreferencesLocalDataRepository) bind PreferencesLocalRepository::class
+  singleOf(::AuthDataRepository) bind AuthRepository::class
+  singleOf(::PreferencesDataRepository) bind PreferencesRepository::class
 
   factoryOf(::UserMapper)
   factoryOf(::AuthInfoMapper)

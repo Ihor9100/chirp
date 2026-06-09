@@ -1,21 +1,12 @@
 package com.plcoding.feature.chat.domain.model
 
+import kotlin.time.Instant
+
 data class ChatMessage(
   val id: String,
   val chatId: String,
   val senderId: String,
   val content: String,
-  val createdAt: String,
-) {
-
-  companion object {
-    val mock
-      get() = ChatMessage(
-        id = "1",
-        chatId = "1",
-        senderId = "1",
-        content = "Test TestTest TestTest TestTestTe stTestTest TestTestTestTest TestTes tTestTestTest",
-        createdAt = "1",
-      )
-  }
-}
+  val createdAt: Instant,
+  val deliveryStatus: ChatMessageDeliveryStatus,
+)

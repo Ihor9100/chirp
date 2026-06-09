@@ -1,11 +1,11 @@
-package com.plcoding.core.domain.repository.remote
+package com.plcoding.core.domain.repository
 
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 
-interface AuthRemoteRepository {
+interface AuthRepository {
 
   suspend fun login(
     email: String,

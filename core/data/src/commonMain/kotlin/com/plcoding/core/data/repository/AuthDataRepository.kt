@@ -1,4 +1,4 @@
-package com.plcoding.core.data.repository.remote
+package com.plcoding.core.data.repository
 
 import com.plcoding.core.data.mapper.AuthInfoMapper
 import com.plcoding.core.data.model.AuthInfoAm
@@ -10,17 +10,17 @@ import com.plcoding.core.data.model.ResetPasswordRequestAm
 import com.plcoding.core.data.tools.get
 import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.model.AuthInfo
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.core.domain.result.map
 import io.ktor.client.HttpClient
 
-class AuthRemoteDataRepository(
+class AuthDataRepository(
   private val httpClient: HttpClient,
   private val authInfoMapper: AuthInfoMapper,
-) : AuthRemoteRepository {
+) : AuthRepository {
 
   override suspend fun login(
     email: String,

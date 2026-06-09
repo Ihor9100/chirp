@@ -4,7 +4,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.forgot_password_email_sent_successfully
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -18,15 +18,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 
 class ForgotPasswordScreenViewModel(
-  private val authRemoteRepository: AuthRemoteRepository,
+  private val authRepository: AuthRepository,
 ) : BaseScreenViewModel<ForgotPasswordScreenContentPm>() {
 
   override fun getContentPm(): ForgotPasswordScreenContentPm {
     return ForgotPasswordScreenContentPm()
   }
 
-  override fun onInitialized() {
-    super.onInitialized()
+  override fun onInitialize() {
+    super.onInitialize()
     subscribeToState()
   }
 
@@ -49,7 +49,7 @@ class ForgotPasswordScreenViewModel(
 
   private fun handleSubmitClick() {
     launchLoadable {
-      authRemoteRepository
+      authRepository
         .forgotPassword(screenState.value.contentPm.emailState.text.toString())
         .onFailure(::handleFailure)
         .onSuccess { handleSuccess() }

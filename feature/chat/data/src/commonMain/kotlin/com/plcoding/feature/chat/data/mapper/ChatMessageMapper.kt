@@ -3,6 +3,8 @@ package com.plcoding.feature.chat.data.mapper
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.feature.chat.data.model.ChatMessageAm
 import com.plcoding.feature.chat.domain.model.ChatMessage
+import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
+import kotlin.time.Instant
 
 class ChatMessageMapper : Mapper<ChatMessageAm, ChatMessage, Unit> {
 
@@ -13,7 +15,9 @@ class ChatMessageMapper : Mapper<ChatMessageAm, ChatMessage, Unit> {
         chatId = chatId,
         senderId = senderId,
         content = content,
-        createdAt = createdAt,
+        createdAt = Instant.parse(createdAt),
+        // TODO:
+        deliveryStatus = ChatMessageDeliveryStatus.SENT
       )
     }
   }

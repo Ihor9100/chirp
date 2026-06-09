@@ -2,6 +2,7 @@ package com.plcoding.feature.chat.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatEntity
@@ -18,6 +19,12 @@ interface ChatMessagesDao {
   @Upsert
   suspend fun upsert(entities: List<ChatMessageEntity>)
 
+  @Transaction
+  suspend fun replace(entities: List<ChatMessageEntity>) {
+    deleteAll()
+    upsert(entities)
+  }
+
   @Query("SELECT * FROM chat_messages WHERE id = :id")
   suspend fun get(id: String): ChatMessageEntity?
 
@@ -29,4 +36,7 @@ interface ChatMessagesDao {
 
   @Query("DELETE FROM chat_messages WHERE id IN (:ids)")
   suspend fun delete(ids: List<String>)
+
+  @Query("DELETE FROM chat_messages")
+  suspend fun deleteAll()
 }

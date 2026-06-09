@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.resent_verification_email
 import chirp.feature.auth.presentation.generated.resources.verification_email_sent_to_x
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -13,7 +13,7 @@ import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.core.presentation.utils.getStringRes
 
 class RegisterSuccessScreenViewModel(
-  private val authRemoteRepository: AuthRemoteRepository,
+  private val authRepository: AuthRepository,
   savedStateHandle: SavedStateHandle,
 ) : BaseScreenViewModel<RegisterSuccessScreenContentPm>() {
 
@@ -37,7 +37,7 @@ class RegisterSuccessScreenViewModel(
 
   private fun resendVerificationEmail() {
     launchLoadable {
-      authRemoteRepository
+      authRepository
         .resendVerificationEmail(email)
         .onFailure { handleFailure(it) }
         .onSuccess { showSnackbar(Res.string.resent_verification_email) }

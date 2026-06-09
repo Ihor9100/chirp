@@ -4,7 +4,7 @@ import com.plcoding.core.data.BuildKonfig
 import com.plcoding.core.data.mapper.AuthInfoMapper
 import com.plcoding.core.data.model.AuthInfoAm
 import com.plcoding.core.data.model.RefreshRequestAm
-import com.plcoding.core.data.repository.local.PreferencesLocalDataRepository
+import com.plcoding.core.data.repository.PreferencesDataRepository
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -32,7 +32,7 @@ import io.ktor.client.plugins.logging.Logger as KtorLogger
 class HttpClientFactory(
   private val json: Json,
   private val chirpLogger: ChirpLogger,
-  private val preferencesLocalDataRepository: PreferencesLocalDataRepository,
+  private val preferencesLocalDataRepository: PreferencesDataRepository,
   private val authInfoMapper: AuthInfoMapper,
   private val httpClientEngine: HttpClientEngine,
 ) {

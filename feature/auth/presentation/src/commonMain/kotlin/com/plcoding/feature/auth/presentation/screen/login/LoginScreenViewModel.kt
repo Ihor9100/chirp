@@ -6,8 +6,8 @@ import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.error_email_not_verified
 import chirp.feature.auth.presentation.generated.resources.error_invalid_credentials
 import com.plcoding.core.domain.model.AuthInfo
-import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.PreferencesRepository
+import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -21,16 +21,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 
 class LoginScreenViewModel(
-  private val authRemoteRepository: AuthRemoteRepository,
-  private val preferencesLocalRepository: PreferencesLocalRepository,
+  private val authRepository: AuthRepository,
+  private val preferencesRepository: PreferencesRepository,
 ) : BaseScreenViewModel<LoginScreenContentPm>() {
 
   override fun getContentPm(): LoginScreenContentPm {
     return LoginScreenContentPm()
   }
 
-  override fun onInitialized() {
-    super.onInitialized()
+  override fun onInitialize() {
+    super.onInitialize()
     subscribeToState()
   }
 
@@ -62,7 +62,7 @@ class LoginScreenViewModel(
 
   private fun handlePrimaryButtonClick() {
     launchLoadable {
-      authRemoteRepository
+      authRepository
         .login(
           email = screenState.value.contentPm.emailState.text.toString(),
           password = screenState.value.contentPm.passwordState.text.toString(),
@@ -84,7 +84,7 @@ class LoginScreenViewModel(
   }
 
   private suspend fun handleSuccess(authInfo: AuthInfo) {
-    preferencesLocalRepository.saveAuthInfo(authInfo)
+    preferencesRepository.saveAuthInfo(authInfo)
     updateContentPm {
       copy(logInSuccessEvent = Event(Unit))
     }

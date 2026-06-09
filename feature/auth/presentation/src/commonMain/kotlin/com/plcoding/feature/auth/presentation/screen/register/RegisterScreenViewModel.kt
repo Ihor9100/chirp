@@ -5,7 +5,7 @@ import chirp.feature.auth.presentation.generated.resources.error_account_exists
 import chirp.feature.auth.presentation.generated.resources.error_invalid_email
 import chirp.feature.auth.presentation.generated.resources.error_invalid_password
 import chirp.feature.auth.presentation.generated.resources.error_invalid_username
-import com.plcoding.core.domain.repository.remote.AuthRemoteRepository
+import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -18,7 +18,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
 class RegisterScreenViewModel(
-  private val authRemoteRepository: AuthRemoteRepository,
+  private val authRepository: AuthRepository,
 ) : BaseScreenViewModel<RegisterScreenContentPm>() {
 
   private val _event = Channel<RegisterScreenEvent>()
@@ -70,7 +70,7 @@ class RegisterScreenViewModel(
     launchLoadable {
       val email = screenState.value.contentPm.emailState.text.toString()
 
-      authRemoteRepository
+      authRepository
         .register(
           username = screenState.value.contentPm.usernameState.text.toString(),
           email = email,

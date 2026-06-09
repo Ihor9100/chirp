@@ -23,7 +23,7 @@ abstract class BaseScreenViewModel<ContentPm> : ViewModel() {
     .onStart {
       if (!isInitialized) {
         isInitialized = true
-        onInitialized()
+        onInitialize()
       }
     }
     .stateIn(
@@ -37,7 +37,7 @@ abstract class BaseScreenViewModel<ContentPm> : ViewModel() {
   protected open fun getBaseContentPm() = BaseContentPm()
   protected open fun getScreenStatePm() = ScreenStatePm(getBaseContentPm(), getContentPm())
 
-  protected open fun onInitialized() = Unit
+  protected open fun onInitialize() = Unit
 
   protected fun launch(block: suspend () -> Unit) {
     viewModelScope.launch {

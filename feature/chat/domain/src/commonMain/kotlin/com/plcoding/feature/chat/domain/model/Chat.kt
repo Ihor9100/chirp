@@ -1,9 +1,12 @@
 package com.plcoding.feature.chat.domain.model
 
+import kotlin.time.Clock
+import kotlin.time.Instant
+
 data class Chat(
   val id: String,
   val members: List<ChatMember>,
-  val lastActivityAt: String,
+  val lastActivityAt: Instant,
   val lastMessage: ChatMessage?
 ) {
 
@@ -13,7 +16,7 @@ data class Chat(
         Chat(
           id = "$index",
           members = ChatMember.mocks,
-          lastActivityAt = "lastActivityAt",
+          lastActivityAt = Clock.System.now(),
           lastMessage = ChatMessage.mock,
         )
       }

@@ -2,7 +2,7 @@ package com.plcoding.chirp.screen.app
 
 import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.model.AuthInfo
-import com.plcoding.core.domain.repository.local.PreferencesLocalRepository
+import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.feature.auth.presentation.navigation.AuthRoute
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class AppScreenViewModel(
-  private val preferencesLocalRepository: PreferencesLocalRepository,
+  private val preferencesRepository: PreferencesRepository,
 ) : BaseScreenViewModel<AppScreenContent>() {
 
   private var authInfo: AuthInfo? = null
@@ -21,8 +21,8 @@ class AppScreenViewModel(
     return AppScreenContent()
   }
 
-  override fun onInitialized() {
-    super.onInitialized()
+  override fun onInitialize() {
+    super.onInitialize()
 
     updateStartDestination()
     subscribeToAuthInfo()
@@ -30,7 +30,7 @@ class AppScreenViewModel(
 
   private fun updateStartDestination() {
     launch {
-      val authInfo = preferencesLocalRepository.observeAuthInfo().firstOrNull()
+      val authInfo = preferencesRepository.observeAuthInfo().firstOrNull()
 
       val startDestination = if (authInfo == null) {
         AuthRoute.Graph
@@ -48,7 +48,7 @@ class AppScreenViewModel(
   }
 
   private fun subscribeToAuthInfo() {
-    preferencesLocalRepository
+    preferencesRepository
       .observeAuthInfo()
       .onEach { authInfo ->
         if (this.authInfo != null && authInfo == null) {
