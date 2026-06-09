@@ -14,7 +14,7 @@ class ChatMapper(
     return with(from) {
       Chat(
         id = id,
-        members = chatMemberAmMapper.map(participants, Unit),
+        members = chatMemberAmMapper.mapList(participants, Unit),
         lastActivityAt = Instant.parse(lastActivityAt),
         lastMessage = lastMessage?.let { chatMessageMapper.map(it, Unit) },
       )

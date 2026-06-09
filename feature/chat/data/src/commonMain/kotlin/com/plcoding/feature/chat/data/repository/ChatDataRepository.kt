@@ -12,9 +12,11 @@ import com.plcoding.feature.chat.data.mapper.ChatMapper
 import com.plcoding.feature.chat.data.mapper.ChatMemberEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMemberAmMapper
 import com.plcoding.feature.chat.data.mapper.ChatMessageEntityMapper
+import com.plcoding.feature.chat.data.mapper.ChatsAndMembersEntityMapper
 import com.plcoding.feature.chat.data.model.ChatAm
 import com.plcoding.feature.chat.data.model.ChatCreateRequestAm
 import com.plcoding.feature.chat.data.model.ChatMemberAm
+import com.plcoding.feature.chat.database.dao.ChatAndMemberDao
 import com.plcoding.feature.chat.database.dao.ChatMembersDao
 import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.database.dao.ChatsDao
@@ -32,10 +34,12 @@ class ChatDataRepository(
   private val chatsDao: ChatsDao,
   private val chatMembersDao: ChatMembersDao,
   private val chatMessagesDao: ChatMessagesDao,
+  private val chatAndMemberDao: ChatAndMemberDao,
   private val chatEntityMapper: ChatEntityMapper,
   private val chatMemberEntityMapper: ChatMemberEntityMapper,
   private val chatMessageEntityMapper: ChatMessageEntityMapper,
   private val chatAndMembersRelationMapper: ChatAndMembersRelationMapper,
+  private val chatsAndMembersEntityMapper: ChatsAndMembersEntityMapper,
 ) : ChatRepository {
 
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
@@ -59,7 +63,7 @@ class ChatDataRepository(
   override suspend fun subscribeToChats(): Flow<List<Chat>> {
     return chatsDao
       .subscribeToChatsAndMembers()
-      .map { chatAndMembersRelationMapper.map(it, Unit) }
+      .map { chatAndMembersRelationMapper.mapList(it, Unit) }
   }
 
   override suspend fun getChats(): Result<List<Chat>, DataError.Remote> {
@@ -72,11 +76,12 @@ class ChatDataRepository(
     return httpClient.get<List<ChatAm>>(
       route = "/chat"
     ).map {
-      chatMapper.map(it, Unit)
+      chatMapper.mapList(it, Unit)
     }.onSuccess {
-      chatsDao.replace(chatEntityMapper.map(it, Unit))
-      chatMembersDao.replace(chatMemberEntityMapper.map(it.flatMap(Chat::members), Unit))
-      chatMessagesDao.replace(chatMessageEntityMapper.map(it.mapNotNull(Chat::lastMessage), Unit))
+      chatsDao.replace(chatEntityMapper.mapList(it, Unit))
+      chatMembersDao.replace(chatMemberEntityMapper.mapList(it.flatMap(Chat::members), Unit))
+      chatMessagesDao.replace(chatMessageEntityMapper.mapList(it.mapNotNull(Chat::lastMessage), Unit))
+      chatsAndMembersEntityMapper.map(it, Unit)
     }
   }
 }

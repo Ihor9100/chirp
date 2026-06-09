@@ -18,7 +18,7 @@ class ChatHeaderPmMapper(
     return with(from) {
       ChatHeaderPm(
         avatarsPm = chatMemberPmMapper
-          .map(this, Unit)
+          .mapList(this, Unit)
           .map(ChatMemberPm::avatarPm),
         title = getTitle(this, params),
         description = getDescription(this, params),
