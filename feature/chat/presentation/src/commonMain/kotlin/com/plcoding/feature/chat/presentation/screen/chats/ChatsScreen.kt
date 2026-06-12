@@ -72,7 +72,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ChatsScreen(
   navController: NavController,
-  navResult: NavResult,
   viewModel: ChatsScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.screenState.collectAsStateWithLifecycle()
@@ -88,10 +87,6 @@ fun ChatsScreen(
     }
   }
 
-  navResult.addListener<Chat>("arg") {
-    viewModel.onResult(it)
-  }
-
   BaseScreen(
     baseContentPm = state.baseContentPm
   ) {
@@ -102,14 +97,11 @@ fun ChatsScreen(
       onAction = {
         when (it) {
           is ChatsScreenAction.OnChatClick -> coroutineScope.launch {
+            viewModel.selectedChatId = it.chatId
             scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
           }
           is ChatsScreenAction.OnPlusClick -> {
-            viewModel.onAction {
-              navController.navigate(
-                ChatRoute.ChatCreate,
-              )
-            }
+            navController.navigate(ChatRoute.ChatCreate)
           }
         }
       }
@@ -127,7 +119,7 @@ private fun Content(
   ListDetailPaneScaffold(
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
-    listPane = { ChatsPane(contentPm, scaffoldNavigator, onAction) },
+    listPane = { ChatsPane(contentPm, onAction) },
     detailPane = { ChatDetailsPane(contentPm, deviceConfiguration, scaffoldNavigator) },
   )
 }
@@ -135,11 +127,8 @@ private fun Content(
 @Composable
 private fun ChatsPane(
   content: ChatsScreenContentPm,
-  navigator: ThreePaneScaffoldNavigator<Any>,
   onAction: (ChatsScreenAction) -> Unit,
 ) {
-  val coroutineScope = rememberCoroutineScope()
-
   Box {
     Column(
       modifier = Modifier.fillMaxSize(),
@@ -147,6 +136,7 @@ private fun ChatsPane(
       ChatsHeaderPc(
         modifier = Modifier.padding(top = 24.dp),
         showMenu = false,
+        // TODO:
         avatarPm = AvatarPm.mocks[0],
         onAvatarClick = {},
         onSettingsClick = {},

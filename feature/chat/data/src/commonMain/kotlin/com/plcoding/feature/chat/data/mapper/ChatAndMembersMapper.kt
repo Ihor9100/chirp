@@ -23,7 +23,7 @@ class ChatAndMembersRelationMapper(
         id = chatEntity.id,
         members = chatMemberEntityMapper.reverse(chatMemberEntities, Unit),
         lastActivityAt = Instant.fromEpochMilliseconds(chatEntity.lastActivityAt),
-        lastMessage = getLastMessage(chatLastMessageView),
+        lastMessage = chatLastMessageView?.let(::getLastMessage),
       )
     }
   }

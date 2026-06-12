@@ -25,7 +25,7 @@ class ChatPmMapper(
         content = getContent(this, params),
         backgroundColorToken = if (isSelected) ColorToken.Surface else ColorToken.Background,
         showVerticalDivider = isSelected,
-        showHorizontalDivider = id != params.lastChatId,
+        showHorizontalDivider = params.lastChatId != null && id != params.lastChatId,
       )
     }
   }
@@ -46,8 +46,8 @@ class ChatPmMapper(
   }
 
   data class Params(
-    val yourId: String,
-    val selectedChatId: String,
-    val lastChatId: String,
+    val yourId: String?,
+    val selectedChatId: String?,
+    val lastChatId: String?,
   )
 }

@@ -1,24 +1,23 @@
 package com.plcoding.feature.chat.presentation.screen.chats
 
 import androidx.lifecycle.SavedStateHandle
-import chirp.feature.chat.presentation.generated.resources.Res
-import chirp.feature.chat.presentation.generated.resources.group_chat
+import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.repository.ChatRepository
-import com.plcoding.feature.chat.presentation.mapper.ChatPmMapper
+import com.plcoding.feature.chat.presentation.mapper.ChatsScreenContentPmMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 class ChatsScreenViewModel(
-  private val savedStateHandle: SavedStateHandle,
+  private val preferencesRepository: PreferencesRepository,
   private val chatRepository: ChatRepository,
-  private val chatPmMapper: ChatPmMapper,
+  private val contentPmMapper: ChatsScreenContentPmMapper,
 ) : BaseScreenViewModel<ChatsScreenContentPm>() {
+
+  var selectedChatId: String? = null
 
   override fun getContentPm(): ChatsScreenContentPm {
     return ChatsScreenContentPm.mock
@@ -27,6 +26,8 @@ class ChatsScreenViewModel(
   override fun onInitialize() {
     super.onInitialize()
 
+    loadScreenData()
+    observeScreeData()
   }
 
   private fun loadScreenData() {
@@ -39,33 +40,24 @@ class ChatsScreenViewModel(
     }
   }
 
-  private fun subscribeToScreeData() {
+  private fun observeScreeData() {
     launch {
       combine(
+        preferencesRepository.observeAuthInfo(),
         chatRepository.subscribeToChats(),
-      ) {
-
+      ) { authInfo, chats ->
+        contentPmMapper.map(
+          chats,
+          ChatsScreenContentPmMapper.Params(
+            yourId = authInfo?.user?.id,
+            selectedChatId = selectedChatId,
+          ),
+        )
       }
-        .map {
-          // TODO:
-          chatPmMapper.mapList(it, ChatPmMapper.Params())
-        }
         .flowOn(Dispatchers.IO)
-        .collect { }
-    }
-  }
-
-  fun onAction(onDismiss: () -> Unit) {
-    showSnackbar(Res.string.group_chat) {
-      onDismiss()
-    }
-  }
-
-  fun onResult(chat: Chat?) {
-    updateContentPm {
-      copy(
-        chat = chat,
-      )
+        .collect {
+          updateContentPm { it }
+        }
     }
   }
 }

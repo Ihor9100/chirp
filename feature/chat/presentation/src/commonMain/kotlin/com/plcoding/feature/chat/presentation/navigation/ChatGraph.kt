@@ -17,7 +17,7 @@ fun NavGraphBuilder.chatGraph(
     startDestination = ChatRoute.Chats
   ) {
     composable<ChatRoute.Chats> {
-      ChatsScreen(navController, navResult)
+      ChatsScreen(navController)
     }
     dialog<ChatRoute.ChatCreate> {
       ChatCreateDialogScreen(navController, navResult)

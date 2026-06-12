@@ -26,5 +26,5 @@ data class ChatAndMembersRelation(
     entityColumn = "chatId",
     entity = ChatLastMessageView::class,
   )
-  val chatLastMessageView: ChatLastMessageView,
+  val chatLastMessageView: ChatLastMessageView?,
 )

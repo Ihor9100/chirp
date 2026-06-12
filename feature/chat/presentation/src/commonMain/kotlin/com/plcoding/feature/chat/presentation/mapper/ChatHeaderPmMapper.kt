@@ -30,8 +30,8 @@ class ChatHeaderPmMapper(
     return if (from.isGroup) {
       TextProvider.Resource(Res.string.group_chat, listOf())
     } else {
-      val member = from.first { it.userId != params.yourId }
-      TextProvider.Dynamic(member.username)
+      val member = from.firstOrNull { it.userId != params.yourId }
+      TextProvider.Dynamic(member?.username ?: "TODO")
     }
   }
 
@@ -44,6 +44,6 @@ class ChatHeaderPmMapper(
   }
 
   data class Params(
-    val yourId: String,
+    val yourId: String?,
   )
 }
