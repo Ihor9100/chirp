@@ -1,11 +1,9 @@
 package com.plcoding.feature.chat.presentation.screen.chats
 
-import androidx.lifecycle.SavedStateHandle
 import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.feature.chat.domain.repository.ChatRepository
-import com.plcoding.feature.chat.presentation.mapper.ChatsScreenContentPmMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.combine
@@ -44,7 +42,7 @@ class ChatsScreenViewModel(
     launch {
       combine(
         preferencesRepository.observeAuthInfo(),
-        chatRepository.subscribeToChats(),
+        chatRepository.observeChats(),
       ) { authInfo, chats ->
         contentPmMapper.map(
           chats,

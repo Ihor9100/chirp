@@ -60,7 +60,7 @@ class ChatDataRepository(
     }
   }
 
-  override suspend fun subscribeToChats(): Flow<List<Chat>> {
+  override suspend fun observeChats(): Flow<List<Chat>> {
     return chatsDao
       .subscribeToChatsAndMembers()
       .map { chatAndMembersRelationMapper.mapList(it, Unit) }
@@ -81,7 +81,7 @@ class ChatDataRepository(
       chatsDao.replace(chatEntityMapper.mapList(it, Unit))
       chatMembersDao.replace(chatMemberEntityMapper.mapList(it.flatMap(Chat::members), Unit))
       chatMessagesDao.replace(chatMessageEntityMapper.mapList(it.mapNotNull(Chat::lastMessage), Unit))
-      chatsAndMembersEntityMapper.map(it, Unit)
+      chatAndMemberDao.replace(chatsAndMembersEntityMapper.map(it, Unit))
     }
   }
 }

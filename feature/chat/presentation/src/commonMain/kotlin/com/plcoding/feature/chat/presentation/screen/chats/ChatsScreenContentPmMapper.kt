@@ -1,18 +1,12 @@
-package com.plcoding.feature.chat.presentation.mapper
+package com.plcoding.feature.chat.presentation.screen.chats
 
-import chirp.feature.chat.presentation.generated.resources.Res
-import chirp.feature.chat.presentation.generated.resources.your_message
-import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.mapper.Mapper
-import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.presentation.mapper.ChatsScreenContentPmMapper.Params
-import com.plcoding.feature.chat.presentation.model.ChatPm
-import com.plcoding.feature.chat.presentation.screen.chats.ChatsScreenContentPm
+import com.plcoding.feature.chat.presentation.mapper.ChatPmMapper
 
 class ChatsScreenContentPmMapper(
   private val chatPmMapper: ChatPmMapper,
-) : Mapper<List<Chat>, ChatsScreenContentPm, Params> {
+) : Mapper<List<Chat>, ChatsScreenContentPm, ChatsScreenContentPmMapper.Params> {
 
   override fun map(
     from: List<Chat>,

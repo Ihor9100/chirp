@@ -16,6 +16,6 @@ interface ChatRepository {
     memberIds: List<String>,
   ): Result<Chat, DataError.Remote>
 
-  suspend fun subscribeToChats(): Flow<List<Chat>>
+  suspend fun observeChats(): Flow<List<Chat>>
   suspend fun getChats(): Result<List<Chat>, DataError.Remote>
 }
