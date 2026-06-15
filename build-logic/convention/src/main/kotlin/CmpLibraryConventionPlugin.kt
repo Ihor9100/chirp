@@ -10,7 +10,6 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
 
     with(target) {
       with(pluginManager) {
-        apply("com.android.library")
         apply("org.jetbrains.compose")
         apply("org.jetbrains.kotlin.plugin.compose")
       }
@@ -34,7 +33,7 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("coil-compose").get())
         "commonMainImplementation"(libs.findLibrary("coil-network-ktor").get())
 
-        "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
+        "androidMainImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
       }
     }
   }

@@ -1,5 +1,6 @@
 package com.plcoding.buildlogic.convention
 
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
@@ -16,74 +17,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val Project.libs: VersionCatalog
   get() = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
-  with(commonExtension) {
-    configureKotlin()
-
-    compileSdk = libs.findVersion("projectCompileSdkVersion").get().toString().toInt()
-    defaultConfig.minSdk = libs.findVersion("projectMinSdkVersion").get().toString().toInt()
-
-    compileOptions {
-      sourceCompatibility = JavaVersion.VERSION_17
-      targetCompatibility = JavaVersion.VERSION_17
-      isCoreLibraryDesugaringEnabled = true
-    }
-
-    dependencies {
-      "coreLibraryDesugaring"(libs.findLibrary("android-desugarJdkLibs").get())
-    }
-  }
-}
-
-fun Project.configureKotlin() {
-  tasks.withType(KotlinCompile::class.java).configureEach {
-    compilerOptions {
-      jvmTarget.set(JvmTarget.JVM_17)
-      freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
-    }
-  }
-}
-
-fun Project.configureCompose(commonExtension: CommonExtension<*, *, *, *, *, *>) {
-  with(commonExtension) {
-    buildFeatures {
-      compose = true
-    }
-
-    dependencies {
-      val bom = libs.findLibrary("androidx.compose.bom").get()
-      "implementation"(platform(bom))
-      "testImplementation"(platform(bom))
-      "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
-      "debugImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
-    }
-  }
-}
-
-fun Project.configureTargets() {
-  extensions.configure<LibraryExtension> {
-    namespace = getPackageName()
-  }
-
-  configureAndroidTarget()
-  configureIosTarget()
-
-  extensions.configure<KotlinMultiplatformExtension> {
-    compilerOptions {
-      freeCompilerArgs.add("-Xexpect-actual-classes")
-      freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
-      freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
-    }
-  }
-}
-
 fun Project.configureAndroidTarget() {
-  extensions.configure<KotlinMultiplatformExtension> {
-    androidTarget {
-      compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-      }
-    }
+  dependencies {
+    "coreLibraryDesugaring"(libs.findLibrary("android-desugarJdkLibs").get())
   }
 }
 
