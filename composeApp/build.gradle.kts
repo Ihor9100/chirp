@@ -1,13 +1,10 @@
-import com.plcoding.buildlogic.convention.configureAndroidTarget
-import com.plcoding.buildlogic.convention.configureIosTarget
-import com.plcoding.buildlogic.convention.libs
 
 plugins {
-  alias(plugins.android.kotlin.multiplatform.library)
-  alias(plugins.kotlin.multiplatform)
-  alias(plugins.jetbrains.compose)
-  alias(plugins.jetbrains.kotlin.compose)
-  alias(plugins.kotlin.serialization)
+  alias(libs.plugins.android.kotlin.multiplatform.library)
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.jetbrains.compose)
+  alias(libs.plugins.jetbrains.kotlin.compose)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -17,9 +14,6 @@ kotlin {
     namespace = "com.plcoding.chirp.composeapp"
     experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
   }
-
-  configureAndroidTarget()
-  configureIosTarget(baseName = "ComposeApp", isStatic = true)
 
   sourceSets {
     androidMain.dependencies {
