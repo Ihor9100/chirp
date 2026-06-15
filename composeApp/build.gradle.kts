@@ -1,8 +1,14 @@
-plugins {
-  alias(libs.plugins.compose.app.convention)
-}
+import com.plcoding.buildlogic.convention.configureAndroidTarget
+import com.plcoding.buildlogic.convention.configureIosTarget
+import com.plcoding.buildlogic.convention.libs
 
-version = "1.0.0"
+plugins {
+  alias(plugins.android.kotlin.multiplatform.library)
+  alias(plugins.kotlin.multiplatform)
+  alias(plugins.jetbrains.compose)
+  alias(plugins.jetbrains.kotlin.compose)
+  alias(plugins.kotlin.serialization)
+}
 
 kotlin {
   androidLibrary {
@@ -12,11 +18,16 @@ kotlin {
     experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
   }
 
+  configureAndroidTarget()
+  configureIosTarget(baseName = "ComposeApp", isStatic = true)
+
   sourceSets {
     androidMain.dependencies {
       implementation(compose.preview)
       implementation(libs.androidx.activity.compose)
       implementation(libs.androidx.core.splashscreen)
+      implementation(libs.androidx.compose.ui.tooling)
+      implementation(libs.androidx.compose.ui.tooling.preview)
     }
     commonMain.dependencies {
       implementation(projects.core.data)
