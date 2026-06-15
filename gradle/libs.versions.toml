@@ -13,10 +13,10 @@ desktopPackageName = "Chirp"
 desktopPackageVersion = "1.0.0"
 
 # Core
-agp = "9.2.1"
+agp = "9.0.0"
 composeBom = "2025.11.01"
-kotlin = "2.4.0"
-ksp = "2.2.21-2.0.4"
+kotlin = "2.2.21"
+ksp = "2.3.4"
 google-services = "4.4.4"
 androidDesugarJdkLibs = "2.1.5"
 androidTools = "31.13.1"
@@ -176,9 +176,9 @@ androidx-runner = { group = "androidx.test", name = "runner", version.ref = "run
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 
 # Plugins
-android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+compose-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 androidx-room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
 android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
