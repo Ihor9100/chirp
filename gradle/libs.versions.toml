@@ -192,7 +192,6 @@ build-konfig-plugin = { group = "com.codingfeline.buildkonfig", name = "buildkon
 [plugins]
 
 # build-logic
-android-application-convention = { id = "build-logic.convention.android.application.convention.plugin", version = "unspecified" }
 kmp-library-convention = { id = "build-logic.convention.kmp.library.convention.plugin", version = "unspecified" }
 cmp-library-convention = { id = "build-logic.convention.cmp.library.convention.plugin", version = "unspecified" }
 cmp-feature-convention = { id = "build-logic.convention.cmp.feature.convention.plugin", version = "unspecified" }
