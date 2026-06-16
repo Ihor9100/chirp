@@ -60,5 +60,9 @@ gradlePlugin {
       id = "build-logic.convention.room.convention.plugin"
       implementationClass = "RoomConventionPlugin"
     }
+    register("targets") {
+      id = "build-logic.convention.targets.convention.plugin"
+      implementationClass = "TargetsConventionPlugin"
+    }
   }
 }

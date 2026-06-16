@@ -1,16 +1,12 @@
 [versions]
 
 # Project
-projectApplicationId = "com.plcoding.chirp"
-projectVersionName = "1.0"
-projectMinSdkVersion = "26"
-projectTargetSdkVersion = "36"
-projectCompileSdkVersion = "36"
-projectVersionCode = "1"
-
-# Desktop Version
-desktopPackageName = "Chirp"
-desktopPackageVersion = "1.0.0"
+applicationId = "com.plcoding.chirp"
+versionName = "1.0"
+versionCode = "1"
+targetSdk = "36"
+compileSdk = "36"
+minSdk = "26"
 
 # Core
 agp = "9.0.0"
@@ -20,6 +16,7 @@ ksp = "2.3.4"
 google-services = "4.4.4"
 androidDesugarJdkLibs = "2.1.5"
 androidTools = "31.13.1"
+androidMaterial = "1.10.0"
 
 # Jetbrains Compose
 jetbrains-compose = "1.9.3"
@@ -70,9 +67,12 @@ runner = "1.7.0"
 junit = "1.3.0"
 junitVersion = "4.13.2"
 espressoCore = "3.5.1"
-material = "1.10.0"
 
 [libraries]
+
+# Android
+android-material = { group = "com.google.android.material", name = "material", version.ref = "androidMaterial" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 
 # Kotlin
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -100,7 +100,7 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 
-# Jetbrains Compose
+# JetBrains Compose
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
 jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "jetbrains-compose" }
@@ -109,20 +109,20 @@ jetbrains-compose-components-ui-tooling-preview = { module = "org.jetbrains.comp
 jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrains-compose-navigation" }
 jetbrains-compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
 
-# Jetbrains Compose Material3
+# JetBrains Compose Material3
 jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jetbrains-compose-material3" }
 jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "jetbrains-compose-material-icons-extended" }
 jetbrains-compose-material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
 jetbrains-compose-material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "adaptive" }
 jetbrains-compose-material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "adaptive" }
 
-# Jetbrains Lifecycle
+# JetBrains Lifecycle
 jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrains-lifecycle" }
 jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "jetbrains-lifecycle" }
 
-# Jetbrains SavedState
+# JetBrains SavedState
 jetbrains-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jetbrains-savedstate" }
 jetbrains-core-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "jetbrains-core-bundle" }
 
@@ -174,20 +174,20 @@ touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 # Testing
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+# Other
+android-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+build-konfig-compiler = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-compiler", version.ref = "buildkonfig" }
 
 # Plugins
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 androidx-room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
-android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
-android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
-build-konfig-compiler = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-compiler", version.ref = "buildkonfig" }
 build-konfig-plugin = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
-junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 
@@ -198,6 +198,7 @@ cmp-library-convention = { id = "build-logic.convention.cmp.library.convention.p
 cmp-feature-convention = { id = "build-logic.convention.cmp.feature.convention.plugin", version = "unspecified" }
 build-konfig-convention = { id = "build-logic.convention.build.konfig.convention.plugin", version = "unspecified" }
 room-convention = { id = "build-logic.convention.room.convention.plugin", version = "unspecified" }
+targets-convention = { id = "build-logic.convention.targets.convention.plugin", version = "unspecified" }
 
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }

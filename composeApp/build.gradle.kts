@@ -1,20 +1,13 @@
-
 plugins {
   alias(libs.plugins.android.kotlin.multiplatform.library)
   alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.jetbrains.kotlin.compose)
-  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.targets.convention)
 }
 
 kotlin {
-  androidLibrary {
-    compileSdk = 36
-    minSdk = 26
-    namespace = "com.plcoding.chirp.composeapp"
-    experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
-  }
-
   sourceSets {
     androidMain.dependencies {
       implementation(compose.preview)
@@ -43,8 +36,12 @@ kotlin {
       implementation(compose.ui)
       implementation(compose.components.resources)
       implementation(compose.components.uiToolingPreview)
+
       implementation(libs.jetbrains.lifecycle.runtime.compose)
       implementation(libs.jetbrains.lifecycle.viewmodel.compose)
+
+      implementation(libs.koin.core)
+      implementation(libs.koin.core.viewmodel)
     }
   }
 }

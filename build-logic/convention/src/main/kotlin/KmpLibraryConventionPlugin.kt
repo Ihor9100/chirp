@@ -1,7 +1,5 @@
-import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.plcoding.buildlogic.convention.configureAndroidTarget
 import com.plcoding.buildlogic.convention.configureIosTarget
-import com.plcoding.buildlogic.convention.getPackageName
 import com.plcoding.buildlogic.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,17 +13,8 @@ open class KmpLibraryConventionPlugin : Plugin<Project> {
     with(target) {
       with(pluginManager) {
         apply("org.jetbrains.kotlin.multiplatform")
-        apply("com.android.kotlin.multiplatform.library")
         apply("org.jetbrains.kotlin.plugin.serialization")
-      }
-
-      extensions.configure<KotlinMultiplatformExtension> {
-        extensions.configure<KotlinMultiplatformAndroidLibraryExtension> {
-          compileSdk = 36
-          minSdk = 26
-          namespace = getPackageName()
-          experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
-        }
+        apply("com.android.kotlin.multiplatform.library")
       }
 
       configureAndroidTarget()
