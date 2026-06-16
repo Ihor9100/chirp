@@ -13,36 +13,36 @@ agp = "9.0.0"
 composeBom = "2025.11.01"
 kotlin = "2.2.21"
 ksp = "2.3.4"
-google-services = "4.4.4"
+googleServices = "4.4.4"
 androidDesugarJdkLibs = "2.1.5"
 androidTools = "31.13.1"
 androidMaterial = "1.10.0"
 
 # Jetbrains Compose
-jetbrains-compose = "1.9.3"
-jetbrains-compose-hot-reload = "1.0.0"
-jetbrains-compose-material3 = "1.9.0"
-jetbrains-compose-material-icons-extended = "1.7.3"
-jetbrains-compose-navigation = "2.9.1"
+jetbrainsCompose = "1.9.3"
+jetbrainsComposeHotReload = "1.0.0"
+jetbrainsComposeMaterial3 = "1.9.0"
+jetbrainsComposeMaterialIconsExtended = "1.7.3"
+jetbrainsComposeNavigation = "2.9.1"
 
 # Maintain compose multiplatform version aligned with navigation, cache error could happen
-jetbrains-lifecycle = "2.9.6"
-jetbrains-core-bundle = "1.0.1"
+jetbrainsLifecycle = "2.9.6"
+jetbrainsCoreBundle = "1.0.1"
 
 # AndroidX
-androidx-activity = "1.12.0"
-androidx-core = "1.17.0"
-androidx-lifecycle = "2.9.0"
-androidx-test-ext = "1.2.1"
-androidx-runner = "1.6.2"
-androidx-test-core = "1.7.0"
-androidx-appcompat = "1.7.1"
-androidx-core-splashscreen = "1.2.0"
+androidxActivity = "1.12.0"
+androidxCore = "1.17.0"
+androidxLifecycle = "2.9.0"
+androidxTestExt = "1.2.1"
+androidxRunner = "1.6.2"
+androidxTestCore = "1.7.0"
+androidxAppcompat = "1.7.1"
+androidxCoreSplashscreen = "1.2.0"
 
 # Kotlinx
-kotlinx-coroutines = "1.10.2"
-kotlinx-serialization = "1.9.0"
-kotlinx-datetime = "0.7.1"
+kotlinxCoroutines = "1.10.2"
+kotlinxSerialization = "1.9.0"
+kotlinxDatetime = "0.7.1"
 
 # Third party
 koin = "4.1.1"
@@ -51,11 +51,11 @@ ktor = "3.3.3"
 room = "2.8.4"
 sqlite = "2.6.2"
 datastore = "1.2.0"
-firebase-bom = "34.6.0"
+firebaseBom = "34.6.0"
 adaptive = "1.2.0"
-jetbrains-savedstate = "1.4.0"
-coil-compose = "3.3.0"
-coil-network-ktor = "3.3.0"
+jetbrainsSavedstate = "1.4.0"
+coilCompose = "3.3.0"
+coilNetworkKtor = "3.3.0"
 moko = "0.20.1"
 buildkonfig = "0.17.1"
 
@@ -79,19 +79,19 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 
 # Kotlinx
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinxCoroutines" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 # AndroidX
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity" }
-androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
-androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTestCore" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 
 # AndroidX Compose
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -101,30 +101,30 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 
 # JetBrains Compose
-jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
-jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
-jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "jetbrains-compose" }
-jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrains-compose" }
-jetbrains-compose-components-ui-tooling-preview = { module = "org.jetbrains.compose.components:components-ui-tooling-preview", version.ref = "jetbrains-compose" }
-jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrains-compose-navigation" }
-jetbrains-compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrainsCompose" }
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrainsCompose" }
+jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "jetbrainsCompose" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrainsCompose" }
+jetbrains-compose-components-ui-tooling-preview = { module = "org.jetbrains.compose.components:components-ui-tooling-preview", version.ref = "jetbrainsCompose" }
+jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrainsComposeNavigation" }
+jetbrains-compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrainsCompose" }
 
 # JetBrains Compose Material3
-jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jetbrains-compose-material3" }
-jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "jetbrains-compose-material-icons-extended" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jetbrainsComposeMaterial3" }
+jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "jetbrainsComposeMaterialIconsExtended" }
 jetbrains-compose-material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
 jetbrains-compose-material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "adaptive" }
 jetbrains-compose-material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "adaptive" }
 
 # JetBrains Lifecycle
-jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
-jetbrains-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrains-lifecycle" }
-jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-lifecycle" }
-jetbrains-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "jetbrains-lifecycle" }
+jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrainsLifecycle" }
+jetbrains-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrainsLifecycle" }
+jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrainsLifecycle" }
+jetbrains-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "jetbrainsLifecycle" }
 
 # JetBrains SavedState
-jetbrains-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jetbrains-savedstate" }
-jetbrains-core-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "jetbrains-core-bundle" }
+jetbrains-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jetbrainsSavedstate" }
+jetbrains-core-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "jetbrainsCoreBundle" }
 
 # Koin
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
@@ -156,12 +156,12 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 # Firebase
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 
 # Coil
-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-compose" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-network-ktor" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilNetworkKtor" }
 
 #Permission handling
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko" }
@@ -172,7 +172,7 @@ moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifi
 touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 # Testing
-androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "androidxRunner" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -211,14 +211,14 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 # JetBrains Compose
-jetbrains-compose-hot-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "jetbrains-compose-hot-reload" }
-jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
+jetbrains-compose-hot-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "jetbrainsComposeHotReload" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 jetbrains-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 # Build tools
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
-google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
