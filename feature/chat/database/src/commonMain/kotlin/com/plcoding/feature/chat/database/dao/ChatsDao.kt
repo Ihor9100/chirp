@@ -26,17 +26,19 @@ interface ChatsDao {
   }
 
   @Query("SELECT * FROM chats WHERE id = :id")
-  fun get(id: String): ChatEntity?
+  suspend fun get(id: String): ChatEntity?
 
   @Query("SELECT id FROM chats")
-  fun getIds(): List<String>
+  suspend fun getIds(): List<String>
 
   @Query("SELECT COUNT(*) FROM chats")
   fun getCount(): Flow<Int>
 
+  @Transaction
   @Query("SELECT * FROM chats WHERE id = :id")
-  fun getChatAndMembersAndMessages(id: String): ChatAndMembersAndMessagesRelation?
+  suspend fun getChatAndMembersAndMessages(id: String): ChatAndMembersAndMessagesRelation?
 
+  @Transaction
   @Query("SELECT * FROM chats")
   fun subscribeToChatsAndMembers(): Flow<List<ChatAndMembersRelation>>
 
