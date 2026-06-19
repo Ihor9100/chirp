@@ -12,7 +12,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.nio.channels.UnresolvedAddressException
 
-actual suspend fun <T> platformSafeCall(
+actual suspend fun <T> platformApiSafeCall(
   execute: suspend () -> HttpResponse,
   handleResponse: suspend (HttpResponse) -> Result<T, DataError.Remote>
 ): Result<T, DataError.Remote> {

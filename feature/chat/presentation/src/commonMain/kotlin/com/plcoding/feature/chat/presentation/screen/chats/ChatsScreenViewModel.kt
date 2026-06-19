@@ -31,7 +31,7 @@ class ChatsScreenViewModel(
   private fun loadScreenData() {
     launchLoadable {
       chatRepository
-        .getChats()
+        .syncChats()
         .onFailure {
           // TODO:
         }

@@ -4,6 +4,7 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Result
 import io.ktor.client.engine.darwin.DarwinHttpRequestException
 import io.ktor.client.statement.HttpResponse
+import platform.CoreData.NSSQLiteError
 import platform.Foundation.NSURLErrorCallIsActive
 import platform.Foundation.NSURLErrorCannotFindHost
 import platform.Foundation.NSURLErrorDNSLookupFailed
@@ -15,7 +16,7 @@ import platform.Foundation.NSURLErrorNotConnectedToInternet
 import platform.Foundation.NSURLErrorResourceUnavailable
 import platform.Foundation.NSURLErrorTimedOut
 
-actual suspend fun <T> platformSafeCall(
+actual suspend fun <T> platformApiSafeCall(
   execute: suspend () -> HttpResponse,
   handleResponse: suspend (HttpResponse) -> Result<T, DataError.Remote>
 ): Result<T, DataError.Remote> {

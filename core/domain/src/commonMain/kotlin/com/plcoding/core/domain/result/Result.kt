@@ -8,8 +8,8 @@ import kotlinx.coroutines.withContext
 typealias Empty<E> = Result<Unit, E>
 
 sealed interface Result<out D, out E : Error> {
-  data class Success<out D>(val data: D) : Result<D, Nothing>
-  data class Failure<out E : Error>(val error: E) : Result<Nothing, E>
+  data class Success<D>(val data: D) : Result<D, Nothing>
+  data class Failure<E : Error>(val error: E) : Result<Nothing, E>
 }
 
 inline fun <D, E : Error, R> Result<D, E>.map(transform: (D) -> R): Result<R, E> {
@@ -19,15 +19,21 @@ inline fun <D, E : Error, R> Result<D, E>.map(transform: (D) -> R): Result<R, E>
   }
 }
 
+inline fun <In, E : Error, Out> Result<In, E>.flatMap(
+  transform: (In) -> Result<Out, E>,
+): Result<Out, E> {
+  return when (this) {
+    is Result.Failure -> this
+    is Result.Success -> transform(data)
+  }
+}
+
 suspend inline fun <D, E : Error, R> Result<D, E>.mapOn(
   dispatcher: CoroutineDispatcher = Dispatchers.IO,
   crossinline transform: (D) -> R,
 ): Result<R, E> {
   return withContext(dispatcher) {
-    when (this@mapOn) {
-      is Result.Failure -> this@mapOn
-      is Result.Success -> Result.Success(transform(data))
-    }
+    map(transform)
   }
 }
 

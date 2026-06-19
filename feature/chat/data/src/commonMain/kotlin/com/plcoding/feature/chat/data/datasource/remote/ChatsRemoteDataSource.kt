@@ -1,13 +1,12 @@
-package com.plcoding.feature.chat.domain.repository
+package com.plcoding.feature.chat.data.datasource.remote
 
 import com.plcoding.core.domain.result.DataError
-import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatMember
 import kotlinx.coroutines.flow.Flow
 
-interface ChatRepository {
+interface ChatsRemoteDataSource {
 
   suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote>
 
@@ -15,7 +14,5 @@ interface ChatRepository {
 
   suspend fun createChat(memberIds: List<String>): Result<Chat, DataError.Remote>
 
-  suspend fun observeChats(): Flow<List<Chat>>
-
-  suspend fun syncChats(): Empty<DataError>
+  suspend fun getChats(): Result<List<Chat>, DataError.Remote>
 }

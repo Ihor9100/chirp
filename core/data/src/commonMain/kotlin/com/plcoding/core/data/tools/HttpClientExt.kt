@@ -15,15 +15,15 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 
-expect suspend fun <T> platformSafeCall(
+expect suspend fun <T> platformApiSafeCall(
   execute: suspend () -> HttpResponse,
   handleResponse: suspend (HttpResponse) -> Result<T, DataError.Remote>
 ): Result<T, DataError.Remote>
 
-suspend inline fun <reified T> safeCall(
+suspend inline fun <reified T> apiSafeCall(
   noinline execute: suspend () -> HttpResponse,
 ): Result<T, DataError.Remote> {
-  return platformSafeCall(execute, ::handleHttpResponse)
+  return platformApiSafeCall(execute, ::handleHttpResponse)
 }
 
 suspend inline fun <reified Request, reified Response> HttpClient.post(
@@ -32,7 +32,7 @@ suspend inline fun <reified Request, reified Response> HttpClient.post(
   params: Map<String, Any> = mapOf(),
   crossinline builder: HttpRequestBuilder.() -> Unit = {}
 ): Result<Response, DataError.Remote> {
-  return safeCall {
+  return apiSafeCall {
     post {
       url(constructRoute(route))
       setBody(request)
@@ -48,7 +48,7 @@ suspend inline fun <reified Request, reified Response> HttpClient.put(
   params: Map<String, Any> = mapOf(),
   crossinline builder: HttpRequestBuilder.() -> Unit = {}
 ): Result<Response, DataError.Remote> {
-  return safeCall {
+  return apiSafeCall {
     put {
       url(constructRoute(route))
       setBody(request)
@@ -63,7 +63,7 @@ suspend inline fun <reified Response> HttpClient.get(
   params: Map<String, Any> = mapOf(),
   crossinline builder: HttpRequestBuilder.() -> Unit = {}
 ): Result<Response, DataError.Remote> {
-  return safeCall {
+  return apiSafeCall {
     get {
       url(constructRoute(route))
       params.forEach { parameter(it.key, it.value) }
@@ -77,7 +77,7 @@ suspend inline fun <reified Response> HttpClient.delete(
   params: Map<String, Any>,
   crossinline builder: HttpRequestBuilder.() -> Unit = {}
 ): Result<Response, DataError.Remote> {
-  return safeCall {
+  return apiSafeCall {
     delete {
       url(constructRoute(route))
       params.forEach { parameter(it.key, it.value) }
@@ -91,7 +91,7 @@ suspend inline fun <reified Response> HttpClient.put(
   params: Map<String, Any>,
   crossinline builder: HttpRequestBuilder.() -> Unit = {}
 ): Result<Response, DataError.Remote> {
-  return safeCall {
+  return apiSafeCall {
     post {
       url(constructRoute(route))
       params.forEach { parameter(it.key, it.value) }
