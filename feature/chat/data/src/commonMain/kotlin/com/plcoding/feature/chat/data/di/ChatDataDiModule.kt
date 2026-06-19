@@ -1,6 +1,10 @@
 package com.plcoding.feature.chat.data.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
+import com.plcoding.feature.chat.data.datasource.local.ChatsRoomLocalDataSource
+import com.plcoding.feature.chat.data.datasource.remote.ChatsKtorRemoteDataSource
+import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
 import com.plcoding.feature.chat.data.mapper.ChatAndMembersRelationMapper
 import com.plcoding.feature.chat.data.mapper.ChatEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMapper
@@ -36,6 +40,8 @@ val chatDataDiModule = module {
   }
 
   singleOf(::ChatDataRepository) bind ChatRepository::class
+  singleOf(::ChatsKtorRemoteDataSource) bind ChatsRemoteDataSource::class
+  singleOf(::ChatsRoomLocalDataSource) bind ChatsLocalDataSource::class
 
   single<ChatsDao> { get<ChirpDatabase>().chatsDao }
   single<ChatMembersDao> { get<ChirpDatabase>().chatMembersDao }
