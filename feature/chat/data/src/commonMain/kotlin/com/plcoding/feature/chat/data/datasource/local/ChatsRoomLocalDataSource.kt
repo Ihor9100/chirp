@@ -14,10 +14,17 @@ import com.plcoding.feature.chat.database.dao.ChatAndMemberDao
 import com.plcoding.feature.chat.database.dao.ChatMembersDao
 import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.database.dao.ChatsDao
+import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
+import com.plcoding.feature.chat.database.entity.ChatEntity
+import com.plcoding.feature.chat.database.entity.ChatMemberEntity
+import com.plcoding.feature.chat.database.entity.ChatMessageEntity
+import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
+import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 class ChatsRoomLocalDataSource(
@@ -25,31 +32,29 @@ class ChatsRoomLocalDataSource(
   private val chatMembersDao: ChatMembersDao,
   private val chatMessagesDao: ChatMessagesDao,
   private val chatAndMemberDao: ChatAndMemberDao,
-  private val chatEntityMapper: ChatEntityMapper,
-  private val chatMemberEntityMapper: ChatMemberEntityMapper,
-  private val chatMessageEntityMapper: ChatMessageEntityMapper,
-  private val chatAndMembersRelationMapper: ChatAndMembersRelationMapper,
-  private val chatsAndMembersEntityMapper: ChatsAndMembersEntityMapper,
 ) : ChatsLocalDataSource {
 
-  override suspend fun observeChats(): Flow<List<Chat>> {
-    return chatsDao
-      .subscribeToChatsAndMembers()
-      .map { chatAndMembersRelationMapper.mapList(it, Unit) }
+  override suspend fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>> {
+    return chatsDao.subscribeToChatsAndMembers()
   }
 
-  override suspend fun observeChatDetails(chatId: String): Flow<ChatDetails> {
+  override suspend fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation> {
     return chatsDao
       .observeChatAndMembersAndMessages(chatId)
-      .map {  }
+      .filterNotNull()
   }
 
-  override suspend fun saveChats(chats: List<Chat>): Empty<DataError.Local> {
+  override suspend fun saveChatsDetails(
+    chats: List<ChatEntity>,
+    chatMembers: List<ChatMemberEntity>,
+    chatMessages: List<ChatMessageEntity>,
+    chatsAndMembers: List<ChatAndMemberEntity>
+  ): Empty<DataError.Local> {
     return dbSafeCall {
-      chatsDao.replace(chatEntityMapper.mapList(chats, Unit))
-      chatMembersDao.replace(chatMemberEntityMapper.mapList(chats.flatMap(Chat::members), Unit))
-      chatMessagesDao.replace(chatMessageEntityMapper.mapList(chats.mapNotNull(Chat::lastMessage), Unit))
-      chatAndMemberDao.replace(chatsAndMembersEntityMapper.map(chats, Unit))
+      chatsDao.replace(chats)
+      chatMembersDao.replace(chatMembers)
+      chatMessagesDao.replace(chatMessages)
+      chatAndMemberDao.replace(chatsAndMembers)
     }
   }
 }

@@ -16,41 +16,31 @@ import io.ktor.client.HttpClient
 
 class ChatsKtorRemoteDataSource(
   private val httpClient: HttpClient,
-  private val chatMapper: ChatMapper,
-  private val chatMemberAmMapper: ChatMemberAmMapper,
 ) : ChatsRemoteDataSource {
 
-  override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
+  override suspend fun searchMember(query: String): Result<ChatMemberAm, DataError.Remote> {
     return httpClient.get<ChatMemberAm>(
       route = "/participants",
       params = mapOf("query" to query),
-    ).map {
-      chatMemberAmMapper.map(it, Unit)
-    }
+    )
   }
 
-  override suspend fun getChat(chatId: String): Result<Chat, DataError.Remote> {
+  override suspend fun getChat(chatId: String): Result<ChatAm, DataError.Remote> {
     return httpClient.get<ChatAm>(
       route = "/chat/$chatId",
-    ).map {
-      chatMapper.map(it, Unit)
-    }
+    )
   }
 
-  override suspend fun createChat(memberIds: List<String>): Result<Chat, DataError.Remote> {
+  override suspend fun createChat(memberIds: List<String>): Result<ChatAm, DataError.Remote> {
     return httpClient.post<ChatCreateRequestAm, ChatAm>(
       route = "/chat",
       request = ChatCreateRequestAm(memberIds)
-    ).map {
-      chatMapper.map(it, Unit)
-    }
+    )
   }
 
-  override suspend fun getChats(): Result<List<Chat>, DataError.Remote> {
+  override suspend fun getChats(): Result<List<ChatAm>, DataError.Remote> {
     return httpClient.get<List<ChatAm>>(
       route = "/chat"
-    ).map {
-      chatMapper.mapList(it, Unit)
-    }
+    )
   }
 }

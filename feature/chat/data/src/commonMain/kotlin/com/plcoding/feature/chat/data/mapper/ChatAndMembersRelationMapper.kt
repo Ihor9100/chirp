@@ -1,11 +1,9 @@
 package com.plcoding.feature.chat.data.mapper
 
 import com.plcoding.core.domain.mapper.Mapper
-import com.plcoding.feature.chat.data.model.ChatMemberAm
 import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
 import com.plcoding.feature.chat.database.view.ChatLastMessageView
 import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.model.ChatMessage
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlin.time.Instant
