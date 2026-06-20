@@ -26,5 +26,5 @@ data class ChatAndMembersAndMessagesRelation(
     entityColumn = "chatId",
     entity = ChatMessageEntity::class,
   )
-  val chatMessageAndSenderRelations: List<ChatMessageAndSenderRelation>,
+  val chatMessageAndMemberRelations: List<ChatMessageAndMemberRelation>,
 )

@@ -15,6 +15,7 @@ import com.plcoding.feature.chat.database.dao.ChatMembersDao
 import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.database.dao.ChatsDao
 import com.plcoding.feature.chat.domain.model.Chat
+import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -35,6 +36,12 @@ class ChatsRoomLocalDataSource(
     return chatsDao
       .subscribeToChatsAndMembers()
       .map { chatAndMembersRelationMapper.mapList(it, Unit) }
+  }
+
+  override suspend fun observeChatDetails(chatId: String): Flow<ChatDetails> {
+    return chatsDao
+      .observeChatAndMembersAndMessages(chatId)
+      .map {  }
   }
 
   override suspend fun saveChats(chats: List<Chat>): Empty<DataError.Local> {

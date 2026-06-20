@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
-import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
 import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
@@ -35,8 +34,8 @@ interface ChatsDao {
   fun getCount(): Flow<Int>
 
   @Transaction
-  @Query("SELECT * FROM chats WHERE id = :id")
-  suspend fun getChatAndMembersAndMessages(id: String): ChatAndMembersAndMessagesRelation?
+  @Query("SELECT * FROM chats WHERE id = :chatId")
+  fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?>
 
   @Transaction
   @Query("SELECT * FROM chats")

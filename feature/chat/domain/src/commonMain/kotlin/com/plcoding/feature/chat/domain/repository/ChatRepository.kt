@@ -17,5 +17,7 @@ interface ChatRepository {
 
   suspend fun observeChats(): Flow<List<Chat>>
 
+  suspend fun observeChats(): Flow<List<Chat>>
+
   suspend fun syncChats(): Empty<DataError>
 }
