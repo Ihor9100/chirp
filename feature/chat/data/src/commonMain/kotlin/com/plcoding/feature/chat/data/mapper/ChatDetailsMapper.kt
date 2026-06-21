@@ -1,6 +1,8 @@
 package com.plcoding.feature.chat.data.mapper
 
 import com.plcoding.core.domain.mapper.Mapper
+import com.plcoding.feature.chat.database.entity.ChatEntity
+import com.plcoding.feature.chat.database.entity.ChatMemberEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
 import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
 import com.plcoding.feature.chat.database.view.ChatLastMessageView
@@ -11,8 +13,9 @@ import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlin.time.Instant
 
 class ChatDetailsMapper(
-  private val chatEntityMapper: ChatEntityMapper
-): Mapper<ChatAndMembersAndMessagesRelation, ChatDetails, Unit> {
+  private val chatEntityMapper: ChatEntityMapper,
+  private val chatMessageAndMemberMapper: ChatMessageAndMemberMapper,
+) : Mapper<ChatAndMembersAndMessagesRelation, ChatDetails, Unit> {
 
   override fun map(
     from: ChatAndMembersAndMessagesRelation,
@@ -20,9 +23,23 @@ class ChatDetailsMapper(
   ): ChatDetails {
     return with(from) {
       ChatDetails(
-        chat =,
-        chatMessageAndMembers =,
+        chat = getChat(this),
+        chatMessageAndMembers = chatMessageAndMemberMapper
+          .mapList(from.chatMessageAndMemberRelations, Unit),
       )
     }
+  }
+
+  private fun getChat(from: ChatAndMembersAndMessagesRelation): Chat {
+    val sortedMessagesAndMembers = from
+      .chatMessageAndMemberRelations
+      .sortedByDescending { it.chatMessageEntity.timestamp }
+
+    val params = ChatEntityMapper.Params(
+      chatMemberEntities = from.chatMemberEntities,
+      chatLastMessage = sortedMessagesAndMembers.firstOrNull()?.chatMessageEntity,
+    )
+
+    return chatEntityMapper.reverse(from.chatEntity, params)
   }
 }

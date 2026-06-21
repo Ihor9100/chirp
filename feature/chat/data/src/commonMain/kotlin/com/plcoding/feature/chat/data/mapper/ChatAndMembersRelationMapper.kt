@@ -19,7 +19,7 @@ class ChatAndMembersRelationMapper(
     return with(from) {
       Chat(
         id = chatEntity.id,
-        members = chatMemberEntityMapper.reverse(chatMemberEntities, Unit),
+        members = chatMemberEntityMapper.reverseList(chatMemberEntities, Unit),
         lastActivityAt = Instant.fromEpochMilliseconds(chatEntity.lastActivityAt),
         lastMessage = chatLastMessageView?.let(::getLastMessage),
       )

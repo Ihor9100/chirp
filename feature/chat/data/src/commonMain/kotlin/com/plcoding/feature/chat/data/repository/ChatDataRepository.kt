@@ -8,12 +8,14 @@ import com.plcoding.core.domain.result.map
 import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
 import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
 import com.plcoding.feature.chat.data.mapper.ChatAndMembersRelationMapper
+import com.plcoding.feature.chat.data.mapper.ChatDetailsMapper
 import com.plcoding.feature.chat.data.mapper.ChatEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMapper
 import com.plcoding.feature.chat.data.mapper.ChatMemberAmMapper
 import com.plcoding.feature.chat.data.mapper.ChatMemberEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMessageEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatsAndMembersEntityMapper
+import com.plcoding.feature.chat.database.entity.ChatEntity
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
@@ -31,6 +33,7 @@ class ChatDataRepository(
   private val chatMemberEntityMapper: ChatMemberEntityMapper,
   private val chatMessageEntityMapper: ChatMessageEntityMapper,
   private val chatsAndMembersEntityMapper: ChatsAndMembersEntityMapper,
+  private val chatDetailsMapper: ChatDetailsMapper,
 ) : ChatRepository {
 
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
@@ -59,8 +62,8 @@ class ChatDataRepository(
 
   override suspend fun observeChatDetails(chatId: String): Flow<ChatDetails> {
     return localDataSource
-      .observeChatAndMembersAndMessages()
-      .map {  }
+      .observeChatAndMembersAndMessages(chatId)
+      .map { chatDetailsMapper.map(it, Unit) }
   }
 
   override suspend fun syncChats(): Empty<DataError> {
@@ -69,7 +72,7 @@ class ChatDataRepository(
       .map { chatMapper.mapList(it, Unit) }
       .flatMap {
         localDataSource.saveChatsDetails(
-          chatEntityMapper.mapList(it, Unit),
+          chatEntityMapper.mapList(it, ChatEntityMapper.Params(listOf(), null)),
           chatMemberEntityMapper.mapList(it.flatMap(Chat::members), Unit),
           chatMessageEntityMapper.mapList(it.mapNotNull(Chat::lastMessage), Unit),
           chatsAndMembersEntityMapper.map(it, Unit),

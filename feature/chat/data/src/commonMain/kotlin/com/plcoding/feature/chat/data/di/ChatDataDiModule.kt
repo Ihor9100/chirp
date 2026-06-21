@@ -6,10 +6,12 @@ import com.plcoding.feature.chat.data.datasource.local.ChatsRoomLocalDataSource
 import com.plcoding.feature.chat.data.datasource.remote.ChatsKtorRemoteDataSource
 import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
 import com.plcoding.feature.chat.data.mapper.ChatAndMembersRelationMapper
+import com.plcoding.feature.chat.data.mapper.ChatDetailsMapper
 import com.plcoding.feature.chat.data.mapper.ChatEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMapper
 import com.plcoding.feature.chat.data.mapper.ChatMemberAmMapper
 import com.plcoding.feature.chat.data.mapper.ChatMemberEntityMapper
+import com.plcoding.feature.chat.data.mapper.ChatMessageAndMemberMapper
 import com.plcoding.feature.chat.data.mapper.ChatMessageEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMessageMapper
 import com.plcoding.feature.chat.data.mapper.ChatsAndMembersEntityMapper
@@ -53,8 +55,9 @@ val chatDataDiModule = module {
   factoryOf(::ChatMessageEntityMapper)
   factoryOf(::ChatAndMembersRelationMapper)
   factoryOf(::ChatsAndMembersEntityMapper)
-
   factoryOf(::ChatMapper)
   factoryOf(::ChatMemberAmMapper)
   factoryOf(::ChatMessageMapper)
+  factoryOf(::ChatMessageAndMemberMapper)
+  factoryOf(::ChatDetailsMapper)
 }

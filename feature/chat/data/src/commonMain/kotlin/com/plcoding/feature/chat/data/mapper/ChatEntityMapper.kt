@@ -33,9 +33,9 @@ class ChatEntityMapper(
     return with(from) {
       Chat(
         id = id,
-        members = chatMemberEntityMapper.reverse(chatMemberEntities, Unit),
+        members = chatMemberEntityMapper.reverseList(params.chatMemberEntities, Unit),
         lastActivityAt = Instant.fromEpochMilliseconds(lastActivityAt),
-        lastMessage = params?.chatLastMessage?.let { chatMessageEntityMapper.map(it, Unit) },
+        lastMessage = params.chatLastMessage?.let { chatMessageEntityMapper.reverse(it, Unit) },
       )
     }
   }
