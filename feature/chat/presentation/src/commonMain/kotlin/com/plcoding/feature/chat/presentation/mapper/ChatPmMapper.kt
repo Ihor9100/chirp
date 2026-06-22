@@ -14,7 +14,7 @@ class ChatPmMapper(
 
   override fun map(from: Chat, params: Params): ChatPm {
     return with(from) {
-      val isSelected = id == params.selectedChatId
+      val isSelected = id == params.chatId
 
       ChatPm(
         id = id,
@@ -47,7 +47,7 @@ class ChatPmMapper(
 
   data class Params(
     val yourId: String?,
-    val selectedChatId: String?,
+    val chatId: String?,
     val lastChatId: String?,
   )
 }

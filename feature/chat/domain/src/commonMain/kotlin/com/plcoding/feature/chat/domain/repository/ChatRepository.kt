@@ -12,13 +12,11 @@ interface ChatRepository {
 
   suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote>
 
-  suspend fun getChat(chatId: String): Result<Chat, DataError.Remote>
-
   suspend fun createChat(memberIds: List<String>): Result<Chat, DataError.Remote>
 
   suspend fun observeChats(): Flow<List<Chat>>
-
   suspend fun observeChatDetails(chatId: String): Flow<ChatDetails>
 
+  suspend fun syncChat(chatId: String): Empty<DataError.Remote>
   suspend fun syncChats(): Empty<DataError>
 }

@@ -42,12 +42,6 @@ class ChatDataRepository(
       .map { chatMemberAmMapper.map(it, Unit) }
   }
 
-  override suspend fun getChat(chatId: String): Result<Chat, DataError.Remote> {
-    return remoteDataSource
-      .getChat(chatId)
-      .map { chatMapper.map(it, Unit) }
-  }
-
   override suspend fun createChat(memberIds: List<String>): Result<Chat, DataError.Remote> {
     return remoteDataSource
       .createChat(memberIds)
@@ -64,6 +58,16 @@ class ChatDataRepository(
     return localDataSource
       .observeChatAndMembersAndMessages(chatId)
       .map { chatDetailsMapper.map(it, Unit) }
+  }
+
+  override suspend fun syncChat(chatId: String): Empty<DataError.Remote> {
+    return remoteDataSource
+      .getChat(chatId)
+      .map { chatMapper.map(it, Unit) }
+      .flatMap {
+        // TODO:
+        Result.Success(Unit)
+      }
   }
 
   override suspend fun syncChats(): Empty<DataError> {

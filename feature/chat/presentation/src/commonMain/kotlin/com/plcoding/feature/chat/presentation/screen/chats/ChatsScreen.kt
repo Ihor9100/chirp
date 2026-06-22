@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.HorizontalDivider
@@ -63,6 +64,7 @@ import com.plcoding.feature.chat.presentation.component.ChatPc
 import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
 import com.plcoding.feature.chat.presentation.model.ChatDetailsPm
 import com.plcoding.feature.chat.presentation.model.ChatHeaderPm
+import com.plcoding.feature.chat.presentation.model.ChatPm
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
@@ -97,7 +99,7 @@ fun ChatsScreen(
       onAction = {
         when (it) {
           is ChatsScreenAction.OnChatClick -> coroutineScope.launch {
-            viewModel.selectedChatId = it.chatId
+            viewModel.openChatDetails(it.chatId)
             scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail)
           }
           is ChatsScreenAction.OnPlusClick -> {
@@ -149,25 +151,16 @@ private fun ChatsPane(
       ) {
         if (content.chatsPm.isEmpty()) {
           item {
-            Column(
-              verticalArrangement = Arrangement.spacedBy(16.dp),
-              horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-              Image(
-                painter = painterResource(Res.drawable.img_chat),
-                contentDescription = null,
-              )
-              TitleDescriptionPc(
-                titleRes = Res.string.no_messages,
-                descriptionRes = Res.string.no_messages_subtitle
-              )
-            }
+            // TODO: empty state 
           }
         } else {
-          items(content.chatsPm.size) { index ->
+          items(
+            items = content.chatsPm,
+            key = (ChatPm::id),
+          ) {
             ChatPc(
-              modifier = Modifier.clickable { onAction(ChatsScreenAction.OnChatClick("1")) },
-              chatPm = content.chatsPm[index]
+              modifier = Modifier.clickable { onAction(ChatsScreenAction.OnChatClick(it.id)) },
+              chatPm = it,
             )
           }
         }
@@ -221,7 +214,7 @@ private fun ChatDetailsPane(
       )
       ChatHeaderPc(
         modifier = Modifier.weight(1f),
-        chatHeaderPm = ChatHeaderPm.mock,
+        chatHeaderPm = content.chatHeaderPm,
       )
       IconButtonPc(
         modifier = Modifier,
@@ -244,7 +237,7 @@ private fun ChatDetailsPane(
             Modifier.padding(horizontal = 16.dp)
           }
         ),
-      chatDetailsPm = ChatDetailsPm.mocks,
+      chatDetailsPm = content.chatDetailsPm,
     )
     MultilineTextFieldPc(
       modifier = Modifier

@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.presentation.di
 
+import com.plcoding.feature.chat.presentation.mapper.ChatDetailsPmMapper
 import com.plcoding.feature.chat.presentation.mapper.ChatHeaderPmMapper
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
 import com.plcoding.feature.chat.presentation.mapper.ChatPmMapper
@@ -18,4 +19,5 @@ val chatPresentationDiModule = module {
   factoryOf(::ChatPmMapper)
   factoryOf(::ChatHeaderPmMapper)
   factoryOf(::ChatMemberPmMapper)
+  factoryOf(::ChatDetailsPmMapper)
 }

@@ -22,7 +22,7 @@ data class ChatPm(
         from = Chat.mocks,
         params = ChatPmMapper.Params(
           yourId = "1",
-          selectedChatId = "1",
+          chatId = "1",
           lastChatId = Chat.mocks.last().id,
         ),
       )
