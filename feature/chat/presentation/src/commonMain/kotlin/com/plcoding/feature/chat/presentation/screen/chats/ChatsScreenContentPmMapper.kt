@@ -3,6 +3,7 @@ package com.plcoding.feature.chat.presentation.screen.chats
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.no_messages
 import chirp.feature.chat.presentation.generated.resources.no_messages_subtitle
+import chirp.feature.chat.presentation.generated.resources.select_chat_subtitle
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
@@ -12,7 +13,6 @@ import com.plcoding.feature.chat.presentation.mapper.ChatPmMapper
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStatePm
 import com.plcoding.feature.chat.presentation.screen.chats.ChatsScreenContentPmMapper.From
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
 
 class ChatsScreenContentPmMapper(
   private val chatPmMapper: ChatPmMapper,
@@ -30,7 +30,7 @@ class ChatsScreenContentPmMapper(
           predicate = from.chats::isEmpty,
           descriptionRes = Res.string.no_messages_subtitle,
         ),
-        noChatEmptyState = getChatEmptyState(
+        noSelectedChatEmptyState = getChatEmptyState(
           predicate = { chatId == null },
           descriptionRes = Res.string.select_chat_subtitle,
         ),
@@ -45,7 +45,8 @@ class ChatsScreenContentPmMapper(
         ),
         chatEmptyState = getChatEmptyState(
           predicate = {
-            chatDetails?.chatMessageAndMembers
+            chatDetails
+              ?.chatMessagesAndMembers
               ?.map { it.chatMessage }
               .isNullOrEmpty()
           },
@@ -53,7 +54,7 @@ class ChatsScreenContentPmMapper(
         ),
         chatHeaderPm = chatDetails?.run {
           chatHeaderPmMapper.map(
-            chatMessageAndMembers.map { it.chatMember },
+            chat.members,
             ChatHeaderPmMapper.Params(yourId)
           )
         },

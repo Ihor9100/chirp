@@ -2,7 +2,6 @@
 
 package com.plcoding.feature.chat.presentation.screen.chats
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -40,11 +38,6 @@ import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_arrow_left
 import chirp.feature.chat.presentation.generated.resources.ic_dots
 import chirp.feature.chat.presentation.generated.resources.ic_plus
-import chirp.feature.chat.presentation.generated.resources.img_chat
-import chirp.feature.chat.presentation.generated.resources.no_messages
-import chirp.feature.chat.presentation.generated.resources.no_messages_subtitle
-import chirp.feature.chat.presentation.generated.resources.send
-import com.plcoding.core.designsystem.components.TitleDescriptionPc
 import com.plcoding.core.designsystem.components.button.FloatingButtonPc
 import com.plcoding.core.designsystem.components.button.IconButtonPc
 import com.plcoding.core.designsystem.components.textfields.MultilineTextFieldPc
@@ -55,20 +48,15 @@ import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.screen.model.ScreenStatePm
-import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
-import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.component.ChatDetailsPc
 import com.plcoding.feature.chat.presentation.component.ChatEmptyStatePc
 import com.plcoding.feature.chat.presentation.component.ChatHeaderPc
 import com.plcoding.feature.chat.presentation.component.ChatPc
 import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
-import com.plcoding.feature.chat.presentation.model.ChatDetailsPm
-import com.plcoding.feature.chat.presentation.model.ChatHeaderPm
 import com.plcoding.feature.chat.presentation.model.ChatPm
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -123,7 +111,7 @@ private fun Content(
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
     listPane = { ChatsPane(contentPm, onAction) },
-    detailPane = { ChatDetailsPane(contentPm, deviceConfiguration, scaffoldNavigator) },
+    detailPane = { ChatDetailsPane(contentPm, deviceConfiguration) },
   )
 }
 
@@ -150,11 +138,11 @@ private fun ChatsPane(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(top = 16.dp),
       ) {
-        if (content.chatsPm.isEmpty()) {
+        if (content.chatsEmptyState != null) {
           item {
             ChatEmptyStatePc(
               modifier = Modifier,
-              chatEmptyStatePm = content.chatsPm
+              chatEmptyStatePm = content.chatsEmptyState
             )
           }
         } else {
@@ -184,7 +172,6 @@ private fun ChatsPane(
 private fun ChatDetailsPane(
   content: ChatsScreenContentPm,
   deviceConfiguration: DeviceConfiguration,
-  scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
 ) {
   Column(
     modifier = Modifier
@@ -200,61 +187,68 @@ private fun ChatDetailsPane(
         }
       ),
   ) {
-    Row(
-      modifier = Modifier
-        .fillMaxWidth()
-        .background(
-          color = MaterialTheme.colorScheme.surface,
-          shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+    if (content.noSelectedChatEmptyState != null) {
+      ChatEmptyStatePc(
+        modifier = Modifier,
+        chatEmptyStatePm = content.noSelectedChatEmptyState,
+      )
+    } else {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .background(
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+          )
+          .padding(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+      ) {
+        IconButtonPc(
+          modifier = Modifier,
+          iconRes = Res.drawable.ic_arrow_left,
+          onClick = {}
         )
-        .padding(16.dp),
-      horizontalArrangement = Arrangement.spacedBy(16.dp),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      IconButtonPc(
-        modifier = Modifier,
-        iconRes = Res.drawable.ic_arrow_left,
-        onClick = {}
+        ChatHeaderPc(
+          modifier = Modifier.weight(1f),
+          chatHeaderPm = content.chatHeaderPm!!,
+        )
+        IconButtonPc(
+          modifier = Modifier,
+          iconRes = Res.drawable.ic_dots,
+          onClick = {}
+        )
+      }
+      HorizontalDivider()
+      ChatDetailsPc(
+        modifier = Modifier
+          .weight(1f)
+          .background(
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+          )
+          .then(
+            if (deviceConfiguration.isWideScreen) {
+              Modifier.padding(24.dp)
+            } else {
+              Modifier.padding(horizontal = 16.dp)
+            }
+          ),
+        chatDetailsPm = content.chatDetailsPm!!,
       )
-      ChatHeaderPc(
-        modifier = Modifier.weight(1f),
-        chatHeaderPm = content.chatHeaderPm,
-      )
-      IconButtonPc(
-        modifier = Modifier,
-        iconRes = Res.drawable.ic_dots,
-        onClick = {}
+      MultilineTextFieldPc(
+        modifier = Modifier
+          .then(
+            if (deviceConfiguration.isWideScreen) {
+              Modifier.padding(top = 8.dp)
+            } else {
+              Modifier.padding(16.dp)
+            }
+          ),
+        deviceConfiguration = deviceConfiguration,
+        multilineTextFieldPm = MultilineTextFieldPm.mock,
       )
     }
-    HorizontalDivider()
-    ChatDetailsPc(
-      modifier = Modifier
-        .weight(1f)
-        .background(
-          color = MaterialTheme.colorScheme.surface,
-          shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
-        )
-        .then(
-          if (deviceConfiguration.isWideScreen) {
-            Modifier.padding(24.dp)
-          } else {
-            Modifier.padding(horizontal = 16.dp)
-          }
-        ),
-      chatDetailsPm = content.chatDetailsPm,
-    )
-    MultilineTextFieldPc(
-      modifier = Modifier
-        .then(
-          if (deviceConfiguration.isWideScreen) {
-            Modifier.padding(top = 8.dp)
-          } else {
-            Modifier.padding(16.dp)
-          }
-        ),
-      deviceConfiguration = deviceConfiguration,
-      multilineTextFieldPm = MultilineTextFieldPm.mock,
-    )
   }
 }
 

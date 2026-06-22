@@ -1,15 +1,10 @@
 package com.plcoding.feature.chat.data.datasource.local
 
+import androidx.room.useWriterConnection
 import com.plcoding.core.data.tools.dbSafeCall
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
-import com.plcoding.core.domain.result.Result
-import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
-import com.plcoding.feature.chat.data.mapper.ChatAndMembersRelationMapper
-import com.plcoding.feature.chat.data.mapper.ChatEntityMapper
-import com.plcoding.feature.chat.data.mapper.ChatMemberEntityMapper
-import com.plcoding.feature.chat.data.mapper.ChatMessageEntityMapper
-import com.plcoding.feature.chat.data.mapper.ChatsAndMembersEntityMapper
+import com.plcoding.feature.chat.database.ChirpDatabase
 import com.plcoding.feature.chat.database.dao.ChatAndMemberDao
 import com.plcoding.feature.chat.database.dao.ChatMembersDao
 import com.plcoding.feature.chat.database.dao.ChatMessagesDao
@@ -20,14 +15,11 @@ import com.plcoding.feature.chat.database.entity.ChatMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
 import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
-import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.domain.model.ChatDetails
-import com.plcoding.feature.chat.domain.model.ChatMember
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 
 class ChatsRoomLocalDataSource(
+  private val chirpDatabase: ChirpDatabase,
   private val chatsDao: ChatsDao,
   private val chatMembersDao: ChatMembersDao,
   private val chatMessagesDao: ChatMessagesDao,
@@ -51,10 +43,12 @@ class ChatsRoomLocalDataSource(
     chatsAndMembers: List<ChatAndMemberEntity>
   ): Empty<DataError.Local> {
     return dbSafeCall {
-      chatsDao.replace(chats)
-      chatMembersDao.replace(chatMembers)
-      chatMessagesDao.replace(chatMessages)
-      chatAndMemberDao.replace(chatsAndMembers)
+      chirpDatabase.useWriterConnection {
+        chatsDao.replace(chats)
+        chatMembersDao.replace(chatMembers)
+        chatMessagesDao.replace(chatMessages)
+        chatAndMemberDao.replace(chatsAndMembers)
+      }
     }
   }
 }
