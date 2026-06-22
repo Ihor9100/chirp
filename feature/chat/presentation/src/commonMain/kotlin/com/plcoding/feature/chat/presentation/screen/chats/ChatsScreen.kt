@@ -59,6 +59,7 @@ import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.component.ChatDetailsPc
+import com.plcoding.feature.chat.presentation.component.ChatEmptyStatePc
 import com.plcoding.feature.chat.presentation.component.ChatHeaderPc
 import com.plcoding.feature.chat.presentation.component.ChatPc
 import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
@@ -151,7 +152,10 @@ private fun ChatsPane(
       ) {
         if (content.chatsPm.isEmpty()) {
           item {
-            // TODO: empty state 
+            ChatEmptyStatePc(
+              modifier = Modifier,
+              chatEmptyStatePm = content.chatsPm
+            )
           }
         } else {
           items(
