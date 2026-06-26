@@ -36,7 +36,23 @@ class ChatsRoomLocalDataSource(
       .filterNotNull()
   }
 
-  override suspend fun saveChatsDetails(
+  override suspend fun upsertChatDetails(
+    chat: ChatEntity,
+    chatMembers: List<ChatMemberEntity>,
+    chatMessages: List<ChatMessageEntity>,
+    chatsAndMembers: List<ChatAndMemberEntity>
+  ): Empty<DataError.Local> {
+    return dbSafeCall {
+      chirpDatabase.useWriterConnection {
+        chatsDao.upsert(chat)
+        chatMembersDao.upsert(chatMembers)
+        chatMessagesDao.upsert(chatMessages)
+        chatAndMemberDao.upsert(chatsAndMembers)
+      }
+    }
+  }
+
+  override suspend fun replaceChatsDetails(
     chats: List<ChatEntity>,
     chatMembers: List<ChatMemberEntity>,
     chatMessages: List<ChatMessageEntity>,

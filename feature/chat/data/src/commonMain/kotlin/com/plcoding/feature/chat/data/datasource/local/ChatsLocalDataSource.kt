@@ -16,7 +16,14 @@ interface ChatsLocalDataSource {
 
   suspend fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation>
 
-  suspend fun saveChatsDetails(
+  suspend fun upsertChatDetails(
+    chat: ChatEntity,
+    chatMembers: List<ChatMemberEntity>,
+    chatMessages: List<ChatMessageEntity>,
+    chatsAndMembers: List<ChatAndMemberEntity>,
+  ): Empty<DataError.Local>
+
+  suspend fun replaceChatsDetails(
     chats: List<ChatEntity>,
     chatMembers: List<ChatMemberEntity>,
     chatMessages: List<ChatMessageEntity>,

@@ -30,10 +30,11 @@ class ChatCreateDialogScreenViewModel(
   private val chatMemberPmMapper: ChatMemberPmMapper,
 ) : BaseScreenViewModel<ChatCreateDialogScreenContentPm>() {
 
-  private val searchQueryFlow = snapshotFlow { screenState.value.contentPm.searchTextFieldState.text }
-    .debounce(1.seconds)
-    .filter { it.isNotBlank() }
-    .onEach(::searchMember)
+  private val searchQueryFlow =
+    snapshotFlow { screenState.value.contentPm.searchTextFieldState.text }
+      .debounce(1.seconds)
+      .filter { it.isNotBlank() }
+      .onEach(::searchMember)
 
   override fun getContentPm(): ChatCreateDialogScreenContentPm {
     return ChatCreateDialogScreenContentPm()
@@ -73,13 +74,7 @@ class ChatCreateDialogScreenViewModel(
       chatRepository
         .createChat(memberIds)
         .onFailure { showSnackbar(it.getStringRes()) }
-        .onSuccess(::handleCreateSuccess)
-    }
-  }
-
-  private fun handleCreateSuccess(chat: Chat) {
-    updateContentPm {
-      copy(chatCreatedEvent = Event(chat))
+        .onSuccess { updateContentPm { copy(chatCreatedEvent = Event(Unit)) } }
     }
   }
 

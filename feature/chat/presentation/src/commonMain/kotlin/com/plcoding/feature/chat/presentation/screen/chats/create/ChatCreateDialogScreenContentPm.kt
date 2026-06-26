@@ -9,5 +9,5 @@ data class ChatCreateDialogScreenContentPm(
   val searchTextFieldState: TextFieldState = TextFieldState(),
   val chatMemberPm: ChatMemberPm? = null,
   val chatMembersPm: List<ChatMemberPm> = listOf(),
-  val chatCreatedEvent: Event<Chat>? = null,
+  val chatCreatedEvent: Event<Unit>? = null,
 )
