@@ -3,6 +3,7 @@ package com.plcoding.feature.chat.presentation.mapper
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.group_chat
 import chirp.feature.chat.presentation.generated.resources.you_and_others
+import com.plcoding.core.designsystem.model.DropDownItemPm
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.feature.chat.domain.model.ChatMember
@@ -12,41 +13,56 @@ import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 
 class ChatHeaderPmMapper(
   private val chatMemberPmMapper: ChatMemberPmMapper,
-) : Mapper<List<ChatMember>, ChatHeaderPm, ChatHeaderPmMapper.Params> {
+) : Mapper<ChatHeaderPmMapper.From, ChatHeaderPm, Unit> {
 
-  override fun map(from: List<ChatMember>, params: Params): ChatHeaderPm {
+  override fun map(from: From, params: Unit): ChatHeaderPm {
     return with(from) {
       ChatHeaderPm(
         avatarsPm = chatMemberPmMapper
-          .mapList(this, Unit)
+          .mapList(chatMembers, Unit)
           .map(ChatMemberPm::avatarPm),
-        title = getTitle(this, params),
-        description = getDescription(this, params),
+        title = getTitle(this),
+        description = getDescription(this),
+        dropDownItemsPm = if (showDropDown) getDropDownItemsPm() else null
       )
     }
   }
 
-  private fun getTitle(from: List<ChatMember>, params: Params): TextProvider {
-    return if (from.isGroup) {
+  private fun getTitle(from: From): TextProvider {
+    return if (from.chatMembers.isGroup) {
       TextProvider.Resource(Res.string.group_chat, listOf())
     } else {
       val member = from
-        .firstOrNull { it.userId != params.yourId }
-        ?: from.first()
+        .chatMembers
+        .firstOrNull { it.userId != from.yourId }
+        ?: from.chatMembers.first()
 
       TextProvider.Dynamic(member.username)
     }
   }
 
-  private fun getDescription(from: List<ChatMember>, params: Params): TextProvider? {
-    if (!from.isGroup) return null
+  private fun getDescription(from: From): TextProvider? {
+    if (!from.chatMembers.isGroup) return null
 
-    val remoteMembers = from.filter { it.userId != params.yourId }
+    val remoteMembers = from.chatMembers.filter { it.userId != from.yourId }
     val formattedRemoteMembers = remoteMembers.joinToString { it.username }
     return TextProvider.Resource(Res.string.you_and_others, listOf(formattedRemoteMembers))
   }
 
-  data class Params(
+  private fun getDropDownItemsPm(): List<DropDownItemPm> {
+    return listOf(
+      DropDownItemPm(
+        leadingIconRes = leadingIconRes,
+        titleRes = Res.string.,
+        color = color,
+      ),
+      DropDownItemPm(),
+    )
+  }
+
+  data class From(
     val yourId: String?,
+    val showDropDown: Boolean,
+    val chatMembers: List<ChatMember>,
   )
 }

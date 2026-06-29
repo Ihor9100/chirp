@@ -16,7 +16,6 @@ data class DropDownItemPm(
   val leadingIconRes: DrawableResource?,
   val titleRes: StringResource,
   val color: Color,
-  val onClick: () -> Unit,
 ) {
 
   companion object {
@@ -27,19 +26,16 @@ data class DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
           titleRes = Res.string.hide_password,
           color = MaterialTheme.colorScheme.extended.textPrimary,
-          onClick = { },
         ),
         DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
           titleRes = Res.string.show_password,
           color = MaterialTheme.colorScheme.extended.textPrimary,
-          onClick = { },
         ),
         DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
           titleRes = Res.string.failed,
           color = MaterialTheme.colorScheme.error,
-          onClick = { },
         ),
       )
   }

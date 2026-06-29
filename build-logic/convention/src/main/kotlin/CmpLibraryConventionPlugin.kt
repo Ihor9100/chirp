@@ -33,6 +33,8 @@ open class CmpLibraryConventionPlugin : KmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("coil-compose").get())
         "commonMainImplementation"(libs.findLibrary("coil-network-ktor").get())
 
+//        "androidMainImplementation"(platform(libs.findLibrary("androidx-compose-bom").get()))
+//        "androidMainImplementation"(libs.findLibrary("androidx-compose-ui-tooling-preview").get())
         "androidMainImplementation"(libs.findLibrary("androidx-compose-ui-tooling").get())
       }
     }

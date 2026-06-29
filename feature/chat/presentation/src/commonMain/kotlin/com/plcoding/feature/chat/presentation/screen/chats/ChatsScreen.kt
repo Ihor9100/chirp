@@ -25,6 +25,7 @@ import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldDestinationIt
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_arrow_left
 import chirp.feature.chat.presentation.generated.resources.ic_dots
 import chirp.feature.chat.presentation.generated.resources.ic_plus
+import com.plcoding.core.designsystem.components.DropDownMenuPc
 import com.plcoding.core.designsystem.components.button.FloatingButtonPc
 import com.plcoding.core.designsystem.components.button.IconButtonPc
 import com.plcoding.core.designsystem.components.textfields.MultilineTextFieldPc
@@ -94,6 +96,9 @@ fun ChatsScreen(
           is ChatsScreenAction.OnPlusClick -> {
             navController.navigate(ChatRoute.ChatCreate)
           }
+          ChatsScreenAction.OnChatDetailsBackClick -> coroutineScope.launch {
+            scaffoldNavigator.navigateBack()
+          }
         }
       }
     )
@@ -111,7 +116,7 @@ private fun Content(
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
     listPane = { ChatsPane(contentPm, onAction) },
-    detailPane = { ChatDetailsPane(contentPm, deviceConfiguration) },
+    detailPane = { ChatDetailsPane(contentPm, deviceConfiguration, onAction) },
   )
 }
 
@@ -172,7 +177,9 @@ private fun ChatsPane(
 private fun ChatDetailsPane(
   content: ChatsScreenContentPm,
   deviceConfiguration: DeviceConfiguration,
+  onAction: (ChatsScreenAction) -> Unit,
 ) {
+  val coroutineScope = rememberCoroutineScope()
   Column(
     modifier = Modifier
       .fillMaxSize()
@@ -207,7 +214,7 @@ private fun ChatDetailsPane(
         IconButtonPc(
           modifier = Modifier,
           iconRes = Res.drawable.ic_arrow_left,
-          onClick = {}
+          onClick = { onAction(ChatsScreenAction.OnChatDetailsBackClick) }
         )
         ChatHeaderPc(
           modifier = Modifier.weight(1f),
@@ -216,7 +223,7 @@ private fun ChatDetailsPane(
         IconButtonPc(
           modifier = Modifier,
           iconRes = Res.drawable.ic_dots,
-          onClick = {}
+          onClick = { DropDownMenuPc() }
         )
       }
       HorizontalDivider()

@@ -1,7 +1,6 @@
 package com.plcoding.core.designsystem.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
@@ -24,6 +23,7 @@ fun DropDownMenuPc(
   modifier: Modifier = Modifier,
   showMenu: Boolean,
   items: List<DropDownItemPm>,
+  onAction: (DropDownItemPm) -> Unit,
   onDismiss: () -> Unit,
 ) {
   DropdownMenu(
@@ -57,7 +57,7 @@ fun DropDownMenuPc(
             )
           }
         },
-        onClick = itemPm.onClick,
+        onClick = { onAction(itemPm) },
       )
       if (index != items.lastIndex) {
         HorizontalDividerPc()
@@ -76,6 +76,7 @@ private fun Themed(
     DropDownMenuPc(
       showMenu = true,
       items = DropDownItemPm.mocks,
+      onAction = {},
       onDismiss = {},
     )
   }
