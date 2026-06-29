@@ -7,12 +7,9 @@ import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatMessage
 
-class ChatsAndMembersEntityMapper : Mapper<List<Chat>, List<ChatAndMemberEntity>, Unit> {
+class ChatsAndMembersEntityMapper : Mapper<List<Chat>, List<ChatAndMemberEntity>> {
 
-  override fun map(
-    from: List<Chat>,
-    params: Unit
-  ): List<ChatAndMemberEntity> {
+  override fun map(from: List<Chat>): List<ChatAndMemberEntity> {
     return from.flatMap { chat ->
       chat.members.map {
         ChatAndMemberEntity(

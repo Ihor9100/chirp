@@ -41,19 +41,19 @@ class ChatDataRepository(
   override suspend fun observeChats(): Flow<List<Chat>> {
     return localDataSource
       .observeChatAndMembers()
-      .map { chatAndMembersRelationMapper.mapList(it, Unit) }
+      .map(chatAndMembersRelationMapper::mapList)
   }
 
   override suspend fun observeChatDetails(chatId: String): Flow<ChatDetails> {
     return localDataSource
       .observeChatAndMembersAndMessages(chatId)
-      .map { chatDetailsMapper.map(it, Unit) }
+      .map(chatDetailsMapper::map)
   }
 
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
     return remoteDataSource
       .searchMember(query)
-      .map { chatMemberAmMapper.map(it, Unit) }
+      .map(chatMemberAmMapper::map)
   }
 
   override suspend fun createChat(memberIds: List<String>): Empty<DataError> {
@@ -69,13 +69,13 @@ class ChatDataRepository(
   }
 
   private suspend fun upsertChatDetails(chatAm: ChatAm): Empty<DataError> {
-    val chat = chatMapper.map(chatAm, Unit)
+    val chat = chatMapper.map(chatAm)
 
     return localDataSource.upsertChatDetails(
       chatEntityMapper.map(chat, ChatEntityMapper.Params(listOf(), null)),
-      chatMemberEntityMapper.mapList(chat.members, Unit),
-      chatMessageEntityMapper.mapList(listOfNotNull(chat.lastMessage), Unit),
-      chatsAndMembersEntityMapper.map(listOf(chat), Unit),
+      chatMemberEntityMapper.mapList(chat.members),
+      chatMessageEntityMapper.mapList(listOfNotNull(chat.lastMessage)),
+      chatsAndMembersEntityMapper.map(listOf(chat)),
     )
   }
 
@@ -83,13 +83,13 @@ class ChatDataRepository(
     return remoteDataSource
       .getChats()
       .flatMap {
-        val chats = chatMapper.mapList(it, Unit)
+        val chats = chatMapper.mapList(it)
 
         localDataSource.replaceChatsDetails(
           chatEntityMapper.mapList(chats, ChatEntityMapper.Params(listOf(), null)),
-          chatMemberEntityMapper.mapList(chats.flatMap(Chat::members), Unit),
-          chatMessageEntityMapper.mapList(chats.mapNotNull(Chat::lastMessage), Unit),
-          chatsAndMembersEntityMapper.map(chats, Unit),
+          chatMemberEntityMapper.mapList(chats.flatMap(Chat::members)),
+          chatMessageEntityMapper.mapList(chats.mapNotNull(Chat::lastMessage)),
+          chatsAndMembersEntityMapper.map(chats),
         )
       }
   }

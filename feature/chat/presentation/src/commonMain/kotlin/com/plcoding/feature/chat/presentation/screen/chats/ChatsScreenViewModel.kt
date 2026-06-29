@@ -72,28 +72,20 @@ class ChatsScreenViewModel(
         preferencesRepository.observeAuthInfo(),
         chatRepository.observeChats(),
         _chatDetails,
-        ::getContentPm,
-      )
+      ) { chatId, authInfo, chats, chatDetails ->
+        contentPmMapper.map(
+          ChatsScreenContentPmMapper.From(
+            yourId = authInfo?.user?.id,
+            chatId = chatId,
+            chats = chats,
+            chatDetails = chatDetails,
+            showDropDown = showDropDown,
+          )
+        )
+      }
         .flowOn(Dispatchers.IO)
         .collect { updateContentPm { it } }
     }
-  }
-
-  private fun getContentPm(
-    chatId: String?,
-    authInfo: AuthInfo?,
-    chats: List<Chat>,
-    chatDetails: ChatDetails?,
-  ): ChatsScreenContentPm {
-    return contentPmMapper.map(
-      ChatsScreenContentPmMapper.From(
-        yourId = authInfo?.user?.id,
-        chatId = chatId,
-        chats = chats,
-        chatDetails = chatDetails,
-      ),
-      Unit,
-    )
   }
 
   private suspend fun observeChatDetails(chatId: String?): Flow<ChatDetails?> {

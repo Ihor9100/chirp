@@ -1,6 +1,7 @@
 package com.plcoding.feature.chat.data.mapper
 
 import com.plcoding.core.domain.mapper.BiMapper
+import com.plcoding.core.domain.mapper.BiMapperWithParams
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.feature.chat.database.entity.ChatEntity
 import com.plcoding.feature.chat.database.entity.ChatMemberEntity
@@ -12,7 +13,7 @@ import kotlin.time.Instant
 class ChatEntityMapper(
   private val chatMemberEntityMapper: ChatMemberEntityMapper,
   private val chatMessageEntityMapper: ChatMessageEntityMapper,
-) : BiMapper<Chat, ChatEntity, ChatEntityMapper.Params> {
+) : BiMapperWithParams<Chat, ChatEntity, ChatEntityMapper.Params> {
 
   override fun map(
     from: Chat,
@@ -33,9 +34,9 @@ class ChatEntityMapper(
     return with(from) {
       Chat(
         id = id,
-        members = chatMemberEntityMapper.reverseList(params.chatMemberEntities, Unit),
+        members = chatMemberEntityMapper.reverseList(params.chatMemberEntities),
         lastActivityAt = Instant.fromEpochMilliseconds(lastActivityAt),
-        lastMessage = params.chatLastMessage?.let { chatMessageEntityMapper.reverse(it, Unit) },
+        lastMessage = params.chatLastMessage?.let(chatMessageEntityMapper::reverse),
       )
     }
   }

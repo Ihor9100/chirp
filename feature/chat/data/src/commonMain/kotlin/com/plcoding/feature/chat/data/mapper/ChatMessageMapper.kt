@@ -6,9 +6,9 @@ import com.plcoding.feature.chat.domain.model.ChatMessage
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlin.time.Instant
 
-class ChatMessageMapper : Mapper<ChatMessageAm, ChatMessage, Unit> {
+class ChatMessageMapper : Mapper<ChatMessageAm, ChatMessage> {
 
-  override fun map(from: ChatMessageAm, params: Unit): ChatMessage {
+  override fun map(from: ChatMessageAm): ChatMessage {
     return with(from) {
       ChatMessage(
         id = id,

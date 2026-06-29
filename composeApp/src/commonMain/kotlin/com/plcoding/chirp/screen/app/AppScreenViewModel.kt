@@ -10,6 +10,7 @@ import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class AppScreenViewModel(
   private val preferencesRepository: PreferencesRepository,
@@ -29,7 +30,7 @@ class AppScreenViewModel(
   }
 
   private fun updateStartDestination() {
-    launch {
+    viewModelScope.launch {
       val authInfo = preferencesRepository.observeAuthInfo().firstOrNull()
 
       val startDestination = if (authInfo == null) {

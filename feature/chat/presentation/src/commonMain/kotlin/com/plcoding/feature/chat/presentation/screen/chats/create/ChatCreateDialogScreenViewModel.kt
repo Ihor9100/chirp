@@ -84,7 +84,7 @@ class ChatCreateDialogScreenViewModel(
 
       chatRepository
         .searchMember(searchQuery.toString())
-        .mapOn { chatMemberPmMapper.map(it, Unit) }
+        .mapOn { chatMemberPmMapper.map(it) }
         .onFailure(::handleSearchMemberFailure)
         .onSuccess(::handleSearchMemberSuccess)
     }

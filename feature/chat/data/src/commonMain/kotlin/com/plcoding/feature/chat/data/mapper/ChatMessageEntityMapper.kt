@@ -8,12 +8,9 @@ import com.plcoding.feature.chat.domain.model.ChatMessage
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlin.time.Instant
 
-class ChatMessageEntityMapper : BiMapper<ChatMessage, ChatMessageEntity, Unit> {
+class ChatMessageEntityMapper : BiMapper<ChatMessage, ChatMessageEntity> {
 
-  override fun map(
-    from: ChatMessage,
-    params: Unit
-  ): ChatMessageEntity {
+  override fun map(from: ChatMessage): ChatMessageEntity {
     return with(from) {
       ChatMessageEntity(
         id = id,
@@ -26,18 +23,15 @@ class ChatMessageEntityMapper : BiMapper<ChatMessage, ChatMessageEntity, Unit> {
     }
   }
 
-  override fun reverse(
-    from: ChatMessageEntity,
-    params: Unit
-  ): ChatMessage {
+  override fun reverse(from: ChatMessageEntity): ChatMessage {
     return with(from) {
       ChatMessage(
-       id = id,
-       chatId = chatId,
-       senderId = senderId,
-       content = content,
-       createdAt = Instant.fromEpochMilliseconds(timestamp),
-       deliveryStatus = ChatMessageDeliveryStatus.valueOf(status),
+        id = id,
+        chatId = chatId,
+        senderId = senderId,
+        content = content,
+        createdAt = Instant.fromEpochMilliseconds(timestamp),
+        deliveryStatus = ChatMessageDeliveryStatus.valueOf(status),
       )
     }
   }

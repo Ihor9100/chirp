@@ -8,15 +8,15 @@ import kotlin.time.Instant
 class ChatMapper(
   private val chatMemberAmMapper: ChatMemberAmMapper,
   private val chatMessageMapper: ChatMessageMapper,
-) : Mapper<ChatAm, Chat, Unit> {
+) : Mapper<ChatAm, Chat> {
 
-  override fun map(from: ChatAm, params: Unit): Chat {
+  override fun map(from: ChatAm): Chat {
     return with(from) {
       Chat(
         id = id,
-        members = chatMemberAmMapper.mapList(participants, Unit),
+        members = chatMemberAmMapper.mapList(participants),
         lastActivityAt = Instant.parse(lastActivityAt),
-        lastMessage = lastMessage?.let { chatMessageMapper.map(it, Unit) },
+        lastMessage = lastMessage?.let(chatMessageMapper::map),
       )
     }
   }

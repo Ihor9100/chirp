@@ -11,6 +11,7 @@ import com.plcoding.feature.chat.presentation.mapper.ChatDetailsPmMapper
 import com.plcoding.feature.chat.presentation.mapper.ChatHeaderPmMapper
 import com.plcoding.feature.chat.presentation.mapper.ChatPmMapper
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStatePm
+import com.plcoding.feature.chat.presentation.model.ChatPm
 import com.plcoding.feature.chat.presentation.screen.chats.ChatsScreenContentPmMapper.From
 import org.jetbrains.compose.resources.StringResource
 
@@ -32,14 +33,7 @@ class ChatsScreenContentPmMapper(
           descriptionRes = Res.string.select_chat_subtitle,
         ),
         chatId = chatId,
-        chatsPm = chatPmMapper.mapList(
-          chats,
-          ChatPmMapper.Params(
-            yourId = yourId,
-            chatId = chatId,
-            lastChatId = chats.lastOrNull()?.id,
-          ),
-        ),
+        chatsPm = getChatsPm(from),
         chatEmptyState = getChatEmptyState(
           predicate = {
             chatDetails
@@ -51,13 +45,30 @@ class ChatsScreenContentPmMapper(
         ),
         chatHeaderPm = chatDetails?.run {
           chatHeaderPmMapper.map(
-            chat.members,
-            ChatHeaderPmMapper.Params(yourId)
+            ChatHeaderPmMapper.From(
+              yourId = yourId,
+              showDropDown = showDropDown,
+              chatMembers = chat.members,
+            ),
           )
         },
-        chatDetailsPm = chatDetails?.let {
-          chatDetailsPmMapper.map(it, Unit)
-        }.orEmpty(),
+        chatDetailsPm = chatDetails
+          ?.let(chatDetailsPmMapper::map)
+          .orEmpty(),
+      )
+    }
+  }
+
+  private fun getChatsPm(from: From): List<ChatPm> {
+    return from.chats.map {
+      chatPmMapper.map(
+        ChatPmMapper.From(
+          chat = it,
+          yourId = from.yourId,
+          chatId = from.chatId,
+          lastChatId = from.chats.lastOrNull()?.id,
+          showDropDown = from.showDropDown,
+        )
       )
     }
   }
@@ -81,5 +92,6 @@ class ChatsScreenContentPmMapper(
     val chatId: String?,
     val chats: List<Chat>,
     val chatDetails: ChatDetails?,
+    val showDropDown: Boolean,
   )
 }

@@ -90,7 +90,7 @@ class HttpClientFactory(
               request = RefreshRequestAm(authInfo.refreshToken),
               builder = { markAsRefreshTokenRequest() }
             ).onSuccess {
-              preferencesLocalDataRepository.saveAuthInfo(authInfoMapper.map(it, Unit))
+              preferencesLocalDataRepository.saveAuthInfo(authInfoMapper.map(it))
               bearerTokens = BearerTokens(it.accessToken, it.refreshToken)
             }.onFailure {
               preferencesLocalDataRepository.saveAuthInfo(null)

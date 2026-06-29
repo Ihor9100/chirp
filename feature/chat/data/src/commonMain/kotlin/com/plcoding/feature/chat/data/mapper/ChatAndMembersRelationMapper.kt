@@ -10,16 +10,13 @@ import kotlin.time.Instant
 
 class ChatAndMembersRelationMapper(
   private val chatMemberEntityMapper: ChatMemberEntityMapper
-) : Mapper<ChatAndMembersRelation, Chat, Unit> {
+) : Mapper<ChatAndMembersRelation, Chat> {
 
-  override fun map(
-    from: ChatAndMembersRelation,
-    params: Unit
-  ): Chat {
+  override fun map(from: ChatAndMembersRelation): Chat {
     return with(from) {
       Chat(
         id = chatEntity.id,
-        members = chatMemberEntityMapper.reverseList(chatMemberEntities, Unit),
+        members = chatMemberEntityMapper.reverseList(chatMemberEntities),
         lastActivityAt = Instant.fromEpochMilliseconds(chatEntity.lastActivityAt),
         lastMessage = chatLastMessageView?.let(::getLastMessage),
       )

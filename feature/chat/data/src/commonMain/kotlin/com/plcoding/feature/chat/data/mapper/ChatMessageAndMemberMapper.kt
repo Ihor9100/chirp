@@ -13,16 +13,13 @@ import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 class ChatMessageAndMemberMapper(
   private val chatMessageEntityMapper: ChatMessageEntityMapper,
   private val chatMemberEntityMapper: ChatMemberEntityMapper,
-) : Mapper<ChatMessageAndMemberRelation, ChatMessageAndMember, Unit> {
+) : Mapper<ChatMessageAndMemberRelation, ChatMessageAndMember> {
 
-  override fun map(
-    from: ChatMessageAndMemberRelation,
-    params: Unit
-  ): ChatMessageAndMember {
+  override fun map(from: ChatMessageAndMemberRelation): ChatMessageAndMember {
     return with(from) {
       ChatMessageAndMember(
-        chatMessage = chatMessageEntityMapper.reverse(chatMessageEntity, Unit),
-        chatMember = chatMemberEntityMapper.reverse(from.chatMemberEntity, Unit),
+        chatMessage = chatMessageEntityMapper.reverse(chatMessageEntity),
+        chatMember = chatMemberEntityMapper.reverse(from.chatMemberEntity),
         // TODO:  
         deliveryStatus = ChatMessageDeliveryStatus.SENT,
       )

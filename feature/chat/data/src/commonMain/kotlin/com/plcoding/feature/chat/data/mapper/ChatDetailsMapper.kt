@@ -8,17 +8,14 @@ import com.plcoding.feature.chat.domain.model.ChatDetails
 class ChatDetailsMapper(
   private val chatEntityMapper: ChatEntityMapper,
   private val chatMessageAndMemberMapper: ChatMessageAndMemberMapper,
-) : Mapper<ChatAndMembersAndMessagesRelation, ChatDetails, Unit> {
+) : Mapper<ChatAndMembersAndMessagesRelation, ChatDetails> {
 
-  override fun map(
-    from: ChatAndMembersAndMessagesRelation,
-    params: Unit
-  ): ChatDetails {
+  override fun map(from: ChatAndMembersAndMessagesRelation): ChatDetails {
     return with(from) {
       ChatDetails(
         chat = getChat(this),
         chatMessagesAndMembers = chatMessageAndMemberMapper
-          .mapList(from.chatMessageAndMemberRelations, Unit),
+          .mapList(from.chatMessageAndMemberRelations),
       )
     }
   }
