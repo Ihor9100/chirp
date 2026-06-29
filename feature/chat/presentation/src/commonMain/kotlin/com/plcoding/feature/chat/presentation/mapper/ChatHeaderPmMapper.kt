@@ -1,9 +1,15 @@
 package com.plcoding.feature.chat.presentation.mapper
 
+import chirp.core.designsystem.generated.resources.ic_users
 import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.core.designsystem.generated.resources.Res as CoreRes
+import chirp.feature.chat.presentation.generated.resources.chat_members
 import chirp.feature.chat.presentation.generated.resources.group_chat
+import chirp.feature.chat.presentation.generated.resources.ic_log_out
+import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.you_and_others
 import com.plcoding.core.designsystem.model.DropDownItemPm
+import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.feature.chat.domain.model.ChatMember
@@ -52,11 +58,15 @@ class ChatHeaderPmMapper(
   private fun getDropDownItemsPm(): List<DropDownItemPm> {
     return listOf(
       DropDownItemPm(
-        leadingIconRes = leadingIconRes,
-        titleRes = Res.string.,
-        color = color,
+        leadingIconRes = CoreRes.drawable.ic_users,
+        titleRes = Res.string.chat_members,
+        colorToken = ColorToken.TextSecondary,
       ),
-      DropDownItemPm(),
+      DropDownItemPm(
+        leadingIconRes = Res.drawable.ic_log_out,
+        titleRes = Res.string.log_out,
+        colorToken = ColorToken.TextDestructive,
+      ),
     )
   }
 

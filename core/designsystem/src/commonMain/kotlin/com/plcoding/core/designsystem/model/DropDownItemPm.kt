@@ -8,6 +8,7 @@ import chirp.core.designsystem.generated.resources.failed
 import chirp.core.designsystem.generated.resources.hide_password
 import chirp.core.designsystem.generated.resources.ic_settings
 import chirp.core.designsystem.generated.resources.show_password
+import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.designsystem.style.extended
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -15,7 +16,7 @@ import org.jetbrains.compose.resources.StringResource
 data class DropDownItemPm(
   val leadingIconRes: DrawableResource?,
   val titleRes: StringResource,
-  val color: Color,
+  val colorToken: ColorToken,
 ) {
 
   companion object {
@@ -25,17 +26,17 @@ data class DropDownItemPm(
         DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
           titleRes = Res.string.hide_password,
-          color = MaterialTheme.colorScheme.extended.textPrimary,
+          colorToken = ColorToken.TextSecondary,
         ),
         DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
           titleRes = Res.string.show_password,
-          color = MaterialTheme.colorScheme.extended.textPrimary,
-        ),
+          colorToken = ColorToken.TextSecondary,
+          ),
         DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
           titleRes = Res.string.failed,
-          color = MaterialTheme.colorScheme.error,
+          colorToken = ColorToken.TextDestructive,
         ),
       )
   }

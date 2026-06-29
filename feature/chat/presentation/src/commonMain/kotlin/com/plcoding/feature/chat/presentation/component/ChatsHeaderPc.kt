@@ -72,25 +72,25 @@ fun ChatsHeaderPc(
         avatarPm = avatarPm,
         onClick = onAvatarClick,
       )
-      DropDownMenuPc(
-        modifier = Modifier,
-        showMenu = showMenu,
-        items = listOf(
-          DropDownItemPm(
-            leadingIconRes = DesignSystemRes.drawable.ic_settings,
-            titleRes = Res.string.profile_settings,
-            color = MaterialTheme.colorScheme.extended.textPrimary,
-            onClick = { },
-          ),
-          DropDownItemPm(
-            leadingIconRes = Res.drawable.ic_log_out,
-            titleRes = Res.string.log_out,
-            color = MaterialTheme.colorScheme.error,
-            onClick = { },
-          ),
-        ),
-        onDismiss = onDismissClick,
-      )
+//      DropDownMenuPc(
+//        modifier = Modifier,
+//        showMenu = showMenu,
+//        items = listOf(
+//          DropDownItemPm(
+//            leadingIconRes = DesignSystemRes.drawable.ic_settings,
+//            titleRes = Res.string.profile_settings,
+//            color = MaterialTheme.colorScheme.extended.textPrimary,
+//            onClick = { },
+//          ),
+//          DropDownItemPm(
+//            leadingIconRes = Res.drawable.ic_log_out,
+//            titleRes = Res.string.log_out,
+//            color = MaterialTheme.colorScheme.error,
+//            onClick = { },
+//          ),
+//        ),
+//        onDismiss = onDismissClick,
+//      )
     }
     HorizontalDividerPc()
   }
