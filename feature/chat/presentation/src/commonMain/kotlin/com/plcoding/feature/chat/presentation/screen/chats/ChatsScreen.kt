@@ -99,7 +99,7 @@ fun ChatsScreen(
           is ChatsScreenAction.OnChatDetailsBackClick -> coroutineScope.launch {
             scaffoldNavigator.navigateBack()
           }
-          else -> Unit
+          else -> viewModel.handleAction(it)
         }
       }
     )
@@ -180,7 +180,6 @@ private fun ChatDetailsPane(
   deviceConfiguration: DeviceConfiguration,
   onAction: (ChatsScreenAction) -> Unit,
 ) {
-  val coroutineScope = rememberCoroutineScope()
   Column(
     modifier = Modifier
       .fillMaxSize()
@@ -221,11 +220,20 @@ private fun ChatDetailsPane(
           modifier = Modifier.weight(1f),
           chatHeaderPm = content.chatHeaderPm!!,
         )
-        IconButtonPc(
-          modifier = Modifier,
-          iconRes = Res.drawable.ic_dots,
-          onClick = { onAction(ChatsScreenAction.OnChatDetailsOptionsClick) }
-        )
+        Box {
+          IconButtonPc(
+            modifier = Modifier,
+            iconRes = Res.drawable.ic_dots,
+            onClick = { onAction(ChatsScreenAction.OnChatDetailsMenuClick) }
+          )
+          DropDownMenuPc(
+            modifier = Modifier,
+            showMenu = !content.dropDownItemsPm.isNullOrEmpty(),
+            items = content.dropDownItemsPm.orEmpty(),
+            onAction = { onAction(ChatsScreenAction.OnChatDetailsMenuItemClick(it)) },
+            onDismiss = { onAction(ChatsScreenAction.OnChatDetailsMenuDismissClick) },
+          )
+        }
       }
       HorizontalDivider()
       ChatDetailsPc(

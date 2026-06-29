@@ -103,8 +103,14 @@ class ChatsScreenViewModel(
 
   fun handleAction(chatsScreenAction: ChatsScreenAction) {
     when (chatsScreenAction) {
-      is ChatsScreenAction.OnChatDetailsOptionsClick -> {
+      is ChatsScreenAction.OnChatDetailsMenuClick -> {
         observeScreenData(showDropDown = true)
+      }
+      is ChatsScreenAction.OnChatDetailsMenuDismissClick -> {
+        observeScreenData(showDropDown = false)
+      }
+      is ChatsScreenAction.OnChatDetailsMenuItemClick -> {
+        // TODO:  
       }
       else -> Unit
     }

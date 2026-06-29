@@ -11,7 +11,6 @@ data class ChatHeaderPm(
   val avatarsPm: List<AvatarPm>,
   val title: TextProvider,
   val description: TextProvider?,
-  val dropDownItemsPm: List<DropDownItemPm>?,
 ) {
 
   companion object {
@@ -19,7 +18,6 @@ data class ChatHeaderPm(
       get() = ChatHeaderPmMapper(ChatMemberPmMapper()).map(
         from = ChatHeaderPmMapper.From(
           yourId = "1",
-          showDropDown = true,
           chatMembers = ChatMember.mocks,
         ),
       )

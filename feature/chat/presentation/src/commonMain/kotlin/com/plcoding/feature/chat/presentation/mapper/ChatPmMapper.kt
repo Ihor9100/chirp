@@ -18,13 +18,7 @@ class ChatPmMapper(
 
       ChatPm(
         id = chat.id,
-        chatHeaderPm = chatHeaderPmMapper.map(
-          from = ChatHeaderPmMapper.From(
-            yourId = yourId,
-            showDropDown = showDropDown,
-            chatMembers = chat.members,
-          )
-        ),
+        chatHeaderPm = chatHeaderPmMapper.map(ChatHeaderPmMapper.From(yourId, chat.members)),
         content = getContent(this),
         backgroundColorToken = if (isSelected) ColorToken.Surface else ColorToken.Background,
         showVerticalDivider = isSelected,

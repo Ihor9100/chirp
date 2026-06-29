@@ -21,7 +21,6 @@ data class DropDownItemPm(
 
   companion object {
     val mocks
-      @Composable
       get() = listOf(
         DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
@@ -32,7 +31,7 @@ data class DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
           titleRes = Res.string.show_password,
           colorToken = ColorToken.TextSecondary,
-          ),
+        ),
         DropDownItemPm(
           leadingIconRes = Res.drawable.ic_settings,
           titleRes = Res.string.failed,

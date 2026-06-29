@@ -1,9 +1,16 @@
 package com.plcoding.feature.chat.presentation.screen.chats
 
+import chirp.core.designsystem.generated.resources.Res as CoreRes
+import chirp.core.designsystem.generated.resources.ic_users
 import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.chat_members
+import chirp.feature.chat.presentation.generated.resources.ic_log_out
+import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.no_messages
 import chirp.feature.chat.presentation.generated.resources.no_messages_subtitle
 import chirp.feature.chat.presentation.generated.resources.select_chat_subtitle
+import com.plcoding.core.designsystem.model.DropDownItemPm
+import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
@@ -44,14 +51,9 @@ class ChatsScreenContentPmMapper(
           descriptionRes = Res.string.no_messages_subtitle,
         ),
         chatHeaderPm = chatDetails?.run {
-          chatHeaderPmMapper.map(
-            ChatHeaderPmMapper.From(
-              yourId = yourId,
-              showDropDown = showDropDown,
-              chatMembers = chat.members,
-            ),
-          )
+          chatHeaderPmMapper.map(ChatHeaderPmMapper.From(yourId, chat.members))
         },
+        dropDownItemsPm = if (showDropDown) getDropDownItemsPm() else null,
         chatDetailsPm = chatDetails
           ?.let(chatDetailsPmMapper::map)
           .orEmpty(),
@@ -71,6 +73,21 @@ class ChatsScreenContentPmMapper(
         )
       )
     }
+  }
+
+  private fun getDropDownItemsPm(): List<DropDownItemPm> {
+    return listOf(
+      DropDownItemPm(
+        leadingIconRes = CoreRes.drawable.ic_users,
+        titleRes = Res.string.chat_members,
+        colorToken = ColorToken.TextSecondary,
+      ),
+      DropDownItemPm(
+        leadingIconRes = Res.drawable.ic_log_out,
+        titleRes = Res.string.log_out,
+        colorToken = ColorToken.TextDestructive,
+      ),
+    )
   }
 
   private fun getChatEmptyState(

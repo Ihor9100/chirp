@@ -29,7 +29,6 @@ class ChatHeaderPmMapper(
           .map(ChatMemberPm::avatarPm),
         title = getTitle(this),
         description = getDescription(this),
-        dropDownItemsPm = if (showDropDown) getDropDownItemsPm() else null
       )
     }
   }
@@ -55,24 +54,8 @@ class ChatHeaderPmMapper(
     return TextProvider.Resource(Res.string.you_and_others, listOf(formattedRemoteMembers))
   }
 
-  private fun getDropDownItemsPm(): List<DropDownItemPm> {
-    return listOf(
-      DropDownItemPm(
-        leadingIconRes = CoreRes.drawable.ic_users,
-        titleRes = Res.string.chat_members,
-        colorToken = ColorToken.TextSecondary,
-      ),
-      DropDownItemPm(
-        leadingIconRes = Res.drawable.ic_log_out,
-        titleRes = Res.string.log_out,
-        colorToken = ColorToken.TextDestructive,
-      ),
-    )
-  }
-
   data class From(
     val yourId: String?,
-    val showDropDown: Boolean,
     val chatMembers: List<ChatMember>,
   )
 }

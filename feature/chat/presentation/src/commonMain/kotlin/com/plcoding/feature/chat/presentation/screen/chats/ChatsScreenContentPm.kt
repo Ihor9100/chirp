@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.presentation.screen.chats
 
+import com.plcoding.core.designsystem.model.DropDownItemPm
 import com.plcoding.feature.chat.presentation.model.ChatDetailsPm
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStatePm
 import com.plcoding.feature.chat.presentation.model.ChatHeaderPm
@@ -12,6 +13,7 @@ data class ChatsScreenContentPm(
   val chatId: String?,
   val chatEmptyState: ChatEmptyStatePm?,
   val chatHeaderPm: ChatHeaderPm?,
+  val dropDownItemsPm: List<DropDownItemPm>?,
   val chatDetailsPm: List<ChatDetailsPm>?,
 ) {
 
@@ -24,6 +26,7 @@ data class ChatsScreenContentPm(
         chatId = ChatPm.mocks.first().id,
         chatEmptyState = ChatEmptyStatePm.mock,
         chatHeaderPm = ChatHeaderPm.mock,
+        dropDownItemsPm = DropDownItemPm.mocks,
         chatDetailsPm = ChatDetailsPm.mocks,
       )
   }
