@@ -6,6 +6,7 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.model.BaseContentPm
 import com.plcoding.core.presentation.screen.model.Overlay
 import com.plcoding.core.presentation.screen.model.ScreenStatePm
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -39,14 +40,8 @@ abstract class BaseScreenViewModel<ContentPm> : ViewModel() {
 
   protected open fun onInitialize() = Unit
 
-  protected fun launch(block: suspend () -> Unit) {
-    viewModelScope.launch {
-      block()
-    }
-  }
-
   protected fun launchLoadable(block: suspend () -> Unit) {
-    launch {
+    viewModelScope.launch {
       val overlays = setOf(Overlay.Blocker, Overlay.Loader(showBackground = false))
       updateBaseContentPm { copy(overlays = this.overlays?.plus(overlays) ?: overlays) }
       block()

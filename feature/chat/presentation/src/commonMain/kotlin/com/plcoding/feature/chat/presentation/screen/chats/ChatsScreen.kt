@@ -96,9 +96,10 @@ fun ChatsScreen(
           is ChatsScreenAction.OnPlusClick -> {
             navController.navigate(ChatRoute.ChatCreate)
           }
-          ChatsScreenAction.OnChatDetailsBackClick -> coroutineScope.launch {
+          is ChatsScreenAction.OnChatDetailsBackClick -> coroutineScope.launch {
             scaffoldNavigator.navigateBack()
           }
+          else -> Unit
         }
       }
     )
@@ -223,7 +224,7 @@ private fun ChatDetailsPane(
         IconButtonPc(
           modifier = Modifier,
           iconRes = Res.drawable.ic_dots,
-          onClick = { DropDownMenuPc() }
+          onClick = { onAction(ChatsScreenAction.OnChatDetailsOptionsClick) }
         )
       }
       HorizontalDivider()

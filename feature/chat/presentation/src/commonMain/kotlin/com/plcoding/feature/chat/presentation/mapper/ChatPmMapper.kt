@@ -10,9 +10,9 @@ import com.plcoding.feature.chat.presentation.model.ChatPm
 
 class ChatPmMapper(
   private val chatHeaderPmMapper: ChatHeaderPmMapper,
-) : Mapper<ChatPmMapper.From, ChatPm, Unit> {
+) : Mapper<ChatPmMapper.From, ChatPm> {
 
-  override fun map(from: From, params: Unit): ChatPm {
+  override fun map(from: From): ChatPm {
     return with(from) {
       val isSelected = chat.id == from.chatId
 
@@ -23,29 +23,34 @@ class ChatPmMapper(
             yourId = yourId,
             showDropDown = showDropDown,
             chatMembers = chat.members,
-          ),
-          params = ChatHeaderPmMapper.Params(params.yourId),
+          )
         ),
-        content = getContent(this, params),
+        content = getContent(this),
         backgroundColorToken = if (isSelected) ColorToken.Surface else ColorToken.Background,
         showVerticalDivider = isSelected,
-        showHorizontalDivider = params.lastChatId != null && id != params.lastChatId,
+        showHorizontalDivider = lastChatId != null && chat.id != lastChatId,
       )
     }
   }
 
-  private fun getContent(
-    from: Chat,
-    params: Params
-  ): TextProvider? {
-    if (from.lastMessage == null) return null
+  private fun getContent(from: From): TextProvider? {
+    if (from.chat.lastMessage == null) return null
 
-    val member = from.members.firstOrNull { it.userId == from.lastMessage?.senderId }
+    val member = from.chat.members.firstOrNull {
+      it.userId == from.chat.lastMessage?.senderId
+    }
 
-    return if (member?.userId == params.yourId) {
-      from.lastMessage?.let { TextProvider.Resource(Res.string.your_message, listOf(it.content)) }
+    return if (member?.userId == from.yourId) {
+      from.chat.lastMessage?.let {
+        TextProvider.Resource(
+          Res.string.your_message,
+          listOf(it.content),
+        )
+      }
     } else {
-      from.lastMessage?.let { TextProvider.Dynamic("${member?.username}: ${it.content}") }
+      from.chat.lastMessage?.let {
+        TextProvider.Dynamic("${member?.username}: ${it.content}")
+      }
     }
   }
 

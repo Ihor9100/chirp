@@ -1,8 +1,8 @@
 package com.plcoding.core.domain.mapper
 
-interface BiMapper<T, R, P> : Mapper<T, R, P> {
-  fun reverse(from: R, params: P): T
-  fun reverseList(from: List<R>, params: P): List<T> {
-    return from.map { reverse(it, params) }
+interface BiMapper<T, R> : Mapper<T, R> {
+  fun reverse(from: R): T
+  fun reverseList(from: List<R>): List<T> {
+    return from.map { reverse(it) }
   }
 }

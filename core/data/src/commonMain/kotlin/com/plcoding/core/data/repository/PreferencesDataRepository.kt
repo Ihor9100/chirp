@@ -26,7 +26,7 @@ class PreferencesDataRepository(
       val serialized = it[authInfoKey]
       serialized?.run {
         val authInfoAm = json.decodeFromString<AuthInfoAm>(this)
-        authInfoMapper.map(authInfoAm, Unit)
+        authInfoMapper.map(authInfoAm)
       }
     }
   }
@@ -38,7 +38,7 @@ class PreferencesDataRepository(
     }
 
     dataStore.edit {
-      val authInfoAm = authInfoMapper.reverse(authInfo, Unit)
+      val authInfoAm = authInfoMapper.reverse(authInfo)
       it[authInfoKey] = json.encodeToString(authInfoAm)
     }
   }

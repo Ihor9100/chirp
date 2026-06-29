@@ -19,13 +19,13 @@ import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 
 class ChatHeaderPmMapper(
   private val chatMemberPmMapper: ChatMemberPmMapper,
-) : Mapper<ChatHeaderPmMapper.From, ChatHeaderPm, Unit> {
+) : Mapper<ChatHeaderPmMapper.From, ChatHeaderPm> {
 
-  override fun map(from: From, params: Unit): ChatHeaderPm {
+  override fun map(from: From): ChatHeaderPm {
     return with(from) {
       ChatHeaderPm(
         avatarsPm = chatMemberPmMapper
-          .mapList(chatMembers, Unit)
+          .mapList(chatMembers)
           .map(ChatMemberPm::avatarPm),
         title = getTitle(this),
         description = getDescription(this),

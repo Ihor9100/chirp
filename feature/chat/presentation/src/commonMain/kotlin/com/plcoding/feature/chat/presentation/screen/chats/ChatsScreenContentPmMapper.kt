@@ -18,12 +18,9 @@ class ChatsScreenContentPmMapper(
   private val chatPmMapper: ChatPmMapper,
   private val chatHeaderPmMapper: ChatHeaderPmMapper,
   private val chatDetailsPmMapper: ChatDetailsPmMapper,
-) : Mapper<From, ChatsScreenContentPm, Unit> {
+) : Mapper<From, ChatsScreenContentPm> {
 
-  override fun map(
-    from: From,
-    params: Unit
-  ): ChatsScreenContentPm {
+  override fun map(from: From): ChatsScreenContentPm {
     return with(from) {
       ChatsScreenContentPm(
         chatsEmptyState = getChatEmptyState(

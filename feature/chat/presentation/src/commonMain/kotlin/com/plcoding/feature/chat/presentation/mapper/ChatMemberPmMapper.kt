@@ -6,9 +6,9 @@ import com.plcoding.core.domain.mapper.Mapper
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 
-class ChatMemberPmMapper : Mapper<ChatMember, ChatMemberPm, Unit> {
+class ChatMemberPmMapper : Mapper<ChatMember, ChatMemberPm> {
 
-  override fun map(from: ChatMember, params: Unit): ChatMemberPm {
+  override fun map(from: ChatMember): ChatMemberPm {
     return with(from) {
       ChatMemberPm(
         id = userId,

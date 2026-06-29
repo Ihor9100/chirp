@@ -17,8 +17,11 @@ data class ChatHeaderPm(
   companion object {
     val mock
       get() = ChatHeaderPmMapper(ChatMemberPmMapper()).map(
-        from = ChatMember.mocks,
-        params = ChatHeaderPmMapper.Params("1"),
+        from = ChatHeaderPmMapper.From(
+          yourId = "1",
+          showDropDown = true,
+          chatMembers = ChatMember.mocks,
+        ),
       )
   }
 }

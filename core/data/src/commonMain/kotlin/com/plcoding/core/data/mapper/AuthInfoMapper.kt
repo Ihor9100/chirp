@@ -6,27 +6,24 @@ import com.plcoding.core.domain.model.AuthInfo
 
 class AuthInfoMapper(
   private val userMapper: UserMapper,
-) : BiMapper<AuthInfoAm, AuthInfo, Unit> {
+) : BiMapper<AuthInfoAm, AuthInfo> {
 
-  override fun map(from: AuthInfoAm, params: Unit): AuthInfo {
+  override fun map(from: AuthInfoAm): AuthInfo {
     return with(from) {
       AuthInfo(
         accessToken = accessToken,
         refreshToken = refreshToken,
-        user = userMapper.map(user, Unit)
+        user = userMapper.map(user)
       )
     }
   }
 
-  override fun reverse(
-    from: AuthInfo,
-    params: Unit
-  ): AuthInfoAm {
+  override fun reverse(from: AuthInfo): AuthInfoAm {
     return with(from) {
       AuthInfoAm(
         accessToken = accessToken,
         refreshToken = refreshToken,
-        user = userMapper.reverse(user, Unit)
+        user = userMapper.reverse(user)
       )
     }
   }

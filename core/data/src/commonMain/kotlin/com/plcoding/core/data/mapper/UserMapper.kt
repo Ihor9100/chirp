@@ -4,9 +4,9 @@ import com.plcoding.core.data.model.UserAm
 import com.plcoding.core.domain.mapper.BiMapper
 import com.plcoding.core.domain.model.User
 
-class UserMapper : BiMapper<UserAm, User, Unit> {
+class UserMapper : BiMapper<UserAm, User> {
 
-  override fun map(from: UserAm, params: Unit): User {
+  override fun map(from: UserAm): User {
     return with(from) {
       User(
         id = id,
@@ -18,10 +18,7 @@ class UserMapper : BiMapper<UserAm, User, Unit> {
     }
   }
 
-  override fun reverse(
-    from: User,
-    params: Unit
-  ): UserAm {
+  override fun reverse(from: User): UserAm {
     return with(from) {
       UserAm(
         id = id,

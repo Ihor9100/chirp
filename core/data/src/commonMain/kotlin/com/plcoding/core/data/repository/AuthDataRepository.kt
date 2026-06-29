@@ -32,9 +32,7 @@ class AuthDataRepository(
         email = email,
         password = password,
       )
-    ).map {
-      authInfoMapper.map(it, Unit)
-    }
+    ).map(authInfoMapper::map)
   }
 
   override suspend fun forgotPassword(email: String): Empty<DataError.Remote> {
