@@ -1,9 +1,12 @@
 package com.plcoding.feature.chat.data.datasource.remote
 
+import com.plcoding.core.data.tools.delete
 import com.plcoding.core.data.tools.get
 import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.result.DataError
+import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
+import com.plcoding.core.domain.result.asEmpty
 import com.plcoding.core.domain.result.map
 import com.plcoding.feature.chat.data.mapper.ChatMapper
 import com.plcoding.feature.chat.data.mapper.ChatMemberAmMapper
@@ -13,6 +16,7 @@ import com.plcoding.feature.chat.data.model.ChatMemberAm
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatMember
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 
 class ChatsKtorRemoteDataSource(
   private val httpClient: HttpClient,
@@ -41,6 +45,12 @@ class ChatsKtorRemoteDataSource(
   override suspend fun getChats(): Result<List<ChatAm>, DataError.Remote> {
     return httpClient.get<List<ChatAm>>(
       route = "/chat"
+    )
+  }
+
+  override suspend fun leaveChat(chatId: String): Empty<DataError.Remote> {
+    return httpClient.delete<Unit>(
+      route = "/chat/$chatId/leave"
     )
   }
 }

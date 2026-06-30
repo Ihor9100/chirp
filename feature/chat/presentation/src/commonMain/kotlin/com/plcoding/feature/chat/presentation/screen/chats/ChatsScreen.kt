@@ -194,10 +194,10 @@ private fun ChatDetailsPane(
         }
       ),
   ) {
-    if (content.noSelectedChatEmptyState != null) {
+    if (content.chatEmptyState != null) {
       ChatEmptyStatePc(
         modifier = Modifier,
-        chatEmptyStatePm = content.noSelectedChatEmptyState,
+        chatEmptyStatePm = content.chatEmptyState,
       )
     } else {
       Row(

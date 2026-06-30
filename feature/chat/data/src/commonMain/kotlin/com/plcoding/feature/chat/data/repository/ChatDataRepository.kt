@@ -93,4 +93,10 @@ class ChatDataRepository(
         )
       }
   }
+
+  override suspend fun leaveChat(chatId: String): Empty<DataError> {
+    return remoteDataSource
+      .leaveChat(chatId)
+      .flatMap { localDataSource.removeChatDetails(chatId) }
+  }
 }

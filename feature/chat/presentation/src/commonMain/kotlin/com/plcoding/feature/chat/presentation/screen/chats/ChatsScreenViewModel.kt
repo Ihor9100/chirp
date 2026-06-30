@@ -3,10 +3,17 @@
 package com.plcoding.feature.chat.presentation.screen.chats
 
 import androidx.lifecycle.viewModelScope
+import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.chat_members
+import chirp.feature.chat.presentation.generated.resources.log_out
+import com.plcoding.core.designsystem.model.DropDownItemPm
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.repository.PreferencesRepository
+import com.plcoding.core.domain.result.mapOn
 import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
+import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.repository.ChatRepository
@@ -110,9 +117,28 @@ class ChatsScreenViewModel(
         observeScreenData(showDropDown = false)
       }
       is ChatsScreenAction.OnChatDetailsMenuItemClick -> {
-        // TODO:  
+        handleMenuItem(chatsScreenAction.dropDownItemPm)
       }
       else -> Unit
+    }
+  }
+
+  private fun handleMenuItem(dropDownItemPm: DropDownItemPm) {
+    when (dropDownItemPm.titleRes) {
+      Res.string.chat_members -> showSnackbar(dropDownItemPm.titleRes)
+      Res.string.log_out -> leaveChat()
+    }
+  }
+
+  private fun leaveChat() {
+    viewModelScope.launch {
+      chatRepository
+        .leaveChat(_chatId.value.orEmpty())
+        .onFailure { showSnackbar(it.getStringRes()) }
+        .onSuccess {
+          showSnackbar(Res.string.success)
+
+        }
     }
   }
 }

@@ -29,4 +29,6 @@ interface ChatsLocalDataSource {
     chatMessages: List<ChatMessageEntity>,
     chatsAndMembers: List<ChatAndMemberEntity>,
   ): Empty<DataError.Local>
+
+  suspend fun removeChatDetails(chatId: String): Empty<DataError.Local>
 }

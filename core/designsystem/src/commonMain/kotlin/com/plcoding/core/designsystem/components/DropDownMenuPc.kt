@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.model.DropDownItemPm
 import com.plcoding.core.designsystem.style.Theme
@@ -38,6 +39,7 @@ fun DropDownMenuPc(
       width = 1.dp,
       color = MaterialTheme.colorScheme.extended.surfaceOutline,
     ),
+    offset = DpOffset(x=0.dp, y=16.dp)
   ) {
     items.forEachIndexed { index, itemPm ->
       DropdownMenuItem(

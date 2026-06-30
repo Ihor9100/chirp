@@ -35,28 +35,18 @@ class ChatsScreenContentPmMapper(
           predicate = from.chats::isEmpty,
           descriptionRes = Res.string.no_messages_subtitle,
         ),
-        noSelectedChatEmptyState = getChatEmptyState(
-          predicate = { chatId == null },
-          descriptionRes = Res.string.select_chat_subtitle,
-        ),
         chatId = chatId,
         chatsPm = getChatsPm(from),
         chatEmptyState = getChatEmptyState(
-          predicate = {
-            chatDetails
-              ?.chatMessagesAndMembers
-              ?.map { it.chatMessage }
-              .isNullOrEmpty()
-          },
-          descriptionRes = Res.string.no_messages_subtitle,
+          predicate = { chatId == null },
+          descriptionRes = Res.string.select_chat_subtitle,
         ),
         chatHeaderPm = chatDetails?.run {
           chatHeaderPmMapper.map(ChatHeaderPmMapper.From(yourId, chat.members))
         },
         dropDownItemsPm = if (showDropDown) getDropDownItemsPm() else null,
-        chatDetailsPm = chatDetails
-          ?.let(chatDetailsPmMapper::map)
-          .orEmpty(),
+        leaveChatEvent = // TODO:  ,
+        chatDetailsPm = chatDetails?.let(chatDetailsPmMapper::map).orEmpty(),
       )
     }
   }

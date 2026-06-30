@@ -74,7 +74,7 @@ suspend inline fun <reified Response> HttpClient.get(
 
 suspend inline fun <reified Response> HttpClient.delete(
   route: String,
-  params: Map<String, Any>,
+  params: Map<String, Any> = mapOf(),
   crossinline builder: HttpRequestBuilder.() -> Unit = {}
 ): Result<Response, DataError.Remote> {
   return apiSafeCall {

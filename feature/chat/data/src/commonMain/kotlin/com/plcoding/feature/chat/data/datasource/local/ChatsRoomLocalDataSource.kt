@@ -67,4 +67,10 @@ class ChatsRoomLocalDataSource(
       }
     }
   }
+
+  override suspend fun removeChatDetails(chatId: String): Empty<DataError.Local> {
+    return dbSafeCall {
+      chatsDao.delete(chatId)
+    }
+  }
 }
