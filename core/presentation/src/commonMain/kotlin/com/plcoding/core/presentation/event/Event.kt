@@ -1,6 +1,6 @@
 package com.plcoding.core.presentation.event
 
-data class Event<T>(
+class Event<T>(
   private val data: T,
   private val onConsumed: (() -> Unit)? = null,
 ) {
