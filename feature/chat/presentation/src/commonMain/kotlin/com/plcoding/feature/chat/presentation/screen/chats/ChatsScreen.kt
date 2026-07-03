@@ -80,6 +80,12 @@ fun ChatsScreen(
     }
   }
 
+  LaunchedEffect(state.contentPm.leaveChatEvent) {
+    state.contentPm.leaveChatEvent?.runAsync {
+      scaffoldNavigator.navigateBack()
+    }
+  }
+
   BaseScreen(
     baseContentPm = state.baseContentPm
   ) {

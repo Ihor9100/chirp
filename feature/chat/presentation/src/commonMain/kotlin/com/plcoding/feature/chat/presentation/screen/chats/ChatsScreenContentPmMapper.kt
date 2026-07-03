@@ -12,6 +12,7 @@ import chirp.feature.chat.presentation.generated.resources.select_chat_subtitle
 import com.plcoding.core.designsystem.model.DropDownItemPm
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.mapper.Mapper
+import com.plcoding.core.presentation.event.Event
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.presentation.mapper.ChatDetailsPmMapper
@@ -44,8 +45,8 @@ class ChatsScreenContentPmMapper(
         chatHeaderPm = chatDetails?.run {
           chatHeaderPmMapper.map(ChatHeaderPmMapper.From(yourId, chat.members))
         },
-        dropDownItemsPm = if (showDropDown) getDropDownItemsPm() else null,
-        leaveChatEvent = // TODO:  ,
+        dropDownItemsPm = if (showChatDetailsDropDown) getDropDownItemsPm() else null,
+        leaveChatEvent = if (isChatMember) null else Event(Unit),
         chatDetailsPm = chatDetails?.let(chatDetailsPmMapper::map).orEmpty(),
       )
     }
@@ -59,7 +60,7 @@ class ChatsScreenContentPmMapper(
           yourId = from.yourId,
           chatId = from.chatId,
           lastChatId = from.chats.lastOrNull()?.id,
-          showDropDown = from.showDropDown,
+          showDropDown = from.showChatDetailsDropDown,
         )
       )
     }
@@ -99,6 +100,7 @@ class ChatsScreenContentPmMapper(
     val chatId: String?,
     val chats: List<Chat>,
     val chatDetails: ChatDetails?,
-    val showDropDown: Boolean,
+    val showChatDetailsDropDown: Boolean,
+    val isChatMember: Boolean,
   )
 }

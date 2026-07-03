@@ -6,15 +6,14 @@ import androidx.lifecycle.viewModelScope
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.chat_members
 import chirp.feature.chat.presentation.generated.resources.log_out
+import chirp.feature.chat.presentation.generated.resources.success
 import com.plcoding.core.designsystem.model.DropDownItemPm
-import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.repository.PreferencesRepository
-import com.plcoding.core.domain.result.mapOn
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
+import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
-import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +22,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -39,6 +39,8 @@ class ChatsScreenViewModel(
   private val _chatDetails = _chatId.flatMapLatest(::observeChatDetails)
 
   private var screenJob: Job? = null
+  private var isChatMember: Boolean = true
+  private var showChatDetailsDropDown: Boolean = false
 
   override fun getContentPm(): ChatsScreenContentPm {
     return ChatsScreenContentPm.mock
@@ -48,16 +50,14 @@ class ChatsScreenViewModel(
     super.onInitialize()
 
     loadChats()
-    observeScreenData(showDropDown = false)
+    observeScreenData()
   }
 
   private fun loadChats() {
     launchLoadable {
       chatRepository
         .syncChats()
-        .onFailure {
-          // TODO:
-        }
+        .onFailure { showSnackbar(it.getStringRes()) }
     }
   }
 
@@ -65,13 +65,11 @@ class ChatsScreenViewModel(
     viewModelScope.launch {
       chatRepository
         .syncChat(chatId)
-        .onFailure {
-          // TODO:
-        }
+        .onFailure { showSnackbar(it.getStringRes()) }
     }
   }
 
-  private fun observeScreenData(showDropDown: Boolean) {
+  private fun observeScreenData() {
     screenJob?.cancel()
     screenJob = viewModelScope.launch {
       combine(
@@ -86,7 +84,8 @@ class ChatsScreenViewModel(
             chatId = chatId,
             chats = chats,
             chatDetails = chatDetails,
-            showDropDown = showDropDown,
+            showChatDetailsDropDown = showChatDetailsDropDown,
+            isChatMember = isChatMember,
           )
         )
       }
@@ -104,6 +103,7 @@ class ChatsScreenViewModel(
   }
 
   fun openChatDetails(chatId: String) {
+    isChatMember = true
     _chatId.value = chatId
     loadChat(chatId)
   }
@@ -111,10 +111,12 @@ class ChatsScreenViewModel(
   fun handleAction(chatsScreenAction: ChatsScreenAction) {
     when (chatsScreenAction) {
       is ChatsScreenAction.OnChatDetailsMenuClick -> {
-        observeScreenData(showDropDown = true)
+        showChatDetailsDropDown = true
+        observeScreenData()
       }
       is ChatsScreenAction.OnChatDetailsMenuDismissClick -> {
-        observeScreenData(showDropDown = false)
+        showChatDetailsDropDown = false
+        observeScreenData()
       }
       is ChatsScreenAction.OnChatDetailsMenuItemClick -> {
         handleMenuItem(chatsScreenAction.dropDownItemPm)
@@ -137,7 +139,9 @@ class ChatsScreenViewModel(
         .onFailure { showSnackbar(it.getStringRes()) }
         .onSuccess {
           showSnackbar(Res.string.success)
-
+          isChatMember = false
+          showChatDetailsDropDown = false
+          observeScreenData()
         }
     }
   }
