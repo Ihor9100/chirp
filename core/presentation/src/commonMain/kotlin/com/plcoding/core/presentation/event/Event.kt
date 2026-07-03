@@ -1,6 +1,9 @@
 package com.plcoding.core.presentation.event
 
-class Event<T>(private val data: T) {
+data class Event<T>(
+  private val data: T,
+  private val onConsumed: (() -> Unit)? = null,
+) {
 
   private var isConsumed: Boolean = false
 
@@ -31,6 +34,7 @@ class Event<T>(private val data: T) {
   private inline fun consumeInternal(action: (T) -> Unit) {
     if (!isConsumed) {
       isConsumed = true
+      onConsumed?.invoke()
       action(data)
     }
   }

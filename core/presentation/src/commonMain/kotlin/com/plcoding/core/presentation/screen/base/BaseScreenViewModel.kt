@@ -49,10 +49,6 @@ abstract class BaseScreenViewModel<ContentPm> : ViewModel() {
     }
   }
 
-  protected fun removeOverlays() {
-    updateBaseContentPm { copy(overlays = null) }
-  }
-
   protected inline fun updateContentPm(block: ContentPm.() -> ContentPm) {
     return mutableScreenState.update { it.copy(contentPm = block(it.contentPm)) }
   }

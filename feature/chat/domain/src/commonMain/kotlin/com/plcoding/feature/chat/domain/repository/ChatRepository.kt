@@ -12,7 +12,7 @@ interface ChatRepository {
 
   // Local
   suspend fun observeChats(): Flow<List<Chat>>
-  suspend fun observeChatDetails(chatId: String): Flow<ChatDetails>
+  suspend fun observeChatDetails(chatId: String): Flow<ChatDetails?>
 
   // Remote
   suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote>

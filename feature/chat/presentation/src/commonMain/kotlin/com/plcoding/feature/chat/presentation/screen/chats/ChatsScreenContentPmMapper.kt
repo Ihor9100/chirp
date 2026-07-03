@@ -46,7 +46,7 @@ class ChatsScreenContentPmMapper(
           chatHeaderPmMapper.map(ChatHeaderPmMapper.From(yourId, chat.members))
         },
         dropDownItemsPm = if (showChatDetailsDropDown) getDropDownItemsPm() else null,
-        leaveChatEvent = if (isChatMember) null else Event(Unit),
+        leaveChatEvent = from.leaveChatEvent,
         chatDetailsPm = chatDetails?.let(chatDetailsPmMapper::map).orEmpty(),
       )
     }
@@ -101,6 +101,6 @@ class ChatsScreenContentPmMapper(
     val chats: List<Chat>,
     val chatDetails: ChatDetails?,
     val showChatDetailsDropDown: Boolean,
-    val isChatMember: Boolean,
+    val leaveChatEvent: Event<Unit>?,
   )
 }

@@ -23,6 +23,7 @@ import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlin.collections.flatMap
 
 class ChatDataRepository(
@@ -44,10 +45,10 @@ class ChatDataRepository(
       .map(chatAndMembersRelationMapper::mapList)
   }
 
-  override suspend fun observeChatDetails(chatId: String): Flow<ChatDetails> {
+  override suspend fun observeChatDetails(chatId: String): Flow<ChatDetails?> {
     return localDataSource
       .observeChatAndMembersAndMessages(chatId)
-      .map(chatDetailsMapper::map)
+      .map { it?.let(chatDetailsMapper::map) }
   }
 
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {

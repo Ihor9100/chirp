@@ -76,6 +76,7 @@ fun ChatsScreen(
 
   BackHandler(enabled = scaffoldNavigator.canNavigateBack()) {
     coroutineScope.launch {
+      viewModel.clearChatId()
       scaffoldNavigator.navigateBack()
     }
   }
@@ -104,6 +105,7 @@ fun ChatsScreen(
           }
           is ChatsScreenAction.OnChatDetailsBackClick -> coroutineScope.launch {
             scaffoldNavigator.navigateBack()
+            viewModel.handleAction(it)
           }
           else -> viewModel.handleAction(it)
         }

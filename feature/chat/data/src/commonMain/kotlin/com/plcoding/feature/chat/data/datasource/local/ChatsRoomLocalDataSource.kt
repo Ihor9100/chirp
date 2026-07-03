@@ -30,10 +30,8 @@ class ChatsRoomLocalDataSource(
     return chatsDao.subscribeToChatsAndMembers()
   }
 
-  override suspend fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation> {
-    return chatsDao
-      .observeChatAndMembersAndMessages(chatId)
-      .filterNotNull()
+  override suspend fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?> {
+    return chatsDao.observeChatAndMembersAndMessages(chatId)
   }
 
   override suspend fun upsertChatDetails(
