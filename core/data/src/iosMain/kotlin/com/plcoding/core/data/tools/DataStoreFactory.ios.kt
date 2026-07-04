@@ -19,7 +19,7 @@ fun createDataStore(): DataStore<Preferences> {
       create = false,
       error = null
     )
-    val prefix = getDataStoreFileName(NSBundle.mainBundle.bundleIdentifier.orEmpty())
-    requireNotNull(directory).path + getDataStoreFileName(prefix)
+    val fileName = getDataStoreFileName(NSBundle.mainBundle.bundleIdentifier.orEmpty())
+    requireNotNull(directory?.path) + "/" + fileName
   }
 }
