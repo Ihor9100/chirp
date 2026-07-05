@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.screen.model.BaseContentPm
-import com.plcoding.core.presentation.screen.model.Overlay
+import com.plcoding.core.presentation.model.BaseContentPm
+import com.plcoding.core.presentation.model.Overlay
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

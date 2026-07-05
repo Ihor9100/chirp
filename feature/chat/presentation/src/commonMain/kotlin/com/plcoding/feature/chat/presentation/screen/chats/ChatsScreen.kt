@@ -49,7 +49,7 @@ import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import com.plcoding.core.presentation.screen.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenStatePm
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.presentation.component.ChatDetailsPc
 import com.plcoding.feature.chat.presentation.component.ChatEmptyStatePc

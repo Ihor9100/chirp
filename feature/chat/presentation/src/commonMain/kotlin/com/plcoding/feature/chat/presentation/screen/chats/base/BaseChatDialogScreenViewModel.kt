@@ -11,12 +11,10 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.mapOn
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
-import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
@@ -28,6 +26,8 @@ abstract class BaseChatDialogScreenViewModel<ContentPm : BaseChatDialogScreenCon
   private val chatRepository: ChatRepository,
   private val chatMemberPmMapper: ChatMemberPmMapper,
 ) : BaseScreenViewModel<ContentPm>() {
+
+  protected abstract fun handlePositiveClick()
 
   private val searchQueryFlow =
     snapshotFlow { screenState.value.contentPm.searchTextFieldState.text }
@@ -50,23 +50,14 @@ abstract class BaseChatDialogScreenViewModel<ContentPm : BaseChatDialogScreenCon
 
   private fun handleAddClick() {
     updateContentPm {
-      if (foundChatMemberPm == null || foundChatMembersPm.contains(foundChatMemberPm))
-        return@updateContentPm this
+      val doNothing = foundChatMemberPm == null ||
+        foundChatMembersPm.contains(foundChatMemberPm) ||
+        inChatMembersPm.contains(foundChatMemberPm)
+
+      if (doNothing) return@updateContentPm this
 
       searchTextFieldState.also { it.clearText() }
       update(null, foundChatMembersPm + foundChatMemberPm!!)
-    }
-  }
-
-  private fun handlePositiveClick() {
-    val memberIds = screenState.value.contentPm.foundChatMembersPm.map { it.id }
-    if (memberIds.isEmpty()) return
-
-    launchLoadable {
-      chatRepository
-        .createChat(memberIds)
-        .onFailure { showSnackbar(it.getStringRes()) }
-        .onSuccess { updateContentPm { update(chatCreatedEvent = Event(Unit)) } }
     }
   }
 

@@ -5,9 +5,6 @@ import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.data.model.ChatAm
 import com.plcoding.feature.chat.data.model.ChatMemberAm
-import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.domain.model.ChatMember
-import kotlinx.coroutines.flow.Flow
 
 interface ChatsRemoteDataSource {
 
@@ -20,4 +17,9 @@ interface ChatsRemoteDataSource {
   suspend fun getChats(): Result<List<ChatAm>, DataError.Remote>
 
   suspend fun leaveChat(chatId: String): Empty<DataError.Remote>
+
+  suspend fun addChatMembers(
+    chatId: String,
+    memberIds: List<String>,
+  ): Result<ChatAm, DataError.Remote>
 }

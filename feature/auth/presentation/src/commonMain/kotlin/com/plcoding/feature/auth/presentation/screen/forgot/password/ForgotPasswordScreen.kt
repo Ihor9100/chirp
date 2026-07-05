@@ -19,7 +19,7 @@ import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLay
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import com.plcoding.core.presentation.screen.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenStatePm
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource

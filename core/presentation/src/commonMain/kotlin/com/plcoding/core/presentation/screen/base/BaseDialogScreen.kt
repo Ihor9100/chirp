@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveDialogSheetLayout
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
-import com.plcoding.core.presentation.screen.model.BaseContentPm
+import com.plcoding.core.presentation.model.BaseContentPm
 import com.plcoding.core.presentation.utils.clearFocusOnTab
 
 @Composable

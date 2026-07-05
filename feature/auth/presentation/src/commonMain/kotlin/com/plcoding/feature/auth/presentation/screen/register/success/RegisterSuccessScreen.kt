@@ -15,8 +15,8 @@ import com.plcoding.core.designsystem.components.button.ButtonPc
 import com.plcoding.core.designsystem.components.layout.ResultLayout
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.style.Theme
+import com.plcoding.core.presentation.model.ScreenStatePm
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel

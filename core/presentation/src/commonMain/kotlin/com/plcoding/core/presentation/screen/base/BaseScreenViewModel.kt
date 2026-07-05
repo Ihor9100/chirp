@@ -3,10 +3,9 @@ package com.plcoding.core.presentation.screen.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plcoding.core.presentation.event.Event
-import com.plcoding.core.presentation.screen.model.BaseContentPm
-import com.plcoding.core.presentation.screen.model.Overlay
-import com.plcoding.core.presentation.screen.model.ScreenStatePm
-import kotlinx.coroutines.Job
+import com.plcoding.core.presentation.model.BaseContentPm
+import com.plcoding.core.presentation.model.Overlay
+import com.plcoding.core.presentation.model.ScreenStatePm
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart

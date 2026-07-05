@@ -5,8 +5,7 @@ import chirp.feature.auth.presentation.generated.resources.account_successfully_
 import chirp.feature.auth.presentation.generated.resources.log_in
 import chirp.feature.auth.presentation.generated.resources.resend_verification_email
 import com.plcoding.core.designsystem.components.button.ButtonPcStyle
-import com.plcoding.core.presentation.event.Event
-import com.plcoding.core.presentation.utils.TextProvider
+import com.plcoding.core.presentation.model.TextProvider
 import org.jetbrains.compose.resources.StringResource
 
 data class RegisterSuccessScreenContentPm(

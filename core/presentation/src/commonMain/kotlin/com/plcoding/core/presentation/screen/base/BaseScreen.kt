@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.plcoding.core.presentation.screen.model.BaseContentPm
+import com.plcoding.core.presentation.model.BaseContentPm
 import com.plcoding.core.presentation.utils.clearFocusOnTab
 
 @Composable

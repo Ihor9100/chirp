@@ -6,17 +6,11 @@ import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
-import com.plcoding.core.domain.result.asEmpty
-import com.plcoding.core.domain.result.map
-import com.plcoding.feature.chat.data.mapper.ChatMapper
-import com.plcoding.feature.chat.data.mapper.ChatMemberAmMapper
 import com.plcoding.feature.chat.data.model.ChatAm
 import com.plcoding.feature.chat.data.model.ChatCreateRequestAm
 import com.plcoding.feature.chat.data.model.ChatMemberAm
-import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.domain.model.ChatMember
+import com.plcoding.feature.chat.data.model.ChatMembersAm
 import io.ktor.client.HttpClient
-import io.ktor.client.request.delete
 
 class ChatsKtorRemoteDataSource(
   private val httpClient: HttpClient,
@@ -51,6 +45,16 @@ class ChatsKtorRemoteDataSource(
   override suspend fun leaveChat(chatId: String): Empty<DataError.Remote> {
     return httpClient.delete<Unit>(
       route = "/chat/$chatId/leave"
+    )
+  }
+
+  override suspend fun addChatMembers(
+    chatId: String,
+    memberIds: List<String>
+  ): Result<ChatAm, DataError.Remote> {
+    return httpClient.post<ChatMembersAm, ChatAm>(
+      route = "/chat/$chatId/add",
+      request = ChatMembersAm(memberIds),
     )
   }
 }

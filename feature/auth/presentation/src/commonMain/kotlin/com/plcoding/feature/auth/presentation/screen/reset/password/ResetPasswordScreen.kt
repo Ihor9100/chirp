@@ -15,7 +15,7 @@ import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLay
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import com.plcoding.core.presentation.screen.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenStatePm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel

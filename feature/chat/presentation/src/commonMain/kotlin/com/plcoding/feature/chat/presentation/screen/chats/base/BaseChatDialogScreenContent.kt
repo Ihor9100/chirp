@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +19,6 @@ import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.add
 import chirp.feature.chat.presentation.generated.resources.add_members_to_your_chat
 import chirp.feature.chat.presentation.generated.resources.cancel
-import chirp.feature.chat.presentation.generated.resources.create_chat
 import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.invite_by_username_or_email
 import chirp.feature.chat.presentation.generated.resources.no_members
@@ -29,17 +27,10 @@ import com.plcoding.core.designsystem.components.TitleDescriptionPc
 import com.plcoding.core.designsystem.components.button.ButtonPc
 import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
-import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.designsystem.utils.DeviceConfiguration
-import com.plcoding.core.presentation.event.Event
-import com.plcoding.core.presentation.screen.base.BaseDialogScreen
-import com.plcoding.core.presentation.screen.model.ScreenStatePm
 import com.plcoding.feature.chat.presentation.component.ChatMemberPc
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun BaseChatDialogScreenContent(

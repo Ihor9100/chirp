@@ -1,21 +1,13 @@
 package com.plcoding.feature.chat.presentation.mapper
 
-import chirp.core.designsystem.generated.resources.ic_users
 import chirp.feature.chat.presentation.generated.resources.Res
-import chirp.core.designsystem.generated.resources.Res as CoreRes
-import chirp.feature.chat.presentation.generated.resources.chat_members
 import chirp.feature.chat.presentation.generated.resources.group_chat
-import chirp.feature.chat.presentation.generated.resources.ic_log_out
-import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.you_and_others
-import com.plcoding.core.designsystem.model.DropDownItemPm
-import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.mapper.Mapper
-import com.plcoding.core.presentation.utils.TextProvider
+import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.model.ChatMember.Companion.isGroup
 import com.plcoding.feature.chat.presentation.model.ChatHeaderPm
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 
 class ChatHeaderPmMapper(
   private val chatMemberPmMapper: ChatMemberPmMapper,
@@ -24,9 +16,10 @@ class ChatHeaderPmMapper(
   override fun map(from: From): ChatHeaderPm {
     return with(from) {
       ChatHeaderPm(
-        avatarsPm = chatMemberPmMapper
-          .mapList(chatMembers)
-          .map(ChatMemberPm::avatarPm),
+        avatarsPm = chatMembers.map {
+          val from = ChatMemberPmMapper.From(it, addSuffix = false)
+          chatMemberPmMapper.map(from).avatarPm
+        },
         title = getTitle(this),
         description = getDescription(this),
       )

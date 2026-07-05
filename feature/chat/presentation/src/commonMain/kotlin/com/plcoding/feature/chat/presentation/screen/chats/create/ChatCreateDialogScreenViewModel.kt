@@ -2,13 +2,17 @@
 
 package com.plcoding.feature.chat.presentation.screen.chats.create
 
+import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
+import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenViewModel
 import kotlinx.coroutines.FlowPreview
 
 class ChatCreateDialogScreenViewModel(
-  chatRepository: ChatRepository,
+  private val chatRepository: ChatRepository,
   chatMemberPmMapper: ChatMemberPmMapper,
 ) : BaseChatDialogScreenViewModel<ChatCreateDialogScreenContentPm>(
   chatRepository,
@@ -17,5 +21,17 @@ class ChatCreateDialogScreenViewModel(
 
   override fun getContentPm(): ChatCreateDialogScreenContentPm {
     return ChatCreateDialogScreenContentPm()
+  }
+
+  override fun handlePositiveClick() {
+    val memberIds = screenState.value.contentPm.foundChatMembersPm.map { it.id }
+    if (memberIds.isEmpty()) return
+
+    launchLoadable {
+      chatRepository
+        .createChat(memberIds)
+        .onFailure { showSnackbar(it.getStringRes()) }
+        .onSuccess { updateContentPm { update(chatCreatedEvent = Event(Unit)) } }
+    }
   }
 }

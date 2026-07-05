@@ -34,7 +34,7 @@ fun ChatMemberPc(
     )
     Text(
       modifier = Modifier.fillMaxWidth(),
-      text = chatMemberPm.fullName,
+      text = chatMemberPm.fullName.get(),
       color = MaterialTheme.colorScheme.extended.textPrimary,
       style = MaterialTheme.typography.titleXSmall,
     )

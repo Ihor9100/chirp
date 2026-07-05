@@ -1,4 +1,4 @@
-package com.plcoding.core.presentation.utils
+package com.plcoding.core.presentation.model
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.StringResource

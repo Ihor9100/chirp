@@ -1,4 +1,4 @@
-package com.plcoding.core.presentation.screen.model
+package com.plcoding.core.presentation.model
 
 data class BaseContentPm(
   val overlays: Set<Overlay>? = null,

@@ -11,8 +11,9 @@ import kotlinx.coroutines.flow.Flow
 interface ChatRepository {
 
   // Local
-  suspend fun observeChats(): Flow<List<Chat>>
-  suspend fun observeChatDetails(chatId: String): Flow<ChatDetails?>
+  fun observeChats(): Flow<List<Chat>>
+  fun observeChatDetails(chatId: String): Flow<ChatDetails?>
+  fun observeChatMembers(chatId: String): Flow<List<ChatMember>>
 
   // Remote
   suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote>
@@ -20,4 +21,5 @@ interface ChatRepository {
   suspend fun syncChat(chatId: String): Empty<DataError>
   suspend fun syncChats(): Empty<DataError>
   suspend fun leaveChat(chatId: String): Empty<DataError>
+  suspend fun addChatMembers(chatId: String, memberIds: List<String>): Empty<DataError>
 }

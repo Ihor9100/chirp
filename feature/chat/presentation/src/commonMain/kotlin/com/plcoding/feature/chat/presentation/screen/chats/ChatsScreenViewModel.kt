@@ -22,11 +22,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.Boolean
-import kotlin.String
 
 class ChatsScreenViewModel(
   private val preferencesRepository: PreferencesRepository,
@@ -73,7 +73,6 @@ class ChatsScreenViewModel(
   }
 
   private fun observeScreenData() {
-    viewModelScope.launch {
       combine(
         preferencesRepository.observeAuthInfo(),
         chatRepository.observeChats(),
@@ -92,8 +91,8 @@ class ChatsScreenViewModel(
         )
       }
         .flowOn(Dispatchers.IO)
-        .collect { content -> updateContentPm { content } }
-    }
+        .onEach { content -> updateContentPm { content } }
+        .launchIn(viewModelScope)
   }
 
   fun openChatDetails(chatId: String) {

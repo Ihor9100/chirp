@@ -16,7 +16,6 @@ import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
 import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
 
 class ChatsRoomLocalDataSource(
   private val chirpDatabase: ChirpDatabase,
@@ -25,6 +24,10 @@ class ChatsRoomLocalDataSource(
   private val chatMessagesDao: ChatMessagesDao,
   private val chatAndMemberDao: ChatAndMemberDao,
 ) : ChatsLocalDataSource {
+
+  override suspend fun observeChatMembers(chatId: String): Flow<List<ChatMemberEntity>> {
+    return chatMembersDao.observe(chatId)
+  }
 
   override suspend fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>> {
     return chatsDao.subscribeToChatsAndMembers()

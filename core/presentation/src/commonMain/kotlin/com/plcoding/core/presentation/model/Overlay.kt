@@ -1,4 +1,4 @@
-package com.plcoding.core.presentation.screen.model
+package com.plcoding.core.presentation.model
 
 import com.plcoding.core.presentation.event.Event
 import org.jetbrains.compose.resources.StringResource

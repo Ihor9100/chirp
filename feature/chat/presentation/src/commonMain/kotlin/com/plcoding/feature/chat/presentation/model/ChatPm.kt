@@ -1,7 +1,7 @@
 package com.plcoding.feature.chat.presentation.model
 
 import com.plcoding.core.designsystem.style.ColorToken
-import com.plcoding.core.presentation.utils.TextProvider
+import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.mapper.ChatHeaderPmMapper
 import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper

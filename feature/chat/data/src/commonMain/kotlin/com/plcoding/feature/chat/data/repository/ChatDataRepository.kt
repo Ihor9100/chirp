@@ -16,15 +16,12 @@ import com.plcoding.feature.chat.data.mapper.ChatMemberEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMessageEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatsAndMembersEntityMapper
 import com.plcoding.feature.chat.data.model.ChatAm
-import com.plcoding.feature.chat.database.entity.ChatEntity
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
-import kotlin.collections.flatMap
 
 class ChatDataRepository(
   private val localDataSource: ChatsLocalDataSource,
@@ -39,16 +36,22 @@ class ChatDataRepository(
   private val chatDetailsMapper: ChatDetailsMapper,
 ) : ChatRepository {
 
-  override suspend fun observeChats(): Flow<List<Chat>> {
+  override fun observeChats(): Flow<List<Chat>> {
     return localDataSource
       .observeChatAndMembers()
       .map(chatAndMembersRelationMapper::mapList)
   }
 
-  override suspend fun observeChatDetails(chatId: String): Flow<ChatDetails?> {
+  override fun observeChatDetails(chatId: String): Flow<ChatDetails?> {
     return localDataSource
       .observeChatAndMembersAndMessages(chatId)
       .map { it?.let(chatDetailsMapper::map) }
+  }
+
+  override fun observeChatMembers(chatId: String): Flow<List<ChatMember>> {
+    return localDataSource
+      .observeChatMembers(chatId)
+      .map(chatMemberEntityMapper::reverseList)
   }
 
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
@@ -99,5 +102,14 @@ class ChatDataRepository(
     return remoteDataSource
       .leaveChat(chatId)
       .flatMap { localDataSource.removeChatDetails(chatId) }
+  }
+
+  override suspend fun addChatMembers(
+    chatId: String,
+    memberIds: List<String>
+  ): Empty<DataError> {
+    return remoteDataSource
+      .addChatMembers(chatId, memberIds)
+      .flatMap { upsertChatDetails(it) }
   }
 }

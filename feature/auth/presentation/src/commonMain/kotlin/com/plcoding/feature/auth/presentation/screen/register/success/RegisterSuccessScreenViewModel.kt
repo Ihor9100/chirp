@@ -8,8 +8,8 @@ import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
+import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.TextProvider
 import com.plcoding.core.presentation.utils.getStringRes
 
 class RegisterSuccessScreenViewModel(

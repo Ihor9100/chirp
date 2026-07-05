@@ -12,9 +12,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChatsLocalDataSource {
 
-  suspend fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>>
+  fun observeChatMembers(chatId: String): Flow<List<ChatMemberEntity>>
 
-  suspend fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?>
+  fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>>
+
+  fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?>
 
   suspend fun upsertChatDetails(
     chat: ChatEntity,

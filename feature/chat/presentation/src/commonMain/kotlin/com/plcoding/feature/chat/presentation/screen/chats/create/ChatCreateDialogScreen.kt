@@ -8,7 +8,7 @@ import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseDialogScreen
-import com.plcoding.core.presentation.screen.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenStatePm
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenAction
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenContent
