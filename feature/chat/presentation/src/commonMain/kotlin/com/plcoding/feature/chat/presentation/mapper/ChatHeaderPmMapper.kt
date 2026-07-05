@@ -17,7 +17,7 @@ class ChatHeaderPmMapper(
     return with(from) {
       ChatHeaderPm(
         avatarsPm = chatMembers.map {
-          val from = ChatMemberPmMapper.From(it, addSuffix = false)
+          val from = ChatMemberPmMapper.From(it, isInChat = false)
           chatMemberPmMapper.map(from).avatarPm
         },
         title = getTitle(this),

@@ -27,7 +27,7 @@ class ChatMemberPmMapper : Mapper<From, ChatMemberPm> {
   }
 
   private fun getFullName(from: From): TextProvider {
-    return if (from.addSuffix) {
+    return if (from.isInChat) {
       TextProvider.Resource(Res.string.in_chat_member, listOf(from.chatMember.username))
     } else {
       TextProvider.Dynamic(from.chatMember.username)
@@ -48,6 +48,6 @@ class ChatMemberPmMapper : Mapper<From, ChatMemberPm> {
 
   data class From(
     val chatMember: ChatMember,
-    val addSuffix: Boolean,
+    val isInChat: Boolean,
   )
 }

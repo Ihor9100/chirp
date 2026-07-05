@@ -7,8 +7,8 @@ import androidx.navigation.NavController
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
-import com.plcoding.core.presentation.screen.base.BaseDialogScreen
 import com.plcoding.core.presentation.model.ScreenStatePm
+import com.plcoding.core.presentation.screen.base.BaseDialogScreen
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenAction
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenContent
@@ -22,8 +22,7 @@ fun ChatManageDialogScreen(
 ) {
   val state by viewModel.screenState.collectAsStateWithLifecycle()
 
-  state.contentPm.chatCreatedEvent?.consume {
-    navResult.setResult("arg", it)
+  state.contentPm.chatUpdatedEvent?.consume {
     navController.popBackStack()
   }
 
@@ -37,7 +36,6 @@ fun ChatManageDialogScreen(
       onAction = {
         when (it) {
           BaseChatDialogScreenAction.OnDismiss -> {
-            navResult.setResult("arg", "Result")
             navController.popBackStack()
           }
           else -> viewModel.onAction(it)

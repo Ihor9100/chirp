@@ -67,7 +67,7 @@ abstract class BaseChatDialogScreenViewModel<ContentPm : BaseChatDialogScreenCon
 
       chatRepository
         .searchMember(searchQuery.toString())
-        .mapOn { chatMemberPmMapper.map(it) }
+        .mapOn { chatMemberPmMapper.map(ChatMemberPmMapper.From(it, false)) }
         .onFailure(::handleSearchMemberFailure)
         .onSuccess { updateContentPm { update(foundChatMemberPm = it) } }
     }

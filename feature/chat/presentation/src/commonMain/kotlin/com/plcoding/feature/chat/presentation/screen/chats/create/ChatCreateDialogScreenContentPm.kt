@@ -15,18 +15,16 @@ data class ChatCreateDialogScreenContentPm(
   override val foundChatMemberPm: ChatMemberPm? = null,
   override val foundChatMembersPm: List<ChatMemberPm> = listOf(),
   override val positiveButtonRes: StringResource = Res.string.create_chat,
-  override val chatCreatedEvent: Event<Unit>? = null,
+  val chatCreatedEvent: Event<Unit>? = null,
 ) : BaseChatDialogScreenContentPm<ChatCreateDialogScreenContentPm> {
 
   override fun update(
     foundChatMemberPm: ChatMemberPm?,
     foundChatMembersPm: List<ChatMemberPm>,
-    chatCreatedEvent: Event<Unit>?
   ): ChatCreateDialogScreenContentPm {
     return copy(
       foundChatMemberPm = foundChatMemberPm,
       foundChatMembersPm = foundChatMembersPm,
-      chatCreatedEvent = chatCreatedEvent
     )
   }
 }

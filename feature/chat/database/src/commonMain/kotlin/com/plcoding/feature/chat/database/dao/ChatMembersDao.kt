@@ -16,12 +16,14 @@ interface ChatMembersDao {
   @Upsert
   suspend fun upsert(entities: List<ChatMemberEntity>)
 
-  @Query("""
-    SELECT * FROM chat_members
-    JOIN chats_and_members ON id == memberId
-    WHERE chatId = :chatId
-  """)
-  suspend fun observe(chatId:String): Flow<List<ChatMemberEntity>>
+  @Query(
+    """
+      SELECT * FROM chat_members
+      JOIN chats_and_members ON id == memberId
+      WHERE chatId = :chatId
+    """
+  )
+  fun observe(chatId: String): Flow<List<ChatMemberEntity>>
 
   @Transaction
   suspend fun replace(entities: List<ChatMemberEntity>) {

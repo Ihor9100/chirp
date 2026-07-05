@@ -12,11 +12,9 @@ interface BaseChatDialogScreenContentPm<T : BaseChatDialogScreenContentPm<T>> {
   val foundChatMemberPm: ChatMemberPm?
   val foundChatMembersPm: List<ChatMemberPm>
   val positiveButtonRes: StringResource
-  val chatCreatedEvent: Event<Unit>?
 
   fun update(
     foundChatMemberPm: ChatMemberPm? = this.foundChatMemberPm,
     foundChatMembersPm: List<ChatMemberPm> = this.foundChatMembersPm,
-    chatCreatedEvent: Event<Unit>? = this.chatCreatedEvent,
   ): T
 }

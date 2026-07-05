@@ -31,7 +31,7 @@ class ChatCreateDialogScreenViewModel(
       chatRepository
         .createChat(memberIds)
         .onFailure { showSnackbar(it.getStringRes()) }
-        .onSuccess { updateContentPm { update(chatCreatedEvent = Event(Unit)) } }
+        .onSuccess { updateContentPm { copy(chatCreatedEvent = Event(Unit)) } }
     }
   }
 }
