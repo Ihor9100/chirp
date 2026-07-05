@@ -12,4 +12,7 @@ sealed interface ChatRoute {
 
   @Serializable
   data object ChatCreate : ChatRoute
+
+  @Serializable
+  data object ChatManage : ChatRoute
 }

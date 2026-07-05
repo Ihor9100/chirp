@@ -1,4 +1,4 @@
-package com.plcoding.feature.chat.presentation.screen.chats.create
+package com.plcoding.feature.chat.presentation.screen.chats.manage
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,6 +9,7 @@ import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseDialogScreen
 import com.plcoding.core.presentation.screen.model.ScreenStatePm
+import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenAction
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenContent
@@ -16,13 +17,14 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ChatCreateDialogScreen(
+fun ChatManageDialogScreen(
   navController: NavController,
-  viewModel: ChatCreateDialogScreenViewModel = koinViewModel()
+  viewModel: ChatManageDialogScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.screenState.collectAsStateWithLifecycle()
 
   state.contentPm.chatCreatedEvent?.consume {
+    navResult.setResult("arg", it)
     navController.popBackStack()
   }
 
@@ -36,6 +38,7 @@ fun ChatCreateDialogScreen(
       onAction = {
         when (it) {
           BaseChatDialogScreenAction.OnDismiss -> {
+            navResult.setResult("arg", "Result")
             navController.popBackStack()
           }
           else -> viewModel.onAction(it)
@@ -51,7 +54,7 @@ private fun Themed(
   deviceConfiguration: DeviceConfiguration,
 ) {
   val screenStatePm = ScreenStatePm(
-    contentPm = ChatCreateDialogScreenContentPm(
+    contentPm = ChatManageDialogScreenContentPm(
       foundChatMembersPm = ChatMemberPm.mocks,
     ),
   )

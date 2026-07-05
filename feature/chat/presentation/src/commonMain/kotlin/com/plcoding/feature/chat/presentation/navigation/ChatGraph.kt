@@ -8,6 +8,7 @@ import androidx.navigation.navigation
 import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.feature.chat.presentation.screen.chats.ChatsScreen
 import com.plcoding.feature.chat.presentation.screen.chats.create.ChatCreateDialogScreen
+import com.plcoding.feature.chat.presentation.screen.chats.manage.ChatManageDialogScreen
 
 fun NavGraphBuilder.chatGraph(
   navController: NavController,
@@ -20,7 +21,10 @@ fun NavGraphBuilder.chatGraph(
       ChatsScreen(navController)
     }
     dialog<ChatRoute.ChatCreate> {
-      ChatCreateDialogScreen(navController, navResult)
+      ChatCreateDialogScreen(navController)
+    }
+    dialog<ChatRoute.ChatManage> {
+      ChatManageDialogScreen(navController)
     }
   }
 }

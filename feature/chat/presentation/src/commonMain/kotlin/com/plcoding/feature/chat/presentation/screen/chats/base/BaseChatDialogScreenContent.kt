@@ -60,7 +60,7 @@ fun BaseChatDialogScreenContent(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Text(
-        text = stringResource(Res.string.create_chat),
+        text = stringResource(contentPm.titleRes),
         color = MaterialTheme.colorScheme.extended.textPrimary,
         style = MaterialTheme.typography.titleMedium,
       )
@@ -153,7 +153,7 @@ fun BaseChatDialogScreenContent(
       )
       ButtonPc(
         modifier = Modifier,
-        text = stringResource(Res.string.create_chat),
+        text = stringResource(contentPm.positiveButtonRes),
         style = ButtonPcStyle.PRIMARY,
         onClick = { onAction(BaseChatDialogScreenAction.OnPositiveClick) }
       )

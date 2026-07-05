@@ -6,15 +6,14 @@ import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
 import com.plcoding.feature.chat.presentation.mapper.ChatPmMapper
 import com.plcoding.feature.chat.presentation.screen.chats.ChatsScreenContentPmMapper
 import com.plcoding.feature.chat.presentation.screen.chats.ChatsScreenViewModel
-import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenViewModel
-import com.plcoding.feature.chat.presentation.screen.chats.base.ChatCreateDialogScreenViewModel
+import com.plcoding.feature.chat.presentation.screen.chats.manage.ChatManageDialogScreenViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val chatPresentationDiModule = module {
   viewModelOf(::ChatsScreenViewModel)
-  viewModelOf(::ChatCreateDialogScreenViewModel)
+  viewModelOf(::ChatManageDialogScreenViewModel)
 
   factoryOf(::ChatsScreenContentPmMapper)
   factoryOf(::ChatPmMapper)
