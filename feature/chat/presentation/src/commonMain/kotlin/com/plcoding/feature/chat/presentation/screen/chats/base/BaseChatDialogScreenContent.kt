@@ -106,16 +106,16 @@ fun BaseChatDialogScreenContent(
       )
     }
     if (contentPm.foundChatMembersPm.isNotEmpty()) {
-      ChatMembersPcLazyColumn(
+      ChatMembersLazyColumnPc(
         chatMembersPm = contentPm.foundChatMembersPm,
         onKey = { contentPm.foundChatMembersPm[it].id },
       )
     }
     HorizontalDividerPc()
     if (contentPm.inChatMembersPm.isNotEmpty()) {
-      ChatMembersPcLazyColumn(
+      ChatMembersLazyColumnPc(
         chatMembersPm = contentPm.inChatMembersPm,
-        onKey = { contentPm.inChatMembersPm[it].fullName },
+        onKey = { contentPm.inChatMembersPm[it].id + "Invited" },
       )
     }
     HorizontalDividerPc()
@@ -145,7 +145,7 @@ fun BaseChatDialogScreenContent(
 }
 
 @Composable
-private fun ChatMembersPcLazyColumn(
+private fun ChatMembersLazyColumnPc(
   chatMembersPm: List<ChatMemberPm>,
   onKey: (index: Int) -> Any,
 ) {

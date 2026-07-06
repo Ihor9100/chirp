@@ -18,12 +18,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ChatManageDialogScreenViewModel(
@@ -35,13 +34,13 @@ class ChatManageDialogScreenViewModel(
   chatMemberPmMapper,
 ) {
 
-  private val _chatId = MutableStateFlow<String>(savedStateHandle.get<String>("chatId")!!)
+  private val _chatId = MutableStateFlow(savedStateHandle.get<String>("chatId")!!)
   private val _chatMembers = _chatId
     .flatMapLatest { chatRepository.observeChatMembers(it) }
     .map(::getChatMembersPm)
     .flowOn(Dispatchers.IO)
     .onEach { updateContentPm { copy(inChatMembersPm = it) } }
-    .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
+    .launchIn(viewModelScope)
 
   override fun getContentPm(): ChatManageDialogScreenContentPm {
     return ChatManageDialogScreenContentPm()
@@ -55,12 +54,12 @@ class ChatManageDialogScreenViewModel(
   }
 
   override fun handlePositiveClick() {
-    val chatMembersId = _chatMembers.value.map { it.id }
-    if (chatMembersId.isEmpty()) return
+    val memberIds = screenState.value.contentPm.foundChatMembersPm.map { it.id }
+    if (memberIds.isEmpty()) return
 
     viewModelScope.launch {
       chatRepository
-        .addChatMembers(_chatId.value, chatMembersId)
+        .addChatMembers(_chatId.value, memberIds)
         .onFailure { showSnackbar(it.getStringRes()) }
         .onSuccess { updateContentPm { copy(chatUpdatedEvent = Event(Unit)) } }
     }
