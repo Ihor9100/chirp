@@ -25,15 +25,15 @@ class ChatsRoomLocalDataSource(
   private val chatAndMemberDao: ChatAndMemberDao,
 ) : ChatsLocalDataSource {
 
-  override suspend fun observeChatMembers(chatId: String): Flow<List<ChatMemberEntity>> {
+  override fun observeChatMembers(chatId: String): Flow<List<ChatMemberEntity>> {
     return chatMembersDao.observe(chatId)
   }
 
-  override suspend fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>> {
+  override fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>> {
     return chatsDao.subscribeToChatsAndMembers()
   }
 
-  override suspend fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?> {
+  override fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?> {
     return chatsDao.observeChatAndMembersAndMessages(chatId)
   }
 

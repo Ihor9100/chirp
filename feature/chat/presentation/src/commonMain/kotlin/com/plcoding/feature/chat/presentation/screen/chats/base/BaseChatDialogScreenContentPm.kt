@@ -1,7 +1,6 @@
 package com.plcoding.feature.chat.presentation.screen.chats.base
 
 import androidx.compose.foundation.text.input.TextFieldState
-import com.plcoding.core.presentation.event.Event
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import org.jetbrains.compose.resources.StringResource
 
@@ -12,6 +11,10 @@ interface BaseChatDialogScreenContentPm<T : BaseChatDialogScreenContentPm<T>> {
   val foundChatMemberPm: ChatMemberPm?
   val foundChatMembersPm: List<ChatMemberPm>
   val positiveButtonRes: StringResource
+
+  fun isEmptyState(): Boolean {
+    return inChatMembersPm.isEmpty() && foundChatMembersPm.isEmpty()
+  }
 
   fun update(
     foundChatMemberPm: ChatMemberPm? = this.foundChatMemberPm,

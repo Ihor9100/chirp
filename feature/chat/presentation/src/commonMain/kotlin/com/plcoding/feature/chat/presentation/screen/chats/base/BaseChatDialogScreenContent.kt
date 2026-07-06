@@ -29,6 +29,7 @@ import com.plcoding.core.designsystem.components.button.ButtonPcStyle
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.feature.chat.presentation.component.ChatMemberPc
+import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -97,34 +98,25 @@ fun BaseChatDialogScreenContent(
       )
     }
     HorizontalDividerPc()
-    LazyColumn(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(
-          horizontal = 16.dp,
-          vertical = 12.dp,
-        ),
-      verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-      if (contentPm.foundChatMembersPm.isEmpty()) {
-        item {
-          TitleDescriptionPc(
-            modifier = Modifier.padding(vertical = 24.dp),
-            titleRes = Res.string.no_members,
-            descriptionRes = Res.string.add_members_to_your_chat,
-          )
-        }
-      } else {
-        items(
-          count = contentPm.foundChatMembersPm.size,
-          key = { contentPm.foundChatMembersPm[it].id },
-        ) { index ->
-          ChatMemberPc(
-            modifier = Modifier,
-            chatMemberPm = contentPm.foundChatMembersPm[index],
-          )
-        }
-      }
+    if (contentPm.isEmptyState()) {
+      TitleDescriptionPc(
+        modifier = Modifier.padding(vertical = 24.dp),
+        titleRes = Res.string.no_members,
+        descriptionRes = Res.string.add_members_to_your_chat,
+      )
+    }
+    if (contentPm.foundChatMembersPm.isNotEmpty()) {
+      ChatMembersPcLazyColumn(
+        chatMembersPm = contentPm.foundChatMembersPm,
+        onKey = { contentPm.foundChatMembersPm[it].id },
+      )
+    }
+    HorizontalDividerPc()
+    if (contentPm.inChatMembersPm.isNotEmpty()) {
+      ChatMembersPcLazyColumn(
+        chatMembersPm = contentPm.inChatMembersPm,
+        onKey = { contentPm.inChatMembersPm[it].fullName },
+      )
     }
     HorizontalDividerPc()
     Row(
@@ -147,6 +139,29 @@ fun BaseChatDialogScreenContent(
         text = stringResource(contentPm.positiveButtonRes),
         style = ButtonPcStyle.PRIMARY,
         onClick = { onAction(BaseChatDialogScreenAction.OnPositiveClick) }
+      )
+    }
+  }
+}
+
+@Composable
+private fun ChatMembersPcLazyColumn(
+  chatMembersPm: List<ChatMemberPm>,
+  onKey: (index: Int) -> Any,
+) {
+  LazyColumn(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(
+        horizontal = 16.dp,
+        vertical = 12.dp,
+      ),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+  ) {
+    items(chatMembersPm.size, onKey) { index ->
+      ChatMemberPc(
+        modifier = Modifier,
+        chatMemberPm = chatMembersPm[index],
       )
     }
   }
