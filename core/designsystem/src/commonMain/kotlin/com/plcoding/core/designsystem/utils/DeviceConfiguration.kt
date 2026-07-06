@@ -24,13 +24,13 @@ enum class DeviceConfiguration {
           minWidthDp < WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND &&
             minHeightDp >= WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND -> MOBILE_PORTRAIT
 
-          minWidthDp >= WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND &&
-            minHeightDp < WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND -> MOBILE_LANDSCAPE
+          minWidthDp >= WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND &&
+            minHeightDp < WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND -> MOBILE_LANDSCAPE
 
           minWidthDp in WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND..WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND &&
             minHeightDp >= WindowSizeClass.HEIGHT_DP_EXPANDED_LOWER_BOUND -> TABLET_PORTRAIT
 
-          minWidthDp > WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND &&
+          minWidthDp >= WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND &&
             minHeightDp in WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND..WindowSizeClass.HEIGHT_DP_EXPANDED_LOWER_BOUND -> TABLET_LANDSCAPE
 
           else -> DESKTOP

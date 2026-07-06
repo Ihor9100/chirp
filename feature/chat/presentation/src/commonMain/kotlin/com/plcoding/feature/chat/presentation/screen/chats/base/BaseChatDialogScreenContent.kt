@@ -133,6 +133,7 @@ fun BaseChatDialogScreenContent(
         modifier = Modifier,
         text = stringResource(Res.string.cancel),
         style = ButtonPcStyle.SECONDARY,
+        onClick = { onAction(BaseChatDialogScreenAction.OnDismiss) }
       )
       ButtonPc(
         modifier = Modifier,

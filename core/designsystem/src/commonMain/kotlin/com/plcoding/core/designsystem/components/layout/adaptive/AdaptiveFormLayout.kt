@@ -124,7 +124,7 @@ fun AdaptiveFormLayout(
 }
 
 @Composable
-fun AdaptiveFormLayoutThemed(
+private fun Themed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
 ) {
@@ -167,8 +167,8 @@ fun AdaptiveFormLayoutThemed(
   widthDp = 450,
   heightDp = 1000,
 )
-fun AdaptiveFormLayoutMobilePortraitLightPreview() {
-  AdaptiveFormLayoutThemed(
+private fun MobilePortraitLightPreview() {
+  Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -179,8 +179,8 @@ fun AdaptiveFormLayoutMobilePortraitLightPreview() {
   widthDp = 450,
   heightDp = 1000,
 )
-fun AdaptiveFormLayoutMobilePortraitDarkPreview() {
-  AdaptiveFormLayoutThemed(
+private fun MobilePortraitDarkPreview() {
+  Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
   )
@@ -191,8 +191,8 @@ fun AdaptiveFormLayoutMobilePortraitDarkPreview() {
   widthDp = 1000,
   heightDp = 450,
 )
-fun AdaptiveFormLayoutMobileLandscapeLightPreview() {
-  AdaptiveFormLayoutThemed(
+private fun MobileLandscapeLightPreview() {
+  Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
   )
@@ -203,8 +203,8 @@ fun AdaptiveFormLayoutMobileLandscapeLightPreview() {
   widthDp = 1000,
   heightDp = 450,
 )
-fun AdaptiveFormLayoutMobileLandscapeDarkPreview() {
-  AdaptiveFormLayoutThemed(
+private fun MobileLandscapeDarkPreview() {
+  Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_LANDSCAPE,
   )
@@ -215,8 +215,8 @@ fun AdaptiveFormLayoutMobileLandscapeDarkPreview() {
   widthDp = 750,
   heightDp = 1200,
 )
-fun AdaptiveFormLayoutTabletPortraitLightPreview() {
-  AdaptiveFormLayoutThemed(
+private fun TabletPortraitLightPreview() {
+  Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
@@ -227,8 +227,8 @@ fun AdaptiveFormLayoutTabletPortraitLightPreview() {
   widthDp = 750,
   heightDp = 1200,
 )
-fun AdaptiveFormLayoutTabletPortraitDarkPreview() {
-  AdaptiveFormLayoutThemed(
+private fun TabletPortraitDarkPreview() {
+  Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_PORTRAIT,
   )
@@ -239,8 +239,8 @@ fun AdaptiveFormLayoutTabletPortraitDarkPreview() {
   widthDp = 1200,
   heightDp = 750,
 )
-fun AdaptiveFormLayoutTabletLandscapeLightPreview() {
-  AdaptiveFormLayoutThemed(
+private fun TabletLandscapeLightPreview() {
+  Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
@@ -251,8 +251,8 @@ fun AdaptiveFormLayoutTabletLandscapeLightPreview() {
   widthDp = 1200,
   heightDp = 750,
 )
-fun AdaptiveFormLayoutTabletLandscapeDarkPreview() {
-  AdaptiveFormLayoutThemed(
+private fun TabletLandscapeDarkPreview() {
+  Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.TABLET_LANDSCAPE,
   )
@@ -263,8 +263,8 @@ fun AdaptiveFormLayoutTabletLandscapeDarkPreview() {
   widthDp = 2000,
   heightDp = 1500,
 )
-fun AdaptiveFormLayoutDesktopLightPreview() {
-  AdaptiveFormLayoutThemed(
+private fun DesktopLightPreview() {
+  Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.DESKTOP,
   )
@@ -275,8 +275,8 @@ fun AdaptiveFormLayoutDesktopLightPreview() {
   widthDp = 2000,
   heightDp = 1500,
 )
-fun AdaptiveFormLayoutDesktopDarkPreview() {
-  AdaptiveFormLayoutThemed(
+private fun DesktopDarkPreview() {
+  Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.DESKTOP,
   )

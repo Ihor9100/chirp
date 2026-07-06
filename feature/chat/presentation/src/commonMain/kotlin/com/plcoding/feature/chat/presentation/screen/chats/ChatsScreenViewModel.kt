@@ -124,7 +124,10 @@ class ChatsScreenViewModel(
   private fun handleChatDetailsMenuItemClick(dropDownItemPm: DropDownItemPm) {
     when (dropDownItemPm.titleRes) {
       Res.string.chat_members -> _internalState.update {
-        it.copy(openChatManageEvent = Event(_internalState.value.chatId!!))
+        it.copy(
+          showChatDetailsDropDown = false,
+          openChatManageEvent = Event(_internalState.value.chatId!!),
+        )
       }
       Res.string.log_out -> {
         leaveChat()
