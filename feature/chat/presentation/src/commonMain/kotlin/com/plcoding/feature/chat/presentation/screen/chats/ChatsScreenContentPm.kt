@@ -14,6 +14,7 @@ data class ChatsScreenContentPm(
   val chatEmptyState: ChatEmptyStatePm?,
   val chatHeaderPm: ChatHeaderPm?,
   val dropDownItemsPm: List<DropDownItemPm>?,
+  val openChatManageEvent: Event<String>?,
   val leaveChatEvent: Event<Unit>?,
   val chatDetailsPm: List<ChatDetailsPm>?,
 ) {
@@ -27,6 +28,7 @@ data class ChatsScreenContentPm(
         chatEmptyState = null,
         chatHeaderPm = ChatHeaderPm.mock,
         dropDownItemsPm = DropDownItemPm.mocks,
+        openChatManageEvent = null,
         leaveChatEvent = null,
         chatDetailsPm = ChatDetailsPm.mocks,
       )

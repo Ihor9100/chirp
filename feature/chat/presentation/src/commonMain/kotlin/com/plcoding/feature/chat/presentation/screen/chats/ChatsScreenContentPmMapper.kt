@@ -1,6 +1,5 @@
 package com.plcoding.feature.chat.presentation.screen.chats
 
-import chirp.core.designsystem.generated.resources.Res as CoreRes
 import chirp.core.designsystem.generated.resources.ic_users
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.chat_members
@@ -12,7 +11,6 @@ import chirp.feature.chat.presentation.generated.resources.select_chat_subtitle
 import com.plcoding.core.designsystem.model.DropDownItemPm
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.mapper.Mapper
-import com.plcoding.core.presentation.event.Event
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.presentation.mapper.ChatDetailsPmMapper
@@ -22,6 +20,7 @@ import com.plcoding.feature.chat.presentation.model.ChatEmptyStatePm
 import com.plcoding.feature.chat.presentation.model.ChatPm
 import com.plcoding.feature.chat.presentation.screen.chats.ChatsScreenContentPmMapper.From
 import org.jetbrains.compose.resources.StringResource
+import chirp.core.designsystem.generated.resources.Res as CoreRes
 
 class ChatsScreenContentPmMapper(
   private val chatPmMapper: ChatPmMapper,
@@ -33,20 +32,21 @@ class ChatsScreenContentPmMapper(
     return with(from) {
       ChatsScreenContentPm(
         chatsEmptyState = getChatEmptyState(
-          predicate = from.chats::isEmpty,
+          predicate = chats::isEmpty,
           descriptionRes = Res.string.no_messages_subtitle,
         ),
-        chatId = chatId,
+        chatId = internalState.chatId,
         chatsPm = getChatsPm(from),
         chatEmptyState = getChatEmptyState(
-          predicate = { chatId == null },
+          predicate = { internalState.chatId == null },
           descriptionRes = Res.string.select_chat_subtitle,
         ),
         chatHeaderPm = chatDetails?.run {
           chatHeaderPmMapper.map(ChatHeaderPmMapper.From(yourId, chat.members))
         },
-        dropDownItemsPm = if (showChatDetailsDropDown) getDropDownItemsPm() else null,
-        leaveChatEvent = from.leaveChatEvent,
+        dropDownItemsPm = if (internalState.showChatDetailsDropDown) getDropDownItemsPm() else null,
+        openChatManageEvent = internalState.openChatManageEvent,
+        leaveChatEvent = internalState.leaveChatEvent,
         chatDetailsPm = chatDetails?.let(chatDetailsPmMapper::map).orEmpty(),
       )
     }
@@ -58,9 +58,9 @@ class ChatsScreenContentPmMapper(
         ChatPmMapper.From(
           chat = it,
           yourId = from.yourId,
-          chatId = from.chatId,
+          chatId = from.internalState.chatId,
           lastChatId = from.chats.lastOrNull()?.id,
-          showDropDown = from.showChatDetailsDropDown,
+          showDropDown = from.internalState.showChatDetailsDropDown,
         )
       )
     }
@@ -97,10 +97,8 @@ class ChatsScreenContentPmMapper(
 
   data class From(
     val yourId: String?,
-    val chatId: String?,
     val chats: List<Chat>,
     val chatDetails: ChatDetails?,
-    val showChatDetailsDropDown: Boolean,
-    val leaveChatEvent: Event<Unit>?,
+    val internalState: ChatsScreenViewModel.InternalState,
   )
 }

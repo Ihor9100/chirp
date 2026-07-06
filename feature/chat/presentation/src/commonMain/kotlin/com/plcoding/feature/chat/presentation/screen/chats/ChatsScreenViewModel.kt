@@ -37,8 +37,9 @@ class ChatsScreenViewModel(
   private val _internalState = MutableStateFlow(
     InternalState(
       chatId = null,
-      leaveChatEvent = null,
       showChatDetailsDropDown = false,
+      openChatManageEvent = null,
+      leaveChatEvent = null,
     )
   )
   private val _chatDetails = _internalState
@@ -73,26 +74,24 @@ class ChatsScreenViewModel(
   }
 
   private fun observeScreenData() {
-      combine(
-        preferencesRepository.observeAuthInfo(),
-        chatRepository.observeChats(),
-        _internalState,
-        _chatDetails,
-      ) { authInfo, chats, internalState, chatDetails ->
-        contentPmMapper.map(
-          ChatsScreenContentPmMapper.From(
-            yourId = authInfo?.user?.id,
-            chatId = internalState.chatId,
-            chats = chats,
-            chatDetails = chatDetails,
-            showChatDetailsDropDown = internalState.showChatDetailsDropDown,
-            leaveChatEvent = internalState.leaveChatEvent,
-          )
+    combine(
+      preferencesRepository.observeAuthInfo(),
+      chatRepository.observeChats(),
+      _internalState,
+      _chatDetails,
+    ) { authInfo, chats, internalState, chatDetails ->
+      contentPmMapper.map(
+        ChatsScreenContentPmMapper.From(
+          yourId = authInfo?.user?.id,
+          chats = chats,
+          chatDetails = chatDetails,
+          internalState = internalState,
         )
-      }
-        .flowOn(Dispatchers.IO)
-        .onEach { content -> updateContentPm { content } }
-        .launchIn(viewModelScope)
+      )
+    }
+      .flowOn(Dispatchers.IO)
+      .onEach { content -> updateContentPm { content } }
+      .launchIn(viewModelScope)
   }
 
   fun openChatDetails(chatId: String) {
@@ -124,8 +123,12 @@ class ChatsScreenViewModel(
 
   private fun handleChatDetailsMenuItemClick(dropDownItemPm: DropDownItemPm) {
     when (dropDownItemPm.titleRes) {
-      Res.string.chat_members -> showSnackbar(dropDownItemPm.titleRes)
-      Res.string.log_out -> leaveChat()
+      Res.string.chat_members -> _internalState.update {
+        it.copy(openChatManageEvent = Event(_internalState.value.chatId!!))
+      }
+      Res.string.log_out -> {
+        leaveChat()
+      }
     }
   }
 
@@ -139,17 +142,18 @@ class ChatsScreenViewModel(
           _internalState.update {
             it.copy(
               chatId = null,
-              leaveChatEvent = Event(Unit),
               showChatDetailsDropDown = false,
+              leaveChatEvent = Event(Unit),
             )
           }
         }
     }
   }
 
-  private data class InternalState(
+  data class InternalState(
     val chatId: String?,
-    val leaveChatEvent: Event<Unit>?,
     val showChatDetailsDropDown: Boolean,
+    val openChatManageEvent: Event<String>?,
+    val leaveChatEvent: Event<Unit>?,
   )
 }
