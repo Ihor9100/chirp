@@ -14,6 +14,7 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.feature.chat.domain.observer.AppConnectivityObserver
 import com.plcoding.feature.chat.domain.observer.AppLifecycleObserver
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,7 @@ class ChatsScreenViewModel(
   private val chatRepository: ChatRepository,
   private val contentPmMapper: ChatsScreenContentPmMapper,
   private val appLifecycleObserver: AppLifecycleObserver,
+  private val appConnectivityObserver: AppConnectivityObserver,
 ) : BaseScreenViewModel<ChatsScreenContentPm>() {
 
   private val _internalState = MutableStateFlow(
@@ -52,6 +54,11 @@ class ChatsScreenViewModel(
     appLifecycleObserver
       .isInForeground
       .onEach { println("Is app in Foreground? = $it") }
+      .launchIn(viewModelScope)
+
+    appConnectivityObserver
+      .isConnected
+      .onEach { println("Is app witn Internet? = $it") }
       .launchIn(viewModelScope)
   }
 
