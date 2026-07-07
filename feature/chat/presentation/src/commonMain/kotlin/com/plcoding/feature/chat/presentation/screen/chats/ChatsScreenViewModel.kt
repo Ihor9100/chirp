@@ -14,6 +14,7 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.feature.chat.domain.observer.AppLifecycleObserver
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,6 +33,7 @@ class ChatsScreenViewModel(
   private val preferencesRepository: PreferencesRepository,
   private val chatRepository: ChatRepository,
   private val contentPmMapper: ChatsScreenContentPmMapper,
+  private val appLifecycleObserver: AppLifecycleObserver,
 ) : BaseScreenViewModel<ChatsScreenContentPm>() {
 
   private val _internalState = MutableStateFlow(
@@ -45,6 +47,13 @@ class ChatsScreenViewModel(
   private val _chatDetails = _internalState
     .map { it.chatId.orEmpty() }
     .flatMapLatest(chatRepository::observeChatDetails)
+
+  init {
+    appLifecycleObserver
+      .isInForeground
+      .onEach { println("Is app in Foreground? = $it") }
+      .launchIn(viewModelScope)
+  }
 
   override fun getContentPm(): ChatsScreenContentPm {
     return ChatsScreenContentPm.mock

@@ -42,7 +42,6 @@ class AppScreenViewModel(
       updateContentPm {
         copy(
           startDestination = startDestination,
-          removeSplashScreenEvent = Event(Unit),
         )
       }
     }

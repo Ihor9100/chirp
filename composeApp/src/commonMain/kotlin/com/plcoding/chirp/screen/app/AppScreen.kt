@@ -22,7 +22,7 @@ fun AppScreen(
   val startDestination = state.contentPm.startDestination
   val navController = rememberNavController()
 
-  state.contentPm.removeSplashScreenEvent?.run {
+  if (state.contentPm.startDestination != null) {
     removeSplashScreen?.invoke()
   }
   state.contentPm.logoutEvent?.run {
