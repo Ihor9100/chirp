@@ -13,7 +13,7 @@ import platform.UIKit.UIApplicationState
 import platform.UIKit.UIApplicationWillEnterForegroundNotification
 import platform.UIKit.UIApplicationWillResignActiveNotification
 
-class iOSAppLifecycleObserver : AppLifecycleObserver {
+class IOSAppLifecycleObserver : AppLifecycleObserver {
 
   override val isInForeground: Flow<Boolean> = callbackFlow {
     val currentState = UIApplication.sharedApplication.applicationState

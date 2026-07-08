@@ -9,7 +9,14 @@ import platform.Foundation.NSURLErrorNetworkConnectionLost
 import platform.Foundation.NSURLErrorNotConnectedToInternet
 import platform.Foundation.NSURLErrorTimedOut
 
-class iOSConnectionErrorHandler: ConnectionErrorHandler {
+class IOSConnectionErrorHandler: ConnectionErrorHandler {
+
+    companion object {
+        private val NSURLErrorNotConnectedToInternetPattern =
+            "Error Domain=${NSURLErrorDomain} Code=${NSURLErrorNotConnectedToInternet}"
+        val NSURLErrorNetworkConnectionLostPattern =
+            "Error Domain=${NSURLErrorDomain} Code=${NSURLErrorNetworkConnectionLost}"
+    }
 
     override fun getConnectionState(throwable: Throwable): ConnectionState {
         val nsError = extractNsError(throwable)
@@ -93,10 +100,8 @@ class iOSConnectionErrorHandler: ConnectionErrorHandler {
         }
     }
 
-    companion object {
-        private val NSURLErrorNotConnectedToInternetPattern =
-            "Error Domain=${NSURLErrorDomain} Code=${NSURLErrorNotConnectedToInternet}"
-        val NSURLErrorNetworkConnectionLostPattern =
-            "Error Domain=${NSURLErrorDomain} Code=${NSURLErrorNetworkConnectionLost}"
-    }
+    class IOSNetworkCancellationException(
+        message: String,
+        cause: Throwable?
+    ): Exception(message, cause)
 }

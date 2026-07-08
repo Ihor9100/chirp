@@ -1,8 +1,8 @@
 package com.plcoding.feature.chat.data.di
 
-import com.plcoding.feature.chat.data.handler.iOSConnectionErrorHandler
-import com.plcoding.feature.chat.data.iOSAppLifecycleObserver
-import com.plcoding.feature.chat.data.observer.iOSAppConnectivityObserver
+import com.plcoding.feature.chat.data.IOSAppLifecycleObserver
+import com.plcoding.feature.chat.data.handler.IOSConnectionErrorHandler
+import com.plcoding.feature.chat.data.observer.IOSAppConnectivityObserver
 import com.plcoding.feature.chat.database.ChirpDatabaseBuilderFactory
 import com.plcoding.feature.chat.domain.handler.ConnectionErrorHandler
 import com.plcoding.feature.chat.domain.observer.AppConnectivityObserver
@@ -14,7 +14,7 @@ import org.koin.dsl.module
 
 actual val platformChatDataDiModule = module {
   factoryOf(::ChirpDatabaseBuilderFactory)
-  singleOf(::iOSAppLifecycleObserver) bind AppLifecycleObserver::class
-  singleOf(::iOSAppConnectivityObserver) bind AppConnectivityObserver::class
-  singleOf(::iOSConnectionErrorHandler) bind ConnectionErrorHandler::class
+  singleOf(::IOSAppLifecycleObserver) bind AppLifecycleObserver::class
+  singleOf(::IOSAppConnectivityObserver) bind AppConnectivityObserver::class
+  singleOf(::IOSConnectionErrorHandler) bind ConnectionErrorHandler::class
 }

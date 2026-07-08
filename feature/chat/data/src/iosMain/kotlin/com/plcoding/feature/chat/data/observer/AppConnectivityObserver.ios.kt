@@ -14,7 +14,7 @@ import platform.Network.nw_path_status_satisfiable
 import platform.Network.nw_path_status_satisfied
 import platform.darwin.dispatch_queue_create
 
-class iOSAppConnectivityObserver : AppConnectivityObserver {
+class IOSAppConnectivityObserver : AppConnectivityObserver {
 
   companion object {
     private const val NW_PATH_MONITOR_LABEL = "com.plcoding.chat.data.network.ConnectivityObserver"
