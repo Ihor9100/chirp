@@ -8,7 +8,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class AppLifecycleDataObserver : AppLifecycleObserver {
+class AndroidAppLifecycleObserver : AppLifecycleObserver {
 
   override val isInForeground: Flow<Boolean> = callbackFlow {
     val lifecycle = ProcessLifecycleOwner.get().lifecycle

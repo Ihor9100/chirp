@@ -9,7 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class AppConnectivityDataObserver(
+class AndroidAppConnectivityObserver(
   private val context: Context,
 ) : AppConnectivityObserver {
 
