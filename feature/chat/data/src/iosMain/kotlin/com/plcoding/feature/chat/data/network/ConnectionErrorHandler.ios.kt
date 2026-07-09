@@ -1,7 +1,7 @@
-package com.plcoding.feature.chat.data.handler
+package com.plcoding.feature.chat.data.network
 
-import com.plcoding.chat.domain.models.ConnectionState
-import com.plcoding.feature.chat.domain.handler.ConnectionErrorHandler
+import com.plcoding.feature.chat.domain.model.ConnectionState
+import com.plcoding.feature.chat.domain.network.ConnectionErrorHandler
 import kotlinx.coroutines.CancellationException
 import platform.Foundation.NSError
 import platform.Foundation.NSURLErrorDomain

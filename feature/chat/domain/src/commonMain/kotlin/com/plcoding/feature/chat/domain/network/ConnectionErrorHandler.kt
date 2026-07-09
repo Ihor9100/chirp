@@ -1,6 +1,6 @@
-package com.plcoding.feature.chat.domain.handler
+package com.plcoding.feature.chat.domain.network
 
-import com.plcoding.chat.domain.models.ConnectionState
+import com.plcoding.feature.chat.domain.model.ConnectionState
 
 interface ConnectionErrorHandler {
   fun getConnectionState(throwable: Throwable): ConnectionState

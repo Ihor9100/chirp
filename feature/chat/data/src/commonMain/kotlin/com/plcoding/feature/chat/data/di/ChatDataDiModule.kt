@@ -5,7 +5,7 @@ import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
 import com.plcoding.feature.chat.data.datasource.local.ChatsRoomLocalDataSource
 import com.plcoding.feature.chat.data.datasource.remote.ChatsKtorRemoteDataSource
 import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
-import com.plcoding.feature.chat.data.handler.ConnectionRetryHandler
+import com.plcoding.feature.chat.data.network.ConnectionRetryHandler
 import com.plcoding.feature.chat.data.mapper.ChatAndMembersRelationMapper
 import com.plcoding.feature.chat.data.mapper.ChatDetailsMapper
 import com.plcoding.feature.chat.data.mapper.ChatEntityMapper

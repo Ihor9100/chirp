@@ -1,7 +1,7 @@
-package com.plcoding.feature.chat.data.handler
+package com.plcoding.feature.chat.data.network
 
-import com.plcoding.chat.domain.models.ConnectionState
-import com.plcoding.feature.chat.domain.handler.ConnectionErrorHandler
+import com.plcoding.feature.chat.domain.model.ConnectionState
+import com.plcoding.feature.chat.domain.network.ConnectionErrorHandler
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.websocket.WebSocketException
 import kotlinx.io.EOFException

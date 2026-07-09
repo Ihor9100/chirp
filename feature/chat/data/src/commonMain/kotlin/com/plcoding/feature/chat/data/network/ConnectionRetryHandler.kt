@@ -1,6 +1,6 @@
-package com.plcoding.feature.chat.data.handler
+package com.plcoding.feature.chat.data.network
 
-import com.plcoding.feature.chat.domain.handler.ConnectionErrorHandler
+import com.plcoding.feature.chat.domain.network.ConnectionErrorHandler
 import kotlinx.coroutines.delay
 import kotlin.math.min
 import kotlin.math.pow
@@ -15,7 +15,7 @@ class ConnectionRetryHandler(
     return connectionErrorHandler.isRetriableError(throwable)
   }
 
-  suspend fun delayExponentially(attempt: Int) {
+  suspend fun delayExponentially(attempt: Long) {
     if (useExponentialDelay) {
       val delay = getDelayMillis(attempt)
       delay(delay)
@@ -28,8 +28,8 @@ class ConnectionRetryHandler(
     useExponentialDelay = false
   }
 
-  private fun getDelayMillis(attempt: Int): Long {
-    val delay = (2f.pow(attempt) * 1000).toLong()
+  private fun getDelayMillis(attempt: Long): Long {
+    val delay = (2f.pow(attempt.toInt()) * 1000).toLong()
     val maxDelay = 30_000L
     return min(delay, maxDelay)
   }

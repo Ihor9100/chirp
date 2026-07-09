@@ -1,10 +1,10 @@
 package com.plcoding.feature.chat.data.di
 
-import com.plcoding.feature.chat.data.handler.AndroidConnectionErrorHandler
+import com.plcoding.feature.chat.data.network.AndroidConnectionErrorHandler
 import com.plcoding.feature.chat.data.observer.AndroidAppConnectivityObserver
 import com.plcoding.feature.chat.data.observer.AndroidAppLifecycleObserver
 import com.plcoding.feature.chat.database.ChirpDatabaseBuilderFactory
-import com.plcoding.feature.chat.domain.handler.ConnectionErrorHandler
+import com.plcoding.feature.chat.domain.network.ConnectionErrorHandler
 import com.plcoding.feature.chat.domain.observer.AppConnectivityObserver
 import com.plcoding.feature.chat.domain.observer.AppLifecycleObserver
 import org.koin.android.ext.koin.androidContext

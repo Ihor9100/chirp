@@ -127,8 +127,8 @@ suspend inline fun <reified T> handleHttpResponse(
 
 fun constructRoute(route: String): String {
   return when {
-    route.contains(BASE_URL) -> route
-    route.startsWith("/") -> BASE_URL + route
-    else -> "$BASE_URL/$route"
+    route.contains(BASE_URL_HTTPS) -> route
+    route.startsWith("/") -> BASE_URL_HTTPS + route
+    else -> "$BASE_URL_HTTPS/$route"
   }
 }
