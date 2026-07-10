@@ -2,6 +2,7 @@ package com.plcoding.feature.chat.data.datasource.local
 
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
+import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatEntity
 import com.plcoding.feature.chat.database.entity.ChatMemberEntity
@@ -12,17 +13,18 @@ import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlinx.coroutines.flow.Flow
 
 interface ChatsLocalDataSource {
-
   fun observeChatMembers(chatId: String): Flow<List<ChatMemberEntity>>
-
   fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>>
-
   fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?>
 
+  suspend fun upsertChatMessage(entity: ChatMessageEntity): Empty<DataError.Local>
   suspend fun updateChatMessage(
     id: String,
     deliveryStatus: ChatMessageDeliveryStatus,
   ): Empty<DataError.Local>
+
+  suspend fun deleteChatMessage(id: String): Empty<DataError.Local>
+  suspend fun hasChat(id: String): Result<Boolean, DataError.Local>
 
   suspend fun upsertChatDetails(
     chat: ChatEntity,

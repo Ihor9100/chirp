@@ -41,6 +41,13 @@ fun <D, E : Error> Result<D, E>.asEmpty(): Empty<E> {
   return map { }
 }
 
+fun <D, E : Error> Result<D, E>.getOrNull(): D? {
+  return when (this) {
+    is Result.Failure<*> -> null
+    is Result.Success<D> -> data
+  }
+}
+
 inline fun <D, E : Error> Result<D, E>.onSuccess(action: (D) -> Unit): Result<D, E> {
   return when (this) {
     is Result.Failure -> this

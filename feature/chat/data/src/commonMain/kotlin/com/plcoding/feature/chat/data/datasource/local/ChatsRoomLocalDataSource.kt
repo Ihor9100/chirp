@@ -4,6 +4,7 @@ import androidx.room.useWriterConnection
 import com.plcoding.core.data.tools.dbSafeCall
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
+import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.database.ChirpDatabase
 import com.plcoding.feature.chat.database.dao.ChatAndMemberDao
 import com.plcoding.feature.chat.database.dao.ChatMembersDao
@@ -38,12 +39,30 @@ class ChatsRoomLocalDataSource(
     return chatsDao.observeChatAndMembersAndMessages(chatId)
   }
 
+  override suspend fun upsertChatMessage(entity: ChatMessageEntity): Empty<DataError.Local> {
+    return dbSafeCall {
+      chatMessagesDao.upsert(entity)
+    }
+  }
+
   override suspend fun updateChatMessage(
     id: String,
     deliveryStatus: ChatMessageDeliveryStatus
   ): Empty<DataError.Local> {
     return dbSafeCall {
       chatMessagesDao.update(id, deliveryStatus.name)
+    }
+  }
+
+  override suspend fun deleteChatMessage(id: String): Empty<DataError.Local> {
+    return dbSafeCall {
+      chatMessagesDao.delete(id)
+    }
+  }
+
+  override suspend fun hasChat(id: String): Result<Boolean, DataError.Local> {
+    return dbSafeCall {
+      chatsDao.hasChat(id)
     }
   }
 

@@ -24,8 +24,8 @@ interface ChatsDao {
     upsert(entities)
   }
 
-  @Query("SELECT * FROM chats WHERE id = :id")
-  suspend fun get(id: String): ChatEntity?
+  @Query("SELECT EXISTS(SELECT 1 FROM chats WHERE id = :id)")
+  suspend fun hasChat(id: String): Boolean
 
   @Query("SELECT id FROM chats")
   suspend fun getIds(): List<String>
