@@ -15,6 +15,7 @@ import com.plcoding.feature.chat.data.mapper.ChatMemberEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMessageAndMemberMapper
 import com.plcoding.feature.chat.data.mapper.ChatMessageEntityMapper
 import com.plcoding.feature.chat.data.mapper.ChatMessageMapper
+import com.plcoding.feature.chat.data.mapper.NewMessageAmMapper
 import com.plcoding.feature.chat.data.mapper.ChatsAndMembersEntityMapper
 import com.plcoding.feature.chat.data.repository.ChatDataRepository
 import com.plcoding.feature.chat.database.ChirpDatabase
@@ -61,6 +62,7 @@ val chatDataDiModule = module {
   factoryOf(::ChatMapper)
   factoryOf(::ChatMemberAmMapper)
   factoryOf(::ChatMessageMapper)
+  factoryOf(::NewMessageAmMapper)
   factoryOf(::ChatMessageAndMemberMapper)
   factoryOf(::ChatDetailsMapper)
 }

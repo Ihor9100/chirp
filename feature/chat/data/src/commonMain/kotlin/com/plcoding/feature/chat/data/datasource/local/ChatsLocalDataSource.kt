@@ -8,6 +8,7 @@ import com.plcoding.feature.chat.database.entity.ChatMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
 import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
+import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlinx.coroutines.flow.Flow
 
 interface ChatsLocalDataSource {
@@ -17,6 +18,11 @@ interface ChatsLocalDataSource {
   fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>>
 
   fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?>
+
+  suspend fun updateChatMessage(
+    id: String,
+    deliveryStatus: ChatMessageDeliveryStatus,
+  ): Empty<DataError.Local>
 
   suspend fun upsertChatDetails(
     chat: ChatEntity,

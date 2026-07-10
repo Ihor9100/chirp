@@ -6,5 +6,4 @@ import kotlinx.serialization.Serializable
 data class WebSocketMessageAm(
   val type: String,
   val payload: String,
-) {
-}
+)

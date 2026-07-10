@@ -192,7 +192,7 @@ class KtorWebSocketConnector(
     webSocketSession = null
   }
 
-  private suspend fun sendMessage(message: String): Empty<ConnectionError> {
+  suspend fun sendMessage(message: String): Empty<ConnectionError> {
     val connectionState = _connectionState.value
 
     if (webSocketSession == null || connectionState != ConnectionState.CONNECTED) {

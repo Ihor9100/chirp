@@ -58,6 +58,8 @@ import com.plcoding.feature.chat.presentation.component.ChatPc
 import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
 import com.plcoding.feature.chat.presentation.model.ChatPm
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -81,6 +83,9 @@ fun ChatsScreen(
     }
   }
 
+  flowOf(listOf(1,1,1,1)).map {
+    it
+  }
   LaunchedEffect(state.contentPm.openChatManageEvent) {
     state.contentPm.openChatManageEvent?.consume {
       navController.navigate(ChatRoute.ChatManage(it))

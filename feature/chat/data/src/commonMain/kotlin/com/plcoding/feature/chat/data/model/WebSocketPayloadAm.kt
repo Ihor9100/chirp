@@ -3,7 +3,9 @@ package com.plcoding.feature.chat.data.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface WebSocketPayloadAm {
+sealed class WebSocketPayloadAm(
+  val webSocketMessageTypeAm: WebSocketMessageTypeAm,
+) {
 
   @Serializable
   data class NewMessageAm(
@@ -12,22 +14,22 @@ sealed interface WebSocketPayloadAm {
     val senderId: String,
     val content: String,
     val createdAt: String
-  ) : WebSocketPayloadAm
+  ) : WebSocketPayloadAm(WebSocketMessageTypeAm.NEW_MESSAGE)
 
   @Serializable
   data class MessageDeletedAm(
     val messageId: String,
     val chatId: String
-  ) : WebSocketPayloadAm
+  ) : WebSocketPayloadAm(WebSocketMessageTypeAm.MESSAGE_DELETED)
 
   @kotlinx.serialization.Serializable
   data class ProfilePictureUpdatedAm(
     val userId: String,
     val newUrl: String?,
-  ) : WebSocketPayloadAm
+  ) : WebSocketPayloadAm(WebSocketMessageTypeAm.PROFILE_PICTURE_UPDATED)
 
   @Serializable
-  data class ChatParticipantsChangedAm(
+  data class ChatMembersChangedAm(
     val chatId: String,
-  ) : WebSocketPayloadAm
+  ) : WebSocketPayloadAm(WebSocketMessageTypeAm.CHAT_PARTICIPANTS_CHANGED)
 }

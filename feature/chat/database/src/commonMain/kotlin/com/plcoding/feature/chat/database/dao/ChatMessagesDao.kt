@@ -4,10 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
-import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
-import com.plcoding.feature.chat.database.entity.ChatEntity
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
-import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,6 +21,13 @@ interface ChatMessagesDao {
     deleteAll()
     upsert(entities)
   }
+
+  @Query("""
+    UPDATE chat_messages
+    SET status = :deliveryStatus
+    WHERE id = :id
+  """)
+  suspend fun update(id: String, deliveryStatus: String)
 
   @Query("SELECT * FROM chat_messages WHERE id = :id")
   suspend fun get(id: String): ChatMessageEntity?

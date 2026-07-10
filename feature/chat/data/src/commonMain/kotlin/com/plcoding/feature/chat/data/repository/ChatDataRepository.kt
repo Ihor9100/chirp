@@ -19,6 +19,7 @@ import com.plcoding.feature.chat.data.model.ChatAm
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
+import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -52,6 +53,13 @@ class ChatDataRepository(
     return localDataSource
       .observeChatMembers(chatId)
       .map(chatMemberEntityMapper::reverseList)
+  }
+
+  override suspend fun updateChatMessage(
+    id: String,
+    deliveryStatus: ChatMessageDeliveryStatus,
+  ): Empty<DataError> {
+    return localDataSource.updateChatMessage(id, deliveryStatus)
   }
 
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
