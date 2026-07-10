@@ -35,7 +35,7 @@ class LiveChatDataRepository(
     return ktorWebSocketConnector
       .sendMessage(message)
       .onFailure {
-        val ddd =chatRepository.updateChatMessage(
+        chatRepository.updateChatMessage(
           chatMessage.id,
           ChatMessageDeliveryStatus.FAILED,
         )

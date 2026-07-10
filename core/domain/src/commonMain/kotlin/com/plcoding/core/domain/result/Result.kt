@@ -54,10 +54,3 @@ inline fun <D, E : Error> Result<D, E>.onFailure(action: (E) -> Unit): Result<D,
     is Result.Success -> this
   }
 }
-
-inline fun <In, E : Error, Out> Result<In, E>.onFailure(action: (E) -> Result<Out, E>): Result<Out, E> {
-  return when (this) {
-    is Result.Failure -> action(error)
-    is Result.Success -> this
-  }
-}
