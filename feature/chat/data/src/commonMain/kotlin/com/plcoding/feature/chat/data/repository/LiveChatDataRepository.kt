@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.data.repository
 
+import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.getOrNull
 import com.plcoding.core.domain.result.onFailure
@@ -16,26 +17,37 @@ import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import com.plcoding.feature.chat.domain.model.ConnectionError
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.domain.repository.LiveChatRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.serialization.json.Json
+import kotlin.time.Duration.Companion.seconds
 
 class LiveChatDataRepository(
   private val json: Json,
+  private val coroutineScope: CoroutineScope,
   private val ktorWebSocketConnector: KtorWebSocketConnector,
   private val chatRepository: ChatRepository,
   private val localDataSource: ChatsLocalDataSource,
   private val newMessageAmMapper: NewMessageAmMapper,
   private val chatMessageEntityMapper: ChatMessageEntityMapper,
   private val webSocketMessageAmMapper: WebSocketMessageAmMapper,
+  private val preferencesRepository: PreferencesRepository,
 ) : LiveChatRepository {
 
   override val chatMessage = ktorWebSocketConnector
     .webSocketMessagesAm
     .mapNotNull(::getWebSocketPayloadAm)
-    .onEach { }
+    .onEach(::handleWebSocketPayloadAm)
+    .filterIsInstance<WebSocketPayloadAm.NewMessageAm>()
+    .map(newMessageAmMapper::reverse)
+    .shareIn(coroutineScope, SharingStarted.WhileSubscribed(5.seconds))
 
   override val connectionState = ktorWebSocketConnector.connectionState
 
@@ -73,12 +85,12 @@ class LiveChatDataRepository(
     }
   }
 
-  private suspend fun getWebSocketPayloadAm(payloadAm: WebSocketPayloadAm) {
+  private suspend fun handleWebSocketPayloadAm(payloadAm: WebSocketPayloadAm) {
     when (payloadAm) {
       is WebSocketPayloadAm.ChatMembersChangedAm -> chatRepository.syncChat(payloadAm.chatId)
       is WebSocketPayloadAm.MessageDeletedAm -> localDataSource.deleteChatMessage(payloadAm.chatId)
       is WebSocketPayloadAm.NewMessageAm -> handleNewMessageAm(payloadAm)
-      is WebSocketPayloadAm.ProfilePictureUpdatedAm -> {}
+      is WebSocketPayloadAm.ProfilePictureUpdatedAm -> handleProfilePictureUpdatedAm(payloadAm)
     }
   }
 
@@ -91,5 +103,20 @@ class LiveChatDataRepository(
     val chatMessage = newMessageAmMapper.reverse(newMessageAm)
     val entity = chatMessageEntityMapper.map(chatMessage)
     localDataSource.upsertChatMessage(entity)
+  }
+
+  private suspend fun handleProfilePictureUpdatedAm(
+    profilePictureUpdatedAm: WebSocketPayloadAm.ProfilePictureUpdatedAm,
+  ) {
+    localDataSource.updateChatMember(
+      id = profilePictureUpdatedAm.userId,
+      avatarUrl = profilePictureUpdatedAm.newUrl,
+    )
+
+    val authInfo = preferencesRepository.observeAuthInfo().firstOrNull()
+    if (authInfo?.user?.id == profilePictureUpdatedAm.userId) {
+      val user = authInfo.user.copy(profilePictureUrl = profilePictureUpdatedAm.newUrl)
+      preferencesRepository.saveAuthInfo(authInfo.copy(user = user))
+    }
   }
 }

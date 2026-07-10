@@ -17,11 +17,13 @@ interface ChatsLocalDataSource {
   fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>>
   fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?>
 
+  suspend fun updateChatMember(id: String, avatarUrl: String?): Empty<DataError.Local>
   suspend fun upsertChatMessage(entity: ChatMessageEntity): Empty<DataError.Local>
   suspend fun updateChatMessage(
     id: String,
     deliveryStatus: ChatMessageDeliveryStatus,
   ): Empty<DataError.Local>
+
 
   suspend fun deleteChatMessage(id: String): Empty<DataError.Local>
   suspend fun hasChat(id: String): Result<Boolean, DataError.Local>

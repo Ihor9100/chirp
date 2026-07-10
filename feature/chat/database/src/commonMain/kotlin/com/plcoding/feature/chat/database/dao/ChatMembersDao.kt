@@ -25,6 +25,15 @@ interface ChatMembersDao {
   )
   fun observe(chatId: String): Flow<List<ChatMemberEntity>>
 
+  @Query(
+    """
+      UPDATE chat_members
+      SET avatarUrl = :avatarUrl
+      WHERE id = :id
+    """
+  )
+  suspend fun update(id: String, avatarUrl: String?)
+
   @Transaction
   suspend fun replace(entities: List<ChatMemberEntity>) {
     deleteAll()

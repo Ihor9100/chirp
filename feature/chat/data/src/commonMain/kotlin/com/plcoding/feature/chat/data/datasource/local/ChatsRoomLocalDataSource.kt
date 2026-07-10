@@ -39,6 +39,12 @@ class ChatsRoomLocalDataSource(
     return chatsDao.observeChatAndMembersAndMessages(chatId)
   }
 
+  override suspend fun updateChatMember(id: String, avatarUrl: String?): Empty<DataError.Local> {
+    return dbSafeCall {
+      chatMembersDao.update(id, avatarUrl)
+    }
+  }
+
   override suspend fun upsertChatMessage(entity: ChatMessageEntity): Empty<DataError.Local> {
     return dbSafeCall {
       chatMessagesDao.upsert(entity)
