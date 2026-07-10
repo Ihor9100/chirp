@@ -176,7 +176,7 @@ class KtorWebSocketConnector(
 
       awaitClose {
         launch(NonCancellable) {
-          closeWebSocketSession("Coroutine is cancalled, ", ConnectionState.DISCONNECTED)
+          closeWebSocketSession("Coroutine is cancelled, ", ConnectionState.DISCONNECTED)
         }
       }
     }

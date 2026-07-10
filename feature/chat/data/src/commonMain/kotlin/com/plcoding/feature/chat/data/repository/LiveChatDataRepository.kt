@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.serialization.json.Json
@@ -43,7 +42,7 @@ class LiveChatDataRepository(
 
   override val chatMessage = ktorWebSocketConnector
     .webSocketMessagesAm
-    .mapNotNull(::getWebSocketPayloadAm)
+    .map(::getWebSocketPayloadAm)
     .onEach(::handleWebSocketPayloadAm)
     .filterIsInstance<WebSocketPayloadAm.NewMessageAm>()
     .map(newMessageAmMapper::reverse)
@@ -66,7 +65,7 @@ class LiveChatDataRepository(
       }
   }
 
-  private fun getWebSocketPayloadAm(webSocketMessageAm: WebSocketMessageAm): WebSocketPayloadAm? {
+  private fun getWebSocketPayloadAm(webSocketMessageAm: WebSocketMessageAm): WebSocketPayloadAm {
     return with(webSocketMessageAm) {
       when (WebSocketMessageTypeAm.valueOf(type)) {
         WebSocketMessageTypeAm.NEW_MESSAGE -> {
