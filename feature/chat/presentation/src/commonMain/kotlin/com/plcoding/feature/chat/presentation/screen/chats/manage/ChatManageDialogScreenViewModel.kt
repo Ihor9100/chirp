@@ -10,7 +10,6 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.repository.ChatRepository
-import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
 import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,10 +27,8 @@ import kotlinx.coroutines.launch
 class ChatManageDialogScreenViewModel(
   savedStateHandle: SavedStateHandle,
   private val chatRepository: ChatRepository,
-  private val chatMemberPmMapper: ChatMemberPmMapper,
 ) : BaseChatDialogScreenViewModel<ChatManageDialogScreenContentPm>(
   chatRepository,
-  chatMemberPmMapper,
 ) {
 
   private val _chatId = MutableStateFlow(savedStateHandle.get<String>("chatId")!!)
@@ -47,10 +44,7 @@ class ChatManageDialogScreenViewModel(
   }
 
   private fun getChatMembersPm(chatMembers: List<ChatMember>): List<ChatMemberPm> {
-    return chatMembers.map {
-      val from = ChatMemberPmMapper.From(it, isInChat = true)
-      chatMemberPmMapper.map(from)
-    }
+    return chatMembers.map { ChatMemberPm.from(it, isInChat = true) }
   }
 
   override fun handlePositiveClick() {

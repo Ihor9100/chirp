@@ -7,5 +7,5 @@ data class ChatAm(
   val id: String,
   val participants: List<ChatMemberAm>,
   val lastActivityAt: String,
-  val lastMessage: ChatMessageAm?
+  val lastMessage: ChatMessageAm?,
 )

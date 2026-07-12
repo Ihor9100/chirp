@@ -12,7 +12,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        
+
         // Add KMP dependencies here
       }
     }

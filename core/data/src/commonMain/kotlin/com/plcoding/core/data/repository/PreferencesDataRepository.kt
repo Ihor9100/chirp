@@ -4,7 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.plcoding.core.data.mapper.AuthInfoMapper
+import com.plcoding.core.data.mapper.toAm
+import com.plcoding.core.data.mapper.toDomain
 import com.plcoding.core.data.model.AuthInfoAm
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.repository.PreferencesRepository
@@ -14,7 +15,6 @@ import kotlinx.serialization.json.Json
 
 class PreferencesDataRepository(
   private val json: Json,
-  private val authInfoMapper: AuthInfoMapper,
   private val dataStore: DataStore<Preferences>,
 ) : PreferencesRepository {
 
@@ -26,7 +26,7 @@ class PreferencesDataRepository(
       val serialized = it[authInfoKey]
       serialized?.run {
         val authInfoAm = json.decodeFromString<AuthInfoAm>(this)
-        authInfoMapper.map(authInfoAm)
+        authInfoAm.toDomain()
       }
     }
   }
@@ -38,7 +38,7 @@ class PreferencesDataRepository(
     }
 
     dataStore.edit {
-      val authInfoAm = authInfoMapper.reverse(authInfo)
+      val authInfoAm = authInfo.toAm()
       it[authInfoKey] = json.encodeToString(authInfoAm)
     }
   }

@@ -7,14 +7,9 @@ import com.plcoding.core.domain.result.flatMap
 import com.plcoding.core.domain.result.map
 import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
 import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
-import com.plcoding.feature.chat.data.mapper.ChatAndMembersRelationMapper
-import com.plcoding.feature.chat.data.mapper.ChatDetailsMapper
-import com.plcoding.feature.chat.data.mapper.ChatEntityMapper
-import com.plcoding.feature.chat.data.mapper.ChatMapper
-import com.plcoding.feature.chat.data.mapper.ChatMemberAmMapper
-import com.plcoding.feature.chat.data.mapper.ChatMemberEntityMapper
-import com.plcoding.feature.chat.data.mapper.ChatMessageEntityMapper
-import com.plcoding.feature.chat.data.mapper.ChatsAndMembersEntityMapper
+import com.plcoding.feature.chat.data.mapper.toDomain
+import com.plcoding.feature.chat.data.mapper.toEntities
+import com.plcoding.feature.chat.data.mapper.toEntity
 import com.plcoding.feature.chat.data.model.ChatAm
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
@@ -26,38 +21,30 @@ import kotlinx.coroutines.flow.map
 class ChatDataRepository(
   private val localDataSource: ChatsLocalDataSource,
   private val remoteDataSource: ChatsRemoteDataSource,
-  private val chatMapper: ChatMapper,
-  private val chatMemberAmMapper: ChatMemberAmMapper,
-  private val chatAndMembersRelationMapper: ChatAndMembersRelationMapper,
-  private val chatEntityMapper: ChatEntityMapper,
-  private val chatMemberEntityMapper: ChatMemberEntityMapper,
-  private val chatMessageEntityMapper: ChatMessageEntityMapper,
-  private val chatsAndMembersEntityMapper: ChatsAndMembersEntityMapper,
-  private val chatDetailsMapper: ChatDetailsMapper,
 ) : ChatRepository {
 
   override fun observeChats(): Flow<List<Chat>> {
     return localDataSource
       .observeChatAndMembers()
-      .map(chatAndMembersRelationMapper::mapList)
+      .map { entities -> entities.map { it.toDomain() } }
   }
 
   override fun observeChatDetails(chatId: String): Flow<ChatDetails?> {
     return localDataSource
       .observeChatAndMembersAndMessages(chatId)
-      .map { it?.let(chatDetailsMapper::map) }
+      .map { it?.toDomain() }
   }
 
   override fun observeChatMembers(chatId: String): Flow<List<ChatMember>> {
     return localDataSource
       .observeChatMembers(chatId)
-      .map(chatMemberEntityMapper::reverseList)
+      .map { entities -> entities.map { it.toDomain() } }
   }
 
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
     return remoteDataSource
       .searchMember(query)
-      .map(chatMemberAmMapper::map)
+      .map { it.toDomain() }
   }
 
   override suspend fun createChat(memberIds: List<String>): Empty<DataError> {
@@ -72,28 +59,15 @@ class ChatDataRepository(
       .flatMap { upsertChatDetails(it) }
   }
 
-  private suspend fun upsertChatDetails(chatAm: ChatAm): Empty<DataError> {
-    val chat = chatMapper.map(chatAm)
-
-    return localDataSource.upsertChatDetails(
-      chatEntityMapper.map(chat, ChatEntityMapper.Params(listOf(), null)),
-      chatMemberEntityMapper.mapList(chat.members),
-      chatMessageEntityMapper.mapList(listOfNotNull(chat.lastMessage)),
-      chatsAndMembersEntityMapper.map(listOf(chat)),
-    )
-  }
-
   override suspend fun syncChats(): Empty<DataError> {
     return remoteDataSource
       .getChats()
-      .flatMap {
-        val chats = chatMapper.mapList(it)
-
+      .flatMap { ams ->
         localDataSource.replaceChatsDetails(
-          chatEntityMapper.mapList(chats, ChatEntityMapper.Params(listOf(), null)),
-          chatMemberEntityMapper.mapList(chats.flatMap(Chat::members)),
-          chatMessageEntityMapper.mapList(chats.mapNotNull(Chat::lastMessage)),
-          chatsAndMembersEntityMapper.map(chats),
+          chats = ams.map { it.toEntity() },
+          chatMembers = ams.flatMap { it.participants }.map { it.toEntity() },
+          chatMessages = ams.mapNotNull { it.lastMessage }.map { it.toEntity() },
+          chatsAndMembers = ams.flatMap { it.toEntities() },
         )
       }
   }
@@ -106,10 +80,19 @@ class ChatDataRepository(
 
   override suspend fun addChatMembers(
     chatId: String,
-    memberIds: List<String>
+    memberIds: List<String>,
   ): Empty<DataError> {
     return remoteDataSource
       .addChatMembers(chatId, memberIds)
       .flatMap { upsertChatDetails(it) }
+  }
+
+  private suspend fun upsertChatDetails(chatAm: ChatAm): Empty<DataError> {
+    return localDataSource.upsertChatDetails(
+      chatAm.toEntity(),
+      chatAm.participants.map { it.toEntity() },
+      listOfNotNull(chatAm.lastMessage).map { it.toEntity() },
+      chatAm.toEntities(),
+    )
   }
 }

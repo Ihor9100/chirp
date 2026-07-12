@@ -14,7 +14,7 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.repository.ChatRepository
-import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
+import com.plcoding.feature.chat.presentation.model.ChatMemberPm
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
@@ -24,7 +24,6 @@ import kotlin.time.Duration.Companion.seconds
 
 abstract class BaseChatDialogScreenViewModel<ContentPm : BaseChatDialogScreenContentPm<ContentPm>>(
   private val chatRepository: ChatRepository,
-  private val chatMemberPmMapper: ChatMemberPmMapper,
 ) : BaseScreenViewModel<ContentPm>() {
 
   protected abstract fun handlePositiveClick()
@@ -67,7 +66,7 @@ abstract class BaseChatDialogScreenViewModel<ContentPm : BaseChatDialogScreenCon
 
       chatRepository
         .searchMember(searchQuery.toString())
-        .mapOn { chatMemberPmMapper.map(ChatMemberPmMapper.From(it, false)) }
+        .mapOn { ChatMemberPm.from(it, isInChat = false) }
         .onFailure(::handleSearchMemberFailure)
         .onSuccess { updateContentPm { update(foundChatMemberPm = it) } }
     }

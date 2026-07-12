@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.data.model
 
+import com.plcoding.feature.chat.domain.model.ChatMessage
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,16 +14,16 @@ sealed class WebSocketPayloadAm(
     val chatId: String,
     val senderId: String,
     val content: String,
-    val createdAt: String
+    val createdAt: String,
   ) : WebSocketPayloadAm(WebSocketMessageTypeAm.NEW_MESSAGE)
 
   @Serializable
   data class MessageDeletedAm(
     val messageId: String,
-    val chatId: String
+    val chatId: String,
   ) : WebSocketPayloadAm(WebSocketMessageTypeAm.MESSAGE_DELETED)
 
-  @kotlinx.serialization.Serializable
+  @Serializable
   data class ProfilePictureUpdatedAm(
     val userId: String,
     val newUrl: String?,

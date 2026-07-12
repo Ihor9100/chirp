@@ -5,9 +5,9 @@ import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.getOrNull
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
-import com.plcoding.feature.chat.data.mapper.ChatMessageEntityMapper
-import com.plcoding.feature.chat.data.mapper.NewMessageAmMapper
-import com.plcoding.feature.chat.data.mapper.WebSocketMessageAmMapper
+import com.plcoding.feature.chat.data.mapper.toAm
+import com.plcoding.feature.chat.data.mapper.toDomain
+import com.plcoding.feature.chat.data.mapper.toEntity
 import com.plcoding.feature.chat.data.model.WebSocketMessageAm
 import com.plcoding.feature.chat.data.model.WebSocketMessageTypeAm
 import com.plcoding.feature.chat.data.model.WebSocketPayloadAm
@@ -34,9 +34,6 @@ class LiveChatDataRepository(
   private val ktorWebSocketConnector: KtorWebSocketConnector,
   private val chatRepository: ChatRepository,
   private val localDataSource: ChatsLocalDataSource,
-  private val newMessageAmMapper: NewMessageAmMapper,
-  private val chatMessageEntityMapper: ChatMessageEntityMapper,
-  private val webSocketMessageAmMapper: WebSocketMessageAmMapper,
   private val preferencesRepository: PreferencesRepository,
 ) : LiveChatRepository {
 
@@ -45,14 +42,13 @@ class LiveChatDataRepository(
     .map(::getWebSocketPayloadAm)
     .onEach(::handleWebSocketPayloadAm)
     .filterIsInstance<WebSocketPayloadAm.NewMessageAm>()
-    .map(newMessageAmMapper::reverse)
+    .map { it.toDomain() }
     .shareIn(coroutineScope, SharingStarted.WhileSubscribed(5.seconds))
 
   override val connectionState = ktorWebSocketConnector.connectionState
 
   override suspend fun sendMessage(chatMessage: ChatMessage): Empty<ConnectionError> {
-    val newMessageAm = newMessageAmMapper.map(chatMessage)
-    val webSocketMessageAm = webSocketMessageAmMapper.map(newMessageAm)
+    val webSocketMessageAm = WebSocketMessageAm.from(chatMessage.toAm(), json)
     val message = json.encodeToString(webSocketMessageAm)
 
     return ktorWebSocketConnector
@@ -99,9 +95,7 @@ class LiveChatDataRepository(
       chatRepository.syncChat(newMessageAm.chatId)
     }
 
-    val chatMessage = newMessageAmMapper.reverse(newMessageAm)
-    val entity = chatMessageEntityMapper.map(chatMessage)
-    localDataSource.upsertChatMessage(entity)
+    localDataSource.upsertChatMessage(newMessageAm.toEntity())
   }
 
   private suspend fun handleProfilePictureUpdatedAm(

@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class ChatMemberAm(
   val userId: String,
   val username: String,
-  val profilePictureUrl: String?
+  val profilePictureUrl: String?,
 )

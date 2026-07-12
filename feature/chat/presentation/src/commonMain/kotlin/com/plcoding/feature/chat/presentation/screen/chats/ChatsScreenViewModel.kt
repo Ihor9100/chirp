@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 class ChatsScreenViewModel(
   private val preferencesRepository: PreferencesRepository,
   private val chatRepository: ChatRepository,
-  private val contentPmMapper: ChatsScreenContentPmMapper,
   private val appLifecycleObserver: AppLifecycleObserver,
   private val appConnectivityObserver: AppConnectivityObserver,
 ) : BaseScreenViewModel<ChatsScreenContentPm>() {
@@ -96,13 +95,11 @@ class ChatsScreenViewModel(
       _internalState,
       _chatDetails,
     ) { authInfo, chats, internalState, chatDetails ->
-      contentPmMapper.map(
-        ChatsScreenContentPmMapper.From(
-          yourId = authInfo?.user?.id,
-          chats = chats,
-          chatDetails = chatDetails,
-          internalState = internalState,
-        )
+      ChatsScreenContentPm.from(
+        yourId = authInfo?.user?.id,
+        chats = chats,
+        chatDetails = chatDetails,
+        internalState = internalState,
       )
     }
       .flowOn(Dispatchers.IO)

@@ -1,11 +1,10 @@
 package com.plcoding.feature.chat.presentation.model
 
+import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.your_message
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.feature.chat.domain.model.Chat
-import com.plcoding.feature.chat.presentation.mapper.ChatHeaderPmMapper
-import com.plcoding.feature.chat.presentation.mapper.ChatMemberPmMapper
-import com.plcoding.feature.chat.presentation.mapper.ChatPmMapper
 
 data class ChatPm(
   val id: String,
@@ -15,19 +14,37 @@ data class ChatPm(
   val showVerticalDivider: Boolean,
   val showHorizontalDivider: Boolean,
 ) {
-
   companion object {
     val mocks
-      get() = ChatPmMapper(ChatHeaderPmMapper(ChatMemberPmMapper())).mapList(
-        Chat.mocks.map {
-          ChatPmMapper.From(
-            chat = it,
-            yourId = "1",
-            chatId = "1",
-            lastChatId = Chat.mocks.last().id,
-            showDropDown = true,
-          )
-        }
+      get() = Chat.mocks.map {
+        from(it, yourId = "1", chatId = "1", lastChatId = Chat.mocks.last().id)
+      }
+
+    fun from(
+      chat: Chat,
+      yourId: String?,
+      chatId: String?,
+      lastChatId: String?,
+    ): ChatPm {
+      val isSelected = chat.id == chatId
+      return ChatPm(
+        id = chat.id,
+        chatHeaderPm = ChatHeaderPm.from(chat, yourId),
+        content = getContent(chat, yourId),
+        backgroundColorToken = if (isSelected) ColorToken.Surface else ColorToken.Background,
+        showVerticalDivider = isSelected,
+        showHorizontalDivider = lastChatId != null && chat.id != lastChatId,
       )
+    }
+
+    private fun getContent(chat: Chat, yourId: String?): TextProvider? {
+      val lastMessage = chat.lastMessage ?: return null
+      val sender = chat.members.firstOrNull { it.userId == lastMessage.senderId }
+      return if (sender?.userId == yourId) {
+        TextProvider.Resource(Res.string.your_message, listOf(lastMessage.content))
+      } else {
+        TextProvider.Dynamic("${sender?.username}: ${lastMessage.content}")
+      }
+    }
   }
 }
