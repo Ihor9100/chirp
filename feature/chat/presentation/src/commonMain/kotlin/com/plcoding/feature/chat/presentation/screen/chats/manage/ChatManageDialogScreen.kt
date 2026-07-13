@@ -7,9 +7,9 @@ import androidx.navigation.NavController
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
-import com.plcoding.core.presentation.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenUiState
 import com.plcoding.core.presentation.screen.base.BaseDialogScreen
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
+import com.plcoding.feature.chat.presentation.model.ChatMemberUi
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenAction
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenContent
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -22,17 +22,17 @@ fun ChatManageDialogScreen(
 ) {
   val state by viewModel.screenState.collectAsStateWithLifecycle()
 
-  state.contentPm.chatUpdatedEvent?.consume {
+  state.uiState.chatUpdatedEvent?.consume {
     navController.popBackStack()
   }
 
   BaseDialogScreen(
-    baseContentPm = state.baseContentPm,
+    baseUiState = state.baseUiState,
     deviceConfiguration = getDeviceConfiguration(),
     onDismiss = navController::popBackStack,
   ) {
     BaseChatDialogScreenContent(
-      contentPm = state.contentPm,
+      uiState = state.uiState,
       onAction = {
         when (it) {
           BaseChatDialogScreenAction.OnDismiss -> {
@@ -50,20 +50,20 @@ private fun Themed(
   isDarkTheme: Boolean = false,
   deviceConfiguration: DeviceConfiguration,
 ) {
-  val screenStatePm = ScreenStatePm(
-    contentPm = ChatManageDialogScreenContentPm(
-      foundChatMembersPm = ChatMemberPm.mocks,
+  val screenUiState = ScreenUiState(
+    uiState = ChatManageDialogUiState(
+      foundChatMembersUi = ChatMemberUi.mocks,
     ),
   )
 
   Theme(isDarkTheme) {
     BaseDialogScreen(
-      baseContentPm = screenStatePm.baseContentPm,
+      baseUiState = screenUiState.baseUiState,
       deviceConfiguration = deviceConfiguration,
       onDismiss = {},
     ) {
       BaseChatDialogScreenContent(
-        contentPm = screenStatePm.contentPm,
+        uiState = screenUiState.uiState,
         onAction = {}
       )
     }

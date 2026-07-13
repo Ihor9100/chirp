@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.components.AppLogoPc
+import com.plcoding.core.designsystem.components.AppLogo
 import com.plcoding.core.designsystem.components.Title
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -66,7 +66,7 @@ fun FormLayoutThemed(
   Theme(isDarkTheme) {
     FormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { AppLogoPc(modifier = Modifier) },
+      logo = { AppLogo(modifier = Modifier) },
       content = {
         Title(
           text = "Welcome to Chirp!",

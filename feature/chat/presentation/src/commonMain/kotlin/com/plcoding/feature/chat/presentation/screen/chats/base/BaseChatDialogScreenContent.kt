@@ -22,20 +22,20 @@ import chirp.feature.chat.presentation.generated.resources.cancel
 import chirp.feature.chat.presentation.generated.resources.ic_cross
 import chirp.feature.chat.presentation.generated.resources.invite_by_username_or_email
 import chirp.feature.chat.presentation.generated.resources.no_members
-import com.plcoding.core.designsystem.components.HorizontalDividerPc
-import com.plcoding.core.designsystem.components.TitleDescriptionPc
-import com.plcoding.core.designsystem.components.button.ButtonPc
-import com.plcoding.core.designsystem.components.button.ButtonPcStyle
+import com.plcoding.core.designsystem.components.HorizontalDivider
+import com.plcoding.core.designsystem.components.TitleDescription
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.feature.chat.presentation.component.ChatMemberPc
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
+import com.plcoding.feature.chat.presentation.component.ChatMember
+import com.plcoding.feature.chat.presentation.model.ChatMemberUi
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun BaseChatDialogScreenContent(
-  contentPm: BaseChatDialogScreenContentPm<*>,
+  uiState: BaseChatDialogUiState<*>,
   onAction: (BaseChatDialogScreenAction) -> Unit,
 ) {
   Column(
@@ -52,7 +52,7 @@ fun BaseChatDialogScreenContent(
       verticalAlignment = Alignment.CenterVertically,
     ) {
       Text(
-        text = stringResource(contentPm.titleRes),
+        text = stringResource(uiState.titleRes),
         color = MaterialTheme.colorScheme.extended.textPrimary,
         style = MaterialTheme.typography.titleMedium,
       )
@@ -67,7 +67,7 @@ fun BaseChatDialogScreenContent(
         )
       }
     }
-    HorizontalDividerPc()
+    HorizontalDivider()
     Row(
       modifier = Modifier
         .fillMaxWidth()
@@ -80,45 +80,45 @@ fun BaseChatDialogScreenContent(
     ) {
       TextFieldPlain(
         modifier = Modifier.weight(1f),
-        textFieldState = contentPm.searchTextFieldState,
+        textFieldState = uiState.searchTextFieldState,
         inputPlaceholder = stringResource(Res.string.invite_by_username_or_email),
       )
-      ButtonPc(
+      Button(
         text = stringResource(Res.string.add),
-        style = ButtonPcStyle.SECONDARY,
+        style = ButtonStyle.SECONDARY,
         onClick = { onAction(BaseChatDialogScreenAction.OnAddClick) }
       )
     }
-    contentPm.foundChatMemberPm?.apply {
-      ChatMemberPc(
+    uiState.foundChatMemberUi?.apply {
+      ChatMember(
         modifier = Modifier
           .padding(horizontal = 16.dp)
           .padding(bottom = 12.dp),
-        chatMemberPm = this,
+        chatMemberUi = this,
       )
     }
-    HorizontalDividerPc()
-    if (contentPm.isEmptyState()) {
-      TitleDescriptionPc(
+    HorizontalDivider()
+    if (uiState.isEmptyState()) {
+      TitleDescription(
         modifier = Modifier.padding(vertical = 24.dp),
         titleRes = Res.string.no_members,
         descriptionRes = Res.string.add_members_to_your_chat,
       )
     }
-    if (contentPm.foundChatMembersPm.isNotEmpty()) {
-      ChatMembersLazyColumnPc(
-        chatMembersPm = contentPm.foundChatMembersPm,
-        onKey = { contentPm.foundChatMembersPm[it].id },
+    if (uiState.foundChatMembersUi.isNotEmpty()) {
+      ChatMembersLazyColumn(
+        chatMembersUi = uiState.foundChatMembersUi,
+        onKey = { uiState.foundChatMembersUi[it].id },
       )
     }
-    HorizontalDividerPc()
-    if (contentPm.inChatMembersPm.isNotEmpty()) {
-      ChatMembersLazyColumnPc(
-        chatMembersPm = contentPm.inChatMembersPm,
-        onKey = { contentPm.inChatMembersPm[it].id + "Invited" },
+    HorizontalDivider()
+    if (uiState.inChatMembersUi.isNotEmpty()) {
+      ChatMembersLazyColumn(
+        chatMembersUi = uiState.inChatMembersUi,
+        onKey = { uiState.inChatMembersUi[it].id + "Invited" },
       )
     }
-    HorizontalDividerPc()
+    HorizontalDivider()
     Row(
       modifier = Modifier
         .fillMaxWidth()
@@ -129,16 +129,16 @@ fun BaseChatDialogScreenContent(
       horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      ButtonPc(
+      Button(
         modifier = Modifier,
         text = stringResource(Res.string.cancel),
-        style = ButtonPcStyle.SECONDARY,
+        style = ButtonStyle.SECONDARY,
         onClick = { onAction(BaseChatDialogScreenAction.OnDismiss) }
       )
-      ButtonPc(
+      Button(
         modifier = Modifier,
-        text = stringResource(contentPm.positiveButtonRes),
-        style = ButtonPcStyle.PRIMARY,
+        text = stringResource(uiState.positiveButtonRes),
+        style = ButtonStyle.PRIMARY,
         onClick = { onAction(BaseChatDialogScreenAction.OnPositiveClick) }
       )
     }
@@ -146,8 +146,8 @@ fun BaseChatDialogScreenContent(
 }
 
 @Composable
-private fun ChatMembersLazyColumnPc(
-  chatMembersPm: List<ChatMemberPm>,
+private fun ChatMembersLazyColumn(
+  chatMembersUi: List<ChatMemberUi>,
   onKey: (index: Int) -> Any,
 ) {
   LazyColumn(
@@ -159,10 +159,10 @@ private fun ChatMembersLazyColumnPc(
       ),
     verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
-    items(chatMembersPm.size, onKey) { index ->
-      ChatMemberPc(
+    items(chatMembersUi.size, onKey) { index ->
+      ChatMember(
         modifier = Modifier,
-        chatMemberPm = chatMembersPm[index],
+        chatMemberUi = chatMembersUi[index],
       )
     }
   }

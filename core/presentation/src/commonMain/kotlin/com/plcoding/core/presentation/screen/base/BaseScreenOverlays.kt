@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.model.BaseContentPm
+import com.plcoding.core.presentation.model.BaseUiState
 import com.plcoding.core.presentation.model.Overlay
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -28,7 +28,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun BaseScreenOverlays(
   modifier: Modifier = Modifier,
-  baseContentPm: BaseContentPm,
+  baseUiState: BaseUiState,
   content: @Composable () -> Unit,
 ) {
   Box(
@@ -37,7 +37,7 @@ fun BaseScreenOverlays(
   ) {
     content()
 
-    baseContentPm.overlays?.forEach { overlay ->
+    baseUiState.overlays?.forEach { overlay ->
       when (overlay) {
         is Overlay.Blocker -> {
           Box(
@@ -98,7 +98,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     BaseScreenOverlays(
       modifier = Modifier.fillMaxSize(),
-      baseContentPm = BaseContentPm.mock,
+      baseUiState = BaseUiState.mock,
       content = { },
     )
   }

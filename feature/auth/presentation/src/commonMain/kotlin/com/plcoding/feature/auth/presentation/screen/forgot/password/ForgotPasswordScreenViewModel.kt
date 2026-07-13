@@ -19,10 +19,10 @@ import kotlinx.coroutines.flow.map
 
 class ForgotPasswordScreenViewModel(
   private val authRepository: AuthRepository,
-) : BaseScreenViewModel<ForgotPasswordScreenContentPm>() {
+) : BaseScreenViewModel<ForgotPasswordUiState>() {
 
-  override fun getContentPm(): ForgotPasswordScreenContentPm {
-    return ForgotPasswordScreenContentPm()
+  override fun getUiState(): ForgotPasswordUiState {
+    return ForgotPasswordUiState()
   }
 
   override fun onInitialize() {
@@ -32,10 +32,10 @@ class ForgotPasswordScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { screenState.value.contentPm.emailState.text.toString() },
+      snapshotFlow { screenState.value.uiState.emailState.text.toString() },
       screenState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, isLoading ->
-      updateContentPm {
+      updateUiState {
         copy(primaryButtonIsEnable = EmailValidator.validate(email) && !isLoading)
       }
     }.launchIn(viewModelScope)
@@ -50,20 +50,20 @@ class ForgotPasswordScreenViewModel(
   private fun handleSubmitClick() {
     launchLoadable {
       authRepository
-        .forgotPassword(screenState.value.contentPm.emailState.text.toString())
+        .forgotPassword(screenState.value.uiState.emailState.text.toString())
         .onFailure(::handleFailure)
         .onSuccess { handleSuccess() }
     }
   }
 
   private fun handleFailure(error: DataError.Remote) {
-    updateContentPm {
+    updateUiState {
       copy(errorRes = error.getStringRes())
     }
   }
 
   private fun handleSuccess() {
-    updateContentPm {
+    updateUiState {
       copy(snackbarEvent = Event(Res.string.forgot_password_email_sent_successfully))
     }
   }

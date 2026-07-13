@@ -18,13 +18,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.SuccessIcon
-import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.layout.ResultLayout
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import com.plcoding.core.presentation.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenUiState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -37,10 +37,10 @@ fun EmailVerificationScreen(
   val state by viewModel.screenState.collectAsStateWithLifecycle()
 
   BaseScreen(
-    baseContentPm = state.baseContentPm
+    baseUiState = state.baseUiState
   ) {
     Content(
-      contentPm = state.contentPm,
+      uiState = state.uiState,
       onAction = { openLogin() },
     )
   }
@@ -48,18 +48,18 @@ fun EmailVerificationScreen(
 
 @Composable
 private fun Content(
-  contentPm: EmailVerificationScreenContentPm,
+  uiState: EmailVerificationUiState,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   AdaptiveResultLayout {
-    when (contentPm) {
-      is EmailVerificationScreenContentPm.Failed -> FailedContent(
-        contentPm,
+    when (uiState) {
+      is EmailVerificationUiState.Failed -> FailedContent(
+        uiState,
         onAction
       )
-      is EmailVerificationScreenContentPm.Loading -> LoadingContent(contentPm)
-      is EmailVerificationScreenContentPm.Success -> SuccessContent(
-        contentPm,
+      is EmailVerificationUiState.Loading -> LoadingContent(uiState)
+      is EmailVerificationUiState.Success -> SuccessContent(
+        uiState,
         onAction
       )
     }
@@ -68,7 +68,7 @@ private fun Content(
 
 @Composable
 private fun FailedContent(
-  content: EmailVerificationScreenContentPm.Failed,
+  content: EmailVerificationUiState.Failed,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   ResultLayout(
@@ -86,10 +86,10 @@ private fun FailedContent(
     description = stringResource(content.descriptionRes),
     contentOffset = 0.dp,
     primaryButton = {
-      ButtonPc(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
-        style = content.primaryButtonPcStyle,
+        style = content.primaryButtonStyle,
         onClick = { onAction(EmailVerificationScreenAction.OnCloseClick) }
       )
     },
@@ -99,7 +99,7 @@ private fun FailedContent(
 
 @Composable
 private fun LoadingContent(
-  content: EmailVerificationScreenContentPm.Loading,
+  content: EmailVerificationUiState.Loading,
 ) {
   Column(
     modifier = Modifier.heightIn(min = 200.dp),
@@ -122,7 +122,7 @@ private fun LoadingContent(
 
 @Composable
 private fun SuccessContent(
-  content: EmailVerificationScreenContentPm.Success,
+  content: EmailVerificationUiState.Success,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
   ResultLayout(
@@ -130,10 +130,10 @@ private fun SuccessContent(
     title = stringResource(content.titleRes),
     description = stringResource(content.descriptionRes),
     primaryButton = {
-      ButtonPc(
+      Button(
         modifier = Modifier.fillMaxWidth(),
         text = stringResource(content.primaryButtonTitleRes),
-        style = content.primaryButtonPcStyle,
+        style = content.primaryButtonStyle,
         onClick = { onAction(EmailVerificationScreenAction.OnLogInClick) }
       )
     },
@@ -143,16 +143,16 @@ private fun SuccessContent(
 
 @Composable
 private fun Themed(
-  content: EmailVerificationScreenContentPm,
+  content: EmailVerificationUiState,
 ) {
-  val screenStatePm = ScreenStatePm(content)
+  val screenUiState = ScreenUiState(content)
 
   Theme(isDarkMode = true) {
     BaseScreen(
-      baseContentPm = screenStatePm.baseContentPm
+      baseUiState = screenUiState.baseUiState
     ) {
       Content(
-        contentPm = screenStatePm.contentPm,
+        uiState = screenUiState.uiState,
         onAction = {}
       )
     }
@@ -162,17 +162,17 @@ private fun Themed(
 @Preview
 @Composable
 private fun LoadingPreview() {
-  Themed(EmailVerificationScreenContentPm.Loading())
+  Themed(EmailVerificationUiState.Loading())
 }
 
 @Preview
 @Composable
 private fun FailedPreview() {
-  Themed(EmailVerificationScreenContentPm.Failed())
+  Themed(EmailVerificationUiState.Failed())
 }
 
 @Preview
 @Composable
 private fun SuccessPreview() {
-  Themed(EmailVerificationScreenContentPm.Success())
+  Themed(EmailVerificationUiState.Success())
 }

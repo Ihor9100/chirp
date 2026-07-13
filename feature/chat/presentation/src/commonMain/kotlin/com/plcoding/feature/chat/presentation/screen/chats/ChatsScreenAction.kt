@@ -1,6 +1,6 @@
 package com.plcoding.feature.chat.presentation.screen.chats
 
-import com.plcoding.core.designsystem.model.DropDownItemPm
+import com.plcoding.core.designsystem.model.DropDownItemUi
 import org.jetbrains.compose.resources.StringResource
 
 sealed interface ChatsScreenAction {
@@ -9,5 +9,5 @@ sealed interface ChatsScreenAction {
   data object OnChatDetailsBackClick : ChatsScreenAction
   data object OnChatDetailsMenuClick : ChatsScreenAction
   data object OnChatDetailsMenuDismissClick : ChatsScreenAction
-  data class OnChatDetailsMenuItemClick(val dropDownItemPm: DropDownItemPm) : ChatsScreenAction
+  data class OnChatDetailsMenuItemClick(val dropDownItemPm: DropDownItemUi) : ChatsScreenAction
 }

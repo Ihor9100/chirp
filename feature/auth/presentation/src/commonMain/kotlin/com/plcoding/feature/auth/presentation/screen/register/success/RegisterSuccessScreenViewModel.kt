@@ -15,12 +15,12 @@ import com.plcoding.core.presentation.utils.getStringRes
 class RegisterSuccessScreenViewModel(
   private val authRepository: AuthRepository,
   savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<RegisterSuccessScreenContentPm>() {
+) : BaseScreenViewModel<RegisterSuccessUiState>() {
 
   private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
 
-  override fun getContentPm(): RegisterSuccessScreenContentPm {
-    return RegisterSuccessScreenContentPm(
+  override fun getUiState(): RegisterSuccessUiState {
+    return RegisterSuccessUiState(
       description = TextProvider.Resource(
         id = Res.string.verification_email_sent_to_x,
         args = listOf(email),
@@ -45,7 +45,7 @@ class RegisterSuccessScreenViewModel(
   }
 
   private fun handleFailure(error: DataError.Remote) {
-    updateContentPm {
+    updateUiState {
       copy(secondaryButtonErrorRes = error.getStringRes())
     }
   }

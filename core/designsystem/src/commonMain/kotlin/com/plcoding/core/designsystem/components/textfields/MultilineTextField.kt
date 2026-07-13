@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
 import chirp.core.designsystem.generated.resources.ic_cloud_off
-import com.plcoding.core.designsystem.components.button.ButtonPc
-import com.plcoding.core.designsystem.model.MultilineTextFieldPm
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.model.MultilineTextFieldUi
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
@@ -32,10 +32,10 @@ import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MultilineTextFieldPc(
+fun MultilineTextField(
   modifier: Modifier = Modifier,
   deviceConfiguration: DeviceConfiguration,
-  multilineTextFieldPm: MultilineTextFieldPm,
+  multilineTextFieldPm: MultilineTextFieldUi,
 ) {
   Column(
     modifier = modifier
@@ -102,7 +102,7 @@ fun MultilineTextFieldPc(
         contentDescription = null,
         tint = MaterialTheme.colorScheme.extended.textDisabled
       )
-      ButtonPc(
+      Button(
         text = stringResource(multilineTextFieldPm.buttonTitleRes),
         isEnabled = multilineTextFieldPm.isEnabled
       )
@@ -114,10 +114,10 @@ fun MultilineTextFieldPc(
 private fun Themed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
-  multilineTextFieldPm: MultilineTextFieldPm,
+  multilineTextFieldPm: MultilineTextFieldUi,
 ) {
   Theme(isDarkTheme) {
-    MultilineTextFieldPc(
+    MultilineTextField(
       deviceConfiguration = deviceConfiguration,
       multilineTextFieldPm = multilineTextFieldPm,
     )
@@ -130,7 +130,7 @@ private fun LightPreview() {
   Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-    multilineTextFieldPm = MultilineTextFieldPm.mock,
+    multilineTextFieldPm = MultilineTextFieldUi.mock,
   )
 }
 
@@ -140,7 +140,7 @@ private fun DarkPreview() {
   Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-    multilineTextFieldPm = MultilineTextFieldPm.mock,
+    multilineTextFieldPm = MultilineTextFieldUi.mock,
   )
 }
 
@@ -150,7 +150,7 @@ private fun WideLightPreview() {
   Themed(
     isDarkTheme = false,
     deviceConfiguration = DeviceConfiguration.DESKTOP,
-    multilineTextFieldPm = MultilineTextFieldPm.mock,
+    multilineTextFieldPm = MultilineTextFieldUi.mock,
   )
 }
 
@@ -160,6 +160,6 @@ private fun WideDarkPreview() {
   Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.DESKTOP,
-    multilineTextFieldPm = MultilineTextFieldPm.mock,
+    multilineTextFieldPm = MultilineTextFieldUi.mock,
   )
 }

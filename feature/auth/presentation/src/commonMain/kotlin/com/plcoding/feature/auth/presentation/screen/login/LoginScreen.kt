@@ -16,15 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.forgot_password
-import com.plcoding.core.designsystem.components.AppLogoPc
-import com.plcoding.core.designsystem.components.button.ButtonPc
-import com.plcoding.core.designsystem.components.button.ButtonPcStyle
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import com.plcoding.core.presentation.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenUiState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -37,13 +37,13 @@ fun LoginScreen(
   openRegisterScreen: () -> Unit,
 ) {
   val state by viewModel.screenState.collectAsStateWithLifecycle()
-  state.contentPm.logInSuccessEvent?.run(openChat)
+  state.uiState.logInSuccessEvent?.run(openChat)
 
   BaseScreen(
-    baseContentPm = state.baseContentPm,
+    baseUiState = state.baseUiState,
   ) {
     Content(
-      contentPm = state.contentPm,
+      uiState = state.uiState,
       onAction = {
         when (it) {
           is LoginScreenAction.OnForgotPasswordClick -> openForgotPassword()
@@ -57,31 +57,31 @@ fun LoginScreen(
 
 @Composable
 private fun Content(
-  contentPm: LoginScreenContentPm,
+  uiState: LoginUiState,
   onAction: (LoginScreenAction) -> Unit,
 ) {
   AdaptiveFormLayout(
     modifier = Modifier.fillMaxSize(),
-    logo = { AppLogoPc() },
-    title = stringResource(contentPm.titleRes),
-    error = contentPm.errorRes?.let { stringResource(it) },
+    logo = { AppLogo() },
+    title = stringResource(uiState.titleRes),
+    error = uiState.errorRes?.let { stringResource(it) },
   ) {
     TextFieldPlain(
       modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(contentPm.emailTopTitleRes),
-      textFieldState = contentPm.emailState,
-      inputPlaceholder = stringResource(contentPm.emailPlaceholderRes),
+      topTitle = stringResource(uiState.emailTopTitleRes),
+      textFieldState = uiState.emailState,
+      inputPlaceholder = stringResource(uiState.emailPlaceholderRes),
       bottomTitle = null,
       keyboardType = KeyboardType.Text,
     )
     Spacer(Modifier.height(20.dp))
     TextFieldPassword(
       modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(contentPm.passwordTopTitleRes),
-      textFieldState = contentPm.passwordState,
-      inputPlaceholder = stringResource(contentPm.passwordPlaceholderRes),
+      topTitle = stringResource(uiState.passwordTopTitleRes),
+      textFieldState = uiState.passwordState,
+      inputPlaceholder = stringResource(uiState.passwordPlaceholderRes),
       bottomTitle = null,
-      isSecureMode = contentPm.passwordIsSecureMode,
+      isSecureMode = uiState.passwordIsSecureMode,
       onSecureToggleClick = { onAction(LoginScreenAction.OnTextFieldSecureToggleClick) }
     )
     Spacer(Modifier.height(20.dp))
@@ -94,17 +94,17 @@ private fun Content(
       style = MaterialTheme.typography.bodySmall,
     )
     Spacer(Modifier.height(32.dp))
-    ButtonPc(
+    Button(
       modifier = Modifier.fillMaxWidth(),
-      text = stringResource(contentPm.primaryButtonTitleRes),
-      style = ButtonPcStyle.PRIMARY,
-      isEnabled = contentPm.primaryButtonIsEnable,
+      text = stringResource(uiState.primaryButtonTitleRes),
+      style = ButtonStyle.PRIMARY,
+      isEnabled = uiState.primaryButtonIsEnable,
       onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
     )
-    ButtonPc(
+    Button(
       modifier = Modifier.fillMaxWidth(),
-      text = stringResource(contentPm.secondaryButtonTitleRes),
-      style = ButtonPcStyle.SECONDARY,
+      text = stringResource(uiState.secondaryButtonTitleRes),
+      style = ButtonStyle.SECONDARY,
       onClick = { onAction(LoginScreenAction.OnSecondaryButtonClick) }
     )
   }
@@ -114,14 +114,14 @@ private fun Content(
 private fun Themed(
   isDarkTheme: Boolean,
 ) {
-  val screenStatePm = ScreenStatePm(LoginScreenContentPm())
+  val screenUiState = ScreenUiState(LoginUiState())
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseContentPm = screenStatePm.baseContentPm
+      baseUiState = screenUiState.baseUiState
     ) {
       Content(
-        contentPm = screenStatePm.contentPm,
+        uiState = screenUiState.uiState,
         onAction = {}
       )
     }

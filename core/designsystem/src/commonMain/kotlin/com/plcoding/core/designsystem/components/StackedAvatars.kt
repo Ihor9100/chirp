@@ -5,21 +5,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.plcoding.core.designsystem.model.AvatarPm
-import com.plcoding.core.designsystem.model.AvatarSizePm
+import com.plcoding.core.designsystem.model.AvatarUi
+import com.plcoding.core.designsystem.model.AvatarSizeUi
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun StackedAvatars(
   modifier: Modifier = Modifier,
-  avatarsPm: List<AvatarPm>,
+  avatarsUi: List<AvatarUi>,
   maxVisibleCount: Int = 2,
   horizontalOffset: Float = 0.4f,
 ) {
-  val invisibleCount = avatarsPm.size - maxVisibleCount
-  val horizontalOffsetDp = avatarsPm.firstOrNull()
-    ?.avatarSizePm?.dp
+  val invisibleCount = avatarsUi.size - maxVisibleCount
+  val horizontalOffsetDp = avatarsUi.firstOrNull()
+    ?.avatarSizeUi?.dp
     ?.times(horizontalOffset)
     ?: 0.dp
 
@@ -27,22 +27,22 @@ fun StackedAvatars(
     modifier = modifier,
     horizontalArrangement = Arrangement.spacedBy(horizontalOffsetDp.unaryMinus())
   ) {
-    avatarsPm
+    avatarsUi
       .take(maxVisibleCount)
       .forEach {
-        AvatarPc(
+        Avatar(
           modifier = Modifier,
-          avatarPm = it
+          avatarUi = it
         )
       }
 
     if (invisibleCount > 0) {
-      AvatarPc(
+      Avatar(
         modifier = Modifier,
-        avatarPm = AvatarPm(
+        avatarUi = AvatarUi(
           initials = "$invisibleCount +",
           imageUrl = null,
-          avatarSizePm = AvatarSizePm.MEDIUM,
+          avatarSizeUi = AvatarSizeUi.MEDIUM,
         )
       )
     }
@@ -58,26 +58,26 @@ private fun StackedAvatarsThemed(
   ) {
     StackedAvatars(
       modifier = Modifier,
-      avatarsPm = listOf(
-        AvatarPm(
+      avatarsUi = listOf(
+        AvatarUi(
           initials = "Ihor A",
           imageUrl = "1",
-          avatarSizePm = AvatarSizePm.MEDIUM,
+          avatarSizeUi = AvatarSizeUi.MEDIUM,
         ),
-        AvatarPm(
+        AvatarUi(
           initials = "Ihor B",
           imageUrl = "2",
-          avatarSizePm = AvatarSizePm.MEDIUM,
+          avatarSizeUi = AvatarSizeUi.MEDIUM,
         ),
-        AvatarPm(
+        AvatarUi(
           initials = "Ihor C",
           imageUrl = "3",
-          avatarSizePm = AvatarSizePm.MEDIUM,
+          avatarSizeUi = AvatarSizeUi.MEDIUM,
         ),
-        AvatarPm(
+        AvatarUi(
           initials = "Ihor D",
           imageUrl = "4",
-          avatarSizePm = AvatarSizePm.MEDIUM,
+          avatarSizeUi = AvatarSizeUi.MEDIUM,
         ),
       ),
     )

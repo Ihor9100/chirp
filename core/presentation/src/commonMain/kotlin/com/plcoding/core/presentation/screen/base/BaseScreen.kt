@@ -6,13 +6,13 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.plcoding.core.presentation.model.BaseContentPm
+import com.plcoding.core.presentation.model.BaseUiState
 import com.plcoding.core.presentation.utils.clearFocusOnTab
 
 @Composable
 fun BaseScreen(
   modifier: Modifier = Modifier,
-  baseContentPm: BaseContentPm,
+  baseUiState: BaseUiState,
   content: @Composable () -> Unit,
 ) {
   BaseScreenOverlays(
@@ -21,7 +21,7 @@ fun BaseScreen(
       .background(MaterialTheme.colorScheme.background)
       .clearFocusOnTab()
       .safeDrawingPadding(),
-    baseContentPm = baseContentPm,
+    baseUiState = baseUiState,
     content = content,
   )
 }

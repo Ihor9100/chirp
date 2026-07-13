@@ -1,12 +1,12 @@
 package com.plcoding.core.data.repository
 
 import com.plcoding.core.data.mapper.toDomain
-import com.plcoding.core.data.model.AuthInfoAm
-import com.plcoding.core.data.model.EmailRequestAm
-import com.plcoding.core.data.model.LoginRequestAm
-import com.plcoding.core.data.model.RegisterRequestAm
-import com.plcoding.core.data.model.ResendVerificationEmailRequestAm
-import com.plcoding.core.data.model.ResetPasswordRequestAm
+import com.plcoding.core.data.model.AuthInfoDto
+import com.plcoding.core.data.model.EmailRequestDto
+import com.plcoding.core.data.model.LoginRequestDto
+import com.plcoding.core.data.model.RegisterRequestDto
+import com.plcoding.core.data.model.ResendVerificationEmailRequestDto
+import com.plcoding.core.data.model.ResetPasswordRequestDto
 import com.plcoding.core.data.tools.get
 import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.model.AuthInfo
@@ -25,9 +25,9 @@ class AuthDataRepository(
     email: String,
     password: String
   ): Result<AuthInfo, DataError.Remote> {
-    return httpClient.post<LoginRequestAm, AuthInfoAm>(
+    return httpClient.post<LoginRequestDto, AuthInfoDto>(
       route = "/auth/login",
-      request = LoginRequestAm(
+      request = LoginRequestDto(
         email = email,
         password = password,
       )
@@ -37,7 +37,7 @@ class AuthDataRepository(
   override suspend fun forgotPassword(email: String): Empty<DataError.Remote> {
     return httpClient.post(
       route = "/auth/forgot-password",
-      request = EmailRequestAm(email)
+      request = EmailRequestDto(email)
     )
   }
 
@@ -47,7 +47,7 @@ class AuthDataRepository(
   ): Empty<DataError.Remote> {
     return httpClient.post(
       route = "/auth/reset-password",
-      request = ResetPasswordRequestAm(password, token),
+      request = ResetPasswordRequestDto(password, token),
     )
   }
 
@@ -56,16 +56,16 @@ class AuthDataRepository(
     email: String,
     password: String
   ): Empty<DataError.Remote> {
-    return httpClient.post<RegisterRequestAm, Unit>(
+    return httpClient.post<RegisterRequestDto, Unit>(
       route = "/auth/register",
-      request = RegisterRequestAm(username, email, password),
+      request = RegisterRequestDto(username, email, password),
     )
   }
 
   override suspend fun resendVerificationEmail(email: String): Empty<DataError.Remote> {
     return httpClient.post(
       route = "/auth/resend-verification",
-      request = ResendVerificationEmailRequestAm(email)
+      request = ResendVerificationEmailRequestDto(email)
     )
   }
 

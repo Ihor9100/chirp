@@ -11,11 +11,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.core.designsystem.components.ChirError
 import com.plcoding.core.designsystem.components.SuccessIcon
-import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.layout.ResultLayout
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenUiState
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -29,10 +29,10 @@ fun RegisterSuccessScreen(
   val state by viewModel.screenState.collectAsStateWithLifecycle()
 
   BaseScreen(
-    baseContentPm = state.baseContentPm
+    baseUiState = state.baseUiState
   ) {
     Content(
-      contentPm = state.contentPm,
+      uiState = state.uiState,
       onAction = {
         when (it) {
           is RegisterSuccessScreenAction.PrimaryButtonClick -> openLogin()
@@ -45,7 +45,7 @@ fun RegisterSuccessScreen(
 
 @Composable
 private fun Content(
-  contentPm: RegisterSuccessScreenContentPm,
+  uiState: RegisterSuccessUiState,
   onAction: (RegisterSuccessScreenAction) -> Unit,
 ) {
   AdaptiveResultLayout(
@@ -53,30 +53,30 @@ private fun Content(
   ) {
     ResultLayout(
       icon = { SuccessIcon() },
-      title = stringResource(contentPm.titleRes),
-      description = contentPm.description?.get(),
+      title = stringResource(uiState.titleRes),
+      description = uiState.description?.get(),
       primaryButton = {
-        ButtonPc(
+        Button(
           modifier = Modifier.fillMaxWidth(),
-          text = stringResource(contentPm.primaryButtonTitleRes),
-          style = contentPm.primaryButtonPcStyle,
+          text = stringResource(uiState.primaryButtonTitleRes),
+          style = uiState.primaryButtonStyle,
           isLoading = false,
-          isEnabled = !contentPm.hasOngoingRequest,
+          isEnabled = !uiState.hasOngoingRequest,
           onClick = { onAction(RegisterSuccessScreenAction.PrimaryButtonClick) }
         )
       },
       secondaryButton = {
-        ButtonPc(
+        Button(
           modifier = Modifier.fillMaxWidth(),
-          text = stringResource(contentPm.secondaryButtonTitleRes),
-          style = contentPm.secondaryButtonPcStyle,
+          text = stringResource(uiState.secondaryButtonTitleRes),
+          style = uiState.secondaryButtonStyle,
           isLoading = false,
-          isEnabled = !contentPm.hasOngoingRequest,
+          isEnabled = !uiState.hasOngoingRequest,
           onClick = { onAction(RegisterSuccessScreenAction.SecondaryButtonClick) }
         )
-        if (contentPm.secondaryButtonErrorRes != null) {
+        if (uiState.secondaryButtonErrorRes != null) {
           Spacer(Modifier.height(6.dp))
-          ChirError(error = stringResource(contentPm.secondaryButtonErrorRes))
+          ChirError(error = stringResource(uiState.secondaryButtonErrorRes))
         }
       }
     )
@@ -87,14 +87,14 @@ private fun Content(
 private fun Themed(
   isDarkTheme: Boolean,
 ) {
-  val screenStatePm = ScreenStatePm(RegisterSuccessScreenContentPm())
+  val screenUiState = ScreenUiState(RegisterSuccessUiState())
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseContentPm = screenStatePm.baseContentPm
+      baseUiState = screenUiState.baseUiState
     ) {
       Content(
-        contentPm = screenStatePm.contentPm,
+        uiState = screenUiState.uiState,
         onAction = {}
       )
     }

@@ -23,12 +23,12 @@ import kotlinx.coroutines.flow.map
 class ResetPasswordScreenViewModel(
   private val authRepository: AuthRepository,
   savedStateHandle: SavedStateHandle,
-) : BaseScreenViewModel<ResetPasswordScreenContentPm>() {
+) : BaseScreenViewModel<ResetPasswordUiState>() {
 
   private val token: String = savedStateHandle["token"] ?: error("Token should be passed")
 
-  override fun getContentPm(): ResetPasswordScreenContentPm {
-    return ResetPasswordScreenContentPm()
+  override fun getUiState(): ResetPasswordUiState {
+    return ResetPasswordUiState()
   }
 
   override fun onInitialize() {
@@ -38,10 +38,10 @@ class ResetPasswordScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { screenState.value.contentPm.passwordState.text.toString() },
+      snapshotFlow { screenState.value.uiState.passwordState.text.toString() },
       screenState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { password, isLoading ->
-      updateContentPm {
+      updateUiState {
         copy(primaryButtonIsEnable = PasswordValidator.validate(password) && !isLoading)
       }
     }.launchIn(viewModelScope)
@@ -55,7 +55,7 @@ class ResetPasswordScreenViewModel(
   }
 
   private fun handleTextFieldSecureToggleClick() {
-    updateContentPm {
+    updateUiState {
       copy(passwordIsSecureMode = !passwordIsSecureMode)
     }
   }
@@ -64,7 +64,7 @@ class ResetPasswordScreenViewModel(
     launchLoadable {
       handleSuccess()
       authRepository
-        .resetPassword(screenState.value.contentPm.passwordState.text.toString(), token)
+        .resetPassword(screenState.value.uiState.passwordState.text.toString(), token)
         .onFailure(::handleFailure)
         .onSuccess { handleSuccess() }
     }
@@ -76,14 +76,14 @@ class ResetPasswordScreenViewModel(
       DataError.Remote.CONFLICT -> Res.string.error_same_password
       else -> error.getStringRes()
     }
-    updateContentPm {
+    updateUiState {
       copy(errorRes = errorRes)
     }
   }
 
   private fun handleSuccess() {
     showSnackbar(Res.string.forgot_password_email_sent_successfully) {
-      updateContentPm { copy(navigateToLoginEvent = Event(Unit)) }
+      updateUiState { copy(navigateToLoginEvent = Event(Unit)) }
     }
   }
 }

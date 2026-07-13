@@ -1,15 +1,15 @@
 package com.plcoding.feature.chat.data.mapper
 
-import com.plcoding.feature.chat.data.model.ChatMessageAm
-import com.plcoding.feature.chat.data.model.WebSocketPayloadAm
-import com.plcoding.feature.chat.data.model.WebSocketPayloadAm.NewMessageAm
+import com.plcoding.feature.chat.data.model.ChatMessageDto
+import com.plcoding.feature.chat.data.model.WebSocketPayloadDto
+import com.plcoding.feature.chat.data.model.WebSocketPayloadDto.NewMessageDto
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.view.ChatLastMessageView
 import com.plcoding.feature.chat.domain.model.ChatMessage
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlin.time.Instant
 
-fun ChatMessageAm.toDomain(): ChatMessage = ChatMessage(
+fun ChatMessageDto.toDomain(): ChatMessage = ChatMessage(
   id = id,
   chatId = chatId,
   senderId = senderId,
@@ -18,7 +18,7 @@ fun ChatMessageAm.toDomain(): ChatMessage = ChatMessage(
   deliveryStatus = ChatMessageDeliveryStatus.SENT,
 )
 
-fun ChatMessageAm.toEntity(): ChatMessageEntity = ChatMessageEntity(
+fun ChatMessageDto.toEntity(): ChatMessageEntity = ChatMessageEntity(
   id = id,
   chatId = chatId,
   senderId = senderId,
@@ -45,7 +45,7 @@ fun ChatLastMessageView.toDomain(): ChatMessage = ChatMessage(
   deliveryStatus = ChatMessageDeliveryStatus.valueOf(status),
 )
 
-fun WebSocketPayloadAm.NewMessageAm.toDomain(): ChatMessage = ChatMessage(
+fun WebSocketPayloadDto.NewMessageDto.toDomain(): ChatMessage = ChatMessage(
   id = id,
   chatId = chatId,
   senderId = senderId,
@@ -54,7 +54,7 @@ fun WebSocketPayloadAm.NewMessageAm.toDomain(): ChatMessage = ChatMessage(
   deliveryStatus = ChatMessageDeliveryStatus.SENT,
 )
 
-fun WebSocketPayloadAm.NewMessageAm.toEntity(): ChatMessageEntity = ChatMessageEntity(
+fun WebSocketPayloadDto.NewMessageDto.toEntity(): ChatMessageEntity = ChatMessageEntity(
   id = id,
   chatId = chatId,
   senderId = senderId,
@@ -63,7 +63,7 @@ fun WebSocketPayloadAm.NewMessageAm.toEntity(): ChatMessageEntity = ChatMessageE
   status = ChatMessageDeliveryStatus.SENT.name,
 )
 
-fun ChatMessage.toAm(): NewMessageAm = NewMessageAm(
+fun ChatMessage.toDto(): NewMessageDto = NewMessageDto(
   id = id,
   chatId = chatId,
   senderId = senderId,

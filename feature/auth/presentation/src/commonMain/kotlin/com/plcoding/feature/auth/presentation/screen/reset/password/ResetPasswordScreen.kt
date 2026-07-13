@@ -9,13 +9,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.AppLogoPc
-import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import com.plcoding.core.presentation.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenUiState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -26,13 +26,13 @@ fun ResetPasswordScreen(
   openLogin: () -> Unit,
 ) {
   val state by viewModel.screenState.collectAsStateWithLifecycle()
-  state.contentPm.navigateToLoginEvent?.run(openLogin)
+  state.uiState.navigateToLoginEvent?.run(openLogin)
 
   BaseScreen(
-    baseContentPm = state.baseContentPm
+    baseUiState = state.baseUiState
   ) {
     Content(
-      contentPm = state.contentPm,
+      uiState = state.uiState,
       onAction = viewModel::onAction
     )
   }
@@ -40,31 +40,31 @@ fun ResetPasswordScreen(
 
 @Composable
 private fun Content(
-  contentPm: ResetPasswordScreenContentPm,
+  uiState: ResetPasswordUiState,
   onAction: (ResetPasswordScreenAction) -> Unit,
 ) {
   AdaptiveFormLayout(
     modifier = Modifier.fillMaxSize(),
-    logo = { AppLogoPc() },
-    title = stringResource(contentPm.titleRes),
-    error = contentPm.errorRes?.let { stringResource(it) },
+    logo = { AppLogo() },
+    title = stringResource(uiState.titleRes),
+    error = uiState.errorRes?.let { stringResource(it) },
   ) {
     TextFieldPassword(
       modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(contentPm.passwordTopTitleRes),
-      textFieldState = contentPm.passwordState,
-      inputPlaceholder = stringResource(contentPm.passwordPlaceholderRes),
-      bottomTitle = stringResource(contentPm.passwordBottomTitleRes),
-      isError = contentPm.passwordIsError,
-      isSecureMode = contentPm.passwordIsSecureMode,
+      topTitle = stringResource(uiState.passwordTopTitleRes),
+      textFieldState = uiState.passwordState,
+      inputPlaceholder = stringResource(uiState.passwordPlaceholderRes),
+      bottomTitle = stringResource(uiState.passwordBottomTitleRes),
+      isError = uiState.passwordIsError,
+      isSecureMode = uiState.passwordIsSecureMode,
       onSecureToggleClick = { onAction(ResetPasswordScreenAction.OnTextFieldSecureToggleClick) }
     )
     Spacer(Modifier.height(32.dp))
-    ButtonPc(
+    Button(
       modifier = Modifier.fillMaxWidth(),
-      text = stringResource(contentPm.primaryButtonTitleRes),
-      style = contentPm.primaryButtonPcStyle,
-      isEnabled = contentPm.primaryButtonIsEnable,
+      text = stringResource(uiState.primaryButtonTitleRes),
+      style = uiState.primaryButtonStyle,
+      isEnabled = uiState.primaryButtonIsEnable,
       onClick = { onAction(ResetPasswordScreenAction.OnPrimaryButtonClick) }
     )
   }
@@ -74,14 +74,14 @@ private fun Content(
 private fun Themed(
   isDarkTheme: Boolean,
 ) {
-  val screenStatePm = ScreenStatePm(ResetPasswordScreenContentPm())
+  val screenUiState = ScreenUiState(ResetPasswordUiState())
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseContentPm = screenStatePm.baseContentPm
+      baseUiState = screenUiState.baseUiState
     ) {
       Content(
-        contentPm = screenStatePm.contentPm,
+        uiState = screenUiState.uiState,
         onAction = {}
       )
     }

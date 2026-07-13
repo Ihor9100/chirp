@@ -10,7 +10,7 @@ import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
 import com.plcoding.feature.chat.data.mapper.toDomain
 import com.plcoding.feature.chat.data.mapper.toEntities
 import com.plcoding.feature.chat.data.mapper.toEntity
-import com.plcoding.feature.chat.data.model.ChatAm
+import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
@@ -62,12 +62,12 @@ class ChatDataRepository(
   override suspend fun syncChats(): Empty<DataError> {
     return remoteDataSource
       .getChats()
-      .flatMap { ams ->
+      .flatMap { dtos ->
         localDataSource.replaceChatsDetails(
-          chats = ams.map { it.toEntity() },
-          chatMembers = ams.flatMap { it.participants }.map { it.toEntity() },
-          chatMessages = ams.mapNotNull { it.lastMessage }.map { it.toEntity() },
-          chatsAndMembers = ams.flatMap { it.toEntities() },
+          chats = dtos.map { it.toEntity() },
+          chatMembers = dtos.flatMap { it.participants }.map { it.toEntity() },
+          chatMessages = dtos.mapNotNull { it.lastMessage }.map { it.toEntity() },
+          chatsAndMembers = dtos.flatMap { it.toEntities() },
         )
       }
   }
@@ -87,12 +87,12 @@ class ChatDataRepository(
       .flatMap { upsertChatDetails(it) }
   }
 
-  private suspend fun upsertChatDetails(chatAm: ChatAm): Empty<DataError> {
+  private suspend fun upsertChatDetails(chatDto: ChatDto): Empty<DataError> {
     return localDataSource.upsertChatDetails(
-      chatAm.toEntity(),
-      chatAm.participants.map { it.toEntity() },
-      listOfNotNull(chatAm.lastMessage).map { it.toEntity() },
-      chatAm.toEntities(),
+      chatDto.toEntity(),
+      chatDto.participants.map { it.toEntity() },
+      listOfNotNull(chatDto.lastMessage).map { it.toEntity() },
+      chatDto.toEntities(),
     )
   }
 }

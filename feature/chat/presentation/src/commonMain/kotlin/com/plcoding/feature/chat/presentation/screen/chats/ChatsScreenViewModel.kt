@@ -7,7 +7,7 @@ import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.chat_members
 import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.success
-import com.plcoding.core.designsystem.model.DropDownItemPm
+import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -35,7 +35,7 @@ class ChatsScreenViewModel(
   private val chatRepository: ChatRepository,
   private val appLifecycleObserver: AppLifecycleObserver,
   private val appConnectivityObserver: AppConnectivityObserver,
-) : BaseScreenViewModel<ChatsScreenContentPm>() {
+) : BaseScreenViewModel<ChatsUiState>() {
 
   private val _internalState = MutableStateFlow(
     InternalState(
@@ -61,8 +61,8 @@ class ChatsScreenViewModel(
       .launchIn(viewModelScope)
   }
 
-  override fun getContentPm(): ChatsScreenContentPm {
-    return ChatsScreenContentPm.mock
+  override fun getUiState(): ChatsUiState {
+    return ChatsUiState.mock
   }
 
   override fun onInitialize() {
@@ -95,7 +95,7 @@ class ChatsScreenViewModel(
       _internalState,
       _chatDetails,
     ) { authInfo, chats, internalState, chatDetails ->
-      ChatsScreenContentPm.from(
+      buildChatsUiState(
         yourId = authInfo?.user?.id,
         chats = chats,
         chatDetails = chatDetails,
@@ -103,7 +103,7 @@ class ChatsScreenViewModel(
       )
     }
       .flowOn(Dispatchers.IO)
-      .onEach { content -> updateContentPm { content } }
+      .onEach { content -> updateUiState { content } }
       .launchIn(viewModelScope)
   }
 
@@ -134,7 +134,7 @@ class ChatsScreenViewModel(
     }
   }
 
-  private fun handleChatDetailsMenuItemClick(dropDownItemPm: DropDownItemPm) {
+  private fun handleChatDetailsMenuItemClick(dropDownItemPm: DropDownItemUi) {
     when (dropDownItemPm.titleRes) {
       Res.string.chat_members -> _internalState.update {
         it.copy(

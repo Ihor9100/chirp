@@ -6,38 +6,38 @@ import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
-import com.plcoding.feature.chat.data.model.ChatAm
-import com.plcoding.feature.chat.data.model.ChatCreateRequestAm
-import com.plcoding.feature.chat.data.model.ChatMemberAm
-import com.plcoding.feature.chat.data.model.ChatMembersAm
+import com.plcoding.feature.chat.data.model.ChatDto
+import com.plcoding.feature.chat.data.model.ChatCreateRequestDto
+import com.plcoding.feature.chat.data.model.ChatMemberDto
+import com.plcoding.feature.chat.data.model.ChatMembersDto
 import io.ktor.client.HttpClient
 
 class ChatsKtorRemoteDataSource(
   private val httpClient: HttpClient,
 ) : ChatsRemoteDataSource {
 
-  override suspend fun searchMember(query: String): Result<ChatMemberAm, DataError.Remote> {
-    return httpClient.get<ChatMemberAm>(
+  override suspend fun searchMember(query: String): Result<ChatMemberDto, DataError.Remote> {
+    return httpClient.get<ChatMemberDto>(
       route = "/participants",
       params = mapOf("query" to query),
     )
   }
 
-  override suspend fun getChat(chatId: String): Result<ChatAm, DataError.Remote> {
-    return httpClient.get<ChatAm>(
+  override suspend fun getChat(chatId: String): Result<ChatDto, DataError.Remote> {
+    return httpClient.get<ChatDto>(
       route = "/chat/$chatId",
     )
   }
 
-  override suspend fun createChat(memberIds: List<String>): Result<ChatAm, DataError.Remote> {
-    return httpClient.post<ChatCreateRequestAm, ChatAm>(
+  override suspend fun createChat(memberIds: List<String>): Result<ChatDto, DataError.Remote> {
+    return httpClient.post<ChatCreateRequestDto, ChatDto>(
       route = "/chat",
-      request = ChatCreateRequestAm(memberIds)
+      request = ChatCreateRequestDto(memberIds)
     )
   }
 
-  override suspend fun getChats(): Result<List<ChatAm>, DataError.Remote> {
-    return httpClient.get<List<ChatAm>>(
+  override suspend fun getChats(): Result<List<ChatDto>, DataError.Remote> {
+    return httpClient.get<List<ChatDto>>(
       route = "/chat"
     )
   }
@@ -51,10 +51,10 @@ class ChatsKtorRemoteDataSource(
   override suspend fun addChatMembers(
     chatId: String,
     memberIds: List<String>
-  ): Result<ChatAm, DataError.Remote> {
-    return httpClient.post<ChatMembersAm, ChatAm>(
+  ): Result<ChatDto, DataError.Remote> {
+    return httpClient.post<ChatMembersDto, ChatDto>(
       route = "/chat/$chatId/add",
-      request = ChatMembersAm(memberIds),
+      request = ChatMembersDto(memberIds),
     )
   }
 }

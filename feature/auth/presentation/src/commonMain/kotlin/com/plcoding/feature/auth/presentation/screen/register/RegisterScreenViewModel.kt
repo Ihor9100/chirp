@@ -19,13 +19,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 class RegisterScreenViewModel(
   private val authRepository: AuthRepository,
-) : BaseScreenViewModel<RegisterScreenContentPm>() {
+) : BaseScreenViewModel<RegisterUiState>() {
 
   private val _event = Channel<RegisterScreenEvent>()
   val event = _event.receiveAsFlow()
 
-  override fun getContentPm(): RegisterScreenContentPm {
-    return RegisterScreenContentPm()
+  override fun getUiState(): RegisterUiState {
+    return RegisterUiState()
   }
 
   fun onAction(action: RegisterScreenAction) {
@@ -39,7 +39,7 @@ class RegisterScreenViewModel(
 
   private fun clearInputFieldError(action: RegisterScreenAction.OnTextFieldFocusGain) {
     if (action.isFocused) {
-      updateContentPm {
+      updateUiState {
         when (action.inputField) {
           InputField.USERNAME -> copy(
             usernameIsError = false,
@@ -59,7 +59,7 @@ class RegisterScreenViewModel(
   }
 
   private fun handleTextFieldSecureToggleClick() {
-    updateContentPm {
+    updateUiState {
       copy(passwordIsSecureMode = !passwordIsSecureMode)
     }
   }
@@ -68,13 +68,13 @@ class RegisterScreenViewModel(
     if (!areFieldsValid()) return
 
     launchLoadable {
-      val email = screenState.value.contentPm.emailState.text.toString()
+      val email = screenState.value.uiState.emailState.text.toString()
 
       authRepository
         .register(
-          username = screenState.value.contentPm.usernameState.text.toString(),
+          username = screenState.value.uiState.usernameState.text.toString(),
           email = email,
-          password = screenState.value.contentPm.passwordState.text.toString(),
+          password = screenState.value.uiState.passwordState.text.toString(),
         )
         .onFailure(::handleFailure)
         .onSuccess { _event.send(RegisterScreenEvent.Success(email)) }
@@ -86,25 +86,25 @@ class RegisterScreenViewModel(
       DataError.Remote.CONFLICT -> Res.string.error_account_exists
       else -> error.getStringRes()
     }
-    updateContentPm { copy(errorRes = errorRes) }
+    updateUiState { copy(errorRes = errorRes) }
   }
 
   private fun areFieldsValid(): Boolean {
     val isUsernameValid = UsernameValidator.validate(
-      screenState.value.contentPm.usernameState.text.toString()
+      screenState.value.uiState.usernameState.text.toString()
     )
     val isEmailValid = EmailValidator.validate(
-      screenState.value.contentPm.emailState.text.toString()
+      screenState.value.uiState.emailState.text.toString()
     )
     val isPasswordValid = PasswordValidator.validate(
-      screenState.value.contentPm.passwordState.text.toString()
+      screenState.value.uiState.passwordState.text.toString()
     )
 
     val usernameError = if (!isUsernameValid) Res.string.error_invalid_username else null
     val emailError = if (!isEmailValid) Res.string.error_invalid_email else null
     val passwordError = if (!isPasswordValid) Res.string.error_invalid_password else null
 
-    updateContentPm {
+    updateUiState {
       copy(
         usernameIsError = usernameError != null,
         usernameBottomTitleRes = usernameError,

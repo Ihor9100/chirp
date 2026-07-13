@@ -18,7 +18,7 @@ class AppScreenViewModel(
 
   private var authInfo: AuthInfo? = null
 
-  override fun getContentPm(): AppScreenContent {
+  override fun getUiState(): AppScreenContent {
     return AppScreenContent()
   }
 
@@ -39,7 +39,7 @@ class AppScreenViewModel(
         ChatRoute.Graph
       }
 
-      updateContentPm {
+      updateUiState {
         copy(
           startDestination = startDestination,
         )
@@ -52,7 +52,7 @@ class AppScreenViewModel(
       .observeAuthInfo()
       .onEach { authInfo ->
         if (this.authInfo != null && authInfo == null) {
-          updateContentPm { copy(logoutEvent = Event(Unit)) }
+          updateUiState { copy(logoutEvent = Event(Unit)) }
         }
         this.authInfo = authInfo
       }

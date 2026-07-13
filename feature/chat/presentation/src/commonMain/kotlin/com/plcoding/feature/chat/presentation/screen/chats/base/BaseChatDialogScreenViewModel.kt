@@ -14,7 +14,7 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.repository.ChatRepository
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
+import com.plcoding.feature.chat.presentation.mapper.toUi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
@@ -22,14 +22,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.seconds
 
-abstract class BaseChatDialogScreenViewModel<ContentPm : BaseChatDialogScreenContentPm<ContentPm>>(
+abstract class BaseChatDialogScreenViewModel<ContentUi : BaseChatDialogUiState<ContentUi>>(
   private val chatRepository: ChatRepository,
-) : BaseScreenViewModel<ContentPm>() {
+) : BaseScreenViewModel<ContentUi>() {
 
   protected abstract fun handlePositiveClick()
 
   private val searchQueryFlow =
-    snapshotFlow { screenState.value.contentPm.searchTextFieldState.text }
+    snapshotFlow { screenState.value.uiState.searchTextFieldState.text }
       .debounce(1.seconds)
       .filter { it.isNotBlank() }
       .onEach(::searchMember)
@@ -48,27 +48,27 @@ abstract class BaseChatDialogScreenViewModel<ContentPm : BaseChatDialogScreenCon
   }
 
   private fun handleAddClick() {
-    updateContentPm {
-      val doNothing = foundChatMemberPm == null ||
-        foundChatMembersPm.contains(foundChatMemberPm) ||
-        inChatMembersPm.contains(foundChatMemberPm)
+    updateUiState {
+      val doNothing = foundChatMemberUi == null ||
+        foundChatMembersUi.contains(foundChatMemberUi) ||
+        inChatMembersUi.contains(foundChatMemberUi)
 
-      if (doNothing) return@updateContentPm this
+      if (doNothing) return@updateUiState this
 
       searchTextFieldState.also { it.clearText() }
-      update(null, foundChatMembersPm + foundChatMemberPm!!)
+      update(null, foundChatMembersUi + foundChatMemberUi!!)
     }
   }
 
   private fun searchMember(searchQuery: CharSequence) {
     launchLoadable {
-      updateContentPm { update(foundChatMemberPm = null) }
+      updateUiState { update(foundChatMemberUi = null) }
 
       chatRepository
         .searchMember(searchQuery.toString())
-        .mapOn { ChatMemberPm.from(it, isInChat = false) }
+        .mapOn { it.toUi(isInChat = false) }
         .onFailure(::handleSearchMemberFailure)
-        .onSuccess { updateContentPm { update(foundChatMemberPm = it) } }
+        .onSuccess { updateUiState { update(foundChatMemberUi = it) } }
     }
   }
 

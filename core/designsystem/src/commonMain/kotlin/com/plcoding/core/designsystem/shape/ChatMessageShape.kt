@@ -10,10 +10,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
-import com.plcoding.core.designsystem.model.AnchorPositionPm
+import com.plcoding.core.designsystem.model.AnchorPositionUi
 
 class ChatMessageShape(
-  private val anchorPositionPm: AnchorPositionPm,
+  private val anchorPositionUi: AnchorPositionUi,
   private val anchorSizeDp: Dp,
 ) : Shape {
 
@@ -24,8 +24,8 @@ class ChatMessageShape(
   ): Outline {
     val anchorSizePx = with(density) { anchorSizeDp.toPx() }
 
-    val finalPath = when (anchorPositionPm) {
-      AnchorPositionPm.LEFT -> {
+    val finalPath = when (anchorPositionUi) {
+      AnchorPositionUi.LEFT -> {
         val bodyPath = Path().apply {
           addRoundRect(
             roundRect = RoundRect(
@@ -48,7 +48,7 @@ class ChatMessageShape(
         }
         Path.combine(PathOperation.Union, bodyPath, anchorPath)
       }
-      AnchorPositionPm.RIGHT -> {
+      AnchorPositionUi.RIGHT -> {
         val bodyPath = Path().apply {
           addRoundRect(
             roundRect = RoundRect(

@@ -8,7 +8,7 @@ import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.data.BuildKonfig
-import com.plcoding.feature.chat.data.model.WebSocketMessageAm
+import com.plcoding.feature.chat.data.model.WebSocketMessageDto
 import com.plcoding.feature.chat.domain.model.ConnectionError
 import com.plcoding.feature.chat.domain.model.ConnectionState
 import com.plcoding.feature.chat.domain.network.ConnectionErrorHandler
@@ -74,7 +74,7 @@ class KtorWebSocketConnector(
     .debounce(1.seconds)
     .stateIn(coroutineScope, SharingStarted.WhileSubscribed(5000L), false)
 
-  val webSocketMessagesAm = combine(
+  val webSocketMessagesDto = combine(
     preferencesRepository.observeAuthInfo(),
     appLifecycleObserver.isInForeground,
     appConnectivityObserver.isConnected,
@@ -139,7 +139,7 @@ class KtorWebSocketConnector(
     }
   }
 
-  private fun createWebSocketFlow(accessToken: String): Flow<WebSocketMessageAm> {
+  private fun createWebSocketFlow(accessToken: String): Flow<WebSocketMessageDto> {
     return callbackFlow {
       _connectionState.value = ConnectionState.CONNECTING
 
@@ -162,8 +162,8 @@ class KtorWebSocketConnector(
               is Frame.Text -> {
                 val message = frame.readText()
                 logger.debug("Received raw text frame: $message")
-                val webSocketMessageAm = json.decodeFromString<WebSocketMessageAm>(message)
-                send(webSocketMessageAm)
+                val webSocketMessageDto = json.decodeFromString<WebSocketMessageDto>(message)
+                send(webSocketMessageDto)
               }
               is Frame.Ping -> {
                 logger.debug("Received ping from server. Sending pong...")

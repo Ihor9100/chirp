@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveDialogSheetLayout
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
-import com.plcoding.core.presentation.model.BaseContentPm
+import com.plcoding.core.presentation.model.BaseUiState
 import com.plcoding.core.presentation.utils.clearFocusOnTab
 
 @Composable
 fun BaseDialogScreen(
   modifier: Modifier = Modifier,
-  baseContentPm: BaseContentPm,
+  baseUiState: BaseUiState,
   deviceConfiguration: DeviceConfiguration,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
@@ -27,7 +27,7 @@ fun BaseDialogScreen(
       modifier = modifier
         .clearFocusOnTab()
         .safeDrawingPadding(),
-      baseContentPm = baseContentPm,
+      baseUiState = baseUiState,
       content = content,
     )
   }

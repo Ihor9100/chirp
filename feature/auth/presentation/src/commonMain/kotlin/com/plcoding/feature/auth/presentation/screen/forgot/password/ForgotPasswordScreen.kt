@@ -13,13 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.AppLogoPc
-import com.plcoding.core.designsystem.components.button.ButtonPc
+import com.plcoding.core.designsystem.components.AppLogo
+import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import com.plcoding.core.presentation.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenUiState
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -34,16 +34,16 @@ fun ForgotPasswordScreen(
   val snackbarHostState = remember { SnackbarHostState() }
 
   rememberCoroutineScope().launch {
-    state.contentPm.snackbarEvent?.consumeAsync {
+    state.uiState.snackbarEvent?.consumeAsync {
       snackbarHostState.showSnackbar(getString(it))
     }
   }
 
   BaseScreen(
-    baseContentPm = state.baseContentPm
+    baseUiState = state.baseUiState
   ) {
     Content(
-      contentPm = state.contentPm,
+      uiState = state.uiState,
       onAction = viewModel::onAction
     )
   }
@@ -51,29 +51,29 @@ fun ForgotPasswordScreen(
 
 @Composable
 private fun Content(
-  contentPm: ForgotPasswordScreenContentPm,
+  uiState: ForgotPasswordUiState,
   onAction: (ForgotPasswordScreenAction) -> Unit,
 ) {
     AdaptiveFormLayout(
       modifier = Modifier.fillMaxSize(),
-      logo = { AppLogoPc() },
-      title = stringResource(contentPm.titleRes),
-      error = contentPm.errorRes?.let { stringResource(it) },
+      logo = { AppLogo() },
+      title = stringResource(uiState.titleRes),
+      error = uiState.errorRes?.let { stringResource(it) },
     ) {
       TextFieldPlain(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(contentPm.emailTopTitleRes),
-        textFieldState = contentPm.emailState,
-        inputPlaceholder = stringResource(contentPm.emailPlaceholderRes),
+        topTitle = stringResource(uiState.emailTopTitleRes),
+        textFieldState = uiState.emailState,
+        inputPlaceholder = stringResource(uiState.emailPlaceholderRes),
         bottomTitle = null,
         keyboardType = KeyboardType.Email,
       )
       Spacer(Modifier.height(32.dp))
-      ButtonPc(
+      Button(
         modifier = Modifier.fillMaxWidth(),
-        text = stringResource(contentPm.primaryButtonTitleRes),
-        style = contentPm.primaryButtonPcStyle,
-        isEnabled = contentPm.primaryButtonIsEnable,
+        text = stringResource(uiState.primaryButtonTitleRes),
+        style = uiState.primaryButtonStyle,
+        isEnabled = uiState.primaryButtonIsEnable,
         onClick = { onAction(ForgotPasswordScreenAction.OnSubmitClick) },
       )
   }
@@ -83,14 +83,14 @@ private fun Content(
 private fun Themed(
   isDarkTheme: Boolean,
 ) {
-  val screenStatePm = ScreenStatePm(ForgotPasswordScreenContentPm())
+  val screenUiState = ScreenUiState(ForgotPasswordUiState())
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseContentPm = screenStatePm.baseContentPm
+      baseUiState = screenUiState.baseUiState
     ) {
       Content(
-        contentPm = screenStatePm.contentPm,
+        uiState = screenUiState.uiState,
         onAction = {}
       )
     }

@@ -1,6 +1,6 @@
 package com.plcoding.feature.chat.data.mapper
 
-import com.plcoding.feature.chat.data.model.ChatAm
+import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatEntity
 import com.plcoding.feature.chat.database.entity.ChatMemberEntity
@@ -9,19 +9,19 @@ import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
 import com.plcoding.feature.chat.domain.model.Chat
 import kotlin.time.Instant
 
-fun ChatAm.toDomain(): Chat = Chat(
+fun ChatDto.toDomain(): Chat = Chat(
   id = id,
   members = participants.map { it.toDomain() },
   lastActivityAt = Instant.parse(lastActivityAt),
   lastMessage = lastMessage?.toDomain(),
 )
 
-fun ChatAm.toEntity(): ChatEntity = ChatEntity(
+fun ChatDto.toEntity(): ChatEntity = ChatEntity(
   id = id,
   lastActivityAt = Instant.parse(lastActivityAt).toEpochMilliseconds(),
 )
 
-fun ChatAm.toEntities(): List<ChatAndMemberEntity> = participants.map {
+fun ChatDto.toEntities(): List<ChatAndMemberEntity> = participants.map {
   ChatAndMemberEntity(chatId = id, memberId = it.userId)
 }
 

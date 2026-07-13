@@ -12,23 +12,23 @@ import kotlinx.coroutines.FlowPreview
 
 class ChatCreateDialogScreenViewModel(
   private val chatRepository: ChatRepository,
-) : BaseChatDialogScreenViewModel<ChatCreateDialogScreenContentPm>(
+) : BaseChatDialogScreenViewModel<ChatCreateDialogUiState>(
   chatRepository,
 ) {
 
-  override fun getContentPm(): ChatCreateDialogScreenContentPm {
-    return ChatCreateDialogScreenContentPm()
+  override fun getUiState(): ChatCreateDialogUiState {
+    return ChatCreateDialogUiState()
   }
 
   override fun handlePositiveClick() {
-    val memberIds = screenState.value.contentPm.foundChatMembersPm.map { it.id }
+    val memberIds = screenState.value.uiState.foundChatMembersUi.map { it.id }
     if (memberIds.isEmpty()) return
 
     launchLoadable {
       chatRepository
         .createChat(memberIds)
         .onFailure { showSnackbar(it.getStringRes()) }
-        .onSuccess { updateContentPm { copy(chatCreatedEvent = Event(Unit)) } }
+        .onSuccess { updateUiState { copy(chatCreatedEvent = Event(Unit)) } }
     }
   }
 }

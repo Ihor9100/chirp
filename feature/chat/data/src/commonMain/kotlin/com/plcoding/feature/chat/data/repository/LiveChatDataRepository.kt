@@ -5,12 +5,12 @@ import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.getOrNull
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
-import com.plcoding.feature.chat.data.mapper.toAm
 import com.plcoding.feature.chat.data.mapper.toDomain
+import com.plcoding.feature.chat.data.mapper.toDto
 import com.plcoding.feature.chat.data.mapper.toEntity
-import com.plcoding.feature.chat.data.model.WebSocketMessageAm
-import com.plcoding.feature.chat.data.model.WebSocketMessageTypeAm
-import com.plcoding.feature.chat.data.model.WebSocketPayloadAm
+import com.plcoding.feature.chat.data.model.WebSocketMessageDto
+import com.plcoding.feature.chat.data.model.WebSocketMessageTypeDto
+import com.plcoding.feature.chat.data.model.WebSocketPayloadDto
 import com.plcoding.feature.chat.data.network.KtorWebSocketConnector
 import com.plcoding.feature.chat.domain.model.ChatMessage
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
@@ -38,18 +38,18 @@ class LiveChatDataRepository(
 ) : LiveChatRepository {
 
   override val chatMessage = ktorWebSocketConnector
-    .webSocketMessagesAm
-    .map(::getWebSocketPayloadAm)
-    .onEach(::handleWebSocketPayloadAm)
-    .filterIsInstance<WebSocketPayloadAm.NewMessageAm>()
+    .webSocketMessagesDto
+    .map(::getWebSocketPayloadDto)
+    .onEach(::handleWebSocketPayloadDto)
+    .filterIsInstance<WebSocketPayloadDto.NewMessageDto>()
     .map { it.toDomain() }
     .shareIn(coroutineScope, SharingStarted.WhileSubscribed(5.seconds))
 
   override val connectionState = ktorWebSocketConnector.connectionState
 
   override suspend fun sendMessage(chatMessage: ChatMessage): Empty<ConnectionError> {
-    val webSocketMessageAm = WebSocketMessageAm.from(chatMessage.toAm(), json)
-    val message = json.encodeToString(webSocketMessageAm)
+    val webSocketMessageDto = WebSocketMessageDto.from(chatMessage.toDto(), json)
+    val message = json.encodeToString(webSocketMessageDto)
 
     return ktorWebSocketConnector
       .sendMessage(message)
@@ -61,54 +61,54 @@ class LiveChatDataRepository(
       }
   }
 
-  private fun getWebSocketPayloadAm(webSocketMessageAm: WebSocketMessageAm): WebSocketPayloadAm {
-    return with(webSocketMessageAm) {
-      when (WebSocketMessageTypeAm.valueOf(type)) {
-        WebSocketMessageTypeAm.NEW_MESSAGE -> {
-          json.decodeFromString<WebSocketPayloadAm.NewMessageAm>(payload)
+  private fun getWebSocketPayloadDto(webSocketMessageDto: WebSocketMessageDto): WebSocketPayloadDto {
+    return with(webSocketMessageDto) {
+      when (WebSocketMessageTypeDto.valueOf(type)) {
+        WebSocketMessageTypeDto.NEW_MESSAGE -> {
+          json.decodeFromString<WebSocketPayloadDto.NewMessageDto>(payload)
         }
-        WebSocketMessageTypeAm.MESSAGE_DELETED -> {
-          json.decodeFromString<WebSocketPayloadAm.MessageDeletedAm>(payload)
+        WebSocketMessageTypeDto.MESSAGE_DELETED -> {
+          json.decodeFromString<WebSocketPayloadDto.MessageDeletedDto>(payload)
         }
-        WebSocketMessageTypeAm.PROFILE_PICTURE_UPDATED -> {
-          json.decodeFromString<WebSocketPayloadAm.ProfilePictureUpdatedAm>(payload)
+        WebSocketMessageTypeDto.PROFILE_PICTURE_UPDATED -> {
+          json.decodeFromString<WebSocketPayloadDto.ProfilePictureUpdatedDto>(payload)
         }
-        WebSocketMessageTypeAm.CHAT_PARTICIPANTS_CHANGED -> {
-          json.decodeFromString<WebSocketPayloadAm.ChatMembersChangedAm>(payload)
+        WebSocketMessageTypeDto.CHAT_PARTICIPANTS_CHANGED -> {
+          json.decodeFromString<WebSocketPayloadDto.ChatMembersChangedDto>(payload)
         }
       }
     }
   }
 
-  private suspend fun handleWebSocketPayloadAm(payloadAm: WebSocketPayloadAm) {
-    when (payloadAm) {
-      is WebSocketPayloadAm.ChatMembersChangedAm -> chatRepository.syncChat(payloadAm.chatId)
-      is WebSocketPayloadAm.MessageDeletedAm -> localDataSource.deleteChatMessage(payloadAm.chatId)
-      is WebSocketPayloadAm.NewMessageAm -> handleNewMessageAm(payloadAm)
-      is WebSocketPayloadAm.ProfilePictureUpdatedAm -> handleProfilePictureUpdatedAm(payloadAm)
+  private suspend fun handleWebSocketPayloadDto(payloadDto: WebSocketPayloadDto) {
+    when (payloadDto) {
+      is WebSocketPayloadDto.ChatMembersChangedDto -> chatRepository.syncChat(payloadDto.chatId)
+      is WebSocketPayloadDto.MessageDeletedDto -> localDataSource.deleteChatMessage(payloadDto.chatId)
+      is WebSocketPayloadDto.NewMessageDto -> handleNewMessageDto(payloadDto)
+      is WebSocketPayloadDto.ProfilePictureUpdatedDto -> handleProfilePictureUpdatedDto(payloadDto)
     }
   }
 
-  private suspend fun handleNewMessageAm(newMessageAm: WebSocketPayloadAm.NewMessageAm) {
-    val hasChat = localDataSource.hasChat(newMessageAm.chatId).getOrNull()
+  private suspend fun handleNewMessageDto(newMessageDto: WebSocketPayloadDto.NewMessageDto) {
+    val hasChat = localDataSource.hasChat(newMessageDto.chatId).getOrNull()
     if (hasChat != true) {
-      chatRepository.syncChat(newMessageAm.chatId)
+      chatRepository.syncChat(newMessageDto.chatId)
     }
 
-    localDataSource.upsertChatMessage(newMessageAm.toEntity())
+    localDataSource.upsertChatMessage(newMessageDto.toEntity())
   }
 
-  private suspend fun handleProfilePictureUpdatedAm(
-    profilePictureUpdatedAm: WebSocketPayloadAm.ProfilePictureUpdatedAm,
+  private suspend fun handleProfilePictureUpdatedDto(
+    profilePictureUpdatedDto: WebSocketPayloadDto.ProfilePictureUpdatedDto,
   ) {
     localDataSource.updateChatMember(
-      id = profilePictureUpdatedAm.userId,
-      avatarUrl = profilePictureUpdatedAm.newUrl,
+      id = profilePictureUpdatedDto.userId,
+      avatarUrl = profilePictureUpdatedDto.newUrl,
     )
 
     val authInfo = preferencesRepository.observeAuthInfo().firstOrNull()
-    if (authInfo?.user?.id == profilePictureUpdatedAm.userId) {
-      val user = authInfo.user.copy(profilePictureUrl = profilePictureUpdatedAm.newUrl)
+    if (authInfo?.user?.id == profilePictureUpdatedDto.userId) {
+      val user = authInfo.user.copy(profilePictureUrl = profilePictureUpdatedDto.newUrl)
       preferencesRepository.saveAuthInfo(authInfo.copy(user = user))
     }
   }

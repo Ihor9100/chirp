@@ -39,24 +39,24 @@ import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_arrow_left
 import chirp.feature.chat.presentation.generated.resources.ic_dots
 import chirp.feature.chat.presentation.generated.resources.ic_plus
-import com.plcoding.core.designsystem.components.DropDownMenuPc
-import com.plcoding.core.designsystem.components.button.FloatingButtonPc
-import com.plcoding.core.designsystem.components.button.IconButtonPc
-import com.plcoding.core.designsystem.components.textfields.MultilineTextFieldPc
-import com.plcoding.core.designsystem.model.AvatarPm
-import com.plcoding.core.designsystem.model.MultilineTextFieldPm
+import com.plcoding.core.designsystem.components.DropDownMenu
+import com.plcoding.core.designsystem.components.button.FloatingButton
+import com.plcoding.core.designsystem.components.button.IconButton
+import com.plcoding.core.designsystem.components.textfields.MultilineTextField
+import com.plcoding.core.designsystem.model.AvatarUi
+import com.plcoding.core.designsystem.model.MultilineTextFieldUi
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
-import com.plcoding.core.presentation.model.ScreenStatePm
+import com.plcoding.core.presentation.model.ScreenUiState
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
-import com.plcoding.feature.chat.presentation.component.ChatDetailsPc
-import com.plcoding.feature.chat.presentation.component.ChatEmptyStatePc
-import com.plcoding.feature.chat.presentation.component.ChatHeaderPc
-import com.plcoding.feature.chat.presentation.component.ChatPc
-import com.plcoding.feature.chat.presentation.component.ChatsHeaderPc
-import com.plcoding.feature.chat.presentation.model.ChatPm
+import com.plcoding.feature.chat.presentation.component.ChatDetails
+import com.plcoding.feature.chat.presentation.component.ChatEmptyState
+import com.plcoding.feature.chat.presentation.component.ChatHeader
+import com.plcoding.feature.chat.presentation.component.Chat
+import com.plcoding.feature.chat.presentation.component.ChatsHeader
+import com.plcoding.feature.chat.presentation.model.ChatUi
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -86,23 +86,23 @@ fun ChatsScreen(
   flowOf(listOf(1,1,1,1)).map {
     it
   }
-  LaunchedEffect(state.contentPm.openChatManageEvent) {
-    state.contentPm.openChatManageEvent?.consume {
+  LaunchedEffect(state.uiState.openChatManageEvent) {
+    state.uiState.openChatManageEvent?.consume {
       navController.navigate(ChatRoute.ChatManage(it))
     }
   }
 
-  LaunchedEffect(state.contentPm.leaveChatEvent) {
-    state.contentPm.leaveChatEvent?.runAsync {
+  LaunchedEffect(state.uiState.leaveChatEvent) {
+    state.uiState.leaveChatEvent?.runAsync {
       scaffoldNavigator.navigateBack()
     }
   }
 
   BaseScreen(
-    baseContentPm = state.baseContentPm
+    baseUiState = state.baseUiState
   ) {
     Content(
-      contentPm = state.contentPm,
+      uiState = state.uiState,
       deviceConfiguration = deviceConfiguration,
       scaffoldNavigator = scaffoldNavigator,
       onAction = {
@@ -127,7 +127,7 @@ fun ChatsScreen(
 
 @Composable
 private fun Content(
-  contentPm: ChatsScreenContentPm,
+  uiState: ChatsUiState,
   deviceConfiguration: DeviceConfiguration,
   scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   onAction: (ChatsScreenAction) -> Unit,
@@ -135,25 +135,25 @@ private fun Content(
   ListDetailPaneScaffold(
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
-    listPane = { ChatsPane(contentPm, onAction) },
-    detailPane = { ChatDetailsPane(contentPm, deviceConfiguration, onAction) },
+    listPane = { ChatsPane(uiState, onAction) },
+    detailPane = { ChatDetailsPane(uiState, deviceConfiguration, onAction) },
   )
 }
 
 @Composable
 private fun ChatsPane(
-  content: ChatsScreenContentPm,
+  content: ChatsUiState,
   onAction: (ChatsScreenAction) -> Unit,
 ) {
   Box {
     Column(
       modifier = Modifier.fillMaxSize(),
     ) {
-      ChatsHeaderPc(
+      ChatsHeader(
         modifier = Modifier.padding(top = 24.dp),
         showMenu = false,
         // TODO:
-        avatarPm = AvatarPm.mocks[0],
+        avatarUi = AvatarUi.mocks[0],
         onAvatarClick = {},
         onSettingsClick = {},
         onLogoutClick = {},
@@ -163,27 +163,27 @@ private fun ChatsPane(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(top = 16.dp),
       ) {
-        if (content.chatsEmptyState != null) {
+        if (content.chatsEmptyStateUi != null) {
           item {
-            ChatEmptyStatePc(
+            ChatEmptyState(
               modifier = Modifier,
-              chatEmptyStatePm = content.chatsEmptyState
+              chatEmptyStatePm = content.chatsEmptyStateUi
             )
           }
         } else {
           items(
-            items = content.chatsPm,
-            key = (ChatPm::id),
+            items = content.chatsUi,
+            key = (ChatUi::id),
           ) {
-            ChatPc(
+            Chat(
               modifier = Modifier.clickable { onAction(ChatsScreenAction.OnChatClick(it.id)) },
-              chatPm = it,
+              chatUi = it,
             )
           }
         }
       }
     }
-    FloatingButtonPc(
+    FloatingButton(
       modifier = Modifier
         .align(Alignment.BottomEnd)
         .padding(16.dp),
@@ -195,7 +195,7 @@ private fun ChatsPane(
 
 @Composable
 private fun ChatDetailsPane(
-  content: ChatsScreenContentPm,
+  content: ChatsUiState,
   deviceConfiguration: DeviceConfiguration,
   onAction: (ChatsScreenAction) -> Unit,
 ) {
@@ -213,10 +213,10 @@ private fun ChatDetailsPane(
         }
       ),
   ) {
-    if (content.chatEmptyState != null) {
-      ChatEmptyStatePc(
+    if (content.chatEmptyStateUi != null) {
+      ChatEmptyState(
         modifier = Modifier,
-        chatEmptyStatePm = content.chatEmptyState,
+        chatEmptyStatePm = content.chatEmptyStateUi,
       )
     } else {
       Row(
@@ -230,32 +230,32 @@ private fun ChatDetailsPane(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-        IconButtonPc(
+        IconButton(
           modifier = Modifier,
           iconRes = Res.drawable.ic_arrow_left,
           onClick = { onAction(ChatsScreenAction.OnChatDetailsBackClick) }
         )
-        ChatHeaderPc(
+        ChatHeader(
           modifier = Modifier.weight(1f),
-          chatHeaderPm = content.chatHeaderPm!!,
+          chatHeaderUi = content.chatHeaderUi!!,
         )
         Box {
-          IconButtonPc(
+          IconButton(
             modifier = Modifier,
             iconRes = Res.drawable.ic_dots,
             onClick = { onAction(ChatsScreenAction.OnChatDetailsMenuClick) }
           )
-          DropDownMenuPc(
+          DropDownMenu(
             modifier = Modifier,
-            showMenu = !content.dropDownItemsPm.isNullOrEmpty(),
-            items = content.dropDownItemsPm.orEmpty(),
+            showMenu = !content.dropDownItemsUi.isNullOrEmpty(),
+            items = content.dropDownItemsUi.orEmpty(),
             onAction = { onAction(ChatsScreenAction.OnChatDetailsMenuItemClick(it)) },
             onDismiss = { onAction(ChatsScreenAction.OnChatDetailsMenuDismissClick) },
           )
         }
       }
       HorizontalDivider()
-      ChatDetailsPc(
+      ChatDetails(
         modifier = Modifier
           .weight(1f)
           .background(
@@ -269,9 +269,9 @@ private fun ChatDetailsPane(
               Modifier.padding(horizontal = 16.dp)
             }
           ),
-        chatDetailsPm = content.chatDetailsPm!!,
+        chatDetailsUi = content.chatDetailsUi!!,
       )
-      MultilineTextFieldPc(
+      MultilineTextField(
         modifier = Modifier
           .then(
             if (deviceConfiguration.isWideScreen) {
@@ -281,7 +281,7 @@ private fun ChatDetailsPane(
             }
           ),
         deviceConfiguration = deviceConfiguration,
-        multilineTextFieldPm = MultilineTextFieldPm.mock,
+        multilineTextFieldPm = MultilineTextFieldUi.mock,
       )
     }
   }
@@ -293,14 +293,14 @@ private fun Themed(
   deviceConfiguration: DeviceConfiguration,
   scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
 ) {
-  val screenStatePm = ScreenStatePm(ChatsScreenContentPm.mock)
+  val screenUiState = ScreenUiState(ChatsUiState.mock)
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseContentPm = screenStatePm.baseContentPm
+      baseUiState = screenUiState.baseUiState
     ) {
       Content(
-        contentPm = screenStatePm.contentPm,
+        uiState = screenUiState.uiState,
         scaffoldNavigator = scaffoldNavigator,
         deviceConfiguration = deviceConfiguration,
         onAction = {}

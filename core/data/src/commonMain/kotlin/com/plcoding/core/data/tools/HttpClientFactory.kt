@@ -2,8 +2,8 @@ package com.plcoding.core.data.tools
 
 import com.plcoding.core.data.BuildKonfig
 import com.plcoding.core.data.mapper.toDomain
-import com.plcoding.core.data.model.AuthInfoAm
-import com.plcoding.core.data.model.RefreshRequestAm
+import com.plcoding.core.data.model.AuthInfoDto
+import com.plcoding.core.data.model.RefreshRequestDto
 import com.plcoding.core.data.repository.PreferencesDataRepository
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.result.onFailure
@@ -84,9 +84,9 @@ class HttpClientFactory(
 
             var bearerTokens: BearerTokens? = null
 
-            client.post<RefreshRequestAm, AuthInfoAm>(
+            client.post<RefreshRequestDto, AuthInfoDto>(
               route = "/auth/refresh",
-              request = RefreshRequestAm(authInfo.refreshToken),
+              request = RefreshRequestDto(authInfo.refreshToken),
               builder = { markAsRefreshTokenRequest() }
             ).onSuccess {
               preferencesLocalDataRepository.saveAuthInfo(it.toDomain())

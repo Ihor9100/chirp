@@ -10,7 +10,8 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.repository.ChatRepository
-import com.plcoding.feature.chat.presentation.model.ChatMemberPm
+import com.plcoding.feature.chat.presentation.mapper.toUi
+import com.plcoding.feature.chat.presentation.model.ChatMemberUi
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,35 +28,35 @@ import kotlinx.coroutines.launch
 class ChatManageDialogScreenViewModel(
   savedStateHandle: SavedStateHandle,
   private val chatRepository: ChatRepository,
-) : BaseChatDialogScreenViewModel<ChatManageDialogScreenContentPm>(
+) : BaseChatDialogScreenViewModel<ChatManageDialogUiState>(
   chatRepository,
 ) {
 
   private val _chatId = MutableStateFlow(savedStateHandle.get<String>("chatId")!!)
   private val _chatMembers = _chatId
     .flatMapLatest { chatRepository.observeChatMembers(it) }
-    .map(::getChatMembersPm)
+    .map(::getChatMembersUi)
     .flowOn(Dispatchers.IO)
-    .onEach { updateContentPm { copy(inChatMembersPm = it) } }
+    .onEach { updateUiState { copy(inChatMembersUi = it) } }
     .launchIn(viewModelScope)
 
-  override fun getContentPm(): ChatManageDialogScreenContentPm {
-    return ChatManageDialogScreenContentPm()
+  override fun getUiState(): ChatManageDialogUiState {
+    return ChatManageDialogUiState()
   }
 
-  private fun getChatMembersPm(chatMembers: List<ChatMember>): List<ChatMemberPm> {
-    return chatMembers.map { ChatMemberPm.from(it, isInChat = true) }
+  private fun getChatMembersUi(chatMembers: List<ChatMember>): List<ChatMemberUi> {
+    return chatMembers.map { it.toUi(isInChat = true) }
   }
 
   override fun handlePositiveClick() {
-    val memberIds = screenState.value.contentPm.foundChatMembersPm.map { it.id }
+    val memberIds = screenState.value.uiState.foundChatMembersUi.map { it.id }
     if (memberIds.isEmpty()) return
 
     viewModelScope.launch {
       chatRepository
         .addChatMembers(_chatId.value, memberIds)
         .onFailure { showSnackbar(it.getStringRes()) }
-        .onSuccess { updateContentPm { copy(chatUpdatedEvent = Event(Unit)) } }
+        .onSuccess { updateUiState { copy(chatUpdatedEvent = Event(Unit)) } }
     }
   }
 }

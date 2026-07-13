@@ -1,9 +1,9 @@
 package com.plcoding.core.data.mapper
 
-import com.plcoding.core.data.model.UserAm
+import com.plcoding.core.data.model.UserDto
 import com.plcoding.core.domain.model.User
 
-fun UserAm.toDomain(): User = User(
+fun UserDto.toDomain(): User = User(
   id = id,
   email = email,
   username = username,
@@ -11,7 +11,7 @@ fun UserAm.toDomain(): User = User(
   profilePictureUrl = profilePictureUrl,
 )
 
-fun User.toAm(): UserAm = UserAm(
+fun User.toDto(): UserDto = UserDto(
   id = id,
   email = email,
   username = username,

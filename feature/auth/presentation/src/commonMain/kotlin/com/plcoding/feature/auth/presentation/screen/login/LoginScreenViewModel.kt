@@ -23,10 +23,10 @@ import kotlinx.coroutines.flow.map
 class LoginScreenViewModel(
   private val authRepository: AuthRepository,
   private val preferencesRepository: PreferencesRepository,
-) : BaseScreenViewModel<LoginScreenContentPm>() {
+) : BaseScreenViewModel<LoginUiState>() {
 
-  override fun getContentPm(): LoginScreenContentPm {
-    return LoginScreenContentPm()
+  override fun getUiState(): LoginUiState {
+    return LoginUiState()
   }
 
   override fun onInitialize() {
@@ -36,15 +36,15 @@ class LoginScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { screenState.value.contentPm.emailState.text.toString() },
-      snapshotFlow { screenState.value.contentPm.passwordState.text.toString() },
+      snapshotFlow { screenState.value.uiState.emailState.text.toString() },
+      snapshotFlow { screenState.value.uiState.passwordState.text.toString() },
       screenState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, password, isLoading ->
       val primaryButtonIsEnable = EmailValidator.validate(email) &&
         password.isNotBlank() &&
         !isLoading
 
-      updateContentPm {
+      updateUiState {
         copy(primaryButtonIsEnable = primaryButtonIsEnable)
       }
     }.launchIn(viewModelScope)
@@ -52,7 +52,7 @@ class LoginScreenViewModel(
 
   fun onAction(action: LoginScreenAction) {
     when (action) {
-      is LoginScreenAction.OnTextFieldSecureToggleClick -> updateContentPm {
+      is LoginScreenAction.OnTextFieldSecureToggleClick -> updateUiState {
         copy(passwordIsSecureMode = !passwordIsSecureMode)
       }
       is LoginScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
@@ -64,8 +64,8 @@ class LoginScreenViewModel(
     launchLoadable {
       authRepository
         .login(
-          email = screenState.value.contentPm.emailState.text.toString(),
-          password = screenState.value.contentPm.passwordState.text.toString(),
+          email = screenState.value.uiState.emailState.text.toString(),
+          password = screenState.value.uiState.passwordState.text.toString(),
         )
         .onFailure { handleFailure(it) }
         .onSuccess { handleSuccess(it) }
@@ -78,14 +78,14 @@ class LoginScreenViewModel(
       DataError.Remote.FORBIDDEN -> Res.string.error_email_not_verified
       else -> error.getStringRes()
     }
-    updateContentPm {
+    updateUiState {
       copy(errorRes = errorRes)
     }
   }
 
   private suspend fun handleSuccess(authInfo: AuthInfo) {
     preferencesRepository.saveAuthInfo(authInfo)
-    updateContentPm {
+    updateUiState {
       copy(logInSuccessEvent = Event(Unit))
     }
   }
