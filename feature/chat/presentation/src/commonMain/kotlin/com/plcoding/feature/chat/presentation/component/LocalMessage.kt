@@ -16,7 +16,6 @@ import chirp.feature.chat.presentation.generated.resources.ic_reload
 import com.plcoding.core.designsystem.components.ChatBubble
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.designsystem.style.getColor
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -46,12 +45,12 @@ fun LocalMessage(
             modifier = Modifier.size(12.dp),
             imageVector = vectorResource(it.iconRes),
             contentDescription = null,
-            tint = it.colorToken.getColor()
+            tint = it.colorToken.toColor()
           )
           Text(
             text = stringResource(it.titleRes),
             style = MaterialTheme.typography.labelSmall,
-            color = it.colorToken.getColor(),
+            color = it.colorToken.toColor(),
           )
         }
       }

@@ -46,7 +46,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     DateDivider(
       modifier = Modifier,
-      dateDividerPm = DateDividerUi.mock,
+      dateDividerPm = ChatMessageUi.DateDividerUi.mock,
     )
   }
 }

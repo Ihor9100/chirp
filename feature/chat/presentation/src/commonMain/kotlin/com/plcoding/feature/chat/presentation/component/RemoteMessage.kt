@@ -10,12 +10,13 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.Avatar
 import com.plcoding.core.designsystem.components.ChatBubble
 import com.plcoding.core.designsystem.style.Theme
+import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RemoteMessage(
   modifier: Modifier,
-  remoteMessagePm: RemoteMessageUi,
+  remoteMessagePm: ChatMessageUi.RemoteMessageUi,
 ) {
   Row(
     modifier = modifier.fillMaxWidth(),
@@ -28,7 +29,7 @@ fun RemoteMessage(
     )
     ChatBubble(
       modifier = Modifier,
-      chatBubbleUi = remoteMessagePm.chatMessageUi,
+      chatBubbleUi = remoteMessagePm.chatBubbleUi,
     )
   }
 }
@@ -40,7 +41,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     RemoteMessage(
       modifier = Modifier,
-      remoteMessagePm = RemoteMessageUi.mock,
+      remoteMessagePm = ChatMessageUi.RemoteMessageUi.mock,
     )
   }
 }

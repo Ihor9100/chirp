@@ -24,6 +24,8 @@ class CmpFeatureConventionPlugin : CmpLibraryConventionPlugin() {
         "commonMainImplementation"(libs.findLibrary("jetbrains-savedstate").get())
         "commonMainImplementation"(libs.findLibrary("jetbrains-core-bundle").get())
 
+        "commonMainImplementation"(libs.findLibrary("kotlinx-datetime").get())
+
         "commonMainImplementation"(libs.findBundle("koin").get())
       }
     }

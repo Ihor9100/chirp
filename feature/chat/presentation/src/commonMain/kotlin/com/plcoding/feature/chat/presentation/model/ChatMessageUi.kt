@@ -1,7 +1,6 @@
 package com.plcoding.feature.chat.presentation.model
 
 import com.plcoding.core.designsystem.model.AvatarUi
-import com.plcoding.core.designsystem.model.ChatBubbleUi
 import com.plcoding.feature.chat.domain.model.ChatMessage
 
 sealed class ChatMessageUi(open val id: String) {

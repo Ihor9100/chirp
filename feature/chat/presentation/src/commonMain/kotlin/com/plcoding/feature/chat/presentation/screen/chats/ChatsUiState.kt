@@ -31,68 +31,75 @@ data class ChatsUiState(
   val dropDownItemsUi: List<DropDownItemUi>?,
   val openChatManageEvent: Event<String>?,
   val leaveChatEvent: Event<Unit>?,
-  val chatMessagesUi: List<ChatMessageUi>,
+  val chatMessagesUi: List<ChatMessageUi>?,
 ) {
   companion object {
-    val mock get() = buildChatsUiState(
-      yourId = "1",
-      chats = Chat.mocks,
-      chatDetails = null,
-      internalState = ChatsScreenViewModel.InternalState(),
-    )
+    val mock
+      get() = from(
+        yourId = "1",
+        chats = Chat.mocks,
+        chatDetails = null,
+        internalState = ChatsScreenViewModel.InternalState(),
+      )
+
+    fun from(
+      yourId: String?,
+      chats: List<Chat>,
+      chatDetails: ChatDetails?,
+      internalState: ChatsScreenViewModel.InternalState,
+    ): ChatsUiState {
+      return ChatsUiState(
+        chatsEmptyStateUi = getChatEmptyStateUi(
+          predicate = chats::isEmpty,
+          descriptionRes = Res.string.no_messages_subtitle,
+        ),
+        chatId = internalState.chatId,
+        chatsUi = chats.map {
+          it.toUi(
+            yourId = yourId,
+            chatId = internalState.chatId,
+            lastChatId = chats.lastOrNull()?.id,
+          )
+        },
+        chatEmptyStateUi = getChatEmptyStateUi(
+          predicate = { internalState.chatId == null },
+          descriptionRes = Res.string.select_chat_subtitle,
+        ),
+        chatHeaderUi = chatDetails?.chat?.toChatHeaderUi(yourId),
+        dropDownItemsUi = if (internalState.showChatDetailsDropDown) chatsDropDownItems() else null,
+        openChatManageEvent = internalState.openChatManageEvent,
+        leaveChatEvent = internalState.leaveChatEvent,
+        chatMessagesUi = chatDetails?.chatMessagesAndMembers?.map { it.toUi(yourId) },
+      )
+    }
+
+    private fun chatsDropDownItems(): List<DropDownItemUi> {
+      return listOf(
+        DropDownItemUi(
+          leadingIconRes = CoreRes.drawable.ic_users,
+          titleRes = Res.string.chat_members,
+          colorToken = ColorToken.TextSecondary,
+        ),
+        DropDownItemUi(
+          leadingIconRes = Res.drawable.ic_log_out,
+          titleRes = Res.string.log_out,
+          colorToken = ColorToken.TextDestructive,
+        ),
+      )
+    }
+
+    private fun getChatEmptyStateUi(
+      predicate: () -> Boolean,
+      descriptionRes: StringResource,
+    ): ChatEmptyStateUi? {
+      return if (predicate()) {
+        ChatEmptyStateUi(
+          titleRes = Res.string.no_messages,
+          descriptionRes = descriptionRes,
+        )
+      } else {
+        null
+      }
+    }
   }
-}
-
-fun buildChatsUiState(
-  yourId: String?,
-  chats: List<Chat>,
-  chatDetails: ChatDetails?,
-  internalState: ChatsScreenViewModel.InternalState,
-): ChatsUiState = ChatsUiState(
-  chatsEmptyStateUi = chatEmptyState(
-    predicate = chats::isEmpty,
-    descriptionRes = Res.string.no_messages_subtitle,
-  ),
-  chatId = internalState.chatId,
-  chatsUi = chats.map {
-    it.toUi(
-      yourId = yourId,
-      chatId = internalState.chatId,
-      lastChatId = chats.lastOrNull()?.id,
-    )
-  },
-  chatEmptyStateUi = chatEmptyState(
-    predicate = { internalState.chatId == null },
-    descriptionRes = Res.string.select_chat_subtitle,
-  ),
-  chatHeaderUi = chatDetails?.chat?.toChatHeaderUi(yourId),
-  dropDownItemsUi = if (internalState.showChatDetailsDropDown) chatsDropDownItems() else null,
-  openChatManageEvent = internalState.openChatManageEvent,
-  leaveChatEvent = internalState.leaveChatEvent,
-  chatMessagesUi = chatDetails?.toUi().orEmpty(),
-)
-
-private fun chatsDropDownItems(): List<DropDownItemUi> = listOf(
-  DropDownItemUi(
-    leadingIconRes = CoreRes.drawable.ic_users,
-    titleRes = Res.string.chat_members,
-    colorToken = ColorToken.TextSecondary,
-  ),
-  DropDownItemUi(
-    leadingIconRes = Res.drawable.ic_log_out,
-    titleRes = Res.string.log_out,
-    colorToken = ColorToken.TextDestructive,
-  ),
-)
-
-private fun chatEmptyState(
-  predicate: () -> Boolean,
-  descriptionRes: StringResource,
-): ChatEmptyStateUi? = if (predicate()) {
-  ChatEmptyStateUi(
-    titleRes = Res.string.no_messages,
-    descriptionRes = descriptionRes,
-  )
-} else {
-  null
 }

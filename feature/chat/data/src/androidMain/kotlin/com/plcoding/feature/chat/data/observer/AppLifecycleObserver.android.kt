@@ -4,9 +4,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.plcoding.feature.chat.domain.observer.AppLifecycleObserver
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 
 class AndroidAppLifecycleObserver : AppLifecycleObserver {
 
@@ -25,4 +27,5 @@ class AndroidAppLifecycleObserver : AppLifecycleObserver {
     lifecycle.addObserver(observer)
     awaitClose { lifecycle.removeObserver(observer) }
   }
+    .flowOn(Dispatchers.Main)
 }

@@ -17,7 +17,7 @@ data class Chat(
           id = "$index",
           members = ChatMember.mocks,
           lastActivityAt = Clock.System.now(),
-          lastMessage = ChatMessage.mock,
+          lastMessage = ChatMessage.mock.first(),
         )
       }
   }

@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.HorizontalDivider
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.designsystem.style.getColor
 import com.plcoding.feature.chat.presentation.model.ChatUi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -37,7 +36,7 @@ fun Chat(
       modifier = modifier
         .fillMaxWidth()
         .weight(1f)
-        .background(chatUi.backgroundColorToken.getColor())
+        .background(chatUi.backgroundColorToken.toColor())
         .padding(top = 16.dp),
       horizontalAlignment = Alignment.Start,
       verticalArrangement = Arrangement.spacedBy(16.dp)

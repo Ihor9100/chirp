@@ -76,8 +76,8 @@ class KtorWebSocketConnector(
 
   val webSocketMessagesDto = combine(
     preferencesRepository.observeAuthInfo(),
-    appLifecycleObserver.isInForeground,
-    appConnectivityObserver.isConnected,
+    isInForeground,
+    isConnected,
   ) { authInfo, isInForeground, isConnected ->
     when {
       authInfo == null -> {
@@ -155,7 +155,7 @@ class KtorWebSocketConnector(
 
         session
           .incoming
-          .consumeAsFlow<Frame>()
+          .consumeAsFlow()
           .buffer(100)
           .collect { frame ->
             when (frame) {

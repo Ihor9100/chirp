@@ -28,31 +28,49 @@ enum class ColorToken {
   CakeYellow,
   CakePurple,
   CakeRed,
-  CakeMint,
-}
+  CakeMint;
 
-@Composable
-fun ColorToken.getColor(): Color {
-  return when (this) {
-    ColorToken.Primary -> MaterialTheme.colorScheme.primary
-    ColorToken.Secondary -> MaterialTheme.colorScheme.secondary
-    ColorToken.OnPrimary -> MaterialTheme.colorScheme.onPrimary
-    ColorToken.OnSecondary -> MaterialTheme.colorScheme.onSecondary
-    ColorToken.TextPrimary -> MaterialTheme.colorScheme.extended.textPrimary
-    ColorToken.TextSecondary -> MaterialTheme.colorScheme.extended.textSecondary
-    ColorToken.TextTertiary -> MaterialTheme.colorScheme.extended.textTertiary
-    ColorToken.TextDestructive -> MaterialTheme.colorScheme.extended.textDestructive
-    ColorToken.Background -> MaterialTheme.colorScheme.background
-    ColorToken.Surface -> MaterialTheme.colorScheme.surface
-    ColorToken.Error -> MaterialTheme.colorScheme.error
-    ColorToken.CakeViolet -> MaterialTheme.colorScheme.extended.cakeViolet
-    ColorToken.CakeGreen -> MaterialTheme.colorScheme.extended.cakeGreen
-    ColorToken.CakePink -> MaterialTheme.colorScheme.extended.cakePink
-    ColorToken.CakeOrange -> MaterialTheme.colorScheme.extended.cakeOrange
-    ColorToken.CakeBlue -> MaterialTheme.colorScheme.extended.cakeBlue
-    ColorToken.CakeYellow -> MaterialTheme.colorScheme.extended.cakeYellow
-    ColorToken.CakePurple -> MaterialTheme.colorScheme.extended.cakePurple
-    ColorToken.CakeRed -> MaterialTheme.colorScheme.extended.cakeRed
-    ColorToken.CakeMint -> MaterialTheme.colorScheme.extended.cakeMint
+  companion object {
+    fun get(id: String): ColorToken {
+      val colorTokens = listOf(
+        CakeViolet,
+        CakeGreen,
+        CakePink,
+        CakeOrange,
+        CakeBlue,
+        CakeYellow,
+        CakePurple,
+        CakeRed,
+        CakeMint,
+      )
+      val index = id.hashCode().toUInt() % colorTokens.size.toUInt()
+      return colorTokens[index.toInt()]
+    }
+  }
+
+  @Composable
+  fun toColor(): Color {
+    return when (this) {
+      Primary -> MaterialTheme.colorScheme.primary
+      Secondary -> MaterialTheme.colorScheme.secondary
+      OnPrimary -> MaterialTheme.colorScheme.onPrimary
+      OnSecondary -> MaterialTheme.colorScheme.onSecondary
+      TextPrimary -> MaterialTheme.colorScheme.extended.textPrimary
+      TextSecondary -> MaterialTheme.colorScheme.extended.textSecondary
+      TextTertiary -> MaterialTheme.colorScheme.extended.textTertiary
+      TextDestructive -> MaterialTheme.colorScheme.extended.textDestructive
+      Background -> MaterialTheme.colorScheme.background
+      Surface -> MaterialTheme.colorScheme.surface
+      Error -> MaterialTheme.colorScheme.error
+      CakeViolet -> MaterialTheme.colorScheme.extended.cakeViolet
+      CakeGreen -> MaterialTheme.colorScheme.extended.cakeGreen
+      CakePink -> MaterialTheme.colorScheme.extended.cakePink
+      CakeOrange -> MaterialTheme.colorScheme.extended.cakeOrange
+      CakeBlue -> MaterialTheme.colorScheme.extended.cakeBlue
+      CakeYellow -> MaterialTheme.colorScheme.extended.cakeYellow
+      CakePurple -> MaterialTheme.colorScheme.extended.cakePurple
+      CakeRed -> MaterialTheme.colorScheme.extended.cakeRed
+      CakeMint -> MaterialTheme.colorScheme.extended.cakeMint
+    }
   }
 }

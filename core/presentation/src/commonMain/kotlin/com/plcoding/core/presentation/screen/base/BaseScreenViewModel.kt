@@ -18,7 +18,7 @@ abstract class BaseScreenViewModel<UiState> : ViewModel() {
 
   protected abstract fun getUiState(): UiState
 
-  private val _screenUiState = MutableStateFlow(getScreenUiState())
+  protected val _screenUiState = MutableStateFlow(getScreenUiState())
   val screenUiState = _screenUiState
     .onStart {
       if (!isInitialized) {

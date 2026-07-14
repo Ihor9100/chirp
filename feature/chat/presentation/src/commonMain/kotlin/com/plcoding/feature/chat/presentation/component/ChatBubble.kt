@@ -16,11 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.model.AnchorPositionUi
-import com.plcoding.core.designsystem.model.ChatBubbleUi
 import com.plcoding.core.designsystem.shape.ChatMessageShape
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.designsystem.style.getColor
+import com.plcoding.feature.chat.presentation.model.ChatBubbleUi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -49,7 +48,7 @@ fun ChatBubble(
     modifier = modifier
       .width(IntrinsicSize.Max)
       .background(
-        color = chatBubbleUi.colorToken.getColor(),
+        color = chatBubbleUi.colorToken.toColor(),
         shape = ChatMessageShape(chatBubbleUi.anchorPositionUi, horizontalPadding)
       )
       .padding(
@@ -73,7 +72,7 @@ fun ChatBubble(
         color = MaterialTheme.colorScheme.extended.textSecondary
       )
       Text(
-        text = chatBubbleUi.date,
+        text = chatBubbleUi.date.get(),
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.extended.textSecondary
       )
@@ -89,10 +88,9 @@ fun ChatBubble(
 }
 
 @Composable
-@Preview
 private fun Themed(
   isDarkMode: Boolean,
-  chatBubbleUi: ChatBubbleUi
+  chatBubbleUi: ChatBubbleUi,
 ) {
   Theme(
     isDarkMode = isDarkMode,

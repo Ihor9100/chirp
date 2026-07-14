@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.designsystem.style.getColor
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -46,7 +45,7 @@ fun DropDownMenu(
         text = {
           Text(
             text = stringResource(itemPm.titleRes),
-            color = itemPm.colorToken.getColor(),
+            color = itemPm.colorToken.toColor(),
             style = MaterialTheme.typography.labelMedium,
           )
         },
@@ -56,7 +55,7 @@ fun DropDownMenu(
               modifier = Modifier.size(16.dp),
               imageVector = vectorResource(it),
               contentDescription = null,
-              tint = itemPm.colorToken.getColor()
+              tint = itemPm.colorToken.toColor()
             )
           }
         },

@@ -51,15 +51,13 @@ import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.model.ScreenUiState
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
-import com.plcoding.feature.chat.presentation.component.ChatMessage
+import com.plcoding.feature.chat.presentation.component.Chat
 import com.plcoding.feature.chat.presentation.component.ChatEmptyState
 import com.plcoding.feature.chat.presentation.component.ChatHeader
-import com.plcoding.feature.chat.presentation.component.Chat
+import com.plcoding.feature.chat.presentation.component.ChatMessage
 import com.plcoding.feature.chat.presentation.component.ChatsHeader
 import com.plcoding.feature.chat.presentation.model.ChatUi
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -83,9 +81,6 @@ fun ChatsScreen(
     }
   }
 
-  flowOf(listOf(1,1,1,1)).map {
-    it
-  }
   LaunchedEffect(state.uiState.openChatManageEvent) {
     state.uiState.openChatManageEvent?.consume {
       navController.navigate(ChatRoute.ChatManage(it))
@@ -102,7 +97,7 @@ fun ChatsScreen(
     baseUiState = state.baseUiState
   ) {
     Content(
-      uiState = state.uiState,
+      chatsUiState = state.uiState,
       deviceConfiguration = deviceConfiguration,
       scaffoldNavigator = scaffoldNavigator,
       onAction = {
@@ -127,7 +122,7 @@ fun ChatsScreen(
 
 @Composable
 private fun Content(
-  uiState: ChatsUiState,
+  chatsUiState: ChatsUiState,
   deviceConfiguration: DeviceConfiguration,
   scaffoldNavigator: ThreePaneScaffoldNavigator<Any>,
   onAction: (ChatsScreenAction) -> Unit,
@@ -135,8 +130,8 @@ private fun Content(
   ListDetailPaneScaffold(
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
-    listPane = { ChatsPane(uiState, onAction) },
-    detailPane = { ChatDetailsPane(uiState, deviceConfiguration, onAction) },
+    listPane = { ChatsPane(chatsUiState, onAction) },
+    detailPane = { ChatDetailsPane(chatsUiState, deviceConfiguration, onAction) },
   )
 }
 
@@ -300,7 +295,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState
     ) {
       Content(
-        uiState = screenUiState.uiState,
+        chatsUiState = screenUiState.uiState,
         scaffoldNavigator = scaffoldNavigator,
         deviceConfiguration = deviceConfiguration,
         onAction = {}

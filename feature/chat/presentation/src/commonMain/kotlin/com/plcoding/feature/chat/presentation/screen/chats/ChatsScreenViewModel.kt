@@ -15,8 +15,6 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
 import com.plcoding.feature.chat.domain.model.ConnectionState
-import com.plcoding.feature.chat.domain.observer.AppConnectivityObserver
-import com.plcoding.feature.chat.domain.observer.AppLifecycleObserver
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.domain.repository.LiveChatRepository
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +23,6 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
@@ -39,8 +36,6 @@ class ChatsScreenViewModel(
   private val preferencesRepository: PreferencesRepository,
   private val chatRepository: ChatRepository,
   private val liveChatRepository: LiveChatRepository,
-  private val appLifecycleObserver: AppLifecycleObserver,
-  private val appConnectivityObserver: AppConnectivityObserver,
 ) : BaseScreenViewModel<ChatsUiState>() {
 
   private val _internalState = MutableStateFlow(InternalState())
@@ -57,6 +52,7 @@ class ChatsScreenViewModel(
     super.onInitialize()
 
     loadChats()
+    observeWebSocket()
     observeConnectionState()
     observeChatMessages()
     observeScreenData()
@@ -76,6 +72,12 @@ class ChatsScreenViewModel(
         .syncChat(chatId)
         .onFailure { showSnackbar(it.getStringRes()) }
     }
+  }
+
+  private fun observeWebSocket() {
+    liveChatRepository
+      .chatMessage
+      .launchIn(viewModelScope)
   }
 
   private fun observeConnectionState() {
@@ -98,40 +100,22 @@ class ChatsScreenViewModel(
       .map { it.uiState.chatMessagesUi }
       .distinctUntilChanged()
 
-    val newMessages = _internalState
-      .flatMapLatest {
-        if (it.chatId == null) {
-          emptyFlow()
-        } else {
-          chatRepository.observeChatMessages(it.chatId)
-        }
-      }
-      .combine(preferencesRepository.observeAuthInfo()) { newMessages, authInfo ->
-        if (authInfo == null) {
-          return@combine newMessages
-        }
-
-        updateUiState {
-          copy(chatMessagesUi = newMessages.map { it.toUi(authInfo.user.id) })
-        }
-
-        newMessages
-      }
+    val newMessages = _chatDetails
+      .map { it?.chatMessagesAndMembers }
 
     combine(
       currentMessages,
-      newMessages
+      newMessages,
     ) { currentMessages, newMessages ->
-      val lastCurrent = currentMessages.lastOrNull()?.id
-      val lastNew = newMessages.lastOrNull()?.chatMessage?.id
+      val lastCurrent = currentMessages?.lastOrNull()?.id
+      val lastNew = newMessages?.lastOrNull()?.chatMessage?.id
 
       if (lastCurrent != lastNew) {
         _internalState.update {
           it.copy(scrollToBottom = Event(Unit))
         }
       }
-    }
-      .launchIn(viewModelScope)
+    }.launchIn(viewModelScope)
   }
 
   private fun observeScreenData() {
@@ -141,7 +125,7 @@ class ChatsScreenViewModel(
       _internalState,
       _chatDetails,
     ) { authInfo, chats, internalState, chatDetails ->
-      buildChatsUiState(
+      ChatsUiState.from(
         yourId = authInfo?.user?.id,
         chats = chats,
         chatDetails = chatDetails,

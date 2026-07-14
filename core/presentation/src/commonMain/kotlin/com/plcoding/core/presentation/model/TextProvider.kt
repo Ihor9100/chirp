@@ -7,20 +7,20 @@ import org.jetbrains.compose.resources.stringResource
 
 sealed interface TextProvider {
   data class Dynamic(val value: String) : TextProvider
-  data class Resource(val id: StringResource, val args: List<Any>) : TextProvider
+  data class Resource(val id: StringResource, val args: List<Any>? = null) : TextProvider
 
   @Composable
   fun get(): String {
     return when (this) {
       is Dynamic -> value
-      is Resource -> stringResource(id, *args.toTypedArray())
+      is Resource -> stringResource(id, *args.orEmpty().toTypedArray())
     }
   }
 
   suspend fun getAsync(): String {
     return when (this) {
       is Dynamic -> value
-      is Resource -> getString(id, args)
+      is Resource -> getString(id, args.orEmpty())
     }
   }
 }
