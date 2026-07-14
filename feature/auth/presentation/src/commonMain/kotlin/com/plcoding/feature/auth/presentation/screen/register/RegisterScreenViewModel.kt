@@ -68,13 +68,13 @@ class RegisterScreenViewModel(
     if (!areFieldsValid()) return
 
     launchLoadable {
-      val email = screenState.value.uiState.emailState.text.toString()
+      val email = screenUiState.value.uiState.emailState.text.toString()
 
       authRepository
         .register(
-          username = screenState.value.uiState.usernameState.text.toString(),
+          username = screenUiState.value.uiState.usernameState.text.toString(),
           email = email,
-          password = screenState.value.uiState.passwordState.text.toString(),
+          password = screenUiState.value.uiState.passwordState.text.toString(),
         )
         .onFailure(::handleFailure)
         .onSuccess { _event.send(RegisterScreenEvent.Success(email)) }
@@ -91,13 +91,13 @@ class RegisterScreenViewModel(
 
   private fun areFieldsValid(): Boolean {
     val isUsernameValid = UsernameValidator.validate(
-      screenState.value.uiState.usernameState.text.toString()
+      screenUiState.value.uiState.usernameState.text.toString()
     )
     val isEmailValid = EmailValidator.validate(
-      screenState.value.uiState.emailState.text.toString()
+      screenUiState.value.uiState.emailState.text.toString()
     )
     val isPasswordValid = PasswordValidator.validate(
-      screenState.value.uiState.passwordState.text.toString()
+      screenUiState.value.uiState.passwordState.text.toString()
     )
 
     val usernameError = if (!isUsernameValid) Res.string.error_invalid_username else null

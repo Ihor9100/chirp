@@ -38,8 +38,8 @@ class ResetPasswordScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { screenState.value.uiState.passwordState.text.toString() },
-      screenState.map { it.hasLoader() }.distinctUntilChanged(),
+      snapshotFlow { screenUiState.value.uiState.passwordState.text.toString() },
+      screenUiState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { password, isLoading ->
       updateUiState {
         copy(primaryButtonIsEnable = PasswordValidator.validate(password) && !isLoading)
@@ -64,7 +64,7 @@ class ResetPasswordScreenViewModel(
     launchLoadable {
       handleSuccess()
       authRepository
-        .resetPassword(screenState.value.uiState.passwordState.text.toString(), token)
+        .resetPassword(screenUiState.value.uiState.passwordState.text.toString(), token)
         .onFailure(::handleFailure)
         .onSuccess { handleSuccess() }
     }

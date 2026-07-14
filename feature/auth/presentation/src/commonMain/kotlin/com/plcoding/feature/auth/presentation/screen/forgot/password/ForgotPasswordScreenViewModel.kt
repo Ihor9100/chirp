@@ -32,8 +32,8 @@ class ForgotPasswordScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { screenState.value.uiState.emailState.text.toString() },
-      screenState.map { it.hasLoader() }.distinctUntilChanged(),
+      snapshotFlow { screenUiState.value.uiState.emailState.text.toString() },
+      screenUiState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, isLoading ->
       updateUiState {
         copy(primaryButtonIsEnable = EmailValidator.validate(email) && !isLoading)
@@ -50,7 +50,7 @@ class ForgotPasswordScreenViewModel(
   private fun handleSubmitClick() {
     launchLoadable {
       authRepository
-        .forgotPassword(screenState.value.uiState.emailState.text.toString())
+        .forgotPassword(screenUiState.value.uiState.emailState.text.toString())
         .onFailure(::handleFailure)
         .onSuccess { handleSuccess() }
     }

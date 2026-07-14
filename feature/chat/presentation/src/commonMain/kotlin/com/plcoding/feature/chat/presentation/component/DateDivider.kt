@@ -12,13 +12,13 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.HorizontalDivider
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.feature.chat.presentation.model.DateDividerUi
+import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DateDivider(
   modifier: Modifier,
-  dateDividerPm: DateDividerUi,
+  dateDividerPm: ChatMessageUi.DateDividerUi,
 ) {
   Row(
     modifier = modifier.fillMaxWidth(),

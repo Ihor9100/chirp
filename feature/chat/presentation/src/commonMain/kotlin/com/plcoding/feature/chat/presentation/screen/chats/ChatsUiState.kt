@@ -15,9 +15,9 @@ import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.presentation.mapper.toChatHeaderUi
 import com.plcoding.feature.chat.presentation.mapper.toUi
-import com.plcoding.feature.chat.presentation.model.ChatDetailsUi
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
 import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
+import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import com.plcoding.feature.chat.presentation.model.ChatUi
 import org.jetbrains.compose.resources.StringResource
 import chirp.core.designsystem.generated.resources.Res as CoreRes
@@ -31,19 +31,14 @@ data class ChatsUiState(
   val dropDownItemsUi: List<DropDownItemUi>?,
   val openChatManageEvent: Event<String>?,
   val leaveChatEvent: Event<Unit>?,
-  val chatDetailsUi: List<ChatDetailsUi>,
+  val chatMessagesUi: List<ChatMessageUi>,
 ) {
   companion object {
     val mock get() = buildChatsUiState(
       yourId = "1",
       chats = Chat.mocks,
       chatDetails = null,
-      internalState = ChatsScreenViewModel.InternalState(
-        chatId = null,
-        showChatDetailsDropDown = false,
-        openChatManageEvent = null,
-        leaveChatEvent = null,
-      ),
+      internalState = ChatsScreenViewModel.InternalState(),
     )
   }
 }
@@ -74,7 +69,7 @@ fun buildChatsUiState(
   dropDownItemsUi = if (internalState.showChatDetailsDropDown) chatsDropDownItems() else null,
   openChatManageEvent = internalState.openChatManageEvent,
   leaveChatEvent = internalState.leaveChatEvent,
-  chatDetailsUi = chatDetails?.toUi().orEmpty(),
+  chatMessagesUi = chatDetails?.toUi().orEmpty(),
 )
 
 private fun chatsDropDownItems(): List<DropDownItemUi> = listOf(

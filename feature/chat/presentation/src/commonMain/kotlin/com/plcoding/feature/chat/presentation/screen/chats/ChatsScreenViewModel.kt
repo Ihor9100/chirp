@@ -14,14 +14,19 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.feature.chat.domain.model.ConnectionState
 import com.plcoding.feature.chat.domain.observer.AppConnectivityObserver
 import com.plcoding.feature.chat.domain.observer.AppLifecycleObserver
 import com.plcoding.feature.chat.domain.repository.ChatRepository
+import com.plcoding.feature.chat.domain.repository.LiveChatRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -33,33 +38,16 @@ import kotlinx.coroutines.launch
 class ChatsScreenViewModel(
   private val preferencesRepository: PreferencesRepository,
   private val chatRepository: ChatRepository,
+  private val liveChatRepository: LiveChatRepository,
   private val appLifecycleObserver: AppLifecycleObserver,
   private val appConnectivityObserver: AppConnectivityObserver,
 ) : BaseScreenViewModel<ChatsUiState>() {
 
-  private val _internalState = MutableStateFlow(
-    InternalState(
-      chatId = null,
-      showChatDetailsDropDown = false,
-      openChatManageEvent = null,
-      leaveChatEvent = null,
-    )
-  )
+  private val _internalState = MutableStateFlow(InternalState())
+
   private val _chatDetails = _internalState
     .map { it.chatId.orEmpty() }
     .flatMapLatest(chatRepository::observeChatDetails)
-
-  init {
-    appLifecycleObserver
-      .isInForeground
-      .onEach { println("Is app in Foreground? = $it") }
-      .launchIn(viewModelScope)
-
-    appConnectivityObserver
-      .isConnected
-      .onEach { println("Is app witn Internet? = $it") }
-      .launchIn(viewModelScope)
-  }
 
   override fun getUiState(): ChatsUiState {
     return ChatsUiState.mock
@@ -69,6 +57,8 @@ class ChatsScreenViewModel(
     super.onInitialize()
 
     loadChats()
+    observeConnectionState()
+    observeChatMessages()
     observeScreenData()
   }
 
@@ -86,6 +76,62 @@ class ChatsScreenViewModel(
         .syncChat(chatId)
         .onFailure { showSnackbar(it.getStringRes()) }
     }
+  }
+
+  private fun observeConnectionState() {
+    liveChatRepository
+      .connectionState
+      .distinctUntilChanged()
+      .onEach {
+        if (it == ConnectionState.CONNECTED) {
+          val chatId = _internalState.firstOrNull()?.chatId
+          chatId?.let { chatRepository.syncChatMessages(chatId, null) }
+        }
+
+        // TODO: update uiState ConnectionState
+      }
+      .launchIn(viewModelScope)
+  }
+
+  private fun observeChatMessages() {
+    val currentMessages = screenUiState
+      .map { it.uiState.chatMessagesUi }
+      .distinctUntilChanged()
+
+    val newMessages = _internalState
+      .flatMapLatest {
+        if (it.chatId == null) {
+          emptyFlow()
+        } else {
+          chatRepository.observeChatMessages(it.chatId)
+        }
+      }
+      .combine(preferencesRepository.observeAuthInfo()) { newMessages, authInfo ->
+        if (authInfo == null) {
+          return@combine newMessages
+        }
+
+        updateUiState {
+          copy(chatMessagesUi = newMessages.map { it.toUi(authInfo.user.id) })
+        }
+
+        newMessages
+      }
+
+    combine(
+      currentMessages,
+      newMessages
+    ) { currentMessages, newMessages ->
+      val lastCurrent = currentMessages.lastOrNull()?.id
+      val lastNew = newMessages.lastOrNull()?.chatMessage?.id
+
+      if (lastCurrent != lastNew) {
+        _internalState.update {
+          it.copy(scrollToBottom = Event(Unit))
+        }
+      }
+    }
+      .launchIn(viewModelScope)
   }
 
   private fun observeScreenData() {
@@ -167,9 +213,10 @@ class ChatsScreenViewModel(
   }
 
   data class InternalState(
-    val chatId: String?,
-    val showChatDetailsDropDown: Boolean,
-    val openChatManageEvent: Event<String>?,
-    val leaveChatEvent: Event<Unit>?,
+    val chatId: String? = null,
+    val showChatDetailsDropDown: Boolean = false,
+    val openChatManageEvent: Event<String>? = null,
+    val leaveChatEvent: Event<Unit>? = null,
+    val scrollToBottom: Event<Unit>? = null,
   )
 }

@@ -30,7 +30,7 @@ fun RegisterScreen(
   openRegisterSuccess: (String) -> Unit,
   openLogin: () -> Unit,
 ) {
-  val state by viewModel.screenState.collectAsStateWithLifecycle()
+  val state by viewModel.screenUiState.collectAsStateWithLifecycle()
 
   viewModel.event.CollectEvent { event ->
     when (event) {

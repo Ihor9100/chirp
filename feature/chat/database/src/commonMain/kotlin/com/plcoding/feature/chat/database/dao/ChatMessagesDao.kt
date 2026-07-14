@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
+import com.plcoding.feature.chat.database.relation.ChatMessageAndMemberRelation
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -33,7 +34,7 @@ interface ChatMessagesDao {
   suspend fun get(id: String): ChatMessageEntity?
 
   @Query("SELECT * FROM chat_messages WHERE chatId = :chatId ORDER BY timestamp DESC")
-  fun subscribe(chatId: String): Flow<List<ChatMessageEntity>>
+  fun observe(chatId: String): Flow<List<ChatMessageAndMemberRelation>>
 
   @Query("DELETE FROM chat_messages WHERE id = :id")
   suspend fun delete(id: String)

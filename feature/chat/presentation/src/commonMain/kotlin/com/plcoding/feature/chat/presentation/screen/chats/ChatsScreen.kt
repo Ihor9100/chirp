@@ -51,7 +51,7 @@ import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.model.ScreenUiState
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
-import com.plcoding.feature.chat.presentation.component.ChatDetails
+import com.plcoding.feature.chat.presentation.component.ChatMessage
 import com.plcoding.feature.chat.presentation.component.ChatEmptyState
 import com.plcoding.feature.chat.presentation.component.ChatHeader
 import com.plcoding.feature.chat.presentation.component.Chat
@@ -69,7 +69,7 @@ fun ChatsScreen(
   navController: NavController,
   viewModel: ChatsScreenViewModel = koinViewModel()
 ) {
-  val state by viewModel.screenState.collectAsStateWithLifecycle()
+  val state by viewModel.screenUiState.collectAsStateWithLifecycle()
 
   val deviceConfiguration = getDeviceConfiguration()
   val scaffoldDirective = getPaneScaffoldDirective(deviceConfiguration, currentWindowAdaptiveInfo())
@@ -255,7 +255,7 @@ private fun ChatDetailsPane(
         }
       }
       HorizontalDivider()
-      ChatDetails(
+      ChatMessage(
         modifier = Modifier
           .weight(1f)
           .background(
@@ -269,7 +269,7 @@ private fun ChatDetailsPane(
               Modifier.padding(horizontal = 16.dp)
             }
           ),
-        chatDetailsUi = content.chatDetailsUi!!,
+        chatMessageUi = content.chatMessagesUi!!,
       )
       MultilineTextField(
         modifier = Modifier

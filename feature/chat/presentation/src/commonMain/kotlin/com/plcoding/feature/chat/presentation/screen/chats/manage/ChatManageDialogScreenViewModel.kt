@@ -49,7 +49,7 @@ class ChatManageDialogScreenViewModel(
   }
 
   override fun handlePositiveClick() {
-    val memberIds = screenState.value.uiState.foundChatMembersUi.map { it.id }
+    val memberIds = screenUiState.value.uiState.foundChatMembersUi.map { it.id }
     if (memberIds.isEmpty()) return
 
     viewModelScope.launch {

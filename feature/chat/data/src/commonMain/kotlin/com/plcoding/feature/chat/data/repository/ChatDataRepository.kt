@@ -14,6 +14,7 @@ import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
+import com.plcoding.feature.chat.domain.model.ChatMessageAndMember
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -41,6 +42,12 @@ class ChatDataRepository(
       .map { entities -> entities.map { it.toDomain() } }
   }
 
+  override fun observeChatMessages(chatId: String): Flow<List<ChatMessageAndMember>> {
+    return localDataSource
+      .observeChatMessages(chatId)
+      .map { entities -> entities.map { it.toDomain() } }
+  }
+
   override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
     return remoteDataSource
       .searchMember(query)
@@ -57,6 +64,15 @@ class ChatDataRepository(
     return remoteDataSource
       .getChat(chatId)
       .flatMap { upsertChatDetails(it) }
+  }
+
+  override suspend fun syncChatMessages(
+    chatId: String,
+    before: String?
+  ): Empty<DataError> {
+    return remoteDataSource
+      .getChatMessages(chatId, before)
+      .flatMap { dtos -> localDataSource.replaceChatMessages(dtos.map { it.toEntity() }) }
   }
 
   override suspend fun syncChats(): Empty<DataError> {

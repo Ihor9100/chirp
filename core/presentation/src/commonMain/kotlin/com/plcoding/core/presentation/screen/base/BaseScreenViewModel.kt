@@ -18,8 +18,8 @@ abstract class BaseScreenViewModel<UiState> : ViewModel() {
 
   protected abstract fun getUiState(): UiState
 
-  val mutableScreenUiState = MutableStateFlow(getScreenUiState())
-  val screenState = mutableScreenUiState
+  private val _screenUiState = MutableStateFlow(getScreenUiState())
+  val screenUiState = _screenUiState
     .onStart {
       if (!isInitialized) {
         isInitialized = true
@@ -49,11 +49,11 @@ abstract class BaseScreenViewModel<UiState> : ViewModel() {
   }
 
   protected inline fun updateUiState(block: UiState.() -> UiState) {
-    return mutableScreenUiState.update { it.copy(uiState = block(it.uiState)) }
+    return _screenUiState.update { it.copy(uiState = block(it.uiState)) }
   }
 
   protected inline fun updateBaseUiState(block: BaseUiState.() -> BaseUiState) {
-    return mutableScreenUiState.update { it.copy(baseUiState = block(it.baseUiState)) }
+    return _screenUiState.update { it.copy(baseUiState = block(it.baseUiState)) }
   }
 
   protected fun showSnackbar(messageRes: StringResource, onDismiss: (() -> Unit)? = null) {

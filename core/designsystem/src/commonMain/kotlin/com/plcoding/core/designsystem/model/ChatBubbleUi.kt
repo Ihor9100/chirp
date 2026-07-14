@@ -2,7 +2,7 @@ package com.plcoding.core.designsystem.model
 
 import com.plcoding.core.designsystem.style.ColorToken
 
-data class ChatMessageUi(
+data class ChatBubbleUi(
   val anchorPositionUi: AnchorPositionUi,
   val sender: String,
   val date: String,
@@ -13,14 +13,14 @@ data class ChatMessageUi(
   companion object {
     val mocks
       get() = listOf(
-        ChatMessageUi(
+        ChatBubbleUi(
           anchorPositionUi = AnchorPositionUi.LEFT,
           sender = "Friend",
           date = "Today",
           message = "Hello",
           colorToken = getColorToken("1")
         ),
-        ChatMessageUi(
+        ChatBubbleUi(
           anchorPositionUi = AnchorPositionUi.RIGHT,
           sender = "You",
           date = "Today",

@@ -26,7 +26,7 @@ fun RegisterSuccessScreen(
   viewModel: RegisterSuccessScreenViewModel = koinViewModel(),
   openLogin: () -> Unit,
 ) {
-  val state by viewModel.screenState.collectAsStateWithLifecycle()
+  val state by viewModel.screenUiState.collectAsStateWithLifecycle()
 
   BaseScreen(
     baseUiState = state.baseUiState

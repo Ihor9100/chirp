@@ -16,6 +16,7 @@ import com.plcoding.feature.chat.database.entity.ChatMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
 import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
+import com.plcoding.feature.chat.database.relation.ChatMessageAndMemberRelation
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlinx.coroutines.flow.Flow
 
@@ -29,6 +30,10 @@ class ChatsRoomLocalDataSource(
 
   override fun observeChatMembers(chatId: String): Flow<List<ChatMemberEntity>> {
     return chatMembersDao.observe(chatId)
+  }
+
+  override fun observeChatMessages(chatId: String): Flow<List<ChatMessageAndMemberRelation>> {
+    return chatMessagesDao.observe(chatId)
   }
 
   override fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>> {
@@ -63,6 +68,12 @@ class ChatsRoomLocalDataSource(
   override suspend fun deleteChatMessage(id: String): Empty<DataError.Local> {
     return dbSafeCall {
       chatMessagesDao.delete(id)
+    }
+  }
+
+  override suspend fun replaceChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local> {
+    return dbSafeCall {
+      chatMessagesDao.replace(entities)
     }
   }
 

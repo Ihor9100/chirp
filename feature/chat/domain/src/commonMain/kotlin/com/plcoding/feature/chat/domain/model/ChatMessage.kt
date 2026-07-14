@@ -14,13 +14,15 @@ data class ChatMessage(
 
   companion object {
     val mock
-      get() = ChatMessage(
-        id = "1",
-        chatId = "1",
-        senderId = "1",
-        content = "Test TestTest TestTest TestTestTe stTestTest TestTestTestTest TestTes tTestTestTest",
-        createdAt = Clock.System.now(),
-        deliveryStatus = ChatMessageDeliveryStatus.SENT
-      )
+      get() = List(10) {
+        ChatMessage(
+          id = "$it",
+          chatId = "${it + 1}",
+          senderId = "${it + 2}",
+          content = "Test TestTest TestTest TestTestTe stTestTest TestTestTestTest TestTes tTestTestTest",
+          createdAt = Clock.System.now(),
+          deliveryStatus = ChatMessageDeliveryStatus.SENT
+        )
+      }
   }
 }

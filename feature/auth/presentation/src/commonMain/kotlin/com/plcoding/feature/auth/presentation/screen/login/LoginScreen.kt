@@ -36,7 +36,7 @@ fun LoginScreen(
   openForgotPassword: () -> Unit,
   openRegisterScreen: () -> Unit,
 ) {
-  val state by viewModel.screenState.collectAsStateWithLifecycle()
+  val state by viewModel.screenUiState.collectAsStateWithLifecycle()
   state.uiState.logInSuccessEvent?.run(openChat)
 
   BaseScreen(

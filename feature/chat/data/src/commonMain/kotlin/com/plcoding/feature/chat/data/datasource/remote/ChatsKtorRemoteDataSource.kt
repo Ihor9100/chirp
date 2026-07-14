@@ -6,10 +6,12 @@ import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
-import com.plcoding.feature.chat.data.model.ChatDto
+import com.plcoding.feature.chat.data.datasource.utils.ChatsConstants
 import com.plcoding.feature.chat.data.model.ChatCreateRequestDto
+import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.data.model.ChatMemberDto
 import com.plcoding.feature.chat.data.model.ChatMembersDto
+import com.plcoding.feature.chat.data.model.ChatMessageDto
 import io.ktor.client.HttpClient
 
 class ChatsKtorRemoteDataSource(
@@ -26,6 +28,19 @@ class ChatsKtorRemoteDataSource(
   override suspend fun getChat(chatId: String): Result<ChatDto, DataError.Remote> {
     return httpClient.get<ChatDto>(
       route = "/chat/$chatId",
+    )
+  }
+
+  override suspend fun getChatMessages(
+    chatId: String,
+    before: String?,
+  ): Result<List<ChatMessageDto>, DataError.Remote> {
+    return httpClient.get(
+      route = "/chat/$chatId/messages",
+      params = buildMap {
+        set("pageSize", ChatsConstants.PAGE_SIZE)
+        before?.let { set("before", it) }
+      }
     )
   }
 

@@ -36,9 +36,9 @@ class LoginScreenViewModel(
 
   private fun subscribeToState() {
     combine(
-      snapshotFlow { screenState.value.uiState.emailState.text.toString() },
-      snapshotFlow { screenState.value.uiState.passwordState.text.toString() },
-      screenState.map { it.hasLoader() }.distinctUntilChanged(),
+      snapshotFlow { screenUiState.value.uiState.emailState.text.toString() },
+      snapshotFlow { screenUiState.value.uiState.passwordState.text.toString() },
+      screenUiState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, password, isLoading ->
       val primaryButtonIsEnable = EmailValidator.validate(email) &&
         password.isNotBlank() &&
@@ -64,8 +64,8 @@ class LoginScreenViewModel(
     launchLoadable {
       authRepository
         .login(
-          email = screenState.value.uiState.emailState.text.toString(),
-          password = screenState.value.uiState.passwordState.text.toString(),
+          email = screenUiState.value.uiState.emailState.text.toString(),
+          password = screenUiState.value.uiState.passwordState.text.toString(),
         )
         .onFailure { handleFailure(it) }
         .onSuccess { handleSuccess(it) }

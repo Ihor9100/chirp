@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.model.AnchorPositionUi
-import com.plcoding.core.designsystem.model.ChatMessageUi
+import com.plcoding.core.designsystem.model.ChatBubbleUi
 import com.plcoding.core.designsystem.shape.ChatMessageShape
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
@@ -24,9 +24,9 @@ import com.plcoding.core.designsystem.style.getColor
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ChatMessage(
+fun ChatBubble(
   modifier: Modifier = Modifier,
-  chatMessageUi: ChatMessageUi,
+  chatBubbleUi: ChatBubbleUi,
   status: @Composable (() -> Unit)? = null,
 ) {
   val horizontalPadding = 16.dp
@@ -34,7 +34,7 @@ fun ChatMessage(
   val startPadding: Dp
   val endPadding: Dp
 
-  when (chatMessageUi.anchorPositionUi) {
+  when (chatBubbleUi.anchorPositionUi) {
     AnchorPositionUi.LEFT -> {
       startPadding = horizontalPadding * 2
       endPadding = horizontalPadding
@@ -49,8 +49,8 @@ fun ChatMessage(
     modifier = modifier
       .width(IntrinsicSize.Max)
       .background(
-        color = chatMessageUi.colorToken.getColor(),
-        shape = ChatMessageShape(chatMessageUi.anchorPositionUi, horizontalPadding)
+        color = chatBubbleUi.colorToken.getColor(),
+        shape = ChatMessageShape(chatBubbleUi.anchorPositionUi, horizontalPadding)
       )
       .padding(
         start = startPadding,
@@ -68,19 +68,19 @@ fun ChatMessage(
     ) {
       Text(
         modifier = Modifier.padding(end = 24.dp),
-        text = chatMessageUi.sender,
+        text = chatBubbleUi.sender,
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.extended.textSecondary
       )
       Text(
-        text = chatMessageUi.date,
+        text = chatBubbleUi.date,
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.extended.textSecondary
       )
     }
     Text(
       modifier = Modifier,
-      text = chatMessageUi.message,
+      text = chatBubbleUi.message,
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.extended.textPrimary
     )
@@ -92,14 +92,14 @@ fun ChatMessage(
 @Preview
 private fun Themed(
   isDarkMode: Boolean,
-  chatMessageUi: ChatMessageUi
+  chatBubbleUi: ChatBubbleUi
 ) {
   Theme(
     isDarkMode = isDarkMode,
   ) {
-    ChatMessage(
+    ChatBubble(
       modifier = Modifier,
-      chatMessageUi = chatMessageUi,
+      chatBubbleUi = chatBubbleUi,
     )
   }
 }
@@ -109,7 +109,7 @@ private fun Themed(
 private fun DarkPreview() {
   Themed(
     isDarkMode = true,
-    chatMessageUi = ChatMessageUi.mocks[0]
+    chatBubbleUi = ChatBubbleUi.mocks[0]
   )
 }
 
@@ -118,6 +118,6 @@ private fun DarkPreview() {
 private fun LightPreview() {
   Themed(
     isDarkMode = false,
-    chatMessageUi = ChatMessageUi.mocks[1]
+    chatBubbleUi = ChatBubbleUi.mocks[1]
   )
 }

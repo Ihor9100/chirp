@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_reload
-import com.plcoding.core.designsystem.components.ChatMessage
+import com.plcoding.core.designsystem.components.ChatBubble
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.style.getColor
-import com.plcoding.feature.chat.presentation.model.LocalMessageUi
+import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -25,18 +25,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun LocalMessage(
   modifier: Modifier,
-  localMessagePm: LocalMessageUi,
+  localMessageUi: ChatMessageUi.LocalMessageUi,
 ) {
   Row(
     modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
     verticalAlignment = Alignment.Bottom,
   ) {
-    ChatMessage(
+    ChatBubble(
       modifier = Modifier.weight(1f, fill = false),
-      chatMessageUi = localMessagePm.chatMessageUi,
+      chatBubbleUi = localMessageUi.chatBubbleUi,
     ) {
-      localMessagePm.chatSendingStatusUi?.let {
+      localMessageUi.chatMessageStatusUi?.let {
         Row(
           modifier = Modifier,
           verticalAlignment = Alignment.CenterVertically,
@@ -72,7 +72,7 @@ private fun Themed(
   Theme(isDarkTheme) {
     LocalMessage(
       modifier = Modifier,
-      localMessagePm = LocalMessageUi.mock,
+      localMessageUi = ChatMessageUi.LocalMessageUi.mock,
     )
   }
 }

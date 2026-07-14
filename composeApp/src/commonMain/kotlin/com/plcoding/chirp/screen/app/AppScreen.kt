@@ -18,7 +18,7 @@ fun AppScreen(
   appViewModel: AppScreenViewModel = koinViewModel(),
   removeSplashScreen: (() -> Unit)? = null,
 ) {
-  val state by appViewModel.screenState.collectAsStateWithLifecycle()
+  val state by appViewModel.screenUiState.collectAsStateWithLifecycle()
   val startDestination = state.uiState.startDestination
   val navController = rememberNavController()
 

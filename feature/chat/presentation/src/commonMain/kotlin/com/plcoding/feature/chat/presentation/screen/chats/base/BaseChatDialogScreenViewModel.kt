@@ -29,7 +29,7 @@ abstract class BaseChatDialogScreenViewModel<ContentUi : BaseChatDialogUiState<C
   protected abstract fun handlePositiveClick()
 
   private val searchQueryFlow =
-    snapshotFlow { screenState.value.uiState.searchTextFieldState.text }
+    snapshotFlow { screenUiState.value.uiState.searchTextFieldState.text }
       .debounce(1.seconds)
       .filter { it.isNotBlank() }
       .onEach(::searchMember)

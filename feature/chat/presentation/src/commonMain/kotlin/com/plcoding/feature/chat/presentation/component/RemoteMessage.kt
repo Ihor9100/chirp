@@ -8,9 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.Avatar
-import com.plcoding.core.designsystem.components.ChatMessage
+import com.plcoding.core.designsystem.components.ChatBubble
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.feature.chat.presentation.model.RemoteMessageUi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -27,9 +26,9 @@ fun RemoteMessage(
       modifier = Modifier,
       avatarUi = remoteMessagePm.avatarUi,
     )
-    ChatMessage(
+    ChatBubble(
       modifier = Modifier,
-      chatMessageUi = remoteMessagePm.chatMessageUi,
+      chatBubbleUi = remoteMessagePm.chatMessageUi,
     )
   }
 }

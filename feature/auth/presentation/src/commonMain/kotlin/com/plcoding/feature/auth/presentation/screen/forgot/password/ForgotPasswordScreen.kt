@@ -30,7 +30,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ForgotPasswordScreen(
   viewModel: ForgotPasswordScreenViewModel = koinViewModel()
 ) {
-  val state by viewModel.screenState.collectAsStateWithLifecycle()
+  val state by viewModel.screenUiState.collectAsStateWithLifecycle()
   val snackbarHostState = remember { SnackbarHostState() }
 
   rememberCoroutineScope().launch {

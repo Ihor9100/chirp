@@ -20,7 +20,7 @@ fun ChatCreateDialogScreen(
   navController: NavController,
   viewModel: ChatCreateDialogScreenViewModel = koinViewModel()
 ) {
-  val state by viewModel.screenState.collectAsStateWithLifecycle()
+  val state by viewModel.screenUiState.collectAsStateWithLifecycle()
 
   state.uiState.chatCreatedEvent?.consume {
     navController.popBackStack()

@@ -13,13 +13,10 @@ import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.model.ChatMember.Companion.isGroup
-import com.plcoding.feature.chat.presentation.model.ChatDetailsUi
+import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
 import com.plcoding.feature.chat.presentation.model.ChatMemberUi
 import com.plcoding.feature.chat.presentation.model.ChatUi
-import com.plcoding.feature.chat.presentation.model.DateDividerUi
-import com.plcoding.feature.chat.presentation.model.LocalMessageUi
-import com.plcoding.feature.chat.presentation.model.RemoteMessageUi
 
 fun ChatMember.toUi(isInChat: Boolean): ChatMemberUi = ChatMemberUi(
   id = userId,
@@ -57,7 +54,7 @@ fun Chat.toUi(
   )
 }
 
-fun ChatDetails.toUi(): List<ChatDetailsUi> = listOf(
+fun ChatDetails.toUi(): List<ChatMessageUi> = listOf(
   DateDividerUi.mock,
   LocalMessageUi.mock,
   RemoteMessageUi.mock,
