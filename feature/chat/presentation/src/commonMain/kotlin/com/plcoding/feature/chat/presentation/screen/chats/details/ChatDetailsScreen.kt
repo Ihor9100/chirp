@@ -35,7 +35,6 @@ import chirp.feature.chat.presentation.generated.resources.ic_dots
 import com.plcoding.core.designsystem.components.DropDownMenu
 import com.plcoding.core.designsystem.components.button.IconButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
-import com.plcoding.core.designsystem.model.MultilineTextFieldUi
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
@@ -202,7 +201,7 @@ private fun Content(
             }
           ),
         deviceConfiguration = deviceConfiguration,
-        multilineTextFieldPm = MultilineTextFieldUi.mock,
+        multilineTextFieldPm = uiState.multilineTextFieldUi,
       )
     }
   }

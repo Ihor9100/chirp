@@ -19,8 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
-import chirp.core.designsystem.generated.resources.Res
-import chirp.core.designsystem.generated.resources.ic_cloud_off
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.model.MultilineTextFieldUi
 import com.plcoding.core.designsystem.style.Theme
@@ -95,12 +93,14 @@ fun MultilineTextField(
       horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      Icon(
-        modifier = modifier.size(24.dp),
-        imageVector = vectorResource(Res.drawable.ic_cloud_off),
-        contentDescription = null,
-        tint = MaterialTheme.colorScheme.extended.textDisabled
-      )
+      if (multilineTextFieldPm.connectionIconRes != null) {
+        Icon(
+          modifier = modifier.size(24.dp),
+          imageVector = vectorResource(multilineTextFieldPm.connectionIconRes),
+          contentDescription = null,
+          tint = MaterialTheme.colorScheme.extended.textDisabled
+        )
+      }
       Button(
         text = stringResource(multilineTextFieldPm.buttonTitleRes),
         isEnabled = multilineTextFieldPm.isButtonEnabled

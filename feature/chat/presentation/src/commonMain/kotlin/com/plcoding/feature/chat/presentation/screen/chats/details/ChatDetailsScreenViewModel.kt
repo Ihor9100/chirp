@@ -2,7 +2,9 @@
 
 package com.plcoding.feature.chat.presentation.screen.chats.details
 
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
+import chirp.core.designsystem.generated.resources.ic_cloud_off
 import chirp.core.designsystem.generated.resources.ic_users
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.chat_members
@@ -53,6 +55,12 @@ class ChatDetailsScreenViewModel(
     .map { it.orEmpty() }
     .flatMapLatest(chatRepository::observeChatDetails)
 
+  private val _canSendMessage =
+    snapshotFlow { screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString() }
+      .combine(liveChatRepository.connectionState) { text, connectionState ->
+        text.isNotBlank() && connectionState == ConnectionState.CONNECTED
+      }
+
   override fun getUiState(): ChatDetailsScreenUiState {
     return ChatDetailsScreenUiState.mock
   }
@@ -61,8 +69,9 @@ class ChatDetailsScreenViewModel(
     super.onInitialize()
 
     observeConnectionState()
-    observeScrollToBoomEvent()
+    observeScrollToBottomEvent()
     observeChatDetails()
+    observeCanSendMessage()
   }
 
   private fun observeConnectionState() {
@@ -81,7 +90,7 @@ class ChatDetailsScreenViewModel(
       .launchIn(viewModelScope)
   }
 
-  private fun observeScrollToBoomEvent() {
+  private fun observeScrollToBottomEvent() {
     val currentMessages = screenUiState
       .map { it.uiState.chatMessagesUi }
       .distinctUntilChanged()
@@ -119,6 +128,18 @@ class ChatDetailsScreenViewModel(
     }
       .flowOn(Dispatchers.IO)
       .onEach { content -> updateUiState { content } }
+      .launchIn(viewModelScope)
+  }
+
+  private fun observeCanSendMessage() {
+    _canSendMessage
+      .onEach { canSendMessage ->
+        updateUiState {
+          val connectionIconRes = if (canSendMessage) CoreRes.drawable.ic_cloud_off else null
+          val textFieldUi = multilineTextFieldUi.copy(connectionIconRes = connectionIconRes)
+          copy(multilineTextFieldUi = textFieldUi)
+        }
+      }
       .launchIn(viewModelScope)
   }
 
