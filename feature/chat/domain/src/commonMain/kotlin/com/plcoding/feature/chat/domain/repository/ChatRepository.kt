@@ -21,7 +21,7 @@ interface ChatRepository {
   suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote>
   suspend fun createChat(memberIds: List<String>): Empty<DataError>
   suspend fun syncChat(chatId: String): Empty<DataError>
-  suspend fun syncChatMessages(chatId: String, before: String?): Empty<DataError>
+  suspend fun syncChatMessages(chatId: ChatId, before: String?): Empty<DataError>
   suspend fun syncChats(): Empty<DataError>
   suspend fun leaveChat(chatId: String): Empty<DataError>
   suspend fun addChatMembers(chatId: String, memberIds: List<String>): Empty<DataError>

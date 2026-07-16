@@ -3,15 +3,17 @@ package com.plcoding.core.designsystem.model
 import androidx.compose.foundation.text.input.TextFieldState
 import chirp.core.designsystem.generated.resources.Res
 import chirp.core.designsystem.generated.resources.enter_your_message
+import chirp.core.designsystem.generated.resources.ic_cloud_off
 import chirp.core.designsystem.generated.resources.sent
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 
 data class MultilineTextFieldUi(
   val textFieldState: TextFieldState,
   val inputPlaceholderRes: StringResource,
   val buttonTitleRes: StringResource,
-  val isWideScreenMode: Boolean, // will be changed in screen with help of copy() method
-  val isEnabled: Boolean,
+  val connectionIconRes: DrawableResource?,
+  val isButtonEnabled: Boolean,
 ) {
 
   companion object {
@@ -20,8 +22,8 @@ data class MultilineTextFieldUi(
         textFieldState = TextFieldState(),
         inputPlaceholderRes = Res.string.enter_your_message,
         buttonTitleRes = Res.string.sent,
-        isWideScreenMode = false,
-        isEnabled = true,
+        connectionIconRes = Res.drawable.ic_cloud_off,
+        isButtonEnabled = false,
       )
   }
 }

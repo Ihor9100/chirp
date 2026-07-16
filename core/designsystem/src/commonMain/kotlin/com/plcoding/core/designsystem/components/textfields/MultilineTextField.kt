@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -75,7 +74,7 @@ fun MultilineTextField(
     BasicTextField(
       state = multilineTextFieldPm.textFieldState,
       modifier = Modifier.fillMaxWidth(),
-      enabled = multilineTextFieldPm.isEnabled,
+      enabled = multilineTextFieldPm.isButtonEnabled,
       textStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.extended.textPrimary
       ),
@@ -104,7 +103,7 @@ fun MultilineTextField(
       )
       Button(
         text = stringResource(multilineTextFieldPm.buttonTitleRes),
-        isEnabled = multilineTextFieldPm.isEnabled
+        isEnabled = multilineTextFieldPm.isButtonEnabled
       )
     }
   }
