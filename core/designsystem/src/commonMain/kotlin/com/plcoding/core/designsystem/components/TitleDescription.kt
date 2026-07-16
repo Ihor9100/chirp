@@ -2,7 +2,6 @@ package com.plcoding.core.designsystem.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +24,7 @@ fun TitleDescription(
   descriptionRes: StringResource,
 ) {
   Column(
-    modifier = modifier.fillMaxWidth(),
+    modifier = modifier,
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically)
   ) {

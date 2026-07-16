@@ -63,13 +63,11 @@ private fun Content(
     },
     detailPane = {
       AnimatedPane {
-        scaffoldNavigator.currentDestination?.contentKey?.let { chatId ->
-          ChatDetailsScreen(
-            chatId = chatId,
-            navController = navController,
-            scaffoldNavigator = scaffoldNavigator,
-          )
-        }
+        ChatDetailsScreen(
+          chatId = scaffoldNavigator.currentDestination?.contentKey,
+          navController = navController,
+          scaffoldNavigator = scaffoldNavigator,
+        )
       }
     },
   )

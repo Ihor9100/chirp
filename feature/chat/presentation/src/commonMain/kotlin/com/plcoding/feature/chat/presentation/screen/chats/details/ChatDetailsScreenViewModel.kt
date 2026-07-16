@@ -122,13 +122,15 @@ class ChatDetailsScreenViewModel(
       .launchIn(viewModelScope)
   }
 
-  fun loadChat(chatId: String) {
+  fun loadChat(chatId: String?) {
     _chatId.update { chatId }
 
-    viewModelScope.launch {
-      chatRepository
-        .syncChat(chatId)
-        .onFailure { showSnackbar(it.getStringRes()) }
+    if (chatId != null) {
+      viewModelScope.launch {
+        chatRepository
+          .syncChat(chatId)
+          .onFailure { showSnackbar(it.getStringRes()) }
+      }
     }
   }
 

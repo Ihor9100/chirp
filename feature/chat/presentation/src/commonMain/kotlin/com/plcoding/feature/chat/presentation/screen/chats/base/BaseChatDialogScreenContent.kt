@@ -100,7 +100,9 @@ fun BaseChatDialogScreenContent(
     HorizontalDivider()
     if (uiState.isEmptyState()) {
       TitleDescription(
-        modifier = Modifier.padding(vertical = 24.dp),
+        modifier = Modifier
+          .padding(vertical = 24.dp)
+          .align(Alignment.CenterHorizontally),
         titleRes = Res.string.no_members,
         descriptionRes = Res.string.add_members_to_your_chat,
       )

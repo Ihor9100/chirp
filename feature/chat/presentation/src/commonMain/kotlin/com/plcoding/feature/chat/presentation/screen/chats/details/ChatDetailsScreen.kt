@@ -51,7 +51,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatDetailsScreen(
-  chatId: String,
+  chatId: String?,
   navController: NavController,
   scaffoldNavigator: ThreePaneScaffoldNavigator<*>,
   viewModel: ChatDetailsScreenViewModel = koinViewModel()
@@ -91,7 +91,12 @@ fun ChatDetailsScreen(
       onAction = {
         when (it) {
           is ChatDetailsScreenAction.OnChatDetailsBackClick -> coroutineScope.launch {
-            scaffoldNavigator.navigateBack()
+            if (scaffoldNavigator.canNavigateBack()) {
+              scaffoldNavigator.navigateBack()
+            } else {
+              scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, null)
+              scaffoldNavigator.navigateBack()
+            }
           }
           else -> {
             viewModel.handleAction(it)
@@ -121,6 +126,8 @@ private fun Content(
             .background(MaterialTheme.colorScheme.surface)
         }
       ),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally
   ) {
     if (uiState.chatEmptyStateUi != null) {
       ChatEmptyState(
@@ -144,10 +151,12 @@ private fun Content(
           iconRes = Res.drawable.ic_arrow_left,
           onClick = { onAction(ChatDetailsScreenAction.OnChatDetailsBackClick) }
         )
-        ChatHeader(
-          modifier = Modifier.weight(1f),
-          chatHeaderUi = uiState.chatHeaderUi!!,
-        )
+        if (uiState.chatHeaderUi != null) {
+          ChatHeader(
+            modifier = Modifier.weight(1f),
+            chatHeaderUi = uiState.chatHeaderUi,
+          )
+        }
         Box {
           IconButton(
             modifier = Modifier,
@@ -164,22 +173,25 @@ private fun Content(
         }
       }
       HorizontalDivider()
-      ChatMessage(
-        modifier = Modifier
-          .weight(1f)
-          .background(
-            color = MaterialTheme.colorScheme.surface,
-            shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
-          )
-          .then(
-            if (deviceConfiguration.isWideScreen) {
-              Modifier.padding(24.dp)
-            } else {
-              Modifier.padding(horizontal = 16.dp)
-            }
-          ),
-        chatMessageUi = uiState.chatMessagesUi!!,
-      )
+      if (uiState.chatMessagesUi != null) {
+        ChatMessage(
+          modifier = Modifier
+            .weight(1f)
+            .fillMaxWidth()
+            .background(
+              color = MaterialTheme.colorScheme.surface,
+              shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+            )
+            .then(
+              if (deviceConfiguration.isWideScreen) {
+                Modifier.padding(24.dp)
+              } else {
+                Modifier.padding(horizontal = 16.dp)
+              }
+            ),
+          chatMessageUi = uiState.chatMessagesUi,
+        )
+      }
       MultilineTextField(
         modifier = Modifier
           .then(
