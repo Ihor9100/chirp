@@ -1,12 +1,10 @@
 package com.plcoding.feature.chat.data.model
 
-import com.plcoding.feature.chat.domain.model.ChatMessage
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class WebSocketPayloadDto(
-  val webSocketMessageTypeDto: WebSocketMessageTypeDto,
-) {
+sealed interface WebSocketPayloadDto {
+  val messageType: WebSocketMessageType
 
   @Serializable
   data class NewMessageDto(
@@ -15,22 +13,26 @@ sealed class WebSocketPayloadDto(
     val senderId: String,
     val content: String,
     val createdAt: String,
-  ) : WebSocketPayloadDto(WebSocketMessageTypeDto.NEW_MESSAGE)
+    override val messageType: WebSocketMessageType = WebSocketMessageType.NEW_MESSAGE,
+  ) : WebSocketPayloadDto
 
   @Serializable
   data class MessageDeletedDto(
     val messageId: String,
     val chatId: String,
-  ) : WebSocketPayloadDto(WebSocketMessageTypeDto.MESSAGE_DELETED)
+    override val messageType: WebSocketMessageType = WebSocketMessageType.MESSAGE_DELETED,
+  ) : WebSocketPayloadDto
 
   @Serializable
   data class ProfilePictureUpdatedDto(
     val userId: String,
     val newUrl: String?,
-  ) : WebSocketPayloadDto(WebSocketMessageTypeDto.PROFILE_PICTURE_UPDATED)
+    override val messageType: WebSocketMessageType = WebSocketMessageType.PROFILE_PICTURE_UPDATED,
+  ) : WebSocketPayloadDto
 
   @Serializable
   data class ChatMembersChangedDto(
     val chatId: String,
-  ) : WebSocketPayloadDto(WebSocketMessageTypeDto.CHAT_PARTICIPANTS_CHANGED)
+    override val messageType: WebSocketMessageType = WebSocketMessageType.CHAT_PARTICIPANTS_CHANGED,
+  ) : WebSocketPayloadDto
 }

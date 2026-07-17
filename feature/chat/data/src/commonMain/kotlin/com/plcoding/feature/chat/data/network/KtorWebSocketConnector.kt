@@ -5,11 +5,11 @@ package com.plcoding.feature.chat.data.network
 import com.plcoding.core.data.tools.BASE_URL_WSS
 import com.plcoding.core.domain.logger.Logger
 import com.plcoding.core.domain.repository.PreferencesRepository
+import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.data.BuildKonfig
 import com.plcoding.feature.chat.data.model.WebSocketMessageDto
-import com.plcoding.feature.chat.domain.model.ConnectionError
 import com.plcoding.feature.chat.domain.model.ConnectionState
 import com.plcoding.feature.chat.domain.network.ConnectionErrorHandler
 import com.plcoding.feature.chat.domain.observer.AppConnectivityObserver
@@ -192,11 +192,11 @@ class KtorWebSocketConnector(
     webSocketSession = null
   }
 
-  suspend fun sendMessage(message: String): Empty<ConnectionError> {
+  suspend fun sendMessage(message: String): Empty<DataError.Connection> {
     val connectionState = _connectionState.value
 
     if (webSocketSession == null || connectionState != ConnectionState.CONNECTED) {
-      return Result.Failure(ConnectionError.NOT_CONNECTED)
+      return Result.Failure(DataError.Connection.NOT_CONNECTED)
     }
 
     return try {
@@ -204,7 +204,7 @@ class KtorWebSocketConnector(
       Result.Success(Unit)
     } catch (e: Exception) {
       currentCoroutineContext().ensureActive()
-      Result.Failure(ConnectionError.MESSAGE_SEND_FAILED)
+      Result.Failure(DataError.Connection.MESSAGE_SEND_FAILED)
     }
   }
 }

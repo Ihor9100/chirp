@@ -2,7 +2,6 @@ package com.plcoding.feature.chat.data.mapper
 
 import com.plcoding.feature.chat.data.model.ChatMessageDto
 import com.plcoding.feature.chat.data.model.WebSocketPayloadDto
-import com.plcoding.feature.chat.data.model.WebSocketPayloadDto.NewMessageDto
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.view.ChatLastMessageView
 import com.plcoding.feature.chat.domain.model.ChatMessage
@@ -70,3 +69,30 @@ fun ChatMessage.toDto(): NewMessageDto = NewMessageDto(
   content = content,
   createdAt = createdAt.toString(),
 )
+
+fun ChatMessage.toEntity(
+  senderId: String,
+): ChatMessageEntity {
+  return ChatMessageEntity(
+    id = id,
+    chatId = chatId,
+    senderId = senderId,
+    content = content,
+    timestamp = createdAt.toEpochMilliseconds(),
+    status = deliveryStatus.name,
+  )
+}
+
+
+fun ChatMessage.toDto(
+  senderId: String,
+): WebSocketPayloadDto.NewMessageDto {
+  return WebSocketPayloadDto.NewMessageDto(
+    id=id,
+      chatId=chatId,
+      senderId=senderId,
+      content=content,
+      createdAt=createdAt,
+    messageType = ,
+  )
+}

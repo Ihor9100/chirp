@@ -15,7 +15,7 @@ data class WebSocketMessageDto(
       json: Json,
     ): WebSocketMessageDto {
       return WebSocketMessageDto(
-        type = webSocketPayloadDto.webSocketMessageTypeDto.name,
+        type = webSocketPayloadDto.messageType.name,
         payload = when (webSocketPayloadDto) {
           is WebSocketPayloadDto.ChatMembersChangedDto -> json.encodeToString(webSocketPayloadDto)
           is WebSocketPayloadDto.MessageDeletedDto -> json.encodeToString(webSocketPayloadDto)

@@ -1,20 +1,20 @@
 package com.plcoding.feature.chat.data.repository
 
+import com.plcoding.core.data.tools.dbSafeCall
 import com.plcoding.core.domain.repository.PreferencesRepository
+import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
+import com.plcoding.core.domain.result.Result
 import com.plcoding.core.domain.result.getOrNull
-import com.plcoding.core.domain.result.onFailure
 import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
 import com.plcoding.feature.chat.data.mapper.toDomain
-import com.plcoding.feature.chat.data.mapper.toDto
 import com.plcoding.feature.chat.data.mapper.toEntity
 import com.plcoding.feature.chat.data.model.WebSocketMessageDto
-import com.plcoding.feature.chat.data.model.WebSocketMessageTypeDto
+import com.plcoding.feature.chat.data.model.WebSocketMessageType
 import com.plcoding.feature.chat.data.model.WebSocketPayloadDto
 import com.plcoding.feature.chat.data.network.KtorWebSocketConnector
+import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.domain.model.ChatMessage
-import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
-import com.plcoding.feature.chat.domain.model.ConnectionError
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.domain.repository.LiveChatRepository
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +32,7 @@ class LiveChatDataRepository(
   private val json: Json,
   private val coroutineScope: CoroutineScope,
   private val ktorWebSocketConnector: KtorWebSocketConnector,
+  private val chatMessagesDao: ChatMessagesDao,
   private val chatRepository: ChatRepository,
   private val localDataSource: ChatsLocalDataSource,
   private val preferencesRepository: PreferencesRepository,
@@ -47,33 +48,43 @@ class LiveChatDataRepository(
 
   override val connectionState = ktorWebSocketConnector.connectionState
 
-  override suspend fun sendMessage(chatMessage: ChatMessage): Empty<ConnectionError> {
-    val webSocketMessageDto = WebSocketMessageDto.from(chatMessage.toDto(), json)
-    val message = json.encodeToString(webSocketMessageDto)
+  override suspend fun sendMessage(chatMessage: ChatMessage): Empty<DataError> {
+    return dbSafeCall {
+      val authInfo = preferencesRepository.observeAuthInfo().firstOrNull()
+        ?: return Result.Failure(DataError.Local.NOT_FOUND)
 
-    return ktorWebSocketConnector
-      .sendMessage(message)
-      .onFailure {
-        localDataSource.updateChatMessage(
-          chatMessage.id,
-          ChatMessageDeliveryStatus.FAILED,
-        )
-      }
+      chatMessagesDao.upsert(chatMessage.toEntity(authInfo.user.id))
+
+      val
+      return ktorWebSocketConnector
+        .sendMessage()
+    }
+    //    val webSocketMessageDto = WebSocketMessageDto.from(chatMessage.toDto(), json)
+    //    val message = json.encodeToString(webSocketMessageDto)
+    //
+    //    return ktorWebSocketConnector
+    //      .sendMessage(message)
+    //      .onFailure {
+    //        localDataSource.updateChatMessage(
+    //          chatMessage.id,
+    //          ChatMessageDeliveryStatus.FAILED,
+    //        )
+    //      }
   }
 
   private fun getWebSocketPayloadDto(webSocketMessageDto: WebSocketMessageDto): WebSocketPayloadDto {
     return with(webSocketMessageDto) {
-      when (WebSocketMessageTypeDto.valueOf(type)) {
-        WebSocketMessageTypeDto.NEW_MESSAGE -> {
+      when (WebSocketMessageType.valueOf(type)) {
+        WebSocketMessageType.NEW_MESSAGE -> {
           json.decodeFromString<WebSocketPayloadDto.NewMessageDto>(payload)
         }
-        WebSocketMessageTypeDto.MESSAGE_DELETED -> {
+        WebSocketMessageType.MESSAGE_DELETED -> {
           json.decodeFromString<WebSocketPayloadDto.MessageDeletedDto>(payload)
         }
-        WebSocketMessageTypeDto.PROFILE_PICTURE_UPDATED -> {
+        WebSocketMessageType.PROFILE_PICTURE_UPDATED -> {
           json.decodeFromString<WebSocketPayloadDto.ProfilePictureUpdatedDto>(payload)
         }
-        WebSocketMessageTypeDto.CHAT_PARTICIPANTS_CHANGED -> {
+        WebSocketMessageType.CHAT_PARTICIPANTS_CHANGED -> {
           json.decodeFromString<WebSocketPayloadDto.ChatMembersChangedDto>(payload)
         }
       }

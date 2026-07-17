@@ -72,7 +72,6 @@ fun MultilineTextField(
     BasicTextField(
       state = multilineTextFieldPm.textFieldState,
       modifier = Modifier.fillMaxWidth(),
-      enabled = multilineTextFieldPm.isButtonEnabled,
       textStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.extended.textPrimary
       ),

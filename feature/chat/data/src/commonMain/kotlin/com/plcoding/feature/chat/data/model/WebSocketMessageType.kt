@@ -1,6 +1,6 @@
 package com.plcoding.feature.chat.data.model
 
-enum class WebSocketMessageTypeDto {
+enum class WebSocketMessageType {
   NEW_MESSAGE,
   MESSAGE_DELETED,
   PROFILE_PICTURE_UPDATED,

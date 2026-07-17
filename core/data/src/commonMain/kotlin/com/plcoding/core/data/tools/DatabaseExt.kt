@@ -4,10 +4,9 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Result
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
-import kotlin.coroutines.cancellation.CancellationException
 
 // TODO: add support of DISK_FULL error
-suspend fun <T> dbSafeCall(
+suspend inline fun <T> dbSafeCall(
   execute: suspend () -> T,
 ): Result<T, DataError.Local> {
   return try {

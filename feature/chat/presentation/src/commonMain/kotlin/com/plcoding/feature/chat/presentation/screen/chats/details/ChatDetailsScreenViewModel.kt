@@ -55,12 +55,6 @@ class ChatDetailsScreenViewModel(
     .map { it.orEmpty() }
     .flatMapLatest(chatRepository::observeChatDetails)
 
-  private val _canSendMessage =
-    snapshotFlow { screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString() }
-      .combine(liveChatRepository.connectionState) { text, connectionState ->
-        text.isNotBlank() && connectionState == ConnectionState.CONNECTED
-      }
-
   override fun getUiState(): ChatDetailsScreenUiState {
     return ChatDetailsScreenUiState.mock
   }
@@ -79,13 +73,19 @@ class ChatDetailsScreenViewModel(
       .connectionState
       .distinctUntilChanged()
       .onEach {
-        if (it == ConnectionState.CONNECTED) {
+        val isConnected = it == ConnectionState.CONNECTED
+
+        if (isConnected) {
           _chatId.firstOrNull()?.let { chatId ->
             chatRepository.syncChatMessages(chatId, null)
           }
         }
 
-        // TODO: update uiState ConnectionState
+        updateUiState {
+          val connectionIconRes = if (isConnected) null else CoreRes.drawable.ic_cloud_off
+          val textFieldUi = multilineTextFieldUi.copy(connectionIconRes = connectionIconRes)
+          copy(multilineTextFieldUi = textFieldUi)
+        }
       }
       .launchIn(viewModelScope)
   }
@@ -132,11 +132,13 @@ class ChatDetailsScreenViewModel(
   }
 
   private fun observeCanSendMessage() {
-    _canSendMessage
+    snapshotFlow { screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString() }
+      .combine(liveChatRepository.connectionState) { text, connectionState ->
+        text.isNotBlank() && connectionState == ConnectionState.CONNECTED
+      }
       .onEach { canSendMessage ->
         updateUiState {
-          val connectionIconRes = if (canSendMessage) CoreRes.drawable.ic_cloud_off else null
-          val textFieldUi = multilineTextFieldUi.copy(connectionIconRes = connectionIconRes)
+          val textFieldUi = multilineTextFieldUi.copy(isButtonEnabled = canSendMessage)
           copy(multilineTextFieldUi = textFieldUi)
         }
       }
