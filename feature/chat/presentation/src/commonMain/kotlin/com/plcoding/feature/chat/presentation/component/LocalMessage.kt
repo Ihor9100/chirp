@@ -55,12 +55,14 @@ fun LocalMessage(
         }
       }
     }
-    Icon(
-      modifier = Modifier.size(24.dp),
-      imageVector = vectorResource(Res.drawable.ic_reload),
-      contentDescription = null,
-      tint = MaterialTheme.colorScheme.extended.textDestructive
-    )
+    if (localMessageUi.showRetryIcon) {
+      Icon(
+        modifier = Modifier.size(24.dp),
+        imageVector = vectorResource(Res.drawable.ic_reload),
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.extended.textDestructive
+      )
+    }
   }
 }
 

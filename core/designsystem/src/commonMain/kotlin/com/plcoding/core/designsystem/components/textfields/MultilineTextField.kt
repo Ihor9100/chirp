@@ -33,6 +33,7 @@ fun MultilineTextField(
   modifier: Modifier = Modifier,
   deviceConfiguration: DeviceConfiguration,
   multilineTextFieldPm: MultilineTextFieldUi,
+  onClick:() -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -102,7 +103,8 @@ fun MultilineTextField(
       }
       Button(
         text = stringResource(multilineTextFieldPm.buttonTitleRes),
-        isEnabled = multilineTextFieldPm.isButtonEnabled
+        isEnabled = multilineTextFieldPm.isButtonEnabled,
+        onClick = onClick,
       )
     }
   }
@@ -118,6 +120,7 @@ private fun Themed(
     MultilineTextField(
       deviceConfiguration = deviceConfiguration,
       multilineTextFieldPm = multilineTextFieldPm,
+      onClick = {}
     )
   }
 }

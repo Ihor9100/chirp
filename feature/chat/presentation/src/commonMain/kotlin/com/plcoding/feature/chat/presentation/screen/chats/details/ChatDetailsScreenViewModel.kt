@@ -45,7 +45,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.JsonNull.content
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -194,7 +193,7 @@ class ChatDetailsScreenViewModel(
         id = Uuid.random().toString(),
         chatId = chatId,
         senderId = senderId,
-        content = content,
+        content = screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString(),
         createdAt = Clock.System.now(),
         deliveryStatus = ChatMessageDeliveryStatus.SENDING,
       )

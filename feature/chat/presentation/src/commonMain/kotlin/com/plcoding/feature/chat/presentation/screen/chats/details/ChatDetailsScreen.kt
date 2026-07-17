@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +44,7 @@ import com.plcoding.core.presentation.model.ScreenUiState
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.feature.chat.presentation.component.ChatEmptyState
 import com.plcoding.feature.chat.presentation.component.ChatHeader
-import com.plcoding.feature.chat.presentation.component.ChatMessage
+import com.plcoding.feature.chat.presentation.component.ChatMessages
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -58,6 +60,7 @@ fun ChatDetailsScreen(
   val screenUiState by viewModel.screenUiState.collectAsStateWithLifecycle()
   val deviceConfiguration = getDeviceConfiguration()
   val coroutineScope = rememberCoroutineScope()
+  val lazyListState = rememberLazyListState()
 
   BackHandler(scaffoldNavigator.canNavigateBack()) {
     coroutineScope.launch {
@@ -81,12 +84,22 @@ fun ChatDetailsScreen(
     }
   }
 
+  LaunchedEffect(screenUiState.uiState.scrollToBottom) {
+    screenUiState.uiState.scrollToBottom?.consumeAsync {
+      val lastIndex = screenUiState.uiState.chatMessagesUi?.lastIndex
+      if (lastIndex != null) {
+        lazyListState.animateScrollToItem(lastIndex)
+      }
+    }
+  }
+
   BaseScreen(
     baseUiState = screenUiState.baseUiState
   ) {
     Content(
       uiState = screenUiState.uiState,
       deviceConfiguration = deviceConfiguration,
+      lazyListState = lazyListState,
       onAction = {
         when (it) {
           is ChatDetailsScreenAction.OnBackClick -> coroutineScope.launch {
@@ -101,7 +114,7 @@ fun ChatDetailsScreen(
             viewModel.handleAction(it)
           }
         }
-      }
+      },
     )
   }
 }
@@ -110,6 +123,7 @@ fun ChatDetailsScreen(
 private fun Content(
   uiState: ChatDetailsScreenUiState,
   deviceConfiguration: DeviceConfiguration,
+  lazyListState: LazyListState,
   onAction: (ChatDetailsScreenAction) -> Unit,
 ) {
   Column(
@@ -173,7 +187,7 @@ private fun Content(
       }
       HorizontalDivider()
       if (uiState.chatMessagesUi != null) {
-        ChatMessage(
+        ChatMessages(
           modifier = Modifier
             .weight(1f)
             .fillMaxWidth()
@@ -188,7 +202,8 @@ private fun Content(
                 Modifier.padding(horizontal = 16.dp)
               }
             ),
-          chatMessageUi = uiState.chatMessagesUi,
+          chatMessagesUi = uiState.chatMessagesUi,
+          lazyListState = lazyListState,
         )
       }
       MultilineTextField(
@@ -202,6 +217,7 @@ private fun Content(
           ),
         deviceConfiguration = deviceConfiguration,
         multilineTextFieldPm = uiState.multilineTextFieldUi,
+        onClick = { onAction(ChatDetailsScreenAction.OnSendClick) },
       )
     }
   }
@@ -222,6 +238,7 @@ private fun Themed(
       Content(
         uiState = screenUiState.uiState,
         deviceConfiguration = deviceConfiguration,
+        lazyListState = rememberLazyListState(),
         onAction = {}
       )
     }

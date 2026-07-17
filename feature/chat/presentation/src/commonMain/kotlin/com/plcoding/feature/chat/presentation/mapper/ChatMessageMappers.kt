@@ -5,16 +5,14 @@ import com.plcoding.core.designsystem.model.AvatarSizeUi
 import com.plcoding.core.designsystem.model.AvatarUi
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.feature.chat.domain.model.ChatMessageAndMember
+import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import com.plcoding.feature.chat.presentation.model.ChatBubbleUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageStatusUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import com.plcoding.feature.chat.presentation.utils.DateUtils
 import com.plcoding.feature.chat.presentation.utils.FormatUtils.getInitials
 
-// TODO: finish mapping
-fun ChatMessageAndMember.toUi(
-  yourId: String?,
-): ChatMessageUi {
+fun ChatMessageAndMember.toUi(yourId: String?): ChatMessageUi {
   return if (chatMember.userId == yourId) {
     ChatMessageUi.LocalMessageUi(
       id = chatMessage.id,
@@ -25,8 +23,12 @@ fun ChatMessageAndMember.toUi(
         message = chatMessage.content,
         colorToken = ColorToken.get(chatMember.userId),
       ),
-      chatMessageStatusUi = ChatMessageStatusUi.success,
-      showRetryIcon = false,
+      chatMessageStatusUi = when (chatMessage.deliveryStatus) {
+        ChatMessageDeliveryStatus.SENDING,
+        ChatMessageDeliveryStatus.SENT -> ChatMessageStatusUi.success
+        ChatMessageDeliveryStatus.FAILED -> ChatMessageStatusUi.error
+      },
+      showRetryIcon = chatMessage.deliveryStatus == ChatMessageDeliveryStatus.FAILED,
     )
   } else {
     ChatMessageUi.RemoteMessageUi(
