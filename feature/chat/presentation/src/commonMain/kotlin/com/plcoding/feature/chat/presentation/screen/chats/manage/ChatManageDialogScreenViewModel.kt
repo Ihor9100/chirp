@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.presentation.mapper.toUi
@@ -55,7 +55,7 @@ class ChatManageDialogScreenViewModel(
     viewModelScope.launch {
       chatRepository
         .addChatMembers(_chatId.value, memberIds)
-        .onFailure { showSnackbar(it.getStringRes()) }
+        .onFailure { showSnackbar(it.toStringRes()) }
         .onSuccess { updateUiState { copy(chatUpdatedEvent = Event(Unit)) } }
     }
   }

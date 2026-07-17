@@ -14,7 +14,7 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -76,7 +76,7 @@ class LoginScreenViewModel(
     val errorRes = when (error) {
       DataError.Remote.UNAUTHORIZED -> Res.string.error_invalid_credentials
       DataError.Remote.FORBIDDEN -> Res.string.error_email_not_verified
-      else -> error.getStringRes()
+      else -> error.toStringRes()
     }
     updateUiState {
       copy(errorRes = errorRes)

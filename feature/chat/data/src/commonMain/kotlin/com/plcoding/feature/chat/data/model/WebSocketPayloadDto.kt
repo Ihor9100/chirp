@@ -7,12 +7,20 @@ sealed interface WebSocketPayloadDto {
   val messageType: WebSocketMessageType
 
   @Serializable
-  data class NewMessageDto(
+  data class IncomingMessageDto(
     val id: String,
     val chatId: String,
     val senderId: String,
     val content: String,
     val createdAt: String,
+    override val messageType: WebSocketMessageType = WebSocketMessageType.NEW_MESSAGE,
+  ) : WebSocketPayloadDto
+
+  @Serializable
+  data class OutgoingMessageDto(
+    val chatId: String,
+    val messageId: String,
+    val content: String,
     override val messageType: WebSocketMessageType = WebSocketMessageType.NEW_MESSAGE,
   ) : WebSocketPayloadDto
 

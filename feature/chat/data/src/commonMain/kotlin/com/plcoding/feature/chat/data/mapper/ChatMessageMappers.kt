@@ -44,7 +44,7 @@ fun ChatLastMessageView.toDomain(): ChatMessage = ChatMessage(
   deliveryStatus = ChatMessageDeliveryStatus.valueOf(status),
 )
 
-fun WebSocketPayloadDto.NewMessageDto.toDomain(): ChatMessage = ChatMessage(
+fun WebSocketPayloadDto.IncomingMessageDto.toDomain(): ChatMessage = ChatMessage(
   id = id,
   chatId = chatId,
   senderId = senderId,
@@ -53,7 +53,7 @@ fun WebSocketPayloadDto.NewMessageDto.toDomain(): ChatMessage = ChatMessage(
   deliveryStatus = ChatMessageDeliveryStatus.SENT,
 )
 
-fun WebSocketPayloadDto.NewMessageDto.toEntity(): ChatMessageEntity = ChatMessageEntity(
+fun WebSocketPayloadDto.IncomingMessageDto.toEntity(): ChatMessageEntity = ChatMessageEntity(
   id = id,
   chatId = chatId,
   senderId = senderId,
@@ -62,17 +62,25 @@ fun WebSocketPayloadDto.NewMessageDto.toEntity(): ChatMessageEntity = ChatMessag
   status = ChatMessageDeliveryStatus.SENT.name,
 )
 
-fun ChatMessage.toDto(): NewMessageDto = NewMessageDto(
-  id = id,
-  chatId = chatId,
-  senderId = senderId,
-  content = content,
-  createdAt = createdAt.toString(),
-)
+fun ChatMessage.toIncomingMessageDto(): WebSocketPayloadDto.IncomingMessageDto {
+  return WebSocketPayloadDto.IncomingMessageDto(
+    id = id,
+    chatId = chatId,
+    senderId = senderId,
+    content = content,
+    createdAt = createdAt.toString(),
+  )
+}
 
-fun ChatMessage.toEntity(
-  senderId: String,
-): ChatMessageEntity {
+fun ChatMessage.toOutgoingMessageDto(): WebSocketPayloadDto.OutgoingMessageDto {
+  return WebSocketPayloadDto.OutgoingMessageDto(
+    messageId = id,
+    chatId = chatId,
+    content = content,
+  )
+}
+
+fun ChatMessage.toEntity(senderId: String): ChatMessageEntity {
   return ChatMessageEntity(
     id = id,
     chatId = chatId,
@@ -80,19 +88,5 @@ fun ChatMessage.toEntity(
     content = content,
     timestamp = createdAt.toEpochMilliseconds(),
     status = deliveryStatus.name,
-  )
-}
-
-
-fun ChatMessage.toDto(
-  senderId: String,
-): WebSocketPayloadDto.NewMessageDto {
-  return WebSocketPayloadDto.NewMessageDto(
-    id=id,
-      chatId=chatId,
-      senderId=senderId,
-      content=content,
-      createdAt=createdAt,
-    messageType = ,
   )
 }

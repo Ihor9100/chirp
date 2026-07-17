@@ -11,7 +11,7 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -58,7 +58,7 @@ class ForgotPasswordScreenViewModel(
 
   private fun handleFailure(error: DataError.Remote) {
     updateUiState {
-      copy(errorRes = error.getStringRes())
+      copy(errorRes = error.toStringRes())
     }
   }
 

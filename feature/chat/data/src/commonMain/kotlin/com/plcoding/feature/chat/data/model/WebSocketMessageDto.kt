@@ -19,7 +19,8 @@ data class WebSocketMessageDto(
         payload = when (webSocketPayloadDto) {
           is WebSocketPayloadDto.ChatMembersChangedDto -> json.encodeToString(webSocketPayloadDto)
           is WebSocketPayloadDto.MessageDeletedDto -> json.encodeToString(webSocketPayloadDto)
-          is WebSocketPayloadDto.NewMessageDto -> json.encodeToString(webSocketPayloadDto)
+          is WebSocketPayloadDto.OutgoingMessageDto -> json.encodeToString(webSocketPayloadDto)
+          is WebSocketPayloadDto.IncomingMessageDto -> json.encodeToString(webSocketPayloadDto)
           is WebSocketPayloadDto.ProfilePictureUpdatedDto -> json.encodeToString(webSocketPayloadDto)
         },
       )

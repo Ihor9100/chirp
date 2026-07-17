@@ -5,7 +5,7 @@ package com.plcoding.feature.chat.presentation.screen.chats.create
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.presentation.screen.chats.base.BaseChatDialogScreenViewModel
 import kotlinx.coroutines.FlowPreview
@@ -27,7 +27,7 @@ class ChatCreateDialogScreenViewModel(
     launchLoadable {
       chatRepository
         .createChat(memberIds)
-        .onFailure { showSnackbar(it.getStringRes()) }
+        .onFailure { showSnackbar(it.toStringRes()) }
         .onSuccess { updateUiState { copy(chatCreatedEvent = Event(Unit)) } }
     }
   }

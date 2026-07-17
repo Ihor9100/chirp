@@ -10,7 +10,7 @@ import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 
 class RegisterSuccessScreenViewModel(
   private val authRepository: AuthRepository,
@@ -46,7 +46,7 @@ class RegisterSuccessScreenViewModel(
 
   private fun handleFailure(error: DataError.Remote) {
     updateUiState {
-      copy(secondaryButtonErrorRes = error.getStringRes())
+      copy(secondaryButtonErrorRes = error.toStringRes())
     }
   }
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,7 +39,7 @@ class ChatsListScreenViewModel(
     launchLoadable {
       chatRepository
         .syncChats()
-        .onFailure { showSnackbar(it.getStringRes()) }
+        .onFailure { showSnackbar(it.toStringRes()) }
     }
   }
 

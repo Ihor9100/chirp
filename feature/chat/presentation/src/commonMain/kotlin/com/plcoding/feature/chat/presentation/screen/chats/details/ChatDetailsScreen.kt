@@ -89,7 +89,7 @@ fun ChatDetailsScreen(
       deviceConfiguration = deviceConfiguration,
       onAction = {
         when (it) {
-          is ChatDetailsScreenAction.OnChatDetailsBackClick -> coroutineScope.launch {
+          is ChatDetailsScreenAction.OnBackClick -> coroutineScope.launch {
             if (scaffoldNavigator.canNavigateBack()) {
               scaffoldNavigator.navigateBack()
             } else {
@@ -148,7 +148,7 @@ private fun Content(
         IconButton(
           modifier = Modifier,
           iconRes = Res.drawable.ic_arrow_left,
-          onClick = { onAction(ChatDetailsScreenAction.OnChatDetailsBackClick) }
+          onClick = { onAction(ChatDetailsScreenAction.OnBackClick) }
         )
         if (uiState.chatHeaderUi != null) {
           ChatHeader(
@@ -160,14 +160,14 @@ private fun Content(
           IconButton(
             modifier = Modifier,
             iconRes = Res.drawable.ic_dots,
-            onClick = { onAction(ChatDetailsScreenAction.OnChatDetailsMenuClick) }
+            onClick = { onAction(ChatDetailsScreenAction.OnMenuClick) }
           )
           DropDownMenu(
             modifier = Modifier,
             showMenu = !uiState.dropDownItemsUi.isNullOrEmpty(),
             items = uiState.dropDownItemsUi.orEmpty(),
-            onAction = { onAction(ChatDetailsScreenAction.OnChatDetailsMenuItemClick(it)) },
-            onDismiss = { onAction(ChatDetailsScreenAction.OnChatDetailsMenuDismissClick) },
+            onAction = { onAction(ChatDetailsScreenAction.OnMenuItemClick(it)) },
+            onDismiss = { onAction(ChatDetailsScreenAction.OnMenuDismissClick) },
           )
         }
       }

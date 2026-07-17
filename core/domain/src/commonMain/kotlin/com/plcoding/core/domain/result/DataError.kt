@@ -23,7 +23,7 @@ sealed interface DataError : Error {
     UNKNOWN
   }
 
-  enum class Connection: Error {
+  enum class Connection: DataError {
     NOT_CONNECTED,
     MESSAGE_SEND_FAILED
   }

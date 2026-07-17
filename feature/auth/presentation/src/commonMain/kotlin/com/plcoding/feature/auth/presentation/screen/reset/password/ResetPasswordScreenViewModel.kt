@@ -14,7 +14,7 @@ import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.PasswordValidator
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -74,7 +74,7 @@ class ResetPasswordScreenViewModel(
     val errorRes = when (error) {
       DataError.Remote.UNAUTHORIZED -> Res.string.error_reset_password_token_invalid
       DataError.Remote.CONFLICT -> Res.string.error_same_password
-      else -> error.getStringRes()
+      else -> error.toStringRes()
     }
     updateUiState {
       copy(errorRes = errorRes)

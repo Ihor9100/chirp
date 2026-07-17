@@ -13,7 +13,7 @@ import com.plcoding.core.domain.validator.EmailValidator
 import com.plcoding.core.domain.validator.PasswordValidator
 import com.plcoding.core.domain.validator.UsernameValidator
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
@@ -84,7 +84,7 @@ class RegisterScreenViewModel(
   private fun handleFailure(error: DataError.Remote) {
     val errorRes = when (error) {
       DataError.Remote.CONFLICT -> Res.string.error_account_exists
-      else -> error.getStringRes()
+      else -> error.toStringRes()
     }
     updateUiState { copy(errorRes = errorRes) }
   }

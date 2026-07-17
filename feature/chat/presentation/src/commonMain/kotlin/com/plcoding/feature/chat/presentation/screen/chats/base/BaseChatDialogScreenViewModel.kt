@@ -12,7 +12,7 @@ import com.plcoding.core.domain.result.mapOn
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.presentation.mapper.toUi
 import kotlinx.coroutines.FlowPreview
@@ -75,7 +75,7 @@ abstract class BaseChatDialogScreenViewModel<ContentUi : BaseChatDialogUiState<C
   private fun handleSearchMemberFailure(error: DataError.Remote) {
     val errorRes = when (error) {
       DataError.Remote.NOT_FOUND -> Res.string.no_participant_found
-      else -> error.getStringRes()
+      else -> error.toStringRes()
     }
     showSnackbar(errorRes)
   }

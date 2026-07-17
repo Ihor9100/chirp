@@ -1,7 +1,8 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalUuidApi::class)
 
 package com.plcoding.feature.chat.presentation.screen.chats.details
 
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
 import chirp.core.designsystem.generated.resources.ic_cloud_off
@@ -20,7 +21,9 @@ import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
-import com.plcoding.core.presentation.utils.getStringRes
+import com.plcoding.core.presentation.utils.toStringRes
+import com.plcoding.feature.chat.domain.model.ChatMessage
+import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import com.plcoding.feature.chat.domain.model.ConnectionState
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.domain.repository.LiveChatRepository
@@ -33,6 +36,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
@@ -41,6 +45,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull.content
+import kotlin.time.Clock
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 import chirp.core.designsystem.generated.resources.Res as CoreRes
 
 class ChatDetailsScreenViewModel(
@@ -152,23 +160,49 @@ class ChatDetailsScreenViewModel(
       viewModelScope.launch {
         chatRepository
           .syncChat(chatId)
-          .onFailure { showSnackbar(it.getStringRes()) }
+          .onFailure { showSnackbar(it.toStringRes()) }
       }
     }
   }
 
   fun handleAction(chatsScreenAction: ChatDetailsScreenAction) {
     when (chatsScreenAction) {
-      is ChatDetailsScreenAction.OnChatDetailsMenuClick -> {
+      is ChatDetailsScreenAction.OnMenuClick -> {
         updateUiState { copy(dropDownItemsUi = getChatsDropDownItems()) }
       }
-      is ChatDetailsScreenAction.OnChatDetailsMenuDismissClick -> {
+      is ChatDetailsScreenAction.OnMenuDismissClick -> {
         updateUiState { copy(dropDownItemsUi = null) }
       }
-      is ChatDetailsScreenAction.OnChatDetailsMenuItemClick -> {
+      is ChatDetailsScreenAction.OnMenuItemClick -> {
         handleChatDetailsMenuItemClick(chatsScreenAction.dropDownItemPm)
       }
+      is ChatDetailsScreenAction.OnSendClick -> {
+        sendMessage()
+      }
       else -> Unit
+    }
+  }
+
+  private fun sendMessage() {
+    viewModelScope.launch {
+      val chatId = _chatId.value
+      val senderId = preferencesRepository.observeAuthInfo().first()?.user?.id
+
+      if (chatId == null || senderId == null) return@launch
+
+      val chatMessage = ChatMessage(
+        id = Uuid.random().toString(),
+        chatId = chatId,
+        senderId = senderId,
+        content = content,
+        createdAt = Clock.System.now(),
+        deliveryStatus = ChatMessageDeliveryStatus.SENDING,
+      )
+
+      liveChatRepository
+        .sendMessage(chatMessage)
+        .onSuccess { screenUiState.value.uiState.multilineTextFieldUi.textFieldState.clearText() }
+        .onFailure { showSnackbar(it.toStringRes()) }
     }
   }
 
@@ -187,7 +221,7 @@ class ChatDetailsScreenViewModel(
     viewModelScope.launch {
       chatRepository
         .leaveChat(_chatId.value.orEmpty())
-        .onFailure { showSnackbar(it.getStringRes()) }
+        .onFailure { showSnackbar(it.toStringRes()) }
         .onSuccess {
           showSnackbar(Res.string.success)
           updateUiState { copy(leaveChatEvent = Event(Unit)) }
