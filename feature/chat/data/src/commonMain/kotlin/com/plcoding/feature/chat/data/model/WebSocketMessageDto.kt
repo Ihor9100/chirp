@@ -10,11 +10,8 @@ data class WebSocketMessageDto(
 ) {
 
   companion object {
-    fun from(
-      webSocketPayloadDto: WebSocketPayloadDto,
-      json: Json,
-    ): WebSocketMessageDto {
-      return WebSocketMessageDto(
+    fun encodeToString(webSocketPayloadDto: WebSocketPayloadDto, json: Json): String {
+      val webSocketMessageDto = WebSocketMessageDto(
         type = webSocketPayloadDto.messageType.name,
         payload = when (webSocketPayloadDto) {
           is WebSocketPayloadDto.ChatMembersChangedDto -> json.encodeToString(webSocketPayloadDto)
@@ -24,6 +21,7 @@ data class WebSocketMessageDto(
           is WebSocketPayloadDto.ProfilePictureUpdatedDto -> json.encodeToString(webSocketPayloadDto)
         },
       )
+      return json.encodeToString(webSocketMessageDto)
     }
   }
 }

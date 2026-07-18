@@ -19,6 +19,7 @@ import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
 import com.plcoding.feature.chat.database.relation.ChatMessageAndMemberRelation
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import kotlinx.coroutines.flow.Flow
+import kotlin.time.Clock
 
 class ChatsRoomLocalDataSource(
   private val chirpDatabase: ChirpDatabase,
@@ -56,13 +57,12 @@ class ChatsRoomLocalDataSource(
     }
   }
 
-  override suspend fun updateChatMessage(
-    id: String,
-    deliveryStatus: ChatMessageDeliveryStatus
-  ): Empty<DataError.Local> {
-    return dbSafeCall {
-      chatMessagesDao.update(id, deliveryStatus.name)
-    }
+  override suspend fun updateChatMessage(id: String, deliveryStatus: ChatMessageDeliveryStatus) {
+    return chatMessagesDao.update(
+      id,
+      Clock.System.now().toEpochMilliseconds(),
+      deliveryStatus.name,
+    )
   }
 
   override suspend fun deleteChatMessage(id: String): Empty<DataError.Local> {
@@ -81,6 +81,10 @@ class ChatsRoomLocalDataSource(
     return dbSafeCall {
       chatsDao.hasChat(id)
     }
+  }
+
+  override suspend fun getChatMessage(id: String): ChatMessageEntity? {
+    return chatMessagesDao.get(id)
   }
 
   override suspend fun upsertChatDetails(

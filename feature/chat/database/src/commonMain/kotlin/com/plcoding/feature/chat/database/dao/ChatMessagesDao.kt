@@ -25,10 +25,10 @@ interface ChatMessagesDao {
 
   @Query("""
     UPDATE chat_messages
-    SET status = :deliveryStatus
+    SET status = :deliveryStatus, timestamp =:timestamp
     WHERE id = :id
   """)
-  suspend fun update(id: String, deliveryStatus: String)
+  suspend fun update(id: String, timestamp: Long, deliveryStatus: String)
 
   @Query("SELECT * FROM chat_messages WHERE id = :id")
   suspend fun get(id: String): ChatMessageEntity?

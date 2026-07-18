@@ -204,6 +204,7 @@ private fun Content(
             ),
           chatMessagesUi = uiState.chatMessagesUi,
           lazyListState = lazyListState,
+          onRetryClick = { onAction(ChatDetailsScreenAction.OnRetryClick(it)) }
         )
       }
       MultilineTextField(

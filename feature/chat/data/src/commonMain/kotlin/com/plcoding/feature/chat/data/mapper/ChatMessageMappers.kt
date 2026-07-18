@@ -35,6 +35,15 @@ fun ChatMessageEntity.toDomain(): ChatMessage = ChatMessage(
   deliveryStatus = ChatMessageDeliveryStatus.valueOf(status),
 )
 
+
+fun ChatMessageEntity.toDto(): WebSocketPayloadDto.OutgoingMessageDto {
+  return WebSocketPayloadDto.OutgoingMessageDto(
+    messageId = id,
+    chatId = chatId,
+    content = content,
+  )
+}
+
 fun ChatLastMessageView.toDomain(): ChatMessage = ChatMessage(
   id = id,
   chatId = chatId,

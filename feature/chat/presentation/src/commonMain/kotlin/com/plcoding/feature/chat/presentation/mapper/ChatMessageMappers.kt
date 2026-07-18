@@ -6,7 +6,7 @@ import com.plcoding.core.designsystem.model.AvatarUi
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.feature.chat.domain.model.ChatMessageAndMember
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
-import com.plcoding.feature.chat.presentation.model.ChatBubbleUi
+import com.plcoding.feature.chat.presentation.model.ChatBoxUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageStatusUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import com.plcoding.feature.chat.presentation.utils.DateUtils
@@ -16,7 +16,7 @@ fun ChatMessageAndMember.toUi(yourId: String?): ChatMessageUi {
   return if (chatMember.userId == yourId) {
     ChatMessageUi.LocalMessageUi(
       id = chatMessage.id,
-      chatBubbleUi = ChatBubbleUi(
+      chatBoxUi = ChatBoxUi(
         anchorPositionUi = AnchorPositionUi.RIGHT,
         sender = chatMember.username,
         date = DateUtils.formatMessageTime(chatMessage.createdAt),
@@ -38,7 +38,7 @@ fun ChatMessageAndMember.toUi(yourId: String?): ChatMessageUi {
         imageUrl = chatMember.profilePictureUrl,
         avatarSizeUi = AvatarSizeUi.MEDIUM,
       ),
-      chatBubbleUi = ChatBubbleUi(
+      chatBoxUi = ChatBoxUi(
         anchorPositionUi = AnchorPositionUi.LEFT,
         sender = chatMember.username,
         date = DateUtils.formatMessageTime(chatMessage.createdAt),

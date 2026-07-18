@@ -17,7 +17,7 @@ sealed class ChatMessageUi(open val id: String) {
 
   data class LocalMessageUi(
     override val id: String,
-    val chatBubbleUi: ChatBubbleUi,
+    val chatBoxUi: ChatBoxUi,
     val chatMessageStatusUi: ChatMessageStatusUi?,
     val showRetryIcon: Boolean,
   ) : ChatMessageUi(id) {
@@ -26,7 +26,7 @@ sealed class ChatMessageUi(open val id: String) {
       val mock
         get() = LocalMessageUi(
           id = ChatMessage.mock.first().id,
-          chatBubbleUi = ChatBubbleUi.mocks[1],
+          chatBoxUi = ChatBoxUi.mocks[1],
           chatMessageStatusUi = ChatMessageStatusUi.error,
           showRetryIcon = true,
         )
@@ -36,7 +36,7 @@ sealed class ChatMessageUi(open val id: String) {
   data class RemoteMessageUi(
     override val id: String,
     val avatarUi: AvatarUi,
-    val chatBubbleUi: ChatBubbleUi,
+    val chatBoxUi: ChatBoxUi,
   ) : ChatMessageUi(id) {
 
     companion object {
@@ -44,7 +44,7 @@ sealed class ChatMessageUi(open val id: String) {
         get() = RemoteMessageUi(
           id = ChatMessage.mock.first().id,
           avatarUi = AvatarUi.mocks[0],
-          chatBubbleUi = ChatBubbleUi.mocks[0],
+          chatBoxUi = ChatBoxUi.mocks[0],
         )
     }
   }

@@ -18,6 +18,7 @@ fun ChatMessages(
   modifier: Modifier,
   chatMessagesUi: List<ChatMessageUi>,
   lazyListState: LazyListState,
+  onRetryClick: (messageId: String) -> Unit,
 ) {
   LazyColumn(
     modifier = modifier,
@@ -34,6 +35,7 @@ fun ChatMessages(
         is ChatMessageUi.LocalMessageUi -> LocalMessage(
           modifier = Modifier,
           localMessageUi = it,
+          onRetryClick = onRetryClick,
         )
         is ChatMessageUi.RemoteMessageUi -> RemoteMessage(
           modifier = Modifier,
@@ -53,6 +55,7 @@ private fun Themed(
       modifier = Modifier,
       chatMessagesUi = ChatMessageUi.mocks,
       lazyListState = rememberLazyListState(),
+      onRetryClick = {},
     )
   }
 }

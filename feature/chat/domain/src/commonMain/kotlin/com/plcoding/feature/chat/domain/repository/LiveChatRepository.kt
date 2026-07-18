@@ -10,4 +10,5 @@ interface LiveChatRepository {
   val chatMessage: Flow<ChatMessage>
   val connectionState: Flow<ConnectionState>
   suspend fun sendMessage(chatMessage: ChatMessage): Empty<DataError>
+  suspend fun resendMessage(messageId: String): Empty<DataError>
 }

@@ -7,15 +7,16 @@ import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.core.domain.result.getOrNull
 import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
 import com.plcoding.feature.chat.data.mapper.toDomain
+import com.plcoding.feature.chat.data.mapper.toDto
 import com.plcoding.feature.chat.data.mapper.toEntity
 import com.plcoding.feature.chat.data.mapper.toOutgoingMessageDto
 import com.plcoding.feature.chat.data.model.WebSocketMessageDto
 import com.plcoding.feature.chat.data.model.WebSocketMessageType
 import com.plcoding.feature.chat.data.model.WebSocketPayloadDto
 import com.plcoding.feature.chat.data.network.KtorWebSocketConnector
-import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.domain.model.ChatMessage
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import com.plcoding.feature.chat.domain.repository.ChatRepository
@@ -36,7 +37,6 @@ class LiveChatDataRepository(
   private val json: Json,
   private val coroutineScope: CoroutineScope,
   private val ktorWebSocketConnector: KtorWebSocketConnector,
-  private val chatMessagesDao: ChatMessagesDao,
   private val chatRepository: ChatRepository,
   private val localDataSource: ChatsLocalDataSource,
   private val preferencesRepository: PreferencesRepository,
@@ -58,11 +58,10 @@ class LiveChatDataRepository(
         ?: return Result.Failure(DataError.Local.NOT_FOUND)
 
       val chatMessageEntity = chatMessage.toEntity(authInfo.user.id)
-      chatMessagesDao.upsert(chatMessageEntity)
+      localDataSource.upsertChatMessage(chatMessageEntity)
 
       val outgoingMessageDto = chatMessage.toOutgoingMessageDto()
-      val webSocketMessageDto = WebSocketMessageDto.from(outgoingMessageDto, json)
-      val rawWebSocketMessage = json.encodeToString(webSocketMessageDto)
+      val rawWebSocketMessage = WebSocketMessageDto.encodeToString(outgoingMessageDto, json)
 
       return ktorWebSocketConnector
         .sendMessage(rawWebSocketMessage)
@@ -70,7 +69,31 @@ class LiveChatDataRepository(
           coroutineScope.launch {
             val chatMessageEntity =
               chatMessageEntity.copy(status = ChatMessageDeliveryStatus.FAILED.name)
-            chatMessagesDao.upsert(chatMessageEntity)
+            localDataSource.upsertChatMessage(chatMessageEntity)
+          }.join()
+        }
+    }
+  }
+
+  override suspend fun resendMessage(messageId: String): Empty<DataError> {
+    return dbSafeCall {
+      localDataSource.updateChatMessage(messageId, ChatMessageDeliveryStatus.SENDING)
+
+      val entity = localDataSource.getChatMessage(messageId)
+        ?: return Result.Failure(DataError.Local.NOT_FOUND)
+
+      val message = WebSocketMessageDto.encodeToString(entity.toDto(), json)
+
+      return ktorWebSocketConnector
+        .sendMessage(message)
+        .onSuccess {
+          coroutineScope.launch {
+            localDataSource.updateChatMessage(messageId, ChatMessageDeliveryStatus.SENT)
+          }.join()
+        }
+        .onFailure {
+          coroutineScope.launch {
+            localDataSource.updateChatMessage(messageId, ChatMessageDeliveryStatus.FAILED)
           }.join()
         }
     }

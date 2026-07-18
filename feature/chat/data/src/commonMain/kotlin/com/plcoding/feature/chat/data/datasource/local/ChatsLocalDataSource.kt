@@ -21,15 +21,12 @@ interface ChatsLocalDataSource {
 
   suspend fun updateChatMember(id: String, avatarUrl: String?): Empty<DataError.Local>
   suspend fun upsertChatMessage(entity: ChatMessageEntity): Empty<DataError.Local>
-  suspend fun updateChatMessage(
-    id: String,
-    deliveryStatus: ChatMessageDeliveryStatus,
-  ): Empty<DataError.Local>
-
+  suspend fun updateChatMessage(id: String, deliveryStatus: ChatMessageDeliveryStatus)
 
   suspend fun deleteChatMessage(id: String): Empty<DataError.Local>
-  suspend fun replaceChatMessages(entities:List<ChatMessageEntity>): Empty<DataError.Local>
+  suspend fun replaceChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local>
   suspend fun hasChat(id: String): Result<Boolean, DataError.Local>
+  suspend fun getChatMessage(id: String): ChatMessageEntity?
 
   suspend fun upsertChatDetails(
     chat: ChatEntity,

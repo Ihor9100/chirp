@@ -164,8 +164,8 @@ class ChatDetailsScreenViewModel(
     }
   }
 
-  fun handleAction(chatsScreenAction: ChatDetailsScreenAction) {
-    when (chatsScreenAction) {
+  fun handleAction(action: ChatDetailsScreenAction) {
+    when (action) {
       is ChatDetailsScreenAction.OnMenuClick -> {
         updateUiState { copy(dropDownItemsUi = getChatsDropDownItems()) }
       }
@@ -173,7 +173,10 @@ class ChatDetailsScreenViewModel(
         updateUiState { copy(dropDownItemsUi = null) }
       }
       is ChatDetailsScreenAction.OnMenuItemClick -> {
-        handleChatDetailsMenuItemClick(chatsScreenAction.dropDownItemPm)
+        handleChatDetailsMenuItemClick(action.dropDownItemPm)
+      }
+      is ChatDetailsScreenAction.OnRetryClick -> {
+        resendMessage(action.messageId)
       }
       is ChatDetailsScreenAction.OnSendClick -> {
         sendMessage()
@@ -201,6 +204,14 @@ class ChatDetailsScreenViewModel(
       liveChatRepository
         .sendMessage(chatMessage)
         .onSuccess { screenUiState.value.uiState.multilineTextFieldUi.textFieldState.clearText() }
+        .onFailure { showSnackbar(it.toStringRes()) }
+    }
+  }
+
+  private fun resendMessage(messageId: String) {
+    viewModelScope.launch {
+      liveChatRepository
+        .resendMessage(messageId)
         .onFailure { showSnackbar(it.toStringRes()) }
     }
   }

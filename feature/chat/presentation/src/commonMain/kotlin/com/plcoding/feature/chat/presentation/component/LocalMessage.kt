@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.presentation.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_reload
-import com.plcoding.core.designsystem.components.ChatBubble
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
@@ -25,15 +25,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun LocalMessage(
   modifier: Modifier,
   localMessageUi: ChatMessageUi.LocalMessageUi,
+  onRetryClick: (messageId: String) -> Unit,
 ) {
   Row(
     modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
     verticalAlignment = Alignment.Bottom,
   ) {
-    ChatBubble(
+    ChatBox(
       modifier = Modifier.weight(1f, fill = false),
-      chatBubbleUi = localMessageUi.chatBubbleUi,
+      chatBoxUi = localMessageUi.chatBoxUi,
     ) {
       localMessageUi.chatMessageStatusUi?.let {
         Row(
@@ -57,7 +58,9 @@ fun LocalMessage(
     }
     if (localMessageUi.showRetryIcon) {
       Icon(
-        modifier = Modifier.size(24.dp),
+        modifier = Modifier
+          .size(24.dp)
+          .clickable { onRetryClick(localMessageUi.id) },
         imageVector = vectorResource(Res.drawable.ic_reload),
         contentDescription = null,
         tint = MaterialTheme.colorScheme.extended.textDestructive
@@ -74,6 +77,7 @@ private fun Themed(
     LocalMessage(
       modifier = Modifier,
       localMessageUi = ChatMessageUi.LocalMessageUi.mock,
+      onRetryClick = {},
     )
   }
 }
