@@ -181,7 +181,7 @@ private fun Content(
             showMenu = !uiState.dropDownItemsUi.isNullOrEmpty(),
             items = uiState.dropDownItemsUi.orEmpty(),
             onAction = { onAction(ChatDetailsScreenAction.OnMenuItemClick(it)) },
-            onDismiss = { onAction(ChatDetailsScreenAction.OnMenuDismissClick) },
+            onDismiss = { onAction(ChatDetailsScreenAction.OnMenuDismiss) },
           )
         }
       }
@@ -204,7 +204,11 @@ private fun Content(
             ),
           chatMessagesUi = uiState.chatMessagesUi,
           lazyListState = lazyListState,
-          onRetryClick = { onAction(ChatDetailsScreenAction.OnRetryClick(it)) }
+          longPressedMessageId = uiState.longPressedMessageId,
+          onLongClick = { onAction(ChatDetailsScreenAction.OnMessageLongClick(it)) },
+          onMenuClick = { onAction(ChatDetailsScreenAction.OnMessageMenuItemClick(it)) },
+          onMenuDismiss = { onAction(ChatDetailsScreenAction.OnMessageMenuDismiss) },
+          onRetry = { onAction(ChatDetailsScreenAction.OnMessageRetryClick(it)) }
         )
       }
       MultilineTextField(

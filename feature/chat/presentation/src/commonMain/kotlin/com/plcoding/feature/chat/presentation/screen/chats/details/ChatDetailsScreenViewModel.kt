@@ -9,6 +9,7 @@ import chirp.core.designsystem.generated.resources.ic_cloud_off
 import chirp.core.designsystem.generated.resources.ic_users
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.chat_members
+import chirp.feature.chat.presentation.generated.resources.delete_for_everyone
 import chirp.feature.chat.presentation.generated.resources.ic_log_out
 import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.no_messages
@@ -169,13 +170,22 @@ class ChatDetailsScreenViewModel(
       is ChatDetailsScreenAction.OnMenuClick -> {
         updateUiState { copy(dropDownItemsUi = getChatsDropDownItems()) }
       }
-      is ChatDetailsScreenAction.OnMenuDismissClick -> {
+      is ChatDetailsScreenAction.OnMenuDismiss -> {
         updateUiState { copy(dropDownItemsUi = null) }
       }
       is ChatDetailsScreenAction.OnMenuItemClick -> {
-        handleChatDetailsMenuItemClick(action.dropDownItemPm)
+        handleMenuItemClick(action.dropDownItemPm)
       }
-      is ChatDetailsScreenAction.OnRetryClick -> {
+      is ChatDetailsScreenAction.OnMessageLongClick -> updateUiState {
+        copy(longPressedMessageId = action.messageId)
+      }
+      is ChatDetailsScreenAction.OnMessageMenuDismiss -> updateUiState {
+        copy(longPressedMessageId = null)
+      }
+      is ChatDetailsScreenAction.OnMessageMenuItemClick -> {
+        handleMessageMenuItemClick(action.dropDownItemPm)
+      }
+      is ChatDetailsScreenAction.OnMessageRetryClick -> {
         resendMessage(action.messageId)
       }
       is ChatDetailsScreenAction.OnSendClick -> {
@@ -216,7 +226,7 @@ class ChatDetailsScreenViewModel(
     }
   }
 
-  private fun handleChatDetailsMenuItemClick(dropDownItemPm: DropDownItemUi) {
+  private fun handleMenuItemClick(dropDownItemPm: DropDownItemUi) {
     when (dropDownItemPm.titleRes) {
       Res.string.chat_members -> updateUiState {
         copy(openChatManageEvent = Event(_chatId.value!!))
@@ -224,6 +234,13 @@ class ChatDetailsScreenViewModel(
       Res.string.log_out -> {
         leaveChat()
       }
+    }
+  }
+
+  private fun handleMessageMenuItemClick(dropDownItemPm: DropDownItemUi) {
+    when (dropDownItemPm.titleRes) {
+      Res.string.delete_for_everyone -> deleteChatMessage(dropDownItemPm.id)
+      else -> Unit
     }
   }
 
@@ -235,6 +252,17 @@ class ChatDetailsScreenViewModel(
         .onSuccess {
           showSnackbar(Res.string.success)
           updateUiState { copy(leaveChatEvent = Event(Unit)) }
+        }
+    }
+  }
+
+  private fun deleteChatMessage(messageId: String) {
+    viewModelScope.launch {
+      chatRepository
+        .deleteChatMessage(messageId)
+        .onFailure { showSnackbar(it.toStringRes()) }
+        .onSuccess {
+          updateUiState { copy(longPressedMessageId = null) }
         }
     }
   }
@@ -251,11 +279,13 @@ class ChatDetailsScreenViewModel(
   private fun getChatsDropDownItems(): List<DropDownItemUi> {
     return listOf(
       DropDownItemUi(
+        id = Uuid.random().toString(),
         leadingIconRes = CoreRes.drawable.ic_users,
         titleRes = Res.string.chat_members,
         colorToken = ColorToken.TextSecondary,
       ),
       DropDownItemUi(
+        id = Uuid.random().toString(),
         leadingIconRes = Res.drawable.ic_log_out,
         titleRes = Res.string.log_out,
         colorToken = ColorToken.TextDestructive,

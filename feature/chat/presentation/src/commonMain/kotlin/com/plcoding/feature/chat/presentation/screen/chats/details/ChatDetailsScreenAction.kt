@@ -5,8 +5,11 @@ import com.plcoding.core.designsystem.model.DropDownItemUi
 sealed interface ChatDetailsScreenAction {
   data object OnBackClick : ChatDetailsScreenAction
   data object OnMenuClick : ChatDetailsScreenAction
-  data object OnMenuDismissClick : ChatDetailsScreenAction
+  data object OnMenuDismiss : ChatDetailsScreenAction
   data class OnMenuItemClick(val dropDownItemPm: DropDownItemUi) : ChatDetailsScreenAction
-  data class OnRetryClick(val messageId: String) : ChatDetailsScreenAction
+  data class OnMessageLongClick(val messageId: String) : ChatDetailsScreenAction
+  data object OnMessageMenuDismiss : ChatDetailsScreenAction
+  data class OnMessageMenuItemClick(val dropDownItemPm: DropDownItemUi) : ChatDetailsScreenAction
+  data class OnMessageRetryClick(val messageId: String) : ChatDetailsScreenAction
   data object OnSendClick : ChatDetailsScreenAction
 }

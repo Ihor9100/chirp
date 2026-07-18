@@ -28,4 +28,6 @@ interface ChatsRemoteDataSource {
     chatId: String,
     memberIds: List<String>,
   ): Result<ChatDto, DataError.Remote>
+
+  suspend fun deleteChatMessage(messageId: String): Empty<DataError.Remote>
 }

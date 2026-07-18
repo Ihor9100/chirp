@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -18,7 +19,11 @@ fun ChatMessages(
   modifier: Modifier,
   chatMessagesUi: List<ChatMessageUi>,
   lazyListState: LazyListState,
-  onRetryClick: (messageId: String) -> Unit,
+  longPressedMessageId: String?,
+  onLongClick: (messageId: String) -> Unit,
+  onMenuClick: (DropDownItemUi) -> Unit,
+  onMenuDismiss: () -> Unit,
+  onRetry: (messageId: String) -> Unit,
 ) {
   LazyColumn(
     modifier = modifier,
@@ -35,7 +40,11 @@ fun ChatMessages(
         is ChatMessageUi.LocalMessageUi -> LocalMessage(
           modifier = Modifier,
           localMessageUi = it,
-          onRetryClick = onRetryClick,
+          longPressedMessageId = longPressedMessageId,
+          onLongClick = onLongClick,
+          onMenuClick = onMenuClick,
+          onMenuDismiss = onMenuDismiss,
+          onRetry = onRetry,
         )
         is ChatMessageUi.RemoteMessageUi -> RemoteMessage(
           modifier = Modifier,
@@ -55,7 +64,11 @@ private fun Themed(
       modifier = Modifier,
       chatMessagesUi = ChatMessageUi.mocks,
       lazyListState = rememberLazyListState(),
-      onRetryClick = {},
+      longPressedMessageId = "",
+      onLongClick = {},
+      onMenuClick = {},
+      onMenuDismiss = {},
+      onRetry = {},
     )
   }
 }

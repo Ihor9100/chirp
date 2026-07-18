@@ -14,6 +14,7 @@ data class ChatDetailsScreenUiState(
   val openChatManageEvent: Event<String>?,
   val leaveChatEvent: Event<Unit>?,
   val chatMessagesUi: List<ChatMessageUi>?,
+  val longPressedMessageId: String?,
   val scrollToBottom: Event<Unit>?,
   val multilineTextFieldUi: MultilineTextFieldUi,
 ) {
@@ -27,6 +28,7 @@ data class ChatDetailsScreenUiState(
         openChatManageEvent = null,
         leaveChatEvent = null,
         chatMessagesUi = null,
+        longPressedMessageId = null,
         scrollToBottom = null,
         multilineTextFieldUi = MultilineTextFieldUi.mock,
       )

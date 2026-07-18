@@ -72,4 +72,10 @@ class ChatsKtorRemoteDataSource(
       request = ChatMembersDto(memberIds),
     )
   }
+
+  override suspend fun deleteChatMessage(messageId: String): Empty<DataError.Remote> {
+    return httpClient.delete(
+      route = "/messages/$messageId"
+    )
+  }
 }

@@ -25,4 +25,5 @@ interface ChatRepository {
   suspend fun syncChats(): Empty<DataError>
   suspend fun leaveChat(chatId: String): Empty<DataError>
   suspend fun addChatMembers(chatId: String, memberIds: List<String>): Empty<DataError>
+  suspend fun deleteChatMessage(messageId: String): Empty<DataError.Remote>
 }

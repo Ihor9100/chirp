@@ -65,10 +65,8 @@ class ChatsRoomLocalDataSource(
     )
   }
 
-  override suspend fun deleteChatMessage(id: String): Empty<DataError.Local> {
-    return dbSafeCall {
-      chatMessagesDao.delete(id)
-    }
+  override suspend fun deleteChatMessage(id: String) {
+    return chatMessagesDao.delete(id)
   }
 
   override suspend fun replaceChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local> {

@@ -5,6 +5,7 @@ import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.core.domain.result.flatMap
 import com.plcoding.core.domain.result.map
+import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
 import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
 import com.plcoding.feature.chat.data.mapper.toDomain
@@ -101,6 +102,12 @@ class ChatDataRepository(
     return remoteDataSource
       .addChatMembers(chatId, memberIds)
       .flatMap { upsertChatDetails(it) }
+  }
+
+  override suspend fun deleteChatMessage(messageId: String): Empty<DataError.Remote> {
+    return remoteDataSource
+      .deleteChatMessage(messageId)
+      .onSuccess { localDataSource.deleteChatMessage(messageId) }
   }
 
   private suspend fun upsertChatDetails(chatDto: ChatDto): Empty<DataError> {
