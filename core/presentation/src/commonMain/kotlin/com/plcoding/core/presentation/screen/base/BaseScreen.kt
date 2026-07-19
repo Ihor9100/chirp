@@ -18,7 +18,7 @@ fun BaseScreen(
   BaseScreenOverlays(
     modifier = modifier
       .fillMaxSize()
-      .background(MaterialTheme.colorScheme.background)
+      .background(MaterialTheme.colorScheme.surfaceVariant)
       .clearFocusOnTab()
       .safeDrawingPadding(),
     baseUiState = baseUiState,

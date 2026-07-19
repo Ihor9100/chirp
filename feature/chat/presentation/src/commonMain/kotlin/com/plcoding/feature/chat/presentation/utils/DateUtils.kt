@@ -22,6 +22,14 @@ object DateUtils {
     val todayDate = clock.now().toLocalDateTime(timeZone).date
     val yesterdayDate = todayDate.minus(1, DateTimeUnit.DAY)
 
+    val formattedTime = messageDateTime.format(
+      LocalDateTime.Format {
+        amPmHour()
+        char(':')
+        minute()
+        amPmMarker("am", "pm")
+      }
+    )
     val formattedDateTime = messageDateTime.format(
       LocalDateTime.Format {
         day()
@@ -29,17 +37,13 @@ object DateUtils {
         monthNumber()
         char('/')
         year()
-        char(' ')
-        amPmHour()
-        char(':')
-        minute()
-        amPmMarker("am", "pm")
+        chars(" $formattedTime")
       }
     )
 
-    return when(messageDateTime.date) {
-      todayDate -> TextProvider.Resource(Res.string.today)
-      yesterdayDate -> TextProvider.Resource(Res.string.yesterday)
+    return when (messageDateTime.date) {
+      todayDate -> TextProvider.Resource(Res.string.today, listOf(formattedTime))
+      yesterdayDate -> TextProvider.Resource(Res.string.yesterday, listOf(formattedTime))
       else -> TextProvider.Dynamic(formattedDateTime)
     }
   }

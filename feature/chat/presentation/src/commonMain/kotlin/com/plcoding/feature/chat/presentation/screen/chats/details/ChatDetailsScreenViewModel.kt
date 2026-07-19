@@ -31,6 +31,8 @@ import com.plcoding.feature.chat.domain.repository.LiveChatRepository
 import com.plcoding.feature.chat.presentation.mapper.toChatHeaderUi
 import com.plcoding.feature.chat.presentation.mapper.toUi
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
+import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
+import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
@@ -71,7 +73,6 @@ class ChatDetailsScreenViewModel(
     super.onInitialize()
 
     observeConnectionState()
-    observeScrollToBottomEvent()
     observeChatDetails()
     observeCanSendMessage()
   }
@@ -98,27 +99,11 @@ class ChatDetailsScreenViewModel(
       .launchIn(viewModelScope)
   }
 
-  private fun observeScrollToBottomEvent() {
-    val currentMessages = screenUiState
-      .map { it.uiState.chatMessagesUi }
-      .distinctUntilChanged()
-
-    val newMessages = _chatDetails
-      .map { it?.chatMessagesAndMembers }
-
-    combine(
-      currentMessages,
-      newMessages,
-    ) { currentMessages, newMessages ->
-      val lastCurrent = currentMessages?.lastOrNull()?.id
-      val lastNew = newMessages?.lastOrNull()?.chatMessage?.id
-
-      if (lastCurrent != lastNew) {
-        updateUiState { copy(scrollToBottom = Event(Unit)) }
-      }
-    }
-      .launchIn(viewModelScope)
-  }
+  private data class ChatDetailsContent(
+    val chatEmptyStateUi: ChatEmptyStateUi?,
+    val chatHeaderUi: ChatHeaderUi?,
+    val chatMessagesUi: List<ChatMessageUi>?,
+  )
 
   private fun observeChatDetails() {
     combine(
@@ -127,15 +112,25 @@ class ChatDetailsScreenViewModel(
       _chatDetails,
     ) { authInfo, chatId, chatDetails ->
       val userId = authInfo?.user?.id
-
-      screenUiState.value.uiState.copy(
+      ChatDetailsContent(
         chatEmptyStateUi = getChatEmptyStateUi(chatId),
-        chatHeaderUi = chatDetails?.chat?.toChatHeaderUi(authInfo?.user?.id),
+        chatHeaderUi = chatDetails?.chat?.toChatHeaderUi(userId),
         chatMessagesUi = chatDetails?.chatMessagesAndMembers?.map { it.toUi(userId) },
       )
     }
       .flowOn(Dispatchers.IO)
-      .onEach { content -> updateUiState { content } }
+      .onEach { content ->
+        updateUiState {
+          val lastCurrentId = chatMessagesUi?.lastOrNull()?.id
+          val lastNewId = content.chatMessagesUi?.lastOrNull()?.id
+          copy(
+            chatEmptyStateUi = content.chatEmptyStateUi,
+            chatHeaderUi = content.chatHeaderUi,
+            chatMessagesUi = content.chatMessagesUi,
+            scrollToBottom = if (lastCurrentId != lastNewId) Event(Unit) else scrollToBottom,
+          )
+        }
+      }
       .launchIn(viewModelScope)
   }
 
