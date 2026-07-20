@@ -38,9 +38,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -80,14 +78,11 @@ class ChatDetailsScreenViewModel(
   private fun observeConnectionState() {
     liveChatRepository
       .connectionState
-      .distinctUntilChanged()
-      .onEach {
-        val isConnected = it == ConnectionState.CONNECTED
+      .combine(_chatId) { connectionState, chatId ->
+        val isConnected = connectionState == ConnectionState.CONNECTED
 
-        if (isConnected) {
-          _chatId.firstOrNull()?.let { chatId ->
-            chatRepository.syncChatMessages(chatId, null)
-          }
+        if (isConnected && chatId != null) {
+          chatRepository.syncChatMessages(chatId, before = null)
         }
 
         updateUiState {
