@@ -65,7 +65,9 @@ fun FormLayoutThemed(
 ) {
   Theme(isDarkTheme) {
     FormLayout(
-      modifier = Modifier.fillMaxSize(),
+      modifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.background),
       logo = { AppLogo(modifier = Modifier) },
       content = {
         Title(

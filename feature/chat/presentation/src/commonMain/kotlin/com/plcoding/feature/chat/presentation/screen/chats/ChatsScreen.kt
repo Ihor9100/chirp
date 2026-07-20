@@ -36,7 +36,9 @@ fun ChatsScreen(
   val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<String>(scaffoldDirective)
 
   BaseScreen(
-    baseUiState = screenUiState.baseUiState
+    baseUiState = screenUiState.baseUiState,
+    backgroundColor = null,
+    isSafeDrawing = false,
   ) {
     Content(
       navController = navController,

@@ -10,8 +10,8 @@ data class ChatUi(
   val chatHeaderUi: ChatHeaderUi,
   val content: TextProvider?,
   val backgroundColorToken: ColorToken,
-  val showVerticalDivider: Boolean,
-  val showHorizontalDivider: Boolean,
+  val isSelected: Boolean,
+  val isLast: Boolean,
 ) {
   companion object {
     val mocks

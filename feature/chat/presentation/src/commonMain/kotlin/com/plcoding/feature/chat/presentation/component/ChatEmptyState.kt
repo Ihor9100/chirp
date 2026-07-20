@@ -22,7 +22,7 @@ fun ChatEmptyState(
 ) {
   Column(
     modifier = modifier,
-    verticalArrangement = Arrangement.spacedBy(16.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterVertically),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     Image(

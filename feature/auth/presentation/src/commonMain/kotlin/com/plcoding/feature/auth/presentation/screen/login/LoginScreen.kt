@@ -23,8 +23,8 @@ import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLay
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.model.ScreenUiState
+import com.plcoding.core.presentation.screen.base.BaseScreen
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -41,6 +41,7 @@ fun LoginScreen(
 
   BaseScreen(
     baseUiState = state.baseUiState,
+    backgroundColor = MaterialTheme.colorScheme.background,
   ) {
     Content(
       uiState = state.uiState,
@@ -118,7 +119,8 @@ private fun Themed(
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseUiState = screenUiState.baseUiState
+      baseUiState = screenUiState.baseUiState,
+      backgroundColor = MaterialTheme.colorScheme.background,
     ) {
       Content(
         uiState = screenUiState.uiState,

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldDestinationItem
@@ -30,6 +31,7 @@ import chirp.feature.chat.presentation.generated.resources.ic_plus
 import com.plcoding.core.designsystem.components.button.FloatingButton
 import com.plcoding.core.designsystem.model.AvatarUi
 import com.plcoding.core.designsystem.style.Theme
+import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.model.ScreenUiState
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.feature.chat.presentation.component.Chat
@@ -58,7 +60,8 @@ fun ChatsListScreen(
   }
 
   BaseScreen(
-    baseUiState = state.baseUiState
+    baseUiState = state.baseUiState,
+    backgroundColor = MaterialTheme.colorScheme.extended.surfaceLower,
   ) {
     Content(
       uiState = state.uiState,
@@ -139,7 +142,8 @@ private fun Themed(
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseUiState = screenUiState.baseUiState
+      baseUiState = screenUiState.baseUiState,
+      backgroundColor = MaterialTheme.colorScheme.extended.surfaceLower,
     ) {
       Content(
         uiState = screenUiState.uiState,

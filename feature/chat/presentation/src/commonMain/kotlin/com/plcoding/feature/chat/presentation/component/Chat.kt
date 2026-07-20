@@ -37,7 +37,8 @@ fun Chat(
         .fillMaxWidth()
         .weight(1f)
         .background(chatUi.backgroundColorToken.toColor())
-        .padding(top = 16.dp),
+        .padding(top = 16.dp)
+        .then(if (chatUi.isLast) Modifier.padding(bottom = 16.dp) else Modifier),
       horizontalAlignment = Alignment.Start,
       verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -54,11 +55,11 @@ fun Chat(
           style = MaterialTheme.typography.bodySmall,
         )
       }
-      if (chatUi.showHorizontalDivider) {
+      if (!chatUi.isLast) {
         HorizontalDivider()
       }
     }
-    if (chatUi.showVerticalDivider) {
+    if (chatUi.isSelected) {
       VerticalDivider(
         modifier = Modifier.fillMaxHeight(),
         thickness = 3.dp,

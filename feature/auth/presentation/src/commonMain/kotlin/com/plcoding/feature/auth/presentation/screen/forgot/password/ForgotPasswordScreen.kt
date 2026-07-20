@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,8 +19,8 @@ import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
-import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.model.ScreenUiState
+import com.plcoding.core.presentation.screen.base.BaseScreen
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -40,7 +41,8 @@ fun ForgotPasswordScreen(
   }
 
   BaseScreen(
-    baseUiState = state.baseUiState
+    baseUiState = state.baseUiState,
+    backgroundColor = MaterialTheme.colorScheme.background
   ) {
     Content(
       uiState = state.uiState,
@@ -87,7 +89,8 @@ private fun Themed(
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseUiState = screenUiState.baseUiState
+      baseUiState = screenUiState.baseUiState,
+      backgroundColor = MaterialTheme.colorScheme.background
     ) {
       Content(
         uiState = screenUiState.uiState,

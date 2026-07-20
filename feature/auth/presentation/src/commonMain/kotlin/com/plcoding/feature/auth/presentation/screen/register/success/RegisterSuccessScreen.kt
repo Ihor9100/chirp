@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -29,7 +30,8 @@ fun RegisterSuccessScreen(
   val state by viewModel.screenUiState.collectAsStateWithLifecycle()
 
   BaseScreen(
-    baseUiState = state.baseUiState
+    baseUiState = state.baseUiState,
+    backgroundColor = MaterialTheme.colorScheme.background,
   ) {
     Content(
       uiState = state.uiState,
@@ -91,7 +93,8 @@ private fun Themed(
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseUiState = screenUiState.baseUiState
+      baseUiState = screenUiState.baseUiState,
+      backgroundColor = MaterialTheme.colorScheme.background,
     ) {
       Content(
         uiState = screenUiState.uiState,

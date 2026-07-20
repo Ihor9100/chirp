@@ -17,6 +17,7 @@ enum class ColorToken {
 
   Background,
   Surface,
+  SurfaceLower,
 
   Error,
 
@@ -61,6 +62,7 @@ enum class ColorToken {
       TextDestructive -> MaterialTheme.colorScheme.extended.textDestructive
       Background -> MaterialTheme.colorScheme.background
       Surface -> MaterialTheme.colorScheme.surface
+      SurfaceLower -> MaterialTheme.colorScheme.extended.surfaceLower
       Error -> MaterialTheme.colorScheme.error
       CakeViolet -> MaterialTheme.colorScheme.extended.cakeViolet
       CakeGreen -> MaterialTheme.colorScheme.extended.cakeGreen

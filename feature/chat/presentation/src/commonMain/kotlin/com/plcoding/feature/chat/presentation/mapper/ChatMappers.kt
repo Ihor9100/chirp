@@ -22,9 +22,9 @@ fun Chat.toUi(
     id = id,
     chatHeaderUi = toChatHeaderUi(yourId),
     content = getLastMessageContent(this, yourId),
-    backgroundColorToken = if (isSelected) ColorToken.Surface else ColorToken.Background,
-    showVerticalDivider = isSelected,
-    showHorizontalDivider = lastChatId != null && id != lastChatId,
+    backgroundColorToken = if (isSelected) ColorToken.Surface else ColorToken.SurfaceLower,
+    isSelected = isSelected,
+    isLast = id == lastChatId,
   )
 }
 

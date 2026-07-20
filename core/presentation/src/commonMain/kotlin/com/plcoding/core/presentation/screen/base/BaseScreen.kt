@@ -3,9 +3,9 @@ package com.plcoding.core.presentation.screen.base
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.plcoding.core.presentation.model.BaseUiState
 import com.plcoding.core.presentation.utils.clearFocusOnTab
 
@@ -13,14 +13,16 @@ import com.plcoding.core.presentation.utils.clearFocusOnTab
 fun BaseScreen(
   modifier: Modifier = Modifier,
   baseUiState: BaseUiState,
+  backgroundColor: Color?,
+  isSafeDrawing: Boolean = true,
   content: @Composable () -> Unit,
 ) {
   BaseScreenOverlays(
     modifier = modifier
       .fillMaxSize()
-      .background(MaterialTheme.colorScheme.surfaceVariant)
+      .then(backgroundColor?.let(Modifier::background) ?: Modifier)
       .clearFocusOnTab()
-      .safeDrawingPadding(),
+      .then(if (isSafeDrawing) Modifier.safeDrawingPadding() else Modifier),
     baseUiState = baseUiState,
     content = content,
   )

@@ -23,8 +23,8 @@ import com.plcoding.core.designsystem.components.layout.ResultLayout
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveResultLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
-import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.model.ScreenUiState
+import com.plcoding.core.presentation.screen.base.BaseScreen
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -37,7 +37,8 @@ fun EmailVerificationScreen(
   val state by viewModel.screenUiState.collectAsStateWithLifecycle()
 
   BaseScreen(
-    baseUiState = state.baseUiState
+    baseUiState = state.baseUiState,
+    backgroundColor = MaterialTheme.colorScheme.background
   ) {
     Content(
       uiState = state.uiState,
@@ -53,15 +54,9 @@ private fun Content(
 ) {
   AdaptiveResultLayout {
     when (uiState) {
-      is EmailVerificationUiState.Failed -> FailedContent(
-        uiState,
-        onAction
-      )
+      is EmailVerificationUiState.Failed -> FailedContent(uiState, onAction)
       is EmailVerificationUiState.Loading -> LoadingContent(uiState)
-      is EmailVerificationUiState.Success -> SuccessContent(
-        uiState,
-        onAction
-      )
+      is EmailVerificationUiState.Success -> SuccessContent(uiState, onAction)
     }
   }
 }
@@ -149,7 +144,8 @@ private fun Themed(
 
   Theme(isDarkMode = true) {
     BaseScreen(
-      baseUiState = screenUiState.baseUiState
+      baseUiState = screenUiState.baseUiState,
+      backgroundColor = MaterialTheme.colorScheme.background,
     ) {
       Content(
         uiState = screenUiState.uiState,

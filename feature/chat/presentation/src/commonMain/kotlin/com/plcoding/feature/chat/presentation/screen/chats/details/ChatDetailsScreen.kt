@@ -38,6 +38,7 @@ import com.plcoding.core.designsystem.components.DropDownMenu
 import com.plcoding.core.designsystem.components.button.IconButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
 import com.plcoding.core.designsystem.style.Theme
+import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.model.ScreenUiState
@@ -46,6 +47,7 @@ import com.plcoding.feature.chat.presentation.component.ChatEmptyState
 import com.plcoding.feature.chat.presentation.component.ChatHeader
 import com.plcoding.feature.chat.presentation.component.ChatMessages
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -69,6 +71,8 @@ fun ChatDetailsScreen(
   }
 
   LaunchedEffect(chatId) {
+    // To prevent EmptyState blinking during navigation animation
+    if (chatId == null) delay(100)
     viewModel.loadChat(chatId)
   }
 
@@ -94,7 +98,9 @@ fun ChatDetailsScreen(
   }
 
   BaseScreen(
-    baseUiState = screenUiState.baseUiState
+    modifier = getBaseScreenModifier(deviceConfiguration),
+    baseUiState = screenUiState.baseUiState,
+    backgroundColor = null,
   ) {
     Content(
       uiState = screenUiState.uiState,
@@ -127,24 +133,18 @@ private fun Content(
   onAction: (ChatDetailsScreenAction) -> Unit,
 ) {
   Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .then(
-        if (deviceConfiguration.isWideScreen) {
-          Modifier
-            .padding(vertical = 8.dp)
-            .padding(end = 8.dp)
-        } else {
-          Modifier
-            .background(MaterialTheme.colorScheme.surface)
-        }
-      ),
+    modifier = Modifier.fillMaxSize(),
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     if (uiState.chatEmptyStateUi != null) {
       ChatEmptyState(
-        modifier = Modifier,
+        modifier = Modifier
+          .fillMaxSize()
+          .background(
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+          ),
         chatEmptyStateUi = uiState.chatEmptyStateUi,
       )
     } else {
@@ -229,6 +229,18 @@ private fun Content(
 }
 
 @Composable
+private fun getBaseScreenModifier(deviceConfiguration: DeviceConfiguration): Modifier {
+  return if (deviceConfiguration.isWideScreen) {
+    Modifier
+      .background(MaterialTheme.colorScheme.extended.surfaceLower)
+      .padding(top = 8.dp, bottom = 8.dp, end = 8.dp)
+  } else {
+    Modifier
+      .background(MaterialTheme.colorScheme.surface)
+  }
+}
+
+@Composable
 private fun Themed(
   isDarkTheme: Boolean,
   deviceConfiguration: DeviceConfiguration,
@@ -238,7 +250,9 @@ private fun Themed(
 
   Theme(isDarkTheme) {
     BaseScreen(
-      baseUiState = screenUiState.baseUiState
+      modifier = getBaseScreenModifier(deviceConfiguration),
+      baseUiState = screenUiState.baseUiState,
+      backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
       Content(
         uiState = screenUiState.uiState,

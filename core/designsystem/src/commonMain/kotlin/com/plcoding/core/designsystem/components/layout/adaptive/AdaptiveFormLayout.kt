@@ -131,7 +131,8 @@ private fun Themed(
   Theme(isDarkTheme) {
     AdaptiveFormLayout(
       modifier = Modifier
-        .fillMaxSize(),
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.background),
       deviceConfiguration = deviceConfiguration,
       logo = ::AppLogo,
       title = "Hello World",
