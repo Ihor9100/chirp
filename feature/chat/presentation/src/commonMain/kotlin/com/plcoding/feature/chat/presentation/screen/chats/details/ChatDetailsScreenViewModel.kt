@@ -29,6 +29,7 @@ import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import com.plcoding.feature.chat.domain.model.ConnectionState
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.domain.repository.LiveChatRepository
+import com.plcoding.feature.chat.domain.utils.ChatsConstants.PAGE_SIZE
 import com.plcoding.feature.chat.presentation.mapper.toChatHeaderUi
 import com.plcoding.feature.chat.presentation.mapper.toUi
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
@@ -143,20 +144,23 @@ class ChatDetailsScreenViewModel(
 
   private fun observeChatId() {
     _chatId
-      .onEach { if (it == null) paginator = null else setupPaginator() }
+      .onEach { chatId ->
+        paginator = if (chatId == null) {
+          null
+        } else {
+          Paginator(
+            // First page
+            initialKey = null,
+            onRequest = { chatRepository.syncChatMessages(chatId, before = it) },
+            getNextKey = { it.minOfOrNull(ChatMessage::createdAt).toString() },
+            onLoad = { updateUiState { copy(isPageLoading = it) } },
+            onSuccess = { updateUiState { copy(isLastPage = it.size < PAGE_SIZE) } },
+            onError = { updateUiState { copy(pageLoadingError = it.toStringRes()) } },
+          )
+        }
+        paginator?.reset()
+      }
       .launchIn(viewModelScope)
-  }
-
-  private fun setupPaginator() {
-    paginator = Paginator(
-      // First page
-      initialKey = null,
-      onRequest = { chatRepository.syncChatMessages(_chatId.first()!!, before = null) },
-      getNextKey = { it.minOfOrNull(ChatMessage::createdAt).toString() },
-      onLoad = { isLoading -> },
-      onSuccess = {},
-      onError = {},
-    )
   }
 
   fun loadChat(chatId: String?) {
@@ -197,7 +201,19 @@ class ChatDetailsScreenViewModel(
       is ChatDetailsScreenAction.OnSendClick -> {
         sendMessage()
       }
+      is ChatDetailsScreenAction.OnScrollToTop -> {
+        loadNextChatMessages()
+      }
+      is ChatDetailsScreenAction.OnPageRetryClick -> {
+        loadNextChatMessages()
+      }
       else -> Unit
+    }
+  }
+
+  private fun loadNextChatMessages() {
+    viewModelScope.launch {
+      paginator?.loadNextItems()
     }
   }
 

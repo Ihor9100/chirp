@@ -205,10 +205,13 @@ private fun Content(
           chatMessagesUi = uiState.chatMessagesUi,
           lazyListState = lazyListState,
           longPressedMessageId = uiState.longPressedMessageId,
+          isPageLoading = uiState.isPageLoading,
+          pageLoadingError = uiState.pageLoadingError,
           onLongClick = { onAction(ChatDetailsScreenAction.OnMessageLongClick(it)) },
-          onMenuClick = { onAction(ChatDetailsScreenAction.OnMessageMenuItemClick(it)) },
+          onMenuItemClick = { onAction(ChatDetailsScreenAction.OnMessageMenuItemClick(it)) },
           onMenuDismiss = { onAction(ChatDetailsScreenAction.OnMessageMenuDismiss) },
-          onRetry = { onAction(ChatDetailsScreenAction.OnMessageRetryClick(it)) }
+          onMessageRetryClick = { onAction(ChatDetailsScreenAction.OnMessageRetryClick(it)) },
+          onPageRetryClick = { onAction(ChatDetailsScreenAction.OnPageRetryClick) }
         )
       }
       MultilineTextField(

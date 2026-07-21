@@ -11,5 +11,7 @@ sealed interface ChatDetailsScreenAction {
   data object OnMessageMenuDismiss : ChatDetailsScreenAction
   data class OnMessageMenuItemClick(val dropDownItemPm: DropDownItemUi) : ChatDetailsScreenAction
   data class OnMessageRetryClick(val messageId: String) : ChatDetailsScreenAction
+  data object OnScrollToTop : ChatDetailsScreenAction
+  data object OnPageRetryClick : ChatDetailsScreenAction
   data object OnSendClick : ChatDetailsScreenAction
 }

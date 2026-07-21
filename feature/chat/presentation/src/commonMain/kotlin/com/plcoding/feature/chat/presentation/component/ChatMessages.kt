@@ -1,18 +1,32 @@
 package com.plcoding.feature.chat.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import chirp.core.presentation.generated.resources.retry
+import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.designsystem.style.Theme
+import com.plcoding.core.designsystem.style.extended
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import chirp.core.presentation.generated.resources.Res as CoreRes
 
 @Composable
 fun ChatMessages(
@@ -20,10 +34,13 @@ fun ChatMessages(
   chatMessagesUi: List<ChatMessageUi>,
   lazyListState: LazyListState,
   longPressedMessageId: String?,
+  isPageLoading: Boolean,
+  pageLoadingError: StringResource?,
   onLongClick: (messageId: String) -> Unit,
-  onMenuClick: (DropDownItemUi) -> Unit,
+  onMenuItemClick: (DropDownItemUi) -> Unit,
   onMenuDismiss: () -> Unit,
-  onRetry: (messageId: String) -> Unit,
+  onMessageRetryClick: (messageId: String) -> Unit,
+  onPageRetryClick: () -> Unit,
 ) {
   LazyColumn(
     modifier = modifier,
@@ -42,14 +59,43 @@ fun ChatMessages(
           localMessageUi = it,
           longPressedMessageId = longPressedMessageId,
           onLongClick = onLongClick,
-          onMenuClick = onMenuClick,
+          onMenuClick = onMenuItemClick,
           onMenuDismiss = onMenuDismiss,
-          onRetry = onRetry,
+          onRetry = onMessageRetryClick,
         )
         is ChatMessageUi.RemoteMessageUi -> RemoteMessage(
           modifier = Modifier,
           remoteMessagePm = it,
         )
+      }
+    }
+    when {
+      isPageLoading -> item {
+        Box(
+          modifier = Modifier.fillMaxWidth(),
+          contentAlignment = Alignment.Center,
+        ) {
+          CircularProgressIndicator()
+        }
+      }
+      pageLoadingError != null -> item {
+        Column(
+          modifier = Modifier.fillMaxWidth(),
+          verticalArrangement = Arrangement.spacedBy(8.dp),
+          horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+          Button(
+            text = stringResource(CoreRes.string.retry),
+            style = ButtonStyle.SECONDARY,
+            onClick = onPageRetryClick,
+          )
+          Text(
+            text = stringResource(pageLoadingError),
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.extended.textSecondary,
+            style = MaterialTheme.typography.headlineLarge,
+          )
+        }
       }
     }
   }
@@ -65,10 +111,13 @@ private fun Themed(
       chatMessagesUi = ChatMessageUi.mocks,
       lazyListState = rememberLazyListState(),
       longPressedMessageId = "",
+      isPageLoading = false,
+      pageLoadingError = null,
       onLongClick = {},
-      onMenuClick = {},
+      onMenuItemClick = {},
       onMenuDismiss = {},
-      onRetry = {},
+      onMessageRetryClick = {},
+      onPageRetryClick = {},
     )
   }
 }

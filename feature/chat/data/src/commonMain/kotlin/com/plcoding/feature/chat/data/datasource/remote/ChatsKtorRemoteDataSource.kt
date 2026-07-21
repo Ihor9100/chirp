@@ -6,7 +6,7 @@ import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
-import com.plcoding.feature.chat.data.datasource.utils.ChatsConstants
+import com.plcoding.feature.chat.domain.utils.ChatsConstants
 import com.plcoding.feature.chat.data.model.ChatCreateRequestDto
 import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.data.model.ChatMemberDto

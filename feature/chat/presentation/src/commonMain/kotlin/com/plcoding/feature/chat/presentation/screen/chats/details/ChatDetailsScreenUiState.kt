@@ -6,6 +6,7 @@ import com.plcoding.core.presentation.event.Event
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
 import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
+import org.jetbrains.compose.resources.StringResource
 
 data class ChatDetailsScreenUiState(
   val chatEmptyStateUi: ChatEmptyStateUi?,
@@ -14,6 +15,9 @@ data class ChatDetailsScreenUiState(
   val openChatManageEvent: Event<String>?,
   val leaveChatEvent: Event<Unit>?,
   val chatMessagesUi: List<ChatMessageUi>?,
+  val isPageLoading: Boolean,
+  val pageLoadingError: StringResource?,
+  val isLastPage: Boolean,
   val longPressedMessageId: String?,
   val scrollToBottom: Event<Unit>?,
   val multilineTextFieldUi: MultilineTextFieldUi,
@@ -28,6 +32,9 @@ data class ChatDetailsScreenUiState(
         openChatManageEvent = null,
         leaveChatEvent = null,
         chatMessagesUi = null,
+        isPageLoading = false,
+        pageLoadingError = null,
+        isLastPage = false,
         longPressedMessageId = null,
         scrollToBottom = null,
         multilineTextFieldUi = MultilineTextFieldUi.mock,

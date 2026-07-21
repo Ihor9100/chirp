@@ -12,7 +12,7 @@ class Paginator<Key, Item>(
   private val onRequest: suspend (Key?) -> Result<List<Item>, DataError>,
   private val getNextKey: (List<Item>) -> Key?,
   private val onLoad: (Boolean) -> Unit,
-  private val onSuccess: () -> Unit,
+  private val onSuccess: (List<Item>) -> Unit,
   private val onError: (DataError) -> Unit,
 ) {
 
@@ -20,7 +20,7 @@ class Paginator<Key, Item>(
   private var currentKey: Key? = null
   private var isMakingRequest = false
 
-  suspend fun loadItems() {
+  suspend fun loadNextItems() {
     if (isMakingRequest) return
     if (nextKey != null && nextKey == currentKey) return
 
@@ -30,7 +30,7 @@ class Paginator<Key, Item>(
     try {
       onRequest(nextKey)
         .onSuccess {
-          onSuccess()
+          onSuccess(it)
           currentKey = nextKey
           nextKey = getNextKey(it)
         }
