@@ -54,10 +54,7 @@ class LiveChatDataRepository(
 
   override suspend fun sendMessage(chatMessage: ChatMessage): Empty<DataError> {
     return dbSafeCall {
-      val authInfo = preferencesRepository.observeAuthInfo().firstOrNull()
-        ?: return Result.Failure(DataError.Local.NOT_FOUND)
-
-      val chatMessageEntity = chatMessage.toEntity(authInfo.user.id)
+      val chatMessageEntity = chatMessage.toEntity()
       localDataSource.upsertChatMessage(chatMessageEntity)
 
       val outgoingMessageDto = chatMessage.toOutgoingMessageDto()

@@ -89,7 +89,7 @@ fun ChatMessage.toOutgoingMessageDto(): WebSocketPayloadDto.OutgoingMessageDto {
   )
 }
 
-fun ChatMessage.toEntity(senderId: String): ChatMessageEntity {
+fun ChatMessage.toEntity(): ChatMessageEntity {
   return ChatMessageEntity(
     id = id,
     chatId = chatId,

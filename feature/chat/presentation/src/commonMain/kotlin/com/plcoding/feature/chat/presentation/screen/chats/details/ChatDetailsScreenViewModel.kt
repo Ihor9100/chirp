@@ -17,6 +17,7 @@ import chirp.feature.chat.presentation.generated.resources.select_chat_subtitle
 import chirp.feature.chat.presentation.generated.resources.success
 import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.designsystem.style.ColorToken
+import com.plcoding.core.domain.paging.Paginator
 import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -63,6 +64,8 @@ class ChatDetailsScreenViewModel(
     .map { it.orEmpty() }
     .flatMapLatest(chatRepository::observeChatDetails)
 
+  private var paginator: Paginator<String?, ChatMessage>? = null
+
   override fun getUiState(): ChatDetailsScreenUiState {
     return ChatDetailsScreenUiState.mock
   }
@@ -73,6 +76,7 @@ class ChatDetailsScreenViewModel(
     observeConnectionState()
     observeChatDetails()
     observeCanSendMessage()
+    observeChatId()
   }
 
   private fun observeConnectionState() {
@@ -94,12 +98,6 @@ class ChatDetailsScreenViewModel(
       .launchIn(viewModelScope)
   }
 
-  private data class ChatDetailsContent(
-    val chatEmptyStateUi: ChatEmptyStateUi?,
-    val chatHeaderUi: ChatHeaderUi?,
-    val chatMessagesUi: List<ChatMessageUi>?,
-  )
-
   private fun observeChatDetails() {
     combine(
       preferencesRepository.observeAuthInfo(),
@@ -107,21 +105,21 @@ class ChatDetailsScreenViewModel(
       _chatDetails,
     ) { authInfo, chatId, chatDetails ->
       val userId = authInfo?.user?.id
-      ChatDetailsContent(
+      ChatDetailsScreenUiState.mock.copy(
         chatEmptyStateUi = getChatEmptyStateUi(chatId),
         chatHeaderUi = chatDetails?.chat?.toChatHeaderUi(userId),
         chatMessagesUi = chatDetails?.chatMessagesAndMembers?.map { it.toUi(userId) },
       )
     }
       .flowOn(Dispatchers.IO)
-      .onEach { content ->
+      .onEach {
         updateUiState {
           val lastCurrentId = chatMessagesUi?.lastOrNull()?.id
-          val lastNewId = content.chatMessagesUi?.lastOrNull()?.id
+          val lastNewId = it.chatMessagesUi?.lastOrNull()?.id
           copy(
-            chatEmptyStateUi = content.chatEmptyStateUi,
-            chatHeaderUi = content.chatHeaderUi,
-            chatMessagesUi = content.chatMessagesUi,
+            chatEmptyStateUi = it.chatEmptyStateUi,
+            chatHeaderUi = it.chatHeaderUi,
+            chatMessagesUi = it.chatMessagesUi,
             scrollToBottom = if (lastCurrentId != lastNewId) Event(Unit) else scrollToBottom,
           )
         }
@@ -141,6 +139,24 @@ class ChatDetailsScreenViewModel(
         }
       }
       .launchIn(viewModelScope)
+  }
+
+  private fun observeChatId() {
+    _chatId
+      .onEach { if (it == null) paginator = null else setupPaginator() }
+      .launchIn(viewModelScope)
+  }
+
+  private fun setupPaginator() {
+    paginator = Paginator(
+      // First page
+      initialKey = null,
+      onRequest = { chatRepository.syncChatMessages(_chatId.first()!!, before = null) },
+      getNextKey = { it.minOfOrNull(ChatMessage::createdAt).toString() },
+      onLoad = { isLoading -> },
+      onSuccess = {},
+      onError = {},
+    )
   }
 
   fun loadChat(chatId: String?) {
@@ -282,4 +298,10 @@ class ChatDetailsScreenViewModel(
       ),
     )
   }
+
+  private data class ChatDetailsContent(
+    val chatEmptyStateUi: ChatEmptyStateUi?,
+    val chatHeaderUi: ChatHeaderUi?,
+    val chatMessagesUi: List<ChatMessageUi>?,
+  )
 }

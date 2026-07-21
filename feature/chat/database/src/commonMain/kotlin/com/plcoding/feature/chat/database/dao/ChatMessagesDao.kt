@@ -23,11 +23,13 @@ interface ChatMessagesDao {
     upsert(entities)
   }
 
-  @Query("""
-    UPDATE chat_messages
-    SET status = :deliveryStatus, timestamp =:timestamp
-    WHERE id = :id
-  """)
+  @Query(
+    """
+      UPDATE chat_messages
+      SET status = :deliveryStatus, timestamp =:timestamp
+      WHERE id = :id
+    """
+  )
   suspend fun update(id: String, timestamp: Long, deliveryStatus: String)
 
   @Query("SELECT * FROM chat_messages WHERE id = :id")

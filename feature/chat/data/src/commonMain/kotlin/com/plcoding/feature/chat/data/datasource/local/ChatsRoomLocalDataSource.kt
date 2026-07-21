@@ -57,8 +57,14 @@ class ChatsRoomLocalDataSource(
     }
   }
 
+  override suspend fun upsertChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local> {
+    return dbSafeCall {
+      chatMessagesDao.upsert(entities)
+    }
+  }
+
   override suspend fun updateChatMessage(id: String, deliveryStatus: ChatMessageDeliveryStatus) {
-    return chatMessagesDao.update(
+    chatMessagesDao.update(
       id,
       Clock.System.now().toEpochMilliseconds(),
       deliveryStatus.name,
@@ -66,7 +72,7 @@ class ChatsRoomLocalDataSource(
   }
 
   override suspend fun deleteChatMessage(id: String) {
-    return chatMessagesDao.delete(id)
+    chatMessagesDao.delete(id)
   }
 
   override suspend fun replaceChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local> {
