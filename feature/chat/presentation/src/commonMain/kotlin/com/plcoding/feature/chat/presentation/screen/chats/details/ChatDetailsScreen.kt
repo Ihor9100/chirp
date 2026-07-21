@@ -97,6 +97,13 @@ fun ChatDetailsScreen(
     }
   }
 
+  LazyListScrollObserver(
+    lazyListState = lazyListState,
+    itemsCount = screenUiState.uiState.count, //pure items without date
+    isPageLoading = screenUiState.uiState.isPageLoading,
+    isLastPage = screenUiState.uiState.isLastPage,
+    onLoadMore = {viewModel.handleAction(ChatDetailsScreenAction.OnScrollToEnd)},
+  )
   BaseScreen(
     modifier = getBaseScreenModifier(deviceConfiguration),
     baseUiState = screenUiState.baseUiState,

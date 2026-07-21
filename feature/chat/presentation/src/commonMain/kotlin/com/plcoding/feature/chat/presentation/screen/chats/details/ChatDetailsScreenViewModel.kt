@@ -201,7 +201,7 @@ class ChatDetailsScreenViewModel(
       is ChatDetailsScreenAction.OnSendClick -> {
         sendMessage()
       }
-      is ChatDetailsScreenAction.OnScrollToTop -> {
+      is ChatDetailsScreenAction.OnScrollToEnd -> {
         loadNextChatMessages()
       }
       is ChatDetailsScreenAction.OnPageRetryClick -> {
