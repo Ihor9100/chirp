@@ -18,12 +18,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun LazyListScrollObserver(
   lazyListState: LazyListState,
-  itemsCount: Int,
   isPageLoading: Boolean,
   isLastPage: Boolean,
   onLoadMore: () -> Unit,
+  onScrollToStartChanged: (Boolean) -> Unit,
 ) {
-  val itemsCount by rememberUpdatedState(itemsCount)
   val isLastPage by rememberUpdatedState(isLastPage)
   val isPageLoading by rememberUpdatedState(isPageLoading)
   var lastItemsCount by remember { mutableIntStateOf(0) }
@@ -32,25 +31,40 @@ fun LazyListScrollObserver(
     snapshotFlow {
       val layoutInfo = lazyListState.layoutInfo
       val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index
-      val totalItemsCount = layoutInfo.totalItemsCount
+      val scrolledItemsCount = layoutInfo.visibleItemsInfo.firstOrNull()?.index
+      val currentItemsCount = layoutInfo.totalItemsCount
 
-      val remainingItemsCount = if (lastVisibleItemIndex != null) {
-        totalItemsCount - lastVisibleItemIndex - 1
-      } else {
-        null
+      val remainingItemsCount = lastVisibleItemIndex?.let {
+        currentItemsCount - lastVisibleItemIndex - 1
       }
 
-      remainingItemsCount != null &&
-        remainingItemsCount <= 5 &&
-        !isPageLoading &&
-        !isLastPage
+      println("lol: remainingItemsCount=$remainingItemsCount")
+      println("lol: scrolledItemsCount=$scrolledItemsCount")
+
+      LazyListScrollObserverState(
+        loadMore = remainingItemsCount != null &&
+          remainingItemsCount <= 5 &&
+          currentItemsCount > lastItemsCount &&
+          !isPageLoading &&
+          !isLastPage,
+        currentItemsCount = currentItemsCount,
+        showScrollToStart = scrolledItemsCount != null &&
+          scrolledItemsCount > 2
+      )
     }
       .distinctUntilChanged()
-      .collect { isEligible ->
-        if (isEligible && itemsCount > lastItemsCount) {
-          lastItemsCount = itemsCount
+      .collect {
+        if (it.loadMore) {
+          lastItemsCount = it.currentItemsCount
           onLoadMore()
         }
+        onScrollToStartChanged(it.showScrollToStart)
       }
   }
 }
+
+data class LazyListScrollObserverState(
+  val loadMore: Boolean,
+  val currentItemsCount: Int,
+  val showScrollToStart: Boolean,
+)

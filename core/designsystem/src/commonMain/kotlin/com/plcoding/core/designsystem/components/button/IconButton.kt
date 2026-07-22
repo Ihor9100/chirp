@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.Res
 import chirp.core.designsystem.generated.resources.ic_dots
@@ -22,6 +23,19 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun IconButton(
   modifier: Modifier = Modifier,
   iconRes: DrawableResource,
+  onClick: () -> Unit,
+) {
+  IconButton(
+    modifier = modifier,
+    imageVector = vectorResource(iconRes),
+    onClick = onClick,
+  )
+}
+
+@Composable
+fun IconButton(
+  modifier: Modifier = Modifier,
+  imageVector: ImageVector,
   onClick: () -> Unit,
 ) {
   OutlinedIconButton(
@@ -38,7 +52,7 @@ fun IconButton(
     ),
   ) {
     Icon(
-      imageVector = vectorResource(iconRes),
+      imageVector = imageVector,
       contentDescription = null,
     )
   }

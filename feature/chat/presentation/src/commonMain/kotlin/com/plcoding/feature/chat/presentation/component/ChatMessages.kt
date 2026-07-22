@@ -45,6 +45,7 @@ fun ChatMessages(
   LazyColumn(
     modifier = modifier,
     state = lazyListState,
+    reverseLayout = true,
     verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {

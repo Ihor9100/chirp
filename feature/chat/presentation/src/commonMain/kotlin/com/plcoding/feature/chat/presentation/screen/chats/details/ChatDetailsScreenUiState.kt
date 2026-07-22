@@ -19,7 +19,8 @@ data class ChatDetailsScreenUiState(
   val pageLoadingError: StringResource?,
   val isLastPage: Boolean,
   val longPressedMessageId: String?,
-  val scrollToBottom: Event<Unit>?,
+  val showScrollToStartButton: Boolean,
+  val scrollToStart: Event<Unit>?,
   val multilineTextFieldUi: MultilineTextFieldUi,
 ) {
 
@@ -36,7 +37,8 @@ data class ChatDetailsScreenUiState(
         pageLoadingError = null,
         isLastPage = false,
         longPressedMessageId = null,
-        scrollToBottom = null,
+        showScrollToStartButton = false,
+        scrollToStart = null,
         multilineTextFieldUi = MultilineTextFieldUi.mock,
       )
   }

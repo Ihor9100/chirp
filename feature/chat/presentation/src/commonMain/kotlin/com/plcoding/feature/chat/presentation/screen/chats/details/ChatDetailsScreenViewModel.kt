@@ -87,7 +87,7 @@ class ChatDetailsScreenViewModel(
         val isConnected = connectionState == ConnectionState.CONNECTED
 
         if (isConnected && chatId != null) {
-          chatRepository.syncChatMessages(chatId, before = null)
+          loadNextChatMessages()
         }
 
         updateUiState {
@@ -115,13 +115,13 @@ class ChatDetailsScreenViewModel(
       .flowOn(Dispatchers.IO)
       .onEach {
         updateUiState {
-          val lastCurrentId = chatMessagesUi?.lastOrNull()?.id
-          val lastNewId = it.chatMessagesUi?.lastOrNull()?.id
+          val startCurrentId = chatMessagesUi?.firstOrNull()?.id
+          val startNewId = it.chatMessagesUi?.firstOrNull()?.id
           copy(
             chatEmptyStateUi = it.chatEmptyStateUi,
             chatHeaderUi = it.chatHeaderUi,
             chatMessagesUi = it.chatMessagesUi,
-            scrollToBottom = if (lastCurrentId != lastNewId) Event(Unit) else scrollToBottom,
+            scrollToStart = if (startCurrentId != startNewId) Event(Unit) else null,
           )
         }
       }
@@ -166,12 +166,15 @@ class ChatDetailsScreenViewModel(
   fun loadChat(chatId: String?) {
     _chatId.update { chatId }
 
-    if (chatId != null) {
-      viewModelScope.launch {
-        chatRepository
-          .syncChat(chatId)
-          .onFailure { showSnackbar(it.toStringRes()) }
-      }
+    if (chatId == null) {
+      updateUiState { copy(chatMessagesUi = null) }
+      return
+    }
+
+    viewModelScope.launch {
+      chatRepository
+        .syncChat(chatId)
+        .onFailure { showSnackbar(it.toStringRes()) }
     }
   }
 
@@ -201,8 +204,14 @@ class ChatDetailsScreenViewModel(
       is ChatDetailsScreenAction.OnSendClick -> {
         sendMessage()
       }
-      is ChatDetailsScreenAction.OnScrollToEnd -> {
+      is ChatDetailsScreenAction.OnLoadMore -> {
         loadNextChatMessages()
+      }
+      is ChatDetailsScreenAction.OnScrollToStartChanged -> updateUiState {
+        copy(showScrollToStartButton = action.showScrollToStart)
+      }
+      is ChatDetailsScreenAction.OnScrollToStartClick -> updateUiState {
+        copy(scrollToStart = Event(Unit))
       }
       is ChatDetailsScreenAction.OnPageRetryClick -> {
         loadNextChatMessages()

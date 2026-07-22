@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -88,22 +90,26 @@ fun ChatDetailsScreen(
     }
   }
 
-  LaunchedEffect(screenUiState.uiState.scrollToBottom) {
-    screenUiState.uiState.scrollToBottom?.consumeAsync {
-      val lastIndex = screenUiState.uiState.chatMessagesUi?.lastIndex
-      if (lastIndex != null) {
-        lazyListState.animateScrollToItem(lastIndex)
-      }
+  LaunchedEffect(screenUiState.uiState.scrollToStart) {
+    screenUiState.uiState.scrollToStart?.consumeAsync {
+      // Temporary workaround for scrolling after messages appears in the list
+      delay(100)
+      lazyListState.animateScrollToItem(0)
     }
   }
 
   LazyListScrollObserver(
     lazyListState = lazyListState,
-    itemsCount = screenUiState.uiState.count, //pure items without date
     isPageLoading = screenUiState.uiState.isPageLoading,
     isLastPage = screenUiState.uiState.isLastPage,
-    onLoadMore = {viewModel.handleAction(ChatDetailsScreenAction.OnScrollToEnd)},
+    onLoadMore = { viewModel.handleAction(ChatDetailsScreenAction.OnLoadMore) },
+    onScrollToStartChanged = {
+      viewModel.handleAction(
+        ChatDetailsScreenAction.OnScrollToStartChanged(it)
+      )
+    }
   )
+
   BaseScreen(
     modifier = getBaseScreenModifier(deviceConfiguration),
     baseUiState = screenUiState.baseUiState,
@@ -194,7 +200,7 @@ private fun Content(
       }
       HorizontalDivider()
       if (uiState.chatMessagesUi != null) {
-        ChatMessages(
+        Box(
           modifier = Modifier
             .weight(1f)
             .fillMaxWidth()
@@ -209,17 +215,28 @@ private fun Content(
                 Modifier.padding(horizontal = 16.dp)
               }
             ),
-          chatMessagesUi = uiState.chatMessagesUi,
-          lazyListState = lazyListState,
-          longPressedMessageId = uiState.longPressedMessageId,
-          isPageLoading = uiState.isPageLoading,
-          pageLoadingError = uiState.pageLoadingError,
-          onLongClick = { onAction(ChatDetailsScreenAction.OnMessageLongClick(it)) },
-          onMenuItemClick = { onAction(ChatDetailsScreenAction.OnMessageMenuItemClick(it)) },
-          onMenuDismiss = { onAction(ChatDetailsScreenAction.OnMessageMenuDismiss) },
-          onMessageRetryClick = { onAction(ChatDetailsScreenAction.OnMessageRetryClick(it)) },
-          onPageRetryClick = { onAction(ChatDetailsScreenAction.OnPageRetryClick) }
-        )
+        ) {
+          ChatMessages(
+            modifier = Modifier,
+            chatMessagesUi = uiState.chatMessagesUi,
+            lazyListState = lazyListState,
+            longPressedMessageId = uiState.longPressedMessageId,
+            isPageLoading = uiState.isPageLoading,
+            pageLoadingError = uiState.pageLoadingError,
+            onLongClick = { onAction(ChatDetailsScreenAction.OnMessageLongClick(it)) },
+            onMenuItemClick = { onAction(ChatDetailsScreenAction.OnMessageMenuItemClick(it)) },
+            onMenuDismiss = { onAction(ChatDetailsScreenAction.OnMessageMenuDismiss) },
+            onMessageRetryClick = { onAction(ChatDetailsScreenAction.OnMessageRetryClick(it)) },
+            onPageRetryClick = { onAction(ChatDetailsScreenAction.OnPageRetryClick) }
+          )
+          if (uiState.showScrollToStartButton) {
+            IconButton(
+              modifier = Modifier.align(Alignment.BottomEnd),
+              imageVector = Icons.Default.ArrowDownward,
+              onClick = { onAction(ChatDetailsScreenAction.OnScrollToStartClick) }
+            )
+          }
+        }
       }
       MultilineTextField(
         modifier = Modifier
