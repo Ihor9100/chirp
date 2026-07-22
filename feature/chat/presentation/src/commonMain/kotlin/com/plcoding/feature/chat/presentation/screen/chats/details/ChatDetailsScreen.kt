@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -50,6 +51,7 @@ import com.plcoding.feature.chat.presentation.component.ChatHeader
 import com.plcoding.feature.chat.presentation.component.ChatMessages
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -78,6 +80,15 @@ fun ChatDetailsScreen(
     viewModel.loadChat(chatId)
   }
 
+  LaunchedEffect(chatId) {
+    // By default, scroll position is saved,
+    // so we need to reset it during first details opening
+    if (chatId == null) return@LaunchedEffect
+    snapshotFlow { lazyListState.layoutInfo.totalItemsCount }
+      .firstOrNull { it > 0 }
+      ?.let { lazyListState.scrollToItem(0) }
+  }
+
   LaunchedEffect(screenUiState.uiState.openChatManageEvent) {
     screenUiState.uiState.openChatManageEvent?.consume {
       navController.navigate(ChatRoute.ChatManage(it))
@@ -92,8 +103,6 @@ fun ChatDetailsScreen(
 
   LaunchedEffect(screenUiState.uiState.scrollToStart) {
     screenUiState.uiState.scrollToStart?.consumeAsync {
-      // Temporary workaround for scrolling after messages appears in the list
-      delay(100)
       lazyListState.animateScrollToItem(0)
     }
   }
