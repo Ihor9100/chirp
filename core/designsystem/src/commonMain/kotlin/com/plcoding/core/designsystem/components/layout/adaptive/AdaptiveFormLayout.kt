@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,6 +33,7 @@ import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
+import com.plcoding.core.designsystem.utils.windowInsetsPaddingOrMin
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -69,7 +74,13 @@ fun AdaptiveFormLayout(
         Column(
           modifier = Modifier
             .weight(1f)
-            .fillMaxHeight(),
+            .fillMaxHeight()
+            .windowInsetsPaddingOrMin(
+              insets = WindowInsets.safeDrawing,
+              sides = WindowInsetsSides.Top + WindowInsetsSides.Start,
+              minTop = 24.dp,
+              minStart = 16.dp,
+            ),
         ) {
           Spacer(Modifier.height(32.dp))
           AppLogo()
@@ -81,7 +92,14 @@ fun AdaptiveFormLayout(
           )
         }
         FormLayout(
-          modifier = Modifier.weight(1f),
+          modifier = Modifier
+            .weight(1f)
+            .windowInsetsPaddingOrMin(
+              insets = WindowInsets.safeDrawing,
+              sides = WindowInsetsSides.Top + WindowInsetsSides.End,
+              minTop = 16.dp,
+              minEnd = 16.dp,
+            ),
           contentColumnTopSpaceDp = 20.dp,
           content = form
         )
@@ -92,7 +110,8 @@ fun AdaptiveFormLayout(
     DeviceConfiguration.DESKTOP -> {
       Column(
         modifier = modifier
-          .fillMaxSize(),
+          .fillMaxSize()
+          .safeDrawingPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Spacer(Modifier.height(32.dp))

@@ -217,13 +217,7 @@ private fun Content(
               color = MaterialTheme.colorScheme.surface,
               shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
             )
-            .then(
-              if (deviceConfiguration.isWideScreen) {
-                Modifier.padding(24.dp)
-              } else {
-                Modifier.padding(horizontal = 16.dp)
-              }
-            ),
+            .padding(horizontal = if (deviceConfiguration.isWideScreen) 24.dp else 16.dp),
         ) {
           ChatMessages(
             modifier = Modifier,
@@ -240,7 +234,9 @@ private fun Content(
           )
           if (uiState.showScrollToStartButton) {
             IconButton(
-              modifier = Modifier.align(Alignment.BottomEnd),
+              modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 16.dp),
               imageVector = Icons.Default.ArrowDownward,
               onClick = { onAction(ChatDetailsScreenAction.OnScrollToStartClick) }
             )
@@ -248,14 +244,11 @@ private fun Content(
         }
       }
       MultilineTextField(
-        modifier = Modifier
-          .then(
-            if (deviceConfiguration.isWideScreen) {
-              Modifier.padding(top = 8.dp)
-            } else {
-              Modifier.padding(16.dp)
-            }
-          ),
+        modifier = if (deviceConfiguration.isWideScreen) {
+          Modifier.padding(top = 8.dp)
+        } else {
+          Modifier.padding(horizontal = 16.dp)
+        },
         deviceConfiguration = deviceConfiguration,
         multilineTextFieldPm = uiState.multilineTextFieldUi,
         onClick = { onAction(ChatDetailsScreenAction.OnSendClick) },
@@ -343,7 +336,7 @@ private fun DetailDarkPreview() {
   Themed(
     isDarkTheme = true,
     deviceConfiguration = DeviceConfiguration.MOBILE_PORTRAIT,
-    scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<String>(
+    scaffoldNavigator = rememberListDetailPaneScaffoldNavigator(
       initialDestinationHistory = listOf(
         ThreePaneScaffoldDestinationItem(
           pane = ListDetailPaneScaffoldRole.Detail,

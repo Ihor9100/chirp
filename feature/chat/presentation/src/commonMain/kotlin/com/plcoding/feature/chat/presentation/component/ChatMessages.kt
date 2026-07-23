@@ -3,6 +3,7 @@ package com.plcoding.feature.chat.presentation.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -45,6 +46,7 @@ fun ChatMessages(
   LazyColumn(
     modifier = modifier,
     state = lazyListState,
+    contentPadding = PaddingValues(vertical = 16.dp),
     reverseLayout = true,
     verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
     horizontalAlignment = Alignment.CenterHorizontally,

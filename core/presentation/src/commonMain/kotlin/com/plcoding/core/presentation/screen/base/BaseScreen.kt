@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.plcoding.core.designsystem.utils.clearFocusOnTab
 import com.plcoding.core.presentation.model.BaseUiState
-import com.plcoding.core.presentation.utils.clearFocusOnTab
 
 @Composable
 fun BaseScreen(

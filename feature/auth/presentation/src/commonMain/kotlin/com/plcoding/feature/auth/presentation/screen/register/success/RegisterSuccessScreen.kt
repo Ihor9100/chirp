@@ -32,6 +32,7 @@ fun RegisterSuccessScreen(
   BaseScreen(
     baseUiState = state.baseUiState,
     backgroundColor = MaterialTheme.colorScheme.background,
+    isSafeDrawing = false,
   ) {
     Content(
       uiState = state.uiState,

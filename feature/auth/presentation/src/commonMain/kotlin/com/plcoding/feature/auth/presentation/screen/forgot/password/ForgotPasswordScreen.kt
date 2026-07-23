@@ -42,7 +42,8 @@ fun ForgotPasswordScreen(
 
   BaseScreen(
     baseUiState = state.baseUiState,
-    backgroundColor = MaterialTheme.colorScheme.background
+    backgroundColor = MaterialTheme.colorScheme.background,
+    isSafeDrawing = false,
   ) {
     Content(
       uiState = state.uiState,
