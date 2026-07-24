@@ -11,6 +11,20 @@ import com.plcoding.feature.chat.presentation.model.ChatMessageStatusUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import com.plcoding.feature.chat.presentation.utils.DateUtils
 import com.plcoding.feature.chat.presentation.utils.FormatUtils.getInitials
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+
+fun List<ChatMessageAndMember>.toUiList(yourId: String?): List<ChatMessageUi> {
+  return groupBy {
+    val timeZone = TimeZone.currentSystemDefault()
+    it.chatMessage.createdAt.toLocalDateTime(timeZone).date
+  }.flatMap { (date, messages) ->
+    messages.map { it.toUi(yourId) } + ChatMessageUi.DateDividerUi(
+      id = date.toString(),
+      date = DateUtils.formatToDate(date),
+    )
+  }
+}
 
 fun ChatMessageAndMember.toUi(yourId: String?): ChatMessageUi {
   return if (chatMember.userId == yourId) {
@@ -19,7 +33,7 @@ fun ChatMessageAndMember.toUi(yourId: String?): ChatMessageUi {
       chatBoxUi = ChatBoxUi(
         anchorPositionUi = AnchorPositionUi.RIGHT,
         sender = chatMember.username,
-        date = DateUtils.formatMessageTime(chatMessage.createdAt),
+        date = DateUtils.formatToDateTime(chatMessage.createdAt),
         message = chatMessage.content,
         colorToken = ColorToken.get(chatMember.userId),
       ),
@@ -41,7 +55,7 @@ fun ChatMessageAndMember.toUi(yourId: String?): ChatMessageUi {
       chatBoxUi = ChatBoxUi(
         anchorPositionUi = AnchorPositionUi.LEFT,
         sender = chatMember.username,
-        date = DateUtils.formatMessageTime(chatMessage.createdAt),
+        date = DateUtils.formatToDateTime(chatMessage.createdAt),
         message = chatMessage.content,
         colorToken = ColorToken.get(chatMember.userId),
       ),

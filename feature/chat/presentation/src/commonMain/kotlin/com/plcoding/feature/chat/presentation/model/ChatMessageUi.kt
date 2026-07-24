@@ -1,17 +1,18 @@
 package com.plcoding.feature.chat.presentation.model
 
 import com.plcoding.core.designsystem.model.AvatarUi
+import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.feature.chat.domain.model.ChatMessage
 
 sealed class ChatMessageUi(open val id: String) {
 
   data class DateDividerUi(
     override val id: String,
-    val date: String,
+    val date: TextProvider,
   ) : ChatMessageUi(id) {
 
     companion object {
-      val mock get() = DateDividerUi("Today", "Today")
+      val mock get() = DateDividerUi("Today", TextProvider.Dynamic("Today"))
     }
   }
 

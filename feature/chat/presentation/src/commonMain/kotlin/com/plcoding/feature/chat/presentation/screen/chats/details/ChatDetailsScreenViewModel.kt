@@ -31,7 +31,7 @@ import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.domain.repository.LiveChatRepository
 import com.plcoding.feature.chat.domain.utils.ChatsConstants.PAGE_SIZE
 import com.plcoding.feature.chat.presentation.mapper.toChatHeaderUi
-import com.plcoding.feature.chat.presentation.mapper.toUi
+import com.plcoding.feature.chat.presentation.mapper.toUiList
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
 import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
@@ -109,7 +109,7 @@ class ChatDetailsScreenViewModel(
       ChatDetailsScreenUiState.mock.copy(
         chatEmptyStateUi = getChatEmptyStateUi(chatId),
         chatHeaderUi = chatDetails?.chat?.toChatHeaderUi(userId),
-        chatMessagesUi = chatDetails?.chatMessagesAndMembers?.map { it.toUi(userId) },
+        chatMessagesUi = chatDetails?.chatMessagesAndMembers?.toUiList(userId),
       )
     }
       .flowOn(Dispatchers.IO)

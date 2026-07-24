@@ -29,7 +29,7 @@ fun DateDivider(
     )
     Text(
       modifier = Modifier.padding(horizontal = 32.dp),
-      text = dateDividerPm.date,
+      text = dateDividerPm.date.get(),
       color = MaterialTheme.colorScheme.extended.textPlaceholder,
       style = MaterialTheme.typography.labelSmall,
     )
