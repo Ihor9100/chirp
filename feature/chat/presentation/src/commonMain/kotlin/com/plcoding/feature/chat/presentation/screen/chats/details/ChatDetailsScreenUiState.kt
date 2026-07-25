@@ -3,6 +3,7 @@ package com.plcoding.feature.chat.presentation.screen.chats.details
 import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.designsystem.model.MultilineTextFieldUi
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
 import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
@@ -15,6 +16,9 @@ data class ChatDetailsScreenUiState(
   val openChatManageEvent: Event<String>?,
   val leaveChatEvent: Event<Unit>?,
   val chatMessagesUi: List<ChatMessageUi>?,
+  val isNearStart: Boolean,
+  val lastChatMessagesCount: Int,
+  val stickyDate: TextProvider?,
   val isPageLoading: Boolean,
   val pageLoadingError: StringResource?,
   val isLastPage: Boolean,
@@ -33,6 +37,9 @@ data class ChatDetailsScreenUiState(
         openChatManageEvent = null,
         leaveChatEvent = null,
         chatMessagesUi = null,
+        isNearStart = false,
+        lastChatMessagesCount = 0,
+        stickyDate = null,
         isPageLoading = false,
         pageLoadingError = null,
         isLastPage = false,

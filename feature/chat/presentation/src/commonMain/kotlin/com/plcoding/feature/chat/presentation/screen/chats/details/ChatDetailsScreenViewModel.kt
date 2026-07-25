@@ -15,6 +15,8 @@ import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.no_messages
 import chirp.feature.chat.presentation.generated.resources.select_chat_subtitle
 import chirp.feature.chat.presentation.generated.resources.success
+import chirp.feature.chat.presentation.generated.resources.today
+import chirp.feature.chat.presentation.generated.resources.yesterday
 import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.paging.Paginator
@@ -22,6 +24,7 @@ import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
+import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.toStringRes
 import com.plcoding.feature.chat.domain.model.ChatMessage
@@ -38,6 +41,7 @@ import com.plcoding.feature.chat.presentation.model.ChatMessageUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -49,6 +53,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.seconds
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import chirp.core.designsystem.generated.resources.Res as CoreRes
@@ -117,11 +122,13 @@ class ChatDetailsScreenViewModel(
         updateUiState {
           val startCurrentId = chatMessagesUi?.firstOrNull()?.id
           val startNewId = it.chatMessagesUi?.firstOrNull()?.id
+          val scrollToStart = startCurrentId != startNewId && isNearStart
+
           copy(
             chatEmptyStateUi = it.chatEmptyStateUi,
             chatHeaderUi = it.chatHeaderUi,
             chatMessagesUi = it.chatMessagesUi,
-            scrollToStart = if (startCurrentId != startNewId) Event(Unit) else null,
+            scrollToStart = if (scrollToStart) Event(Unit) else null,
           )
         }
       }
@@ -204,11 +211,11 @@ class ChatDetailsScreenViewModel(
       is ChatDetailsScreenAction.OnSendClick -> {
         sendMessage()
       }
-      is ChatDetailsScreenAction.OnLoadMore -> {
-        loadNextChatMessages()
-      }
-      is ChatDetailsScreenAction.OnScrollToStartChanged -> updateUiState {
-        copy(showScrollToStartButton = action.showScrollToStart)
+      is ChatDetailsScreenAction.OnScroll -> {
+        loadNextChatMessages(action.lazyListScrollInfo)
+        toggleScrollToStart(action.lazyListScrollInfo)
+        toggleStickyDate(action.lazyListScrollInfo)
+        toggleIsNearStart(action.lazyListScrollInfo)
       }
       is ChatDetailsScreenAction.OnScrollToStartClick -> updateUiState {
         copy(scrollToStart = Event(Unit))
@@ -220,10 +227,82 @@ class ChatDetailsScreenViewModel(
     }
   }
 
+  private fun loadNextChatMessages(lazyListScrollInfo: LazyListScrollInfo) {
+    val lastVisibleItemIndex = lazyListScrollInfo.visibleItemsIndices.lastOrNull() ?: return
+    val remainingItemsCount = lazyListScrollInfo.totalItemsCount - lastVisibleItemIndex - 1
+    val loadNextItems = remainingItemsCount <= 5 &&
+      !screenUiState.value.uiState.isPageLoading &&
+      !screenUiState.value.uiState.isLastPage &&
+      lazyListScrollInfo.totalItemsCount > screenUiState.value.uiState.lastChatMessagesCount
+
+    if (!loadNextItems) return
+
+    updateUiState { copy(lastChatMessagesCount = lazyListScrollInfo.totalItemsCount) }
+    loadNextChatMessages()
+  }
+
   private fun loadNextChatMessages() {
     viewModelScope.launch {
       paginator?.loadNextItems()
     }
+  }
+
+  private fun toggleScrollToStart(lazyListScrollInfo: LazyListScrollInfo) {
+    val firstVisibleItemIndex = lazyListScrollInfo.visibleItemsIndices.firstOrNull()
+    val showScrollToStartButton = firstVisibleItemIndex != null &&
+      firstVisibleItemIndex > 2
+    updateUiState { copy(showScrollToStartButton = showScrollToStartButton) }
+  }
+
+  private fun toggleStickyDate(lazyListScrollInfo: LazyListScrollInfo) {
+    viewModelScope.launch {
+      val visibleItemsIndices = lazyListScrollInfo.visibleItemsIndices
+      val lastVisibleItemIndex = visibleItemsIndices.lastOrNull()
+      val isAtStart = visibleItemsIndices.firstOrNull() == 0
+      val isAtEnd = lazyListScrollInfo.totalItemsCount == visibleItemsIndices.lastOrNull()?.minus(1)
+
+      val showStickyDate = lazyListScrollInfo.isScrollInProgress &&
+        !isAtStart &&
+        !isAtEnd &&
+        lastVisibleItemIndex != null &&
+        lastVisibleItemIndex > 0
+
+      if (showStickyDate) {
+        val stickyDate = getStickyDate(lastVisibleItemIndex, lazyListScrollInfo.totalItemsCount)
+        updateUiState { copy(stickyDate = stickyDate) }
+      } else {
+        delay(1.seconds)
+        updateUiState { copy(stickyDate = null) }
+      }
+    }
+  }
+
+  private fun getStickyDate(
+    lastVisibleItemIndex: Int,
+    totalItemsCount: Int,
+  ): TextProvider? {
+    val dateDividerUi = (lastVisibleItemIndex until totalItemsCount)
+      .firstNotNullOfOrNull {
+        val chatMessagesUi = screenUiState.value.uiState.chatMessagesUi
+        chatMessagesUi?.getOrNull(it) as? ChatMessageUi.DateDividerUi
+      }
+
+    return when (val date = dateDividerUi?.date) {
+      is TextProvider.Dynamic -> date
+      is TextProvider.Resource -> when (date.id) {
+        Res.string.today,
+        Res.string.yesterday -> null
+        else -> date
+      }
+      else -> null
+    }
+  }
+
+  private fun toggleIsNearStart(lazyListScrollInfo: LazyListScrollInfo) {
+    val firstVisibleItemIndex = lazyListScrollInfo.visibleItemsIndices.firstOrNull()
+    val isNearStart = firstVisibleItemIndex != null &&
+      firstVisibleItemIndex < 3
+    updateUiState { copy(isNearStart = isNearStart) }
   }
 
   private fun sendMessage() {

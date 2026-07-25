@@ -2,7 +2,11 @@
 
 package com.plcoding.feature.chat.presentation.screen.chats.details
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldDestinationItem
@@ -109,14 +114,7 @@ fun ChatDetailsScreen(
 
   LazyListScrollObserver(
     lazyListState = lazyListState,
-    isPageLoading = screenUiState.uiState.isPageLoading,
-    isLastPage = screenUiState.uiState.isLastPage,
-    onLoadMore = { viewModel.handleAction(ChatDetailsScreenAction.OnLoadMore) },
-    onScrollToStartChanged = {
-      viewModel.handleAction(
-        ChatDetailsScreenAction.OnScrollToStartChanged(it)
-      )
-    }
+    onScroll = { viewModel.handleAction(ChatDetailsScreenAction.OnScroll(it)) }
   )
 
   BaseScreen(
@@ -232,6 +230,30 @@ private fun Content(
             onMessageRetryClick = { onAction(ChatDetailsScreenAction.OnMessageRetryClick(it)) },
             onPageRetryClick = { onAction(ChatDetailsScreenAction.OnPageRetryClick) }
           )
+          this@Column.AnimatedVisibility(
+            modifier = Modifier.align(Alignment.TopCenter),
+            visible = uiState.stickyDate != null,
+            enter = fadeIn(),
+            exit = fadeOut(),
+          ) {
+            Text(
+              modifier = Modifier
+                .padding(top = 16.dp)
+                .background(
+                  color = MaterialTheme.colorScheme.surface,
+                  shape = RoundedCornerShape(16.dp),
+                )
+                .border(
+                  width = 1.dp,
+                  color = MaterialTheme.colorScheme.extended.surfaceOutline,
+                  shape = RoundedCornerShape(16.dp),
+                )
+                .padding(8.dp),
+              text = uiState.stickyDate?.get().orEmpty(),
+              color = MaterialTheme.colorScheme.extended.textPlaceholder,
+              style = MaterialTheme.typography.labelSmall,
+            )
+          }
           if (uiState.showScrollToStartButton) {
             IconButton(
               modifier = Modifier
