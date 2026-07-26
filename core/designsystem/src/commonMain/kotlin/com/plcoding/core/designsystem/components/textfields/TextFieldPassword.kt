@@ -41,7 +41,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun TextFieldPassword(
   modifier: Modifier = Modifier,
-  topTitle: String,
+  topTitle: String?,
   textFieldState: TextFieldState,
   inputPlaceholder: String,
   bottomTitle: String?,

@@ -24,4 +24,16 @@
 	<string name="yesterday">Yesterday</string>
 	<string name="today_x">Today, %1$s</string>
 	<string name="yesterday_x">Yesterday, %1$s</string>
+	<string name="profile_settings">Profile Settings</string>
+	<string name="delete">Delete</string>
+	<string name="delete_profile_picture">Delete profile image</string>
+	<string name="delete_profile_picture_desc">Are you sure you want to delete your profile picture? This action cannot be undone.</string>
+	<string name="contact_support_to_change_email">Contact the Chirp support to change your email.</string>
+	<string name="show_password">Show password</string>
+	<string name="hide_password">Hide password</string>
+	<string name="profile_image">Profile image</string>
+	<string name="upload_image">Upload image</string>
+	<string name="current_password">Current password</string>
+	<string name="new_password">New password</string>
+	<string name="password_hint">Use 9+ characters, at least one digit and one uppercase letter</string>
 </resources>

@@ -174,7 +174,12 @@ class ChatDetailsScreenViewModel(
     _chatId.update { chatId }
 
     if (chatId == null) {
-      updateUiState { copy(chatMessagesUi = null) }
+      updateUiState {
+        copy(
+          chatMessagesUi = null,
+          lastChatMessagesCount = 0
+        )
+      }
       return
     }
 

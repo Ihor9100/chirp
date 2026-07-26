@@ -80,17 +80,14 @@ fun Button(
     style == ButtonStyle.PRIMARY && !isEnabled -> defaultBorderColor
     style == ButtonStyle.SECONDARY -> defaultBorderColor
     style == ButtonStyle.DESTRUCTIVE_PRIMARY && !isEnabled -> defaultBorderColor
-    style == ButtonStyle.DESTRUCTIVE_SECONDARY && !isEnabled -> {
-      val color = if (isEnabled) {
-        MaterialTheme.colorScheme.extended.destructiveSecondaryOutline
-      } else {
-        MaterialTheme.colorScheme.extended.disabledOutline
-      }
-      BorderStroke(
-        width = 1.dp,
-        color = color,
-      )
-    }
+    style == ButtonStyle.DESTRUCTIVE_SECONDARY && isEnabled -> BorderStroke(
+      width = 1.dp,
+      color = MaterialTheme.colorScheme.extended.destructiveSecondaryOutline,
+    )
+    style == ButtonStyle.DESTRUCTIVE_SECONDARY && !isEnabled -> BorderStroke(
+      width = 1.dp,
+      color = MaterialTheme.colorScheme.extended.disabledOutline,
+    )
     else -> null
   }
 

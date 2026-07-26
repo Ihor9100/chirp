@@ -15,4 +15,7 @@ sealed interface ChatRoute {
 
   @Serializable
   data class ChatManage(val chatId: String) : ChatRoute
+
+  @Serializable
+  data object UserProfile : ChatRoute
 }

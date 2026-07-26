@@ -26,5 +26,8 @@ fun NavGraphBuilder.chatGraph(
     dialog<ChatRoute.ChatManage> {
       ChatManageDialogScreen(navController)
     }
+    dialog<ChatRoute.UserProfile> {
+      ChatManageDialogScreen(navController)
+    }
   }
 }
