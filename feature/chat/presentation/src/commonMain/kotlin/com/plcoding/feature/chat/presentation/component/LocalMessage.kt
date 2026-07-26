@@ -73,17 +73,18 @@ fun LocalMessage(
           }
         }
         if (localMessageUi.id == longPressedMessageId) {
-          val dropDownItemUi = DropDownItemUi(
-            id = localMessageUi.id,
-            leadingIconRes = null,
-            titleRes = Res.string.delete_for_everyone,
-            colorToken = ColorToken.TextDestructive,
-          )
           DropDownMenu(
             modifier = Modifier,
             showMenu = true,
-            items = listOf(dropDownItemUi),
-            onAction = { onMenuClick(dropDownItemUi) },
+            items = listOf(
+              DropDownItemUi(
+                id = localMessageUi.id,
+                leadingIconRes = null,
+                titleRes = Res.string.delete_for_everyone,
+                colorToken = ColorToken.TextDestructive,
+              )
+            ),
+            onAction = onMenuClick,
             onDismiss = onMenuDismiss,
           )
         }

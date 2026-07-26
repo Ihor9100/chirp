@@ -8,8 +8,11 @@ data class UserProfileDialogScreenUiState(
   val avatarUi: AvatarUi? = null,
   val isImageLoading: Boolean = false,
   val emailTextFieldState: TextFieldState = TextFieldState(),
+  val isEmailError: Boolean = false,
   val currentPasswordTextFieldState: TextFieldState = TextFieldState(),
   val newPasswordTextFieldState: TextFieldState = TextFieldState(),
   val isCurrentPasswordSecureMode: Boolean = false,
-  val isNewPasswordVisible: Boolean = false,
+  val isCurrentPasswordError: Boolean = false,
+  val isNewPasswordSecureMode: Boolean = false,
+  val isNewPasswordError: Boolean = false,
 )

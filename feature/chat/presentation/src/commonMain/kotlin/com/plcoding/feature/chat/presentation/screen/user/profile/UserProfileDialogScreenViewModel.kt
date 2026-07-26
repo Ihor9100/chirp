@@ -23,20 +23,15 @@ class UserProfileDialogScreenViewModel(
     super.onInitialize()
   }
 
-  fun handleAction(action: UserProfileDialogScreenAction){
-    when(action){
-      UserProfileDialogScreenAction.OnBackClick -> TODO()
-      UserProfileDialogScreenAction.OnMenuClick -> TODO()
-      UserProfileDialogScreenAction.OnMenuDismiss -> TODO()
-      is UserProfileDialogScreenAction.OnMenuItemClick -> TODO()
-      is UserProfileDialogScreenAction.OnMessageLongClick -> TODO()
-      UserProfileDialogScreenAction.OnMessageMenuDismiss -> TODO()
-      is UserProfileDialogScreenAction.OnMessageMenuItemClick -> TODO()
-      is UserProfileDialogScreenAction.OnMessageRetryClick -> TODO()
-      UserProfileDialogScreenAction.OnPageRetryClick -> TODO()
-      is UserProfileDialogScreenAction.OnScroll -> TODO()
-      UserProfileDialogScreenAction.OnScrollToStartClick -> TODO()
-      UserProfileDialogScreenAction.OnSendClick -> TODO()
+  fun handleAction(action: UserProfileDialogScreenAction) {
+    when (action) {
+      UserProfileDialogScreenAction.OnCloseClick -> TODO()
+      UserProfileDialogScreenAction.OnCurrentPasswordEyeClick -> TODO()
+      UserProfileDialogScreenAction.OnDeleteClick -> TODO()
+      UserProfileDialogScreenAction.OnNewPasswordEyeClick -> TODO()
+      UserProfileDialogScreenAction.OnPrimaryButtonClick -> TODO()
+      UserProfileDialogScreenAction.OnSecondaryButtonClick -> TODO()
+      UserProfileDialogScreenAction.OnUploadImageClick -> TODO()
     }
   }
 }

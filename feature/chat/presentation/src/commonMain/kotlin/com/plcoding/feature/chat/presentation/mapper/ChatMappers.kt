@@ -28,6 +28,16 @@ fun Chat.toUi(
   )
 }
 
+fun List<Chat>.toUiList(yourId: String?, chatId: String?): List<ChatUi> {
+  return map {
+    it.toUi(
+      yourId = yourId,
+      chatId = chatId,
+      lastChatId = lastOrNull()?.id,
+    )
+  }
+}
+
 fun Chat.toChatHeaderUi(yourId: String?): ChatHeaderUi {
   return ChatHeaderUi(
     avatarsUi = members.map { it.toUi(isInChat = false).avatarUi },

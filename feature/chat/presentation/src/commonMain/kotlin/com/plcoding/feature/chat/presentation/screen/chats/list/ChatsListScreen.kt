@@ -29,7 +29,6 @@ import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_plus
 import com.plcoding.core.designsystem.components.button.FloatingButton
-import com.plcoding.core.designsystem.model.AvatarUi
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.presentation.model.ScreenUiState
@@ -74,6 +73,7 @@ fun ChatsListScreen(
           is ChatsListScreenAction.OnPlusClick -> {
             navController.navigate(ChatRoute.ChatCreate)
           }
+          else -> viewModel.handleAction(it)
         }
       }
     )
@@ -91,13 +91,11 @@ private fun Content(
     ) {
       ChatsHeader(
         modifier = Modifier.padding(top = 24.dp),
-        showMenu = false,
-        // TODO:
-        avatarUi = AvatarUi.mocks[0],
-        onAvatarClick = {},
-        onSettingsClick = {},
-        onLogoutClick = {},
-        onDismissClick = {},
+        showDropDownMenu = uiState.showDropDownMenu,
+        avatarUi = uiState.avatarUi,
+        onAvatarClick = { onAction(ChatsListScreenAction.OnUserAvatarClick) },
+        onDropDownMenuItemClick = { onAction(ChatsListScreenAction.OnDropDownMenuItemClick(it)) },
+        onDismiss = { onAction(ChatsListScreenAction.OnDropDownMenuDismiss) },
       )
       LazyColumn(
         modifier = Modifier.fillMaxSize(),

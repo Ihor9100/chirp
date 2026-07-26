@@ -9,6 +9,7 @@ import com.plcoding.core.presentation.utils.NavResult
 import com.plcoding.feature.chat.presentation.screen.chats.ChatsScreen
 import com.plcoding.feature.chat.presentation.screen.chats.create.ChatCreateDialogScreen
 import com.plcoding.feature.chat.presentation.screen.chats.manage.ChatManageDialogScreen
+import com.plcoding.feature.chat.presentation.screen.user.profile.UserProfileDialogScreen
 
 fun NavGraphBuilder.chatGraph(
   navController: NavController,
@@ -27,7 +28,7 @@ fun NavGraphBuilder.chatGraph(
       ChatManageDialogScreen(navController)
     }
     dialog<ChatRoute.UserProfile> {
-      ChatManageDialogScreen(navController)
+      UserProfileDialogScreen(navController)
     }
   }
 }

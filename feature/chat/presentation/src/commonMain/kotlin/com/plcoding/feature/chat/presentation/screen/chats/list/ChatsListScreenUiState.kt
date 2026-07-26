@@ -3,14 +3,17 @@ package com.plcoding.feature.chat.presentation.screen.chats.list
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.no_messages
 import chirp.feature.chat.presentation.generated.resources.no_messages_subtitle
+import com.plcoding.core.designsystem.model.AvatarUi
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.presentation.mapper.toUi
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
 import com.plcoding.feature.chat.presentation.model.ChatUi
 
 data class ChatsListScreenUiState(
-  val chatEmptyStateUi: ChatEmptyStateUi?,
-  val chatsUi: List<ChatUi>,
+  val avatarUi: AvatarUi? = null,
+  val showDropDownMenu: Boolean = false,
+  val chatEmptyStateUi: ChatEmptyStateUi? = null,
+  val chatsUi: List<ChatUi> = listOf(),
 ) {
 
   companion object {

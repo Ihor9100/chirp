@@ -27,8 +27,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import chirp.core.designsystem.generated.resources.ic_upload
 import chirp.feature.chat.presentation.generated.resources.Res
-import chirp.core.designsystem.generated.resources.Res as CoreRes
+import chirp.feature.chat.presentation.generated.resources.cancel
+import chirp.feature.chat.presentation.generated.resources.contact_support_to_change_email
+import chirp.feature.chat.presentation.generated.resources.current_password
+import chirp.feature.chat.presentation.generated.resources.delete
+import chirp.feature.chat.presentation.generated.resources.email
+import chirp.feature.chat.presentation.generated.resources.new_password
+import chirp.feature.chat.presentation.generated.resources.password
+import chirp.feature.chat.presentation.generated.resources.password_hint
+import chirp.feature.chat.presentation.generated.resources.profile_image
 import chirp.feature.chat.presentation.generated.resources.profile_settings
+import chirp.feature.chat.presentation.generated.resources.save
+import chirp.feature.chat.presentation.generated.resources.upload_image
 import com.plcoding.core.designsystem.components.Avatar
 import com.plcoding.core.designsystem.components.HorizontalDivider
 import com.plcoding.core.designsystem.components.button.Button
@@ -49,6 +59,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import chirp.core.designsystem.generated.resources.Res as CoreRes
 
 @Composable
 fun UserProfileDialogScreen(
@@ -63,7 +74,10 @@ fun UserProfileDialogScreen(
     deviceConfiguration = deviceConfiguration,
     onDismiss = navController::popBackStack,
   ) {
-    // TODO:
+    Content(
+      uiState = screenUiState.uiState,
+      onAction = viewModel::handleAction,
+    )
   }
 }
 
@@ -117,7 +131,7 @@ private fun Content(
           verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
           Button(
-            text = Res.string.upload_image,
+            text = stringResource(Res.string.upload_image),
             style = ButtonStyle.SECONDARY,
             isLoading = false,
             onClick = { onAction(UserProfileDialogScreenAction.OnUploadImageClick) },
@@ -130,7 +144,7 @@ private fun Content(
             }
           )
           Button(
-            text = Res.string.delete,
+            text = stringResource(Res.string.delete),
             style = ButtonStyle.DESTRUCTIVE_SECONDARY,
             onClick = { onAction(UserProfileDialogScreenAction.OnDeleteClick) },
             leadingIcon = {
@@ -181,6 +195,20 @@ private fun Content(
         isError = uiState.isNewPasswordError,
         isSecureMode = uiState.isNewPasswordSecureMode,
         onSecureToggleClick = { onAction(UserProfileDialogScreenAction.OnNewPasswordEyeClick) }
+      )
+    }
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.End),
+    ) {
+      Button(
+        text = stringResource(Res.string.cancel),
+        style = ButtonStyle.SECONDARY,
+        onClick = { onAction(UserProfileDialogScreenAction.OnSecondaryButtonClick) }
+      )
+      Button(
+        text = stringResource(Res.string.save),
+        style = ButtonStyle.PRIMARY,
+        onClick = { onAction(UserProfileDialogScreenAction.OnPrimaryButtonClick) }
       )
     }
   }
