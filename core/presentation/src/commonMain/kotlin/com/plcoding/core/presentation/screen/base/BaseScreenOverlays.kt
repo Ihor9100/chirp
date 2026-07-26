@@ -90,7 +90,6 @@ fun BaseScreenOverlays(
   }
 }
 
-
 @Composable
 private fun Themed(
   isDarkTheme: Boolean,

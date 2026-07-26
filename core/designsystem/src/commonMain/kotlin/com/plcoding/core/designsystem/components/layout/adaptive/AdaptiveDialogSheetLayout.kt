@@ -1,5 +1,8 @@
 package com.plcoding.core.designsystem.components.layout.adaptive
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,10 +14,13 @@ import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdaptiveDialogSheetLayout(
   modifier: Modifier = Modifier,
   containerColor: Color,
+  windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
+  usePlatformInsets: Boolean = true,
   deviceConfiguration: DeviceConfiguration = getDeviceConfiguration(),
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
@@ -22,14 +28,16 @@ fun AdaptiveDialogSheetLayout(
   if (deviceConfiguration.isMobile) {
     BottomSheet(
       modifier = modifier,
-      containerColor=containerColor,
+      containerColor = containerColor,
+      windowInsets = windowInsets,
       onDismiss = onDismiss,
       content = content,
     )
   } else {
     Dialog(
       modifier = modifier,
-      containerColor=containerColor,
+      containerColor = containerColor,
+      usePlatformInsets = usePlatformInsets,
       onDismiss = onDismiss,
       content = content,
     )

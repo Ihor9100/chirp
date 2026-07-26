@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_plus
+import chirp.feature.chat.presentation.generated.resources.profile_settings
 import com.plcoding.core.designsystem.components.button.FloatingButton
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
@@ -72,6 +73,10 @@ fun ChatsListScreen(
           }
           is ChatsListScreenAction.OnPlusClick -> {
             navController.navigate(ChatRoute.ChatCreate)
+          }
+          is ChatsListScreenAction.OnDropDownMenuItemClick -> when (it.dropDownItemUi.titleRes) {
+            Res.string.profile_settings -> navController.navigate(ChatRoute.UserProfile)
+            else -> Unit
           }
           else -> viewModel.handleAction(it)
         }

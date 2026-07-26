@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.extended
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
@@ -25,9 +26,12 @@ fun UserProfileAdaptiveSection(
   val deviceConfiguration = getDeviceConfiguration()
 
   when (deviceConfiguration) {
-    DeviceConfiguration.MOBILE_PORTRAIT -> Column {
+    DeviceConfiguration.MOBILE_PORTRAIT -> Column(
+      modifier = modifier,
+      verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
       Text(
-        modifier = Modifier.weight(1f),
+        modifier = Modifier,
         text = stringResource(sectionRes),
         color = MaterialTheme.colorScheme.extended.textTertiary,
         style = MaterialTheme.typography.labelSmall,
@@ -35,7 +39,7 @@ fun UserProfileAdaptiveSection(
       content()
     }
     else -> Row(
-      modifier = Modifier.fillMaxWidth(),
+      modifier = modifier.fillMaxWidth(),
       verticalAlignment = Alignment.Top,
     ) {
       Text(

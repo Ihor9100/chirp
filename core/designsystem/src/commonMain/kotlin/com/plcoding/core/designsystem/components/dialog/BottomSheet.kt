@@ -1,5 +1,7 @@
 package com.plcoding.core.designsystem.components.dialog
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -16,6 +18,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun BottomSheet(
   modifier: Modifier = Modifier,
   containerColor: Color,
+  windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -34,6 +37,7 @@ fun BottomSheet(
     sheetState = sheetState,
     containerColor = containerColor,
     dragHandle = null,
+    contentWindowInsets = { windowInsets },
   ) {
     content()
   }
