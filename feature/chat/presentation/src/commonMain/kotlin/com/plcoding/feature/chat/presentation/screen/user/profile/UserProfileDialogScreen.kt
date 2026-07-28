@@ -9,11 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -78,8 +75,6 @@ fun UserProfileDialogScreen(
   BaseDialogScreen(
     baseUiState = screenUiState.baseUiState,
     deviceConfiguration = deviceConfiguration,
-    windowInsets = WindowInsets(0, 0, 0, 0),
-    usePlatformInsets = false,
     onDismiss = navController::popBackStack,
   ) {
     Content(
@@ -96,14 +91,12 @@ private fun Content(
 ) {
   Column(
     modifier = Modifier
-      .fillMaxSize()
       .verticalScroll(rememberScrollState()),
     verticalArrangement = Arrangement.spacedBy(16.dp),
     horizontalAlignment = Alignment.Start,
   ) {
     Row(
       modifier = Modifier
-        .statusBarsPadding()
         .padding(top = 16.dp)
         .padding(horizontal = 16.dp)
     ) {
@@ -197,7 +190,7 @@ private fun Content(
         textFieldState = uiState.currentPasswordTextFieldState,
         inputPlaceholder = stringResource(Res.string.current_password),
         bottomTitle = null,
-        isError = uiState.isCurrentPasswordError,
+        isError = uiState.newPasswordError != null,
         isSecureMode = uiState.isCurrentPasswordSecureMode,
         onSecureToggleClick = { onAction(UserProfileDialogScreenAction.OnCurrentPasswordEyeClick) }
       )
@@ -205,8 +198,8 @@ private fun Content(
         topTitle = null,
         textFieldState = uiState.newPasswordTextFieldState,
         inputPlaceholder = stringResource(Res.string.new_password),
-        bottomTitle = stringResource(Res.string.password_hint),
-        isError = uiState.isNewPasswordError,
+        bottomTitle = uiState.newPasswordError ?: stringResource(Res.string.password_hint),
+        isError = uiState.newPasswordError != null,
         isSecureMode = uiState.isNewPasswordSecureMode,
         onSecureToggleClick = { onAction(UserProfileDialogScreenAction.OnNewPasswordEyeClick) }
       )
@@ -227,6 +220,7 @@ private fun Content(
       Button(
         text = stringResource(Res.string.save),
         style = ButtonStyle.PRIMARY,
+        isEnabled = uiState.isPositiveButtonEnable,
         onClick = { onAction(UserProfileDialogScreenAction.OnPrimaryButtonClick) }
       )
     }

@@ -1,7 +1,6 @@
 package com.plcoding.core.designsystem.components.layout.adaptive
 
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -11,7 +10,6 @@ import com.plcoding.core.designsystem.components.dialog.BottomSheet
 import com.plcoding.core.designsystem.components.dialog.Dialog
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.DeviceConfiguration
-import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,9 +17,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun AdaptiveDialogSheetLayout(
   modifier: Modifier = Modifier,
   containerColor: Color,
-  windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
-  usePlatformInsets: Boolean = true,
-  deviceConfiguration: DeviceConfiguration = getDeviceConfiguration(),
+  deviceConfiguration: DeviceConfiguration,
+  windowInsets: WindowInsets,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -37,7 +34,6 @@ fun AdaptiveDialogSheetLayout(
     Dialog(
       modifier = modifier,
       containerColor = containerColor,
-      usePlatformInsets = usePlatformInsets,
       onDismiss = onDismiss,
       content = content,
     )
@@ -54,6 +50,7 @@ private fun Themed(
       modifier = Modifier,
       containerColor = MaterialTheme.colorScheme.surface,
       deviceConfiguration = deviceConfiguration,
+      windowInsets = WindowInsets(),
       onDismiss = {},
       content = {},
     )

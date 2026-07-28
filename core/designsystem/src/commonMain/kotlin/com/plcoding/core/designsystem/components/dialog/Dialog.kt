@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -16,15 +15,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun Dialog(
   modifier: Modifier = Modifier,
   containerColor: Color,
-  usePlatformInsets: Boolean = true,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   Dialog(
     onDismissRequest = onDismiss,
-    properties = getDialogProperties(
-      usePlatformInsets = usePlatformInsets
-    )
   ) {
     Surface(
       modifier = modifier,

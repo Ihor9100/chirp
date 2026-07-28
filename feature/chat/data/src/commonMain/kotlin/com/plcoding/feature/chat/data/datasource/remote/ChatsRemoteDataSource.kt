@@ -30,4 +30,9 @@ interface ChatsRemoteDataSource {
   ): Result<ChatDto, DataError.Remote>
 
   suspend fun deleteChatMessage(messageId: String): Empty<DataError.Remote>
+
+  suspend fun changePassword(
+    currentPassword: String,
+    newPassword: String,
+  ): Empty<DataError.Remote>
 }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.plcoding.core.designsystem.components.dialog
 
 import androidx.compose.foundation.layout.WindowInsets
@@ -16,9 +18,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(
-  modifier: Modifier = Modifier,
+  modifier: Modifier,
   containerColor: Color,
-  windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
+  windowInsets: WindowInsets,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -49,7 +51,9 @@ private fun Themed(
 ) {
   Theme(isDarkTheme) {
     BottomSheet(
+      modifier = Modifier,
       containerColor = MaterialTheme.colorScheme.surface,
+      windowInsets = BottomSheetDefaults.windowInsets,
       onDismiss = {},
       content = {},
     )

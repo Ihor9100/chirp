@@ -12,7 +12,7 @@ data class UserProfileDialogScreenUiState(
   val currentPasswordTextFieldState: TextFieldState = TextFieldState(),
   val newPasswordTextFieldState: TextFieldState = TextFieldState(),
   val isCurrentPasswordSecureMode: Boolean = false,
-  val isCurrentPasswordError: Boolean = false,
   val isNewPasswordSecureMode: Boolean = false,
-  val isNewPasswordError: Boolean = false,
+  val newPasswordError: String? = null,
+  val isPositiveButtonEnable: Boolean = false,
 )

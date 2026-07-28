@@ -50,7 +50,7 @@ fun UserProfileAdaptiveSection(
       )
       Column(
         modifier = Modifier.weight(3f),
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
         horizontalAlignment = Alignment.Start,
       ) {
         content()

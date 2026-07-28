@@ -1,6 +1,5 @@
 package com.plcoding.core.presentation.screen.base
 
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,8 +16,6 @@ fun BaseDialogScreen(
   modifier: Modifier = Modifier,
   baseUiState: BaseUiState,
   deviceConfiguration: DeviceConfiguration,
-  windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
-  usePlatformInsets: Boolean = true,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -28,8 +25,7 @@ fun BaseDialogScreen(
     onDismiss = onDismiss,
     containerColor = MaterialTheme.colorScheme.surface,
     deviceConfiguration = deviceConfiguration,
-    windowInsets = windowInsets,
-    usePlatformInsets = usePlatformInsets,
+    windowInsets = BottomSheetDefaults.windowInsets,
   ) {
     BaseScreenOverlays(
       modifier = Modifier,

@@ -6,12 +6,13 @@ import com.plcoding.core.data.tools.post
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
-import com.plcoding.feature.chat.domain.utils.ChatsConstants
+import com.plcoding.feature.chat.data.model.ChangePasswordDto
 import com.plcoding.feature.chat.data.model.ChatCreateRequestDto
 import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.data.model.ChatMemberDto
 import com.plcoding.feature.chat.data.model.ChatMembersDto
 import com.plcoding.feature.chat.data.model.ChatMessageDto
+import com.plcoding.feature.chat.domain.utils.ChatsConstants
 import io.ktor.client.HttpClient
 
 class ChatsKtorRemoteDataSource(
@@ -76,6 +77,19 @@ class ChatsKtorRemoteDataSource(
   override suspend fun deleteChatMessage(messageId: String): Empty<DataError.Remote> {
     return httpClient.delete(
       route = "/messages/$messageId"
+    )
+  }
+
+  override suspend fun changePassword(
+    currentPassword: String,
+    newPassword: String
+  ): Empty<DataError.Remote> {
+    return httpClient.post(
+      route = "/auth/change-password",
+      request = ChangePasswordDto(
+        currentPassword = currentPassword,
+        newPassword = newPassword,
+      )
     )
   }
 }

@@ -122,6 +122,16 @@ class ChatDataRepository(
       .onSuccess { localDataSource.deleteChatMessage(messageId) }
   }
 
+  override suspend fun changePassword(
+    currentPassword: String,
+    newPassword: String
+  ): Empty<DataError.Remote> {
+    return remoteDataSource.changePassword(
+      currentPassword = currentPassword,
+      newPassword = newPassword,
+    )
+  }
+
   private suspend fun upsertChatDetails(chatDto: ChatDto): Empty<DataError> {
     return localDataSource.upsertChatDetails(
       chatDto.toEntity(),
