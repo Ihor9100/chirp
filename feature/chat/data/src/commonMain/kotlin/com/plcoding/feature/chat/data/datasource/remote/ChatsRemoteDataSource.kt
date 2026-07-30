@@ -9,7 +9,9 @@ import com.plcoding.feature.chat.data.model.ChatMessageDto
 
 interface ChatsRemoteDataSource {
 
-  suspend fun searchMember(query: String): Result<ChatMemberDto, DataError.Remote>
+  suspend fun searchChatMember(query: String): Result<ChatMemberDto, DataError.Remote>
+
+  suspend fun getLocalUser(): Result<ChatMemberDto, DataError.Remote>
 
   suspend fun getChat(chatId: String): Result<ChatDto, DataError.Remote>
 

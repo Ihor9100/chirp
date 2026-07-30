@@ -1,8 +1,13 @@
 package com.plcoding.feature.chat.presentation.screen.user.profile
 
+import com.plcoding.feature.chat.presentation.screen.user.profile.image.picker.ImagePickerResult
+
 sealed interface UserProfileDialogScreenAction {
   data object OnCloseClick : UserProfileDialogScreenAction
   data object OnUploadImageClick : UserProfileDialogScreenAction
+  data class OnImagePicked(
+    val imagePickerResult: ImagePickerResult,
+  ) : UserProfileDialogScreenAction
   data object OnDeleteClick : UserProfileDialogScreenAction
   data object OnCurrentPasswordEyeClick : UserProfileDialogScreenAction
   data object OnNewPasswordEyeClick : UserProfileDialogScreenAction

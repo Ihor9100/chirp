@@ -19,9 +19,10 @@ interface ChatRepository {
   fun observeChatMessages(chatId: String): Flow<List<ChatMessageAndMember>>
 
   // Remote
-  suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote>
+  suspend fun searchChatMember(query: String): Result<ChatMember, DataError.Remote>
   suspend fun createChat(memberIds: List<String>): Empty<DataError>
   suspend fun syncChat(chatId: String): Empty<DataError>
+  suspend fun syncLocalUser(): Empty<DataError>
   suspend fun syncChatMessages(
     chatId: String,
     before: String?

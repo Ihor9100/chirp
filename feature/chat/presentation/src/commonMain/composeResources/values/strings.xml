@@ -38,4 +38,7 @@
 	<string name="new_password">New password</string>
 	<string name="password_hint">Use 9+ characters, at least one digit and one uppercase letter</string>
 	<string name="email">Email</string>
+	<string name="password_change_successful">You've successfully changed your password!</string>
+	<string name="error_current_password_incorrect">Your current password is not correct</string>
+	<string name="error_current_password_equal_to_new_one">Your new password can't be equal to the old one.</string>
 </resources>

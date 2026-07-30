@@ -1,8 +1,10 @@
 package com.plcoding.feature.chat.data.repository
 
+import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
+import com.plcoding.core.domain.result.asEmpty
 import com.plcoding.core.domain.result.flatMap
 import com.plcoding.core.domain.result.map
 import com.plcoding.core.domain.result.onSuccess
@@ -19,11 +21,13 @@ import com.plcoding.feature.chat.domain.model.ChatMessage
 import com.plcoding.feature.chat.domain.model.ChatMessageAndMember
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class ChatDataRepository(
   private val localDataSource: ChatsLocalDataSource,
   private val remoteDataSource: ChatsRemoteDataSource,
+  private val preferencesRepository: PreferencesRepository,
 ) : ChatRepository {
 
   override fun observeChats(): Flow<List<Chat>> {
@@ -50,9 +54,9 @@ class ChatDataRepository(
       .map { entities -> entities.map { it.toDomain() } }
   }
 
-  override suspend fun searchMember(query: String): Result<ChatMember, DataError.Remote> {
+  override suspend fun searchChatMember(query: String): Result<ChatMember, DataError.Remote> {
     return remoteDataSource
-      .searchMember(query)
+      .searchChatMember(query)
       .map { it.toDomain() }
   }
 
@@ -66,6 +70,26 @@ class ChatDataRepository(
     return remoteDataSource
       .getChat(chatId)
       .flatMap { upsertChatDetails(it) }
+  }
+
+  override suspend fun syncLocalUser(): Empty<DataError> {
+    return remoteDataSource
+      .getLocalUser()
+      .onSuccess {
+        preferencesRepository
+          .observeAuthInfo().first()
+          ?.let { authInfo ->
+            val updatedUser = authInfo.user.copy(
+              id = it.userId,
+              username = it.username,
+              email = it.email ?: authInfo.user.email,
+              profilePictureUrl = it.profilePictureUrl,
+            )
+            val authInfo = authInfo.copy(user = updatedUser)
+            preferencesRepository.saveAuthInfo(authInfo)
+          }
+      }
+      .asEmpty()
   }
 
   override suspend fun syncChatMessages(

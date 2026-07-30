@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -58,6 +56,7 @@ import com.plcoding.core.presentation.screen.base.BaseDialogScreen
 import com.plcoding.feature.chat.presentation.model.ChatMemberUi
 import com.plcoding.feature.chat.presentation.screen.chats.manage.ChatManageDialogUiState
 import com.plcoding.feature.chat.presentation.screen.user.profile.component.UserProfileAdaptiveSection
+import com.plcoding.feature.chat.presentation.screen.user.profile.image.picker.rememberImagePickerLauncher
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -72,6 +71,10 @@ fun UserProfileDialogScreen(
   val screenUiState by viewModel.screenUiState.collectAsStateWithLifecycle()
   val deviceConfiguration = getDeviceConfiguration()
 
+  val imagePickerLauncher = rememberImagePickerLauncher {
+    viewModel.handleAction(UserProfileDialogScreenAction.OnImagePicked(it))
+  }
+
   BaseDialogScreen(
     baseUiState = screenUiState.baseUiState,
     deviceConfiguration = deviceConfiguration,
@@ -79,7 +82,14 @@ fun UserProfileDialogScreen(
   ) {
     Content(
       uiState = screenUiState.uiState,
-      onAction = viewModel::handleAction,
+      onAction = {
+        when (it) {
+          is UserProfileDialogScreenAction.OnUploadImageClick -> {
+            imagePickerLauncher()
+          }
+          else -> viewModel.handleAction(it)
+        }
+      },
     )
   }
 }
@@ -126,16 +136,15 @@ private fun Content(
     ) {
       Row(
         verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.Start)
       ) {
         if (uiState.avatarUi != null) {
           Avatar(
             avatarUi = uiState.avatarUi,
           )
         }
-        Spacer(Modifier.height(20.dp))
         FlowRow(
           horizontalArrangement = Arrangement.spacedBy(16.dp),
-          verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
           Button(
             text = stringResource(Res.string.upload_image),
@@ -178,6 +187,7 @@ private fun Content(
         bottomTitle = stringResource(Res.string.contact_support_to_change_email),
         keyboardType = KeyboardType.Text,
         isError = uiState.isEmailError,
+        isEnabled = false,
       )
     }
     HorizontalDivider()

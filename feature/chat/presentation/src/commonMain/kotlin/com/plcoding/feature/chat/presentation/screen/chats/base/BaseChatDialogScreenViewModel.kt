@@ -65,7 +65,7 @@ abstract class BaseChatDialogScreenViewModel<ContentUi : BaseChatDialogUiState<C
       updateUiState { update(foundChatMemberUi = null) }
 
       chatRepository
-        .searchMember(searchQuery.toString())
+        .searchChatMember(searchQuery.toString())
         .mapOn { it.toUi(isInChat = false) }
         .onFailure(::handleSearchMemberFailure)
         .onSuccess { updateUiState { update(foundChatMemberUi = it) } }

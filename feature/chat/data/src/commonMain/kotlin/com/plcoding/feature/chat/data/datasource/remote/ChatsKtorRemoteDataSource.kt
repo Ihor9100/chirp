@@ -19,10 +19,16 @@ class ChatsKtorRemoteDataSource(
   private val httpClient: HttpClient,
 ) : ChatsRemoteDataSource {
 
-  override suspend fun searchMember(query: String): Result<ChatMemberDto, DataError.Remote> {
+  override suspend fun searchChatMember(query: String): Result<ChatMemberDto, DataError.Remote> {
     return httpClient.get<ChatMemberDto>(
       route = "/participants",
       params = mapOf("query" to query),
+    )
+  }
+
+  override suspend fun getLocalUser(): Result<ChatMemberDto, DataError.Remote> {
+    return httpClient.get<ChatMemberDto>(
+      route = "/participants",
     )
   }
 
@@ -87,7 +93,7 @@ class ChatsKtorRemoteDataSource(
     return httpClient.post(
       route = "/auth/change-password",
       request = ChangePasswordDto(
-        currentPassword = currentPassword,
+        oldPassword = currentPassword,
         newPassword = newPassword,
       )
     )
