@@ -102,13 +102,19 @@ class UserProfileDialogScreenViewModel(
       UserProfileDialogScreenAction.OnCurrentPasswordEyeClick -> updateUiState {
         copy(isCurrentPasswordSecureMode = !isCurrentPasswordSecureMode)
       }
-      UserProfileDialogScreenAction.OnDeleteImageClick -> TODO()
+      UserProfileDialogScreenAction.OnDeleteImageClick -> {
+        deleteProfileImage()
+      }
       UserProfileDialogScreenAction.OnNewPasswordEyeClick -> updateUiState {
         copy(isNewPasswordSecureMode = !isNewPasswordSecureMode)
       }
-      UserProfileDialogScreenAction.OnPrimaryButtonClick -> changePassword()
+      UserProfileDialogScreenAction.OnPrimaryButtonClick -> {
+        changePassword()
+      }
       UserProfileDialogScreenAction.OnSecondaryButtonClick -> TODO()
-      is UserProfileDialogScreenAction.OnImagePicked -> uploadProfileImage(action.result)
+      is UserProfileDialogScreenAction.OnImagePicked -> {
+        uploadProfileImage(action.result)
+      }
       else -> Unit
     }
   }
@@ -142,6 +148,14 @@ class UserProfileDialogScreenViewModel(
     launchLoadable {
       chatRepository
         .uploadProfileImage(byteArray, mimeType)
+        .onFailure { showSnackbar(it.toStringRes()) }
+    }
+  }
+
+  private fun deleteProfileImage() {
+    launchLoadable {
+      chatRepository
+        .deleteProfileImage()
         .onFailure { showSnackbar(it.toStringRes()) }
     }
   }

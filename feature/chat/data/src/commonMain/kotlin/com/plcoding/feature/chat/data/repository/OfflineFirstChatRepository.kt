@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.data.repository
 
+import com.plcoding.core.domain.model.User
 import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
@@ -88,14 +89,14 @@ class OfflineFirstChatRepository(
         preferencesRepository
           .observeAuthInfo().first()
           ?.let { authInfo ->
-            val updatedUser = authInfo.user.copy(
-              id = it.userId,
-              username = it.username,
-              email = it.email ?: authInfo.user.email,
-              profilePictureUrl = it.profilePictureUrl,
-            )
-            val authInfo = authInfo.copy(user = updatedUser)
-            preferencesRepository.saveAuthInfo(authInfo)
+            updateAuthInfoUser {
+              copy(
+                id = it.userId,
+                username = it.username,
+                email = it.email ?: authInfo.user.email,
+                profilePictureUrl = it.profilePictureUrl,
+              )
+            }
           }
       }
       .asEmpty()
@@ -187,11 +188,18 @@ class OfflineFirstChatRepository(
 
     return remoteDataSource
       .confirmProfileImageUpload(publicUrl)
-      .onSuccess {
-        val authInfo = preferencesRepository.observeAuthInfo().first() ?: return@onSuccess
-        val updatedUser = authInfo.user.copy(profilePictureUrl = publicUrl)
-        val updatedAuthInfo = authInfo.copy(user = updatedUser)
-        preferencesRepository.saveAuthInfo(updatedAuthInfo)
-      }
+      .onSuccess { updateAuthInfoUser { copy(profilePictureUrl = publicUrl) } }
+  }
+
+  override suspend fun deleteProfileImage(): Empty<DataError.Remote> {
+    return remoteDataSource
+      .deleteProfileImage()
+      .onSuccess { updateAuthInfoUser { copy(profilePictureUrl = null) } }
+  }
+
+  private suspend fun updateAuthInfoUser(transform: User.() -> User) {
+    val authInfo = preferencesRepository.observeAuthInfo().first() ?: return
+    val updatedUser = authInfo.copy(user = transform(authInfo.user))
+    preferencesRepository.saveAuthInfo(updatedUser)
   }
 }

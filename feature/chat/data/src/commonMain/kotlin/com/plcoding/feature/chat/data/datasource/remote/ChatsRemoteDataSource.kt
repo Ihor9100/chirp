@@ -45,7 +45,9 @@ interface ChatsRemoteDataSource {
     publicUrl: String,
     byteArray: ByteArray,
     headers: Map<String, String>,
-  ): Result<ProfileImageUploadDto, DataError.Remote>
+  ): Result<Unit, DataError.Remote>
 
   suspend fun confirmProfileImageUpload(publicUrl: String): Empty<DataError.Remote>
+
+  suspend fun deleteProfileImage(): Empty<DataError.Remote>
 }

@@ -118,7 +118,7 @@ class ChatsKtorRemoteDataSource(
     publicUrl: String,
     byteArray: ByteArray,
     headers: Map<String, String>
-  ): Result<ProfileImageUploadDto, DataError.Remote> {
+  ): Result<Unit, DataError.Remote> {
     return apiSafeCall {
       httpClient.put {
         url(publicUrl)
@@ -132,6 +132,12 @@ class ChatsKtorRemoteDataSource(
     return httpClient.post(
       route = "/participants/confirm-profile-picture",
       request = ConfirmProfileImageDto(publicUrl),
+    )
+  }
+
+  override suspend fun deleteProfileImage(): Empty<DataError.Remote> {
+    return httpClient.delete(
+      route = "/participants/profile-picture"
     )
   }
 }

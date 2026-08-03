@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDirection.Companion.Content
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -84,8 +85,14 @@ fun UserProfileDialogScreen(
       uiState = screenUiState.uiState,
       onAction = {
         when (it) {
+          is UserProfileDialogScreenAction.OnCloseClick -> {
+            navController.popBackStack()
+          }
           is UserProfileDialogScreenAction.OnUploadImageClick -> {
             imagePickerLauncher()
+          }
+          is UserProfileDialogScreenAction.OnSecondaryButtonClick -> {
+            navController.popBackStack()
           }
           else -> viewModel.handleAction(it)
         }

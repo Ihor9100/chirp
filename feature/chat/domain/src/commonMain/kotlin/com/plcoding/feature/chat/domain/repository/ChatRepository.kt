@@ -33,4 +33,5 @@ interface ChatRepository {
   suspend fun deleteChatMessage(messageId: String): Empty<DataError.Remote>
   suspend fun changePassword(oldPassword: String, newPassword: String): Empty<DataError.Remote>
   suspend fun uploadProfileImage(byteArray: ByteArray, mimeType: String): Empty<DataError>
+  suspend fun deleteProfileImage(): Empty<DataError.Remote>
 }
