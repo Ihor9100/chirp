@@ -5,10 +5,8 @@ import com.plcoding.feature.chat.presentation.screen.user.profile.image.picker.I
 sealed interface UserProfileDialogScreenAction {
   data object OnCloseClick : UserProfileDialogScreenAction
   data object OnUploadImageClick : UserProfileDialogScreenAction
-  data class OnImagePicked(
-    val imagePickerResult: ImagePickerResult,
-  ) : UserProfileDialogScreenAction
-  data object OnDeleteClick : UserProfileDialogScreenAction
+  data class OnImagePicked(val result: ImagePickerResult) : UserProfileDialogScreenAction
+  data object OnDeleteImageClick : UserProfileDialogScreenAction
   data object OnCurrentPasswordEyeClick : UserProfileDialogScreenAction
   data object OnNewPasswordEyeClick : UserProfileDialogScreenAction
   data object OnPrimaryButtonClick : UserProfileDialogScreenAction

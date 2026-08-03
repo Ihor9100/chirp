@@ -7,8 +7,8 @@ import com.plcoding.feature.chat.data.datasource.remote.ChatsKtorRemoteDataSourc
 import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
 import com.plcoding.feature.chat.data.network.ConnectionRetryHandler
 import com.plcoding.feature.chat.data.network.KtorWebSocketConnector
-import com.plcoding.feature.chat.data.repository.ChatDataRepository
-import com.plcoding.feature.chat.data.repository.LiveChatDataRepository
+import com.plcoding.feature.chat.data.repository.OfflineFirstChatRepository
+import com.plcoding.feature.chat.data.repository.WebSocketChatRepository
 import com.plcoding.feature.chat.database.ChirpDatabase
 import com.plcoding.feature.chat.database.ChirpDatabaseBuilderFactory
 import com.plcoding.feature.chat.database.dao.ChatAndMemberDao
@@ -37,8 +37,8 @@ val chatDataDiModule = module {
   singleOf(::ConnectionRetryHandler)
   singleOf(::KtorWebSocketConnector)
 
-  singleOf(::ChatDataRepository) bind ChatRepository::class
-  singleOf(::LiveChatDataRepository) bind LiveChatRepository::class
+  singleOf(::OfflineFirstChatRepository) bind ChatRepository::class
+  singleOf(::WebSocketChatRepository) bind LiveChatRepository::class
   singleOf(::ChatsKtorRemoteDataSource) bind ChatsRemoteDataSource::class
   singleOf(::ChatsRoomLocalDataSource) bind ChatsLocalDataSource::class
 

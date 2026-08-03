@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.data.datasource.remote
 
+import com.plcoding.core.data.tools.apiSafeCall
 import com.plcoding.core.data.tools.delete
 import com.plcoding.core.data.tools.get
 import com.plcoding.core.data.tools.post
@@ -12,8 +13,14 @@ import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.data.model.ChatMemberDto
 import com.plcoding.feature.chat.data.model.ChatMembersDto
 import com.plcoding.feature.chat.data.model.ChatMessageDto
+import com.plcoding.feature.chat.data.model.ConfirmProfileImageDto
+import com.plcoding.feature.chat.data.model.ProfileImageUploadDto
 import com.plcoding.feature.chat.domain.utils.ChatsConstants
 import io.ktor.client.HttpClient
+import io.ktor.client.request.header
+import io.ktor.client.request.put
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
 
 class ChatsKtorRemoteDataSource(
   private val httpClient: HttpClient,
@@ -96,6 +103,35 @@ class ChatsKtorRemoteDataSource(
         oldPassword = currentPassword,
         newPassword = newPassword,
       )
+    )
+  }
+
+  override suspend fun createProfileImageUpload(mimeType: String): Result<ProfileImageUploadDto, DataError.Remote> {
+    return httpClient.post(
+      route = "/participants/profile-picture-upload",
+      request = Unit,
+      params = mapOf("mimeType" to mimeType),
+    )
+  }
+
+  override suspend fun uploadProfileImage(
+    publicUrl: String,
+    byteArray: ByteArray,
+    headers: Map<String, String>
+  ): Result<ProfileImageUploadDto, DataError.Remote> {
+    return apiSafeCall {
+      httpClient.put {
+        url(publicUrl)
+        setBody(byteArray)
+        headers.forEach { (key, value) -> header(key, value) }
+      }
+    }
+  }
+
+  override suspend fun confirmProfileImageUpload(publicUrl: String): Empty<DataError.Remote> {
+    return httpClient.post(
+      route = "/participants/confirm-profile-picture",
+      request = ConfirmProfileImageDto(publicUrl),
     )
   }
 }

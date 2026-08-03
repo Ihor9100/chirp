@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.seconds
 
-class LiveChatDataRepository(
+class WebSocketChatRepository(
   private val json: Json,
   private val coroutineScope: CoroutineScope,
   private val ktorWebSocketConnector: KtorWebSocketConnector,

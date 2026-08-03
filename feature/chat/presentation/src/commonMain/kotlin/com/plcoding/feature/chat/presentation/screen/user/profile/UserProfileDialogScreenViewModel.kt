@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.error_current_password_equal_to_new_one
 import chirp.feature.chat.presentation.generated.resources.error_current_password_incorrect
+import chirp.feature.chat.presentation.generated.resources.error_invalid_file_type
 import chirp.feature.chat.presentation.generated.resources.password_change_successful
 import com.plcoding.core.designsystem.model.AvatarSizeUi
 import com.plcoding.core.designsystem.model.AvatarUi
@@ -20,6 +21,7 @@ import com.plcoding.core.domain.validator.PasswordValidator
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.toStringRes
 import com.plcoding.feature.chat.domain.repository.ChatRepository
+import com.plcoding.feature.chat.presentation.screen.user.profile.image.picker.ImagePickerResult
 import com.plcoding.feature.chat.presentation.utils.FormatUtils.getInitials
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
@@ -100,19 +102,13 @@ class UserProfileDialogScreenViewModel(
       UserProfileDialogScreenAction.OnCurrentPasswordEyeClick -> updateUiState {
         copy(isCurrentPasswordSecureMode = !isCurrentPasswordSecureMode)
       }
-      UserProfileDialogScreenAction.OnDeleteClick -> TODO()
+      UserProfileDialogScreenAction.OnDeleteImageClick -> TODO()
       UserProfileDialogScreenAction.OnNewPasswordEyeClick -> updateUiState {
         copy(isNewPasswordSecureMode = !isNewPasswordSecureMode)
       }
       UserProfileDialogScreenAction.OnPrimaryButtonClick -> changePassword()
       UserProfileDialogScreenAction.OnSecondaryButtonClick -> TODO()
-      is UserProfileDialogScreenAction.OnImagePicked -> {
-        updateUiState {
-          copy(
-            avatarUi = avatarUi?.copy(byteArray = action.imagePickerResult.byteArray),
-          )
-        }
-      }
+      is UserProfileDialogScreenAction.OnImagePicked -> uploadProfileImage(action.result)
       else -> Unit
     }
   }
@@ -120,7 +116,7 @@ class UserProfileDialogScreenViewModel(
   private fun changePassword() {
     launchLoadable {
       chatRepository.changePassword(
-        currentPassword = screenUiState.value.uiState.currentPasswordTextFieldState.text.toString(),
+        oldPassword = screenUiState.value.uiState.currentPasswordTextFieldState.text.toString(),
         newPassword = screenUiState.value.uiState.newPasswordTextFieldState.text.toString(),
       ).onSuccess {
         screenUiState.value.uiState.currentPasswordTextFieldState.clearText()
@@ -134,6 +130,19 @@ class UserProfileDialogScreenViewModel(
         }
         showSnackbar(messageRes)
       }
+    }
+  }
+
+  private fun uploadProfileImage(imagePickerResult: ImagePickerResult) {
+    val byteArray = imagePickerResult.byteArray
+      ?: return showSnackbar(Res.string.error_invalid_file_type)
+    val mimeType = imagePickerResult.mimeType
+      ?: return showSnackbar(Res.string.error_invalid_file_type)
+
+    launchLoadable {
+      chatRepository
+        .uploadProfileImage(byteArray, mimeType)
+        .onFailure { showSnackbar(it.toStringRes()) }
     }
   }
 }

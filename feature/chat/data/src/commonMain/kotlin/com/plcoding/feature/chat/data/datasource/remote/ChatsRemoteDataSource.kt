@@ -6,6 +6,7 @@ import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.data.model.ChatMemberDto
 import com.plcoding.feature.chat.data.model.ChatMessageDto
+import com.plcoding.feature.chat.data.model.ProfileImageUploadDto
 
 interface ChatsRemoteDataSource {
 
@@ -37,4 +38,14 @@ interface ChatsRemoteDataSource {
     currentPassword: String,
     newPassword: String,
   ): Empty<DataError.Remote>
+
+  suspend fun createProfileImageUpload(mimeType: String): Result<ProfileImageUploadDto, DataError.Remote>
+
+  suspend fun uploadProfileImage(
+    publicUrl: String,
+    byteArray: ByteArray,
+    headers: Map<String, String>,
+  ): Result<ProfileImageUploadDto, DataError.Remote>
+
+  suspend fun confirmProfileImageUpload(publicUrl: String): Empty<DataError.Remote>
 }

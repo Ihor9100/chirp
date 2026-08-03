@@ -162,7 +162,7 @@ private fun Content(
           Button(
             text = stringResource(Res.string.delete),
             style = ButtonStyle.DESTRUCTIVE_SECONDARY,
-            onClick = { onAction(UserProfileDialogScreenAction.OnDeleteClick) },
+            onClick = { onAction(UserProfileDialogScreenAction.OnDeleteImageClick) },
             leadingIcon = {
               Icon(
                 imageVector = Icons.Default.Close,

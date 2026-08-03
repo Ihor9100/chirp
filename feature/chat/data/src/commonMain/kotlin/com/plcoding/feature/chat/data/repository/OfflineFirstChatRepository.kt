@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class ChatDataRepository(
+class OfflineFirstChatRepository(
   private val localDataSource: ChatsLocalDataSource,
   private val remoteDataSource: ChatsRemoteDataSource,
   private val preferencesRepository: PreferencesRepository,
@@ -70,6 +70,15 @@ class ChatDataRepository(
     return remoteDataSource
       .getChat(chatId)
       .flatMap { upsertChatDetails(it) }
+  }
+
+  private suspend fun upsertChatDetails(chatDto: ChatDto): Empty<DataError> {
+    return localDataSource.upsertChatDetails(
+      chatDto.toEntity(),
+      chatDto.participants.map { it.toEntity() },
+      listOfNotNull(chatDto.lastMessage).map { it.toEntity() },
+      chatDto.toEntities(),
+    )
   }
 
   override suspend fun syncLocalUser(): Empty<DataError> {
@@ -147,21 +156,42 @@ class ChatDataRepository(
   }
 
   override suspend fun changePassword(
-    currentPassword: String,
+    oldPassword: String,
     newPassword: String
   ): Empty<DataError.Remote> {
     return remoteDataSource.changePassword(
-      currentPassword = currentPassword,
+      currentPassword = oldPassword,
       newPassword = newPassword,
     )
   }
 
-  private suspend fun upsertChatDetails(chatDto: ChatDto): Empty<DataError> {
-    return localDataSource.upsertChatDetails(
-      chatDto.toEntity(),
-      chatDto.participants.map { it.toEntity() },
-      listOfNotNull(chatDto.lastMessage).map { it.toEntity() },
-      chatDto.toEntities(),
+  override suspend fun uploadProfileImage(
+    byteArray: ByteArray,
+    mimeType: String
+  ): Empty<DataError> {
+    val createUploadResult = remoteDataSource.createProfileImageUpload(mimeType)
+
+    if (createUploadResult is Result.Failure) return createUploadResult
+
+    val profileImageUploadDto = (createUploadResult as Result.Success).data
+
+    val uploadResult = remoteDataSource.uploadProfileImage(
+      publicUrl = profileImageUploadDto.uploadUrl,
+      byteArray = byteArray,
+      headers = profileImageUploadDto.headers,
     )
+
+    if (uploadResult is Result.Failure) return uploadResult
+
+    val publicUrl = profileImageUploadDto.publicUrl
+
+    return remoteDataSource
+      .confirmProfileImageUpload(publicUrl)
+      .onSuccess {
+        val authInfo = preferencesRepository.observeAuthInfo().first() ?: return@onSuccess
+        val updatedUser = authInfo.user.copy(profilePictureUrl = publicUrl)
+        val updatedAuthInfo = authInfo.copy(user = updatedUser)
+        preferencesRepository.saveAuthInfo(updatedAuthInfo)
+      }
   }
 }
