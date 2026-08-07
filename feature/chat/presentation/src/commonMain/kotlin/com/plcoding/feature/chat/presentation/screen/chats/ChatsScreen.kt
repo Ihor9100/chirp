@@ -11,6 +11,7 @@ import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldDestinationIt
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,6 +21,8 @@ import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
+import com.plcoding.feature.chat.presentation.permissions.Permission
+import com.plcoding.feature.chat.presentation.permissions.rememberPermissionsManager
 import com.plcoding.feature.chat.presentation.screen.chats.details.ChatDetailsScreen
 import com.plcoding.feature.chat.presentation.screen.chats.list.ChatsListScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -34,7 +37,12 @@ fun ChatsScreen(
   val deviceConfiguration = getDeviceConfiguration()
   val scaffoldDirective = getPaneScaffoldDirective(deviceConfiguration, currentWindowAdaptiveInfo())
   val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<String>(scaffoldDirective)
+  val permissionsManager = rememberPermissionsManager()
 
+  LaunchedEffect(true) {
+    permissionsManager.requestPermission(Permission.NOTIFICATIONS)
+  }
+  
   BaseScreen(
     baseUiState = screenUiState.baseUiState,
     backgroundColor = null,

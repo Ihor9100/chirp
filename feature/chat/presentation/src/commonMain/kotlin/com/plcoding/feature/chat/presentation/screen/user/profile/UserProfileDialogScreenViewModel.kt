@@ -139,6 +139,7 @@ class UserProfileDialogScreenViewModel(
     }
   }
 
+
   private fun uploadProfileImage(imagePickerResult: ImagePickerResult) {
     val byteArray = imagePickerResult.byteArray
       ?: return showSnackbar(Res.string.error_invalid_file_type)
