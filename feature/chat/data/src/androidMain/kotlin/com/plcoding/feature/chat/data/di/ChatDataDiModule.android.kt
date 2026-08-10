@@ -1,5 +1,6 @@
 package com.plcoding.feature.chat.data.di
 
+import com.plcoding.feature.chat.data.firebase.FirebaseTokenProvider
 import com.plcoding.feature.chat.data.network.AndroidConnectionErrorHandler
 import com.plcoding.feature.chat.data.observer.AndroidAppConnectivityObserver
 import com.plcoding.feature.chat.data.observer.AndroidAppLifecycleObserver
@@ -17,4 +18,5 @@ actual val platformChatDataDiModule = module {
   singleOf(::AndroidAppLifecycleObserver) bind AppLifecycleObserver::class
   singleOf(::AndroidAppConnectivityObserver) bind AppConnectivityObserver::class
   singleOf(::AndroidConnectionErrorHandler) bind ConnectionErrorHandler::class
+  singleOf(::FirebaseTokenProvider)
 }

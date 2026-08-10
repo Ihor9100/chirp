@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.plcoding.chirp.navigation.ExternalUriHandler
 import com.plcoding.chirp.screen.app.AppScreen
 
 class MainActivity : ComponentActivity() {
@@ -19,5 +20,6 @@ class MainActivity : ComponentActivity() {
     setContent {
       AppScreen(removeSplashScreen = { keepSplashScreen = false })
     }
+    ExternalUriHandler
   }
 }

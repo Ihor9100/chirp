@@ -7,6 +7,7 @@ import com.plcoding.feature.chat.data.datasource.remote.ChatsKtorRemoteDataSourc
 import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
 import com.plcoding.feature.chat.data.network.ConnectionRetryHandler
 import com.plcoding.feature.chat.data.network.KtorWebSocketConnector
+import com.plcoding.feature.chat.data.repository.DefaultFirebaseTokenRepository
 import com.plcoding.feature.chat.data.repository.OfflineFirstChatRepository
 import com.plcoding.feature.chat.data.repository.WebSocketChatRepository
 import com.plcoding.feature.chat.database.ChirpDatabase
@@ -16,6 +17,7 @@ import com.plcoding.feature.chat.database.dao.ChatMembersDao
 import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.database.dao.ChatsDao
 import com.plcoding.feature.chat.domain.repository.ChatRepository
+import com.plcoding.feature.chat.domain.repository.FirebaseTokenRepository
 import com.plcoding.feature.chat.domain.repository.LiveChatRepository
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -39,6 +41,7 @@ val chatDataDiModule = module {
 
   singleOf(::OfflineFirstChatRepository) bind ChatRepository::class
   singleOf(::WebSocketChatRepository) bind LiveChatRepository::class
+  singleOf(::DefaultFirebaseTokenRepository) bind FirebaseTokenRepository::class
   singleOf(::ChatsKtorRemoteDataSource) bind ChatsRemoteDataSource::class
   singleOf(::ChatsRoomLocalDataSource) bind ChatsLocalDataSource::class
 
