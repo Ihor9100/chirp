@@ -8,7 +8,7 @@ sealed interface ChatRoute {
   data object Graph : ChatRoute
 
   @Serializable
-  data object Chats : ChatRoute
+  data class Chats(val chatId: String? = null) : ChatRoute
 
   @Serializable
   data object ChatCreate : ChatRoute

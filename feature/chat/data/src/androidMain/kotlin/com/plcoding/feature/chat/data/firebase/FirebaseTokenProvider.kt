@@ -23,9 +23,9 @@ actual class FirebaseTokenProvider(
         val token = FirebaseMessaging.getInstance().token.await()
         emit(token)
         logger.debug("FirebaseTokenProvider | New token: $token")
-      } catch (_: Exception) {
+      } catch (e: Exception) {
         currentCoroutineContext().ensureActive()
-        logger.error("FirebaseTokenProvider | Failed to get TOKEN")
+        logger.error("FirebaseTokenProvider | Failed to get TOKEN", e)
       }
     } else {
       emit(null)

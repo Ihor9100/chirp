@@ -29,10 +29,10 @@ fun AppScreen(
     navController.navigateNewRoot(AuthRoute.Graph)
   }
 
-  DeepLinksListener(navController)
   Theme {
     if (startDestination != null) {
       NavigationRoot(navController, startDestination)
+      DeepLinksListener(navController)
     }
   }
 }

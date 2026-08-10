@@ -1,7 +1,6 @@
 plugins {
   alias(libs.plugins.kmp.library.convention)
   alias(libs.plugins.build.konfig.convention)
-  alias(libs.plugins.google.services)
 }
 
 kotlin {

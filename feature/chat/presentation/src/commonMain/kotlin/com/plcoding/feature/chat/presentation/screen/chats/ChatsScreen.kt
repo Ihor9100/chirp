@@ -30,6 +30,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatsScreen(
+  chatId: String?,
   navController: NavController,
   viewModel: ChatsScreenViewModel = koinViewModel()
 ) {
@@ -39,10 +40,16 @@ fun ChatsScreen(
   val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<String>(scaffoldDirective)
   val permissionsManager = rememberPermissionsManager()
 
+  if (chatId != null) {
+    LaunchedEffect(chatId) {
+      scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, chatId)
+    }
+  }
+
   LaunchedEffect(true) {
     permissionsManager.requestPermission(Permission.NOTIFICATIONS)
   }
-  
+
   BaseScreen(
     baseUiState = screenUiState.baseUiState,
     backgroundColor = null,

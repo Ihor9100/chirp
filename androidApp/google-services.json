@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "732180338473",
+    "project_id": "chirp-ddc53",
+    "storage_bucket": "chirp-ddc53.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732180338473:android:7844a23a678f1616a74938",
+        "android_client_info": {
+          "package_name": "com.plcoding.chirp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-LWBY_BYYwwdfP0uZJn2RHmG9QejLloA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

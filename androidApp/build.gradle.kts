@@ -8,6 +8,7 @@ plugins {
   alias(libs.plugins.jetbrains.compose)
   alias(libs.plugins.jetbrains.compose.hot.reload)
   alias(libs.plugins.jetbrains.kotlin.compose)
+  alias(libs.plugins.google.services)
 }
 
 android {
@@ -54,6 +55,7 @@ android {
 
 dependencies {
   implementation(projects.composeApp)
+  implementation(projects.core.domain)
 
   implementation(libs.koin.android)
 
@@ -65,15 +67,16 @@ dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core.splashscreen)
+  implementation(project.dependencies.platform(libs.firebase.bom))
+  implementation(libs.firebase.messaging)
 
   debugImplementation(libs.androidx.compose.ui.tooling.preview)
   debugImplementation(libs.androidx.compose.ui.tooling)
 
+  coreLibraryDesugaring(libs.android.desugar.jdk.libs)
+
   testImplementation(libs.junit)
-  testImplementation(platform(libs.androidx.compose.bom))
 
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
-
-  coreLibraryDesugaring(libs.android.desugar.jdk.libs)
 }
