@@ -4,12 +4,14 @@ import ComposeApp
 @main
 struct iOSApp: App {
     
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     init() {
         DiRootKt.doInitKoin()
-        ExternalEncryptionHandler().addEncrypt { data in
+        EncryptionBridge.shared.addEncrypt { data in
             data
         }
-        ExternalEncryptionHandler().addDecrypt { data in
+        EncryptionBridge.shared.addDecrypt { data in
             data
         }
     }

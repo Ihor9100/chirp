@@ -1,6 +1,7 @@
 package com.plcoding.feature.chat.data.di
 
 import com.plcoding.feature.chat.data.IOSAppLifecycleObserver
+import com.plcoding.feature.chat.data.firebase.FirebaseTokenProvider
 import com.plcoding.feature.chat.data.network.IOSConnectionErrorHandler
 import com.plcoding.feature.chat.data.observer.IOSAppConnectivityObserver
 import com.plcoding.feature.chat.database.ChirpDatabaseBuilderFactory
@@ -17,4 +18,5 @@ actual val platformChatDataDiModule = module {
   singleOf(::IOSAppLifecycleObserver) bind AppLifecycleObserver::class
   singleOf(::IOSAppConnectivityObserver) bind AppConnectivityObserver::class
   singleOf(::IOSConnectionErrorHandler) bind ConnectionErrorHandler::class
+  singleOf(::FirebaseTokenProvider)
 }

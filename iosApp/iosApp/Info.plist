@@ -2,25 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIImageName</key>
-		<string>ic_logo</string>
-		<key>UIColorName</key>
-		<string>bg_logo</string>
-	</dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>chirp.pl-coding.com</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>chirp</string>
 			</array>
-			<key>CFBundleURLName</key>
-			<string>chirp.pl-coding.com</string>
 		</dict>
 	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>bg_logo</string>
+		<key>UIImageName</key>
+		<string>ic_logo</string>
+	</dict>
 </dict>
 </plist>

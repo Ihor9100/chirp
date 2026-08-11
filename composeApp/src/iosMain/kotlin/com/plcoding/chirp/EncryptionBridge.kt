@@ -2,7 +2,7 @@ package com.plcoding.chirp
 
 import com.plcoding.core.data.repository.CryptographyDataRepository
 
-object ExternalEncryptionHandler {
+object EncryptionBridge {
   fun addEncrypt(encrypt: (String) -> String) {
     CryptographyDataRepository.nativeEncrypt = encrypt
   }
