@@ -7,15 +7,11 @@ import platform.UIKit.registerForRemoteNotifications
 
 actual class FirebaseTokenProvider {
 
-  companion object {
-    const val FCM_TOKEN_KEY = "FCM_TOKEN_KEY"
-  }
-
   actual val token = FirebaseTokenBridge
     .token
     .onStart {
       if (FirebaseTokenBridge.token.value == null) {
-        val token = NSUserDefaults.standardUserDefaults.stringForKey(FCM_TOKEN_KEY)
+        val token = NSUserDefaults.standardUserDefaults.stringForKey("FCM_TOKEN")
 
         if (token != null) {
           FirebaseTokenBridge.onNewToken(token)

@@ -3,8 +3,9 @@ import ComposeApp
 
 @main
 struct iOSApp: App {
-    
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
+    // Only with paid Apple Developer Account
+    // @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     init() {
         DiRootKt.doInitKoin()

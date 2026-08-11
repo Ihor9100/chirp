@@ -12,8 +12,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 //        I need to buy a payed Developer account to test Notifications,
 //        only than I can use the API. Additionally google.services from
 //        firebase must be added in the project
-        
-//        FirebaseApp.configure()
+
+        FirebaseApp.configure()
         
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
@@ -54,7 +54,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         let userInfo = response.notification.request.content.userInfo
         
         if let chatId = userInfo["chatId"] as? String {
-            let deepLinkUrl = "chirp://chat_detail/\(chatId)"
+            let deepLinkUrl = "chirp://chat-details/\(chatId)"
             ExternalUriHandler.shared.onNewUri(uri: deepLinkUrl)
         }
         
