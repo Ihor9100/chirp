@@ -4,6 +4,7 @@ import com.plcoding.core.data.mapper.toDomain
 import com.plcoding.core.data.model.AuthInfoDto
 import com.plcoding.core.data.model.EmailRequestDto
 import com.plcoding.core.data.model.LoginRequestDto
+import com.plcoding.core.data.model.RefreshTokenDto
 import com.plcoding.core.data.model.RegisterRequestDto
 import com.plcoding.core.data.model.ResendVerificationEmailRequestDto
 import com.plcoding.core.data.model.ResetPasswordRequestDto
@@ -15,7 +16,11 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.core.domain.result.map
+import com.plcoding.core.domain.result.onSuccess
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.authProvider
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import io.ktor.client.request.post
 
 class AuthDataRepository(
   private val httpClient: HttpClient,
@@ -32,6 +37,15 @@ class AuthDataRepository(
         password = password,
       )
     ).map { it.toDomain() }
+  }
+
+  override suspend fun logout(refreshToken: String): Empty<DataError.Remote> {
+    return httpClient.post<RefreshTokenDto, Unit>(
+      route = "/auth/logout",
+      request = RefreshTokenDto(refreshToken)
+    ).onSuccess {
+      httpClient.authProvider<BearerAuthProvider>()?.clearToken()
+    }
   }
 
   override suspend fun forgotPassword(email: String): Empty<DataError.Remote> {

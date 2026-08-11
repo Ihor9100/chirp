@@ -74,9 +74,12 @@ fun ChatsListScreen(
           is ChatsListScreenAction.OnPlusClick -> {
             navController.navigate(ChatRoute.ChatCreate)
           }
-          is ChatsListScreenAction.OnDropDownMenuItemClick -> when (it.dropDownItemUi.titleRes) {
-            Res.string.profile_settings -> navController.navigate(ChatRoute.UserProfile)
-            else -> Unit
+          is ChatsListScreenAction.OnDropDownMenuItemClick -> {
+            viewModel.handleAction(it)
+            when (it.dropDownItemUi.titleRes) {
+              Res.string.profile_settings -> navController.navigate(ChatRoute.UserProfile)
+              else -> Unit
+            }
           }
           else -> viewModel.handleAction(it)
         }

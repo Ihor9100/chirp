@@ -17,6 +17,7 @@ interface ChatRepository {
   fun observeChatDetails(chatId: String): Flow<ChatDetails?>
   fun observeChatMembers(chatId: String): Flow<List<ChatMember>>
   fun observeChatMessages(chatId: String): Flow<List<ChatMessageAndMember>>
+  suspend fun deleteChats()
 
   // Remote
   suspend fun searchChatMember(query: String): Result<ChatMember, DataError.Remote>

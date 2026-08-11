@@ -4,15 +4,20 @@ package com.plcoding.feature.chat.presentation.screen.chats.list
 
 import androidx.lifecycle.viewModelScope
 import chirp.feature.chat.presentation.generated.resources.Res
+import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.no_messages
 import chirp.feature.chat.presentation.generated.resources.no_messages_subtitle
 import com.plcoding.core.designsystem.model.AvatarSizeUi
 import com.plcoding.core.designsystem.model.AvatarUi
+import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.onFailure
+import com.plcoding.core.domain.result.onSuccess
+import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.toStringRes
+import com.plcoding.feature.chat.domain.interactor.LogoutUseCase
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import com.plcoding.feature.chat.presentation.mapper.toUiList
@@ -30,6 +35,7 @@ import kotlinx.coroutines.flow.onEach
 class ChatsListScreenViewModel(
   private val preferencesRepository: PreferencesRepository,
   private val chatRepository: ChatRepository,
+  private val logoutUseCase: LogoutUseCase,
 ) : BaseScreenViewModel<ChatsListScreenUiState>() {
 
   private val _chatId = MutableStateFlow<String?>(null)
@@ -105,10 +111,32 @@ class ChatsListScreenViewModel(
       is ChatsListScreenAction.OnUserAvatarClick -> updateUiState {
         copy(showDropDownMenu = true)
       }
+      is ChatsListScreenAction.OnDropDownMenuItemClick -> {
+        handleDropDownMenuItemClick(action.dropDownItemUi)
+      }
       is ChatsListScreenAction.OnDropDownMenuDismiss -> updateUiState {
         copy(showDropDownMenu = false)
       }
       else -> Unit
+    }
+  }
+
+  private fun handleDropDownMenuItemClick(itemUi: DropDownItemUi) {
+    updateUiState {
+      copy(showDropDownMenu = false)
+    }
+
+    when (itemUi.titleRes) {
+      Res.string.log_out -> logout()
+      else -> Unit
+    }
+  }
+
+  private fun logout() {
+    launchLoadable {
+      logoutUseCase()
+        .onSuccess { updateUiState { copy(logoutEvent = Event(Unit)) } }
+        .onFailure { showSnackbar(it.toStringRes()) }
     }
   }
 }

@@ -12,6 +12,8 @@ interface AuthRepository {
     password: String,
   ): Result<AuthInfo, DataError.Remote>
 
+  suspend fun logout(refreshToken: String): Empty<DataError.Remote>
+
   suspend fun forgotPassword(
     email: String,
   ): Empty<DataError.Remote>

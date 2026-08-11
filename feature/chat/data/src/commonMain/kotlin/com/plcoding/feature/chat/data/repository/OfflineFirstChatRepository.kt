@@ -55,6 +55,10 @@ class OfflineFirstChatRepository(
       .map { entities -> entities.map { it.toDomain() } }
   }
 
+  override suspend fun deleteChats() {
+    localDataSource.deleteChats()
+  }
+
   override suspend fun searchChatMember(query: String): Result<ChatMember, DataError.Remote> {
     return remoteDataSource
       .searchChatMember(query)

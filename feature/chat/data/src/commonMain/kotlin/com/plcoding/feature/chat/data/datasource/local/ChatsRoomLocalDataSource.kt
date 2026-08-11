@@ -71,6 +71,10 @@ class ChatsRoomLocalDataSource(
     )
   }
 
+  override suspend fun deleteChats() {
+    chatsDao.deleteAll()
+  }
+
   override suspend fun deleteChatMessage(id: String) {
     chatMessagesDao.delete(id)
   }

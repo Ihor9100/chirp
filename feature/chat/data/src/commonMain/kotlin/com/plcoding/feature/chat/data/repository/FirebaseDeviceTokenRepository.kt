@@ -2,23 +2,21 @@ package com.plcoding.feature.chat.data.repository
 
 import com.plcoding.core.data.tools.delete
 import com.plcoding.core.data.tools.post
-import com.plcoding.core.domain.logger.Logger
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import com.plcoding.feature.chat.data.firebase.FirebaseTokenProvider
 import com.plcoding.feature.chat.data.model.RegisterFirebaseTokenDto
-import com.plcoding.feature.chat.domain.repository.FirebaseTokenRepository
+import com.plcoding.feature.chat.domain.repository.DeviceTokenRepository
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.flow.flow
 
-class DefaultFirebaseTokenRepository(
+class FirebaseDeviceTokenRepository(
   private val httpClient: HttpClient,
   firebaseTokenProvider: FirebaseTokenProvider,
-) : FirebaseTokenRepository {
+) : DeviceTokenRepository {
 
   override val token = firebaseTokenProvider.token
 
-  override suspend fun registerFirebaseToken(
+  override suspend fun registerToken(
     token: String,
     platform: String
   ): Empty<DataError.Remote> {
@@ -31,7 +29,7 @@ class DefaultFirebaseTokenRepository(
     )
   }
 
-  override suspend fun unregisterFirebaseToken(token: String): Empty<DataError.Remote> {
+  override suspend fun unregisterToken(token: String): Empty<DataError.Remote> {
     return httpClient.delete(
       route = "/notification/${token}",
     )

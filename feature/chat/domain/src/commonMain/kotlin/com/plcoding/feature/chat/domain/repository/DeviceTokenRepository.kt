@@ -4,10 +4,10 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Empty
 import kotlinx.coroutines.flow.Flow
 
-interface FirebaseTokenRepository {
+interface DeviceTokenRepository {
 
   val token: Flow<String?>
 
-  suspend fun registerFirebaseToken(token: String, platform: String): Empty<DataError.Remote>
-  suspend fun unregisterFirebaseToken(token: String): Empty<DataError.Remote>
+  suspend fun registerToken(token: String, platform: String): Empty<DataError.Remote>
+  suspend fun unregisterToken(token: String): Empty<DataError.Remote>
 }
