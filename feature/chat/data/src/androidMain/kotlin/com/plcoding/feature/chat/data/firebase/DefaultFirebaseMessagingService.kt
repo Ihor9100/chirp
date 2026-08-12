@@ -1,6 +1,7 @@
 package com.plcoding.feature.chat.data.firebase
 
 import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import com.plcoding.core.data.tools.PlatformUtils
 import com.plcoding.core.domain.logger.Logger
 import com.plcoding.core.domain.repository.PreferencesRepository
@@ -29,5 +30,10 @@ class DefaultFirebaseMessagingService : FirebaseMessagingService() {
         deviceTokenRepository.registerToken(token, PlatformUtils.OSName)
       }
     }
+  }
+
+  override fun onMessageReceived(message: RemoteMessage) {
+    super.onMessageReceived(message)
+    logger.debug("onMessageReceived faired | notification: ${message.notification}")
   }
 }
