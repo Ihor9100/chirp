@@ -1,34 +1,36 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.plcoding.feature.chat.data.firebase
 
 import com.google.firebase.messaging.FirebaseMessaging
 import com.plcoding.core.domain.logger.Logger
 import com.plcoding.core.domain.repository.PreferencesRepository
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 actual class FirebaseTokenProvider(
-  private val preferencesRepository: PreferencesRepository,
   private val logger: Logger,
+  preferencesRepository: PreferencesRepository,
 ) {
 
-  actual val token: Flow<String?> = flow {
-    val authInfo = preferencesRepository.observeAuthInfo().firstOrNull()
-
-    if (authInfo != null) {
-      try {
-        val token = FirebaseMessaging.getInstance().token.await()
-        emit(token)
-        logger.debug("FirebaseTokenProvider | New token: $token")
-      } catch (e: Exception) {
-        currentCoroutineContext().ensureActive()
-        logger.error("FirebaseTokenProvider | Failed to get TOKEN", e)
+  actual val token: Flow<String?> = preferencesRepository
+    .observeAuthInfo()
+    .flatMapLatest { authInfo ->
+      flow {
+        if (authInfo != null) {
+          val token = FirebaseMessaging.getInstance().token.await()
+          logger.debug("FirebaseTokenProvider | New token: $token")
+          emit(token)
+        } else {
+          emit(null)
+        }
+      }.catch {
+        logger.error("FirebaseTokenProvider | Failed to get TOKEN", it)
+        emit(null)
       }
-    } else {
-      emit(null)
     }
-  }
 }

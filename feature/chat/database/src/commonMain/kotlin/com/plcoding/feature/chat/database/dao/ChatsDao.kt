@@ -38,8 +38,14 @@ interface ChatsDao {
   fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?>
 
   @Transaction
-  @Query("SELECT * FROM chats")
-  fun subscribeToChatsAndMembers(): Flow<List<ChatAndMembersRelation>>
+  @Query("""
+    SELECT * FROM chats
+    ORDER BY COALESCE(
+      (SELECT MAX(timestamp) FROM chat_messages WHERE chatId = chats.id),
+      lastActivityAt
+    ) DESC
+  """)
+  fun observeChatsAndMembers(): Flow<List<ChatAndMembersRelation>>
 
   @Query("DELETE FROM chats WHERE id = :id")
   suspend fun delete(id: String)

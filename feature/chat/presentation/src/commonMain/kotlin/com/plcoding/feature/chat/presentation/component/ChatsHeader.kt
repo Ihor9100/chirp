@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import chirp.core.designsystem.generated.resources.ic_settings
 import chirp.core.presentation.generated.resources.chirp
 import chirp.feature.chat.presentation.generated.resources.Res
-import chirp.feature.chat.presentation.generated.resources.ic_log_out
+import chirp.feature.chat.presentation.generated.resources.ic_leave
 import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.profile_settings
 import com.plcoding.core.designsystem.components.AppLogo
@@ -79,7 +79,7 @@ fun ChatsHeader(
               ),
               DropDownItemUi(
                 id = "2",
-                leadingIconRes = Res.drawable.ic_log_out,
+                leadingIconRes = Res.drawable.ic_leave,
                 titleRes = Res.string.log_out,
                 colorToken = ColorToken.Error,
               ),

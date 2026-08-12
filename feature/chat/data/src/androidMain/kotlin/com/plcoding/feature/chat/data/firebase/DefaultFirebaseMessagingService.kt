@@ -2,6 +2,7 @@ package com.plcoding.feature.chat.data.firebase
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.plcoding.core.data.tools.PlatformUtils
+import com.plcoding.core.domain.logger.Logger
 import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.feature.chat.domain.repository.DeviceTokenRepository
 import kotlinx.coroutines.CoroutineScope
@@ -14,9 +15,12 @@ class DefaultFirebaseMessagingService : FirebaseMessagingService() {
   private val deviceTokenRepository by inject<DeviceTokenRepository>()
   private val preferencesRepository by inject<PreferencesRepository>()
   private val applicationScope by inject<CoroutineScope>()
+  private val logger by inject<Logger>()
 
   override fun onNewToken(token: String) {
     super.onNewToken(token)
+
+    logger.debug("onNewToken func faired | token: $token")
 
     applicationScope.launch {
       val authInfo = preferencesRepository.observeAuthInfo().firstOrNull()

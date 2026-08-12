@@ -10,7 +10,8 @@ import chirp.core.designsystem.generated.resources.ic_users
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.chat_members
 import chirp.feature.chat.presentation.generated.resources.delete_for_everyone
-import chirp.feature.chat.presentation.generated.resources.ic_log_out
+import chirp.feature.chat.presentation.generated.resources.ic_leave
+import chirp.feature.chat.presentation.generated.resources.leave_the_chat
 import chirp.feature.chat.presentation.generated.resources.log_out
 import chirp.feature.chat.presentation.generated.resources.no_messages
 import chirp.feature.chat.presentation.generated.resources.select_chat_subtitle
@@ -401,16 +402,10 @@ class ChatDetailsScreenViewModel(
       ),
       DropDownItemUi(
         id = Uuid.random().toString(),
-        leadingIconRes = Res.drawable.ic_log_out,
-        titleRes = Res.string.log_out,
+        leadingIconRes = Res.drawable.ic_leave,
+        titleRes = Res.string.leave_the_chat,
         colorToken = ColorToken.TextDestructive,
       ),
     )
   }
-
-  private data class ChatDetailsContent(
-    val chatEmptyStateUi: ChatEmptyStateUi?,
-    val chatHeaderUi: ChatHeaderUi?,
-    val chatMessagesUi: List<ChatMessageUi>?,
-  )
 }

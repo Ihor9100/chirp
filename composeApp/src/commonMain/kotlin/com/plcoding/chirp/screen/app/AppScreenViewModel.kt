@@ -2,6 +2,7 @@ package com.plcoding.chirp.screen.app
 
 import androidx.lifecycle.viewModelScope
 import com.plcoding.core.data.tools.PlatformUtils
+import com.plcoding.core.domain.logger.Logger
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.presentation.event.Event
@@ -18,10 +19,11 @@ import kotlinx.coroutines.launch
 class AppScreenViewModel(
   private val preferencesRepository: PreferencesRepository,
   private val deviceTokenRepository: DeviceTokenRepository,
+  private val logger: Logger,
 ) : BaseScreenViewModel<AppScreenContent>() {
 
-  private var authInfo: AuthInfo? = null
-  private var firebaseToken: String? = null
+  private var currentAuthInfo: AuthInfo? = null
+  private var currentFirebaseToken: String? = null
 
   override fun getUiState(): AppScreenContent {
     return AppScreenContent()
@@ -56,22 +58,29 @@ class AppScreenViewModel(
     preferencesRepository
       .observeAuthInfo()
       .onEach {
-        if (authInfo != null && it == null) {
+        if (currentAuthInfo != null && it == null) {
           updateUiState { copy(logoutEvent = Event(Unit)) }
         }
 
-        if (it == null && firebaseToken != null) {
-          deviceTokenRepository.unregisterToken(firebaseToken!!)
+        if (it == null && currentFirebaseToken != null) {
+          deviceTokenRepository.unregisterToken(currentFirebaseToken!!)
         }
 
-        authInfo = it
+        logger.debug("subscribeToAuthInfo | onEach | authInfo: $it")
+        currentAuthInfo = it
       }
       .combine(deviceTokenRepository.token) { authInfo, firebaseToken ->
-        this.firebaseToken = firebaseToken
+        logger.debug("subscribeToAuthInfo | combine | authInfo: $authInfo | firebaseToken: $firebaseToken")
 
-        if (authInfo != null && firebaseToken != null) {
+        val registerToken = authInfo != null &&
+          firebaseToken != null &&
+          currentFirebaseToken != firebaseToken
+
+        if (registerToken) {
           deviceTokenRepository.registerToken(firebaseToken, PlatformUtils.OSName)
         }
+
+        currentFirebaseToken = firebaseToken
       }
       .launchIn(viewModelScope)
   }

@@ -26,7 +26,11 @@ interface ChatsLocalDataSource {
 
   suspend fun deleteChats()
   suspend fun deleteChatMessage(id: String)
-  suspend fun replaceChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local>
+  suspend fun replaceChatMessages(
+    chatId: String,
+    entities: List<ChatMessageEntity>
+  ): Empty<DataError.Local>
+
   suspend fun hasChat(id: String): Result<Boolean, DataError.Local>
   suspend fun getChatMessage(id: String): ChatMessageEntity?
 

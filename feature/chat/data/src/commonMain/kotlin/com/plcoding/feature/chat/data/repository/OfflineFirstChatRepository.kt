@@ -115,9 +115,9 @@ class OfflineFirstChatRepository(
       .flatMap { dtos ->
         val entities = dtos.map { it.toEntity() }
 
-        // Remove all messages if it is the first page
+        // Remove all messages of particular chat if it is the first page
         if (before == null) {
-          localDataSource.replaceChatMessages(entities)
+          localDataSource.replaceChatMessages(chatId, entities)
         } else {
           localDataSource.upsertChatMessages(entities)
         }

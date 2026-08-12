@@ -12,6 +12,7 @@ import com.plcoding.core.designsystem.model.AvatarUi
 import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.domain.model.AuthInfo
 import com.plcoding.core.domain.repository.PreferencesRepository
+import com.plcoding.core.domain.result.flatMap
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.presentation.event.Event
@@ -26,6 +27,8 @@ import com.plcoding.feature.chat.presentation.utils.FormatUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -47,15 +50,23 @@ class ChatsListScreenViewModel(
   override fun onInitialize() {
     super.onInitialize()
 
-    loadChats()
+    loadScreenData()
     observeScreenData()
   }
 
-  private fun loadChats() {
+  private fun loadScreenData() {
     launchLoadable {
-      chatRepository
-        .syncChats()
-        .onFailure { showSnackbar(it.toStringRes()) }
+      coroutineScope {
+        val chatsTask = async { chatRepository.syncChats() }
+        val localUserTask = async { chatRepository.syncLocalUser() }
+
+        val chatsResult = chatsTask.await()
+        val localUserResult = localUserTask.await()
+
+        chatsResult
+          .flatMap { localUserResult }
+          .onFailure { showSnackbar(it.toStringRes()) }
+      }
     }
   }
 

@@ -38,7 +38,7 @@ class ChatsRoomLocalDataSource(
   }
 
   override fun observeChatAndMembers(): Flow<List<ChatAndMembersRelation>> {
-    return chatsDao.subscribeToChatsAndMembers()
+    return chatsDao.observeChatsAndMembers()
   }
 
   override fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?> {
@@ -79,9 +79,9 @@ class ChatsRoomLocalDataSource(
     chatMessagesDao.delete(id)
   }
 
-  override suspend fun replaceChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local> {
+  override suspend fun replaceChatMessages(chatId: String, entities: List<ChatMessageEntity>): Empty<DataError.Local> {
     return dbSafeCall {
-      chatMessagesDao.replace(entities)
+      chatMessagesDao.replace(chatId, entities)
     }
   }
 

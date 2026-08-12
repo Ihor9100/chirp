@@ -23,6 +23,15 @@ interface ChatMessagesDao {
     upsert(entities)
   }
 
+  @Transaction
+  suspend fun replace(chatId: String, entities: List<ChatMessageEntity>) {
+    deleteForChat(chatId)
+    upsert(entities)
+  }
+
+  @Query("DELETE FROM chat_messages WHERE chatId = :chatId")
+  suspend fun deleteForChat(chatId: String)
+
   @Query(
     """
       UPDATE chat_messages
