@@ -37,8 +37,6 @@ open class KmpLibraryConventionPlugin : Plugin<Project> {
         // TODO: remove 
         "commonMainImplementation"(libs.findLibrary("koin-core").get())
         "commonMainImplementation"(libs.findLibrary("ktor-client-core").get())
-
-        "commonTestImplementation"(libs.findLibrary("kotlin-test").get())
       }
     }
   }
