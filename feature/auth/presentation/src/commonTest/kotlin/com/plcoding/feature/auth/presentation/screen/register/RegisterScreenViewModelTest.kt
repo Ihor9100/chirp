@@ -18,7 +18,7 @@ import kotlin.test.assertEquals
 class RegisterScreenViewModelTest {
 
   @Test
-  fun `password secure toggle click reverts secure flag in screen state`() {
+  fun `password secure toggle switches mode back and forth`() {
     runViewModelTest {
       val authRepository = FakeAuthRepository()
       val viewModel = RegisterScreenViewModel(authRepository)
