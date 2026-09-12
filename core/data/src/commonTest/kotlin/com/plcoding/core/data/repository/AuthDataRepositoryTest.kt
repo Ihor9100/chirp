@@ -44,7 +44,7 @@ class AuthDataRepositoryTest {
   )
 
   @Test
-  fun `register call send correct request`() = runTest {
+  fun `register sends post request with credentials`() = runTest {
     var httpRequestData: HttpRequestData? = null
     val mockEngine = MockEngine {
       httpRequestData = it
@@ -64,7 +64,7 @@ class AuthDataRepositoryTest {
   }
 
   @Test
-  fun `register call returns 409 conflict`() = runTest {
+  fun `409 conflict register response returns conflict error`() = runTest {
     val mockEngine = MockEngine {
       respondError(HttpStatusCode.Conflict)
     }
@@ -81,7 +81,7 @@ class AuthDataRepositoryTest {
 
 
   @Test
-  fun `register call returns 200 OK success`() = runTest {
+  fun `200 Ok successful register response returns success`() = runTest {
     val mockEngine = MockEngine {
       respondOk()
     }

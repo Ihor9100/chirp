@@ -58,7 +58,7 @@ fun RegisterScreen(
 
 @Composable
 private fun Content(
-  uiState: RegisterUiState,
+  uiState: RegisterScreenUiState,
   onAction: (RegisterScreenAction) -> Unit,
 ) {
     AdaptiveFormLayout(
@@ -141,7 +141,7 @@ private fun Content(
 private fun Themed(
   isDarkTheme: Boolean,
 ) {
-  val screenUiState = ScreenUiState(RegisterUiState())
+  val screenUiState = ScreenUiState(RegisterScreenUiState())
 
   Theme(isDarkTheme) {
     BaseScreen(

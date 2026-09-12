@@ -19,13 +19,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 class RegisterScreenViewModel(
   private val authRepository: AuthRepository,
-) : BaseScreenViewModel<RegisterUiState>() {
+) : BaseScreenViewModel<RegisterScreenUiState>() {
 
   private val _event = Channel<RegisterScreenEvent>()
   val event = _event.receiveAsFlow()
 
-  override fun getUiState(): RegisterUiState {
-    return RegisterUiState()
+  override fun getUiState(): RegisterScreenUiState {
+    return RegisterScreenUiState()
   }
 
   fun onAction(action: RegisterScreenAction) {
