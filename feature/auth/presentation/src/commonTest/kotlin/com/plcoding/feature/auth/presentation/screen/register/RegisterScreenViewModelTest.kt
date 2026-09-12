@@ -40,14 +40,14 @@ class RegisterScreenViewModelTest {
   }
 
   private fun runViewModelTest(body: TestScope.() -> Unit) {
-    runTest {
-      try {
-        val dispatcher = StandardTestDispatcher(testScheduler)
-        Dispatchers.setMain(dispatcher)
+    val dispatcher = StandardTestDispatcher()
+    Dispatchers.setMain(dispatcher)
+    try {
+      runTest(dispatcher) {
         body()
-      } finally {
-        Dispatchers.resetMain()
       }
+    } finally {
+      Dispatchers.resetMain()
     }
   }
 }

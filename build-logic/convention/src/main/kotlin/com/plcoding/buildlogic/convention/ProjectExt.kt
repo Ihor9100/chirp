@@ -41,6 +41,7 @@ fun Project.configureAndroidTarget() {
       minSdk = libs.findVersion("minSdk").get().toString().toInt()
       namespace = getPackageName()
       experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+      withHostTest {}
     }
   }
 
