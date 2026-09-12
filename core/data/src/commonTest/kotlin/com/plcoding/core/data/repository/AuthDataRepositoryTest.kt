@@ -1,10 +1,12 @@
 package com.plcoding.core.data.repository
 
 import com.plcoding.core.data.model.RegisterRequestDto
+import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
+import io.ktor.client.engine.mock.respondError
+import io.ktor.client.engine.mock.respondOk
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.HttpRequestData
@@ -13,29 +15,17 @@ import io.ktor.content.TextContent
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
-import kotlin.time.Clock
 
 class AuthDataRepositoryTest {
 
-  @Test
-  fun `register call returns success`() = runTest {
-    var httpRequestData: HttpRequestData? = null
-    val requestTime = Clock.System.now()
-    val registerRequestDto = RegisterRequestDto(
-      username = "test",
-      email = "test@example.com",
-      password = "Naruto*19890702"
-    )
-    val mockEngine = MockEngine {
-      httpRequestData = it
-      respond(content = "")
-    }
+  private fun getAuthDataRepository(mockEngine: MockEngine): AuthDataRepository {
     val httpClient = HttpClient(mockEngine) {
       install(ContentNegotiation) {
         json()
@@ -44,19 +34,65 @@ class AuthDataRepositoryTest {
         header(HttpHeaders.ContentType, ContentType.Application.Json)
       }
     }
-    val authDataRepository = AuthDataRepository(httpClient)
+    return AuthDataRepository(httpClient)
+  }
 
-    val response = authDataRepository.register(
+  private val registerRequestDto = RegisterRequestDto(
+    username = "test",
+    email = "test@example.com",
+    password = "Naruto*19890702"
+  )
+
+  @Test
+  fun `register call send correct request`() = runTest {
+    var httpRequestData: HttpRequestData? = null
+    val mockEngine = MockEngine {
+      httpRequestData = it
+      respondOk()
+    }
+
+    getAuthDataRepository(mockEngine).register(
       username = registerRequestDto.username,
       email = registerRequestDto.email,
       password = registerRequestDto.password,
     )
 
+    val bodyText = (httpRequestData?.body as? TextContent)?.text
     assertEquals("/api/auth/register", httpRequestData?.url?.encodedPath)
     assertEquals(HttpMethod.Post, httpRequestData?.method)
-    val body = httpRequestData?.body as? TextContent
-    val bodyText = body?.text
-    assertEquals(registerRequestDto, bodyText?.let { Json.decodeFromString<RegisterRequestDto>(it) })
-    assertIs<Result.Success<Unit>>(response)
+    assertEquals(registerRequestDto, bodyText?.let(Json::decodeFromString))
+  }
+
+  @Test
+  fun `register call returns 409 conflict`() = runTest {
+    val mockEngine = MockEngine {
+      respondError(HttpStatusCode.Conflict)
+    }
+
+    val result = getAuthDataRepository(mockEngine).register(
+      username = registerRequestDto.username,
+      email = registerRequestDto.email,
+      password = registerRequestDto.password,
+    )
+
+    assertIs<Result.Failure<DataError.Remote>>(result)
+    assertEquals(DataError.Remote.CONFLICT, result.error)
+  }
+
+
+  @Test
+  fun `register call returns 200 OK success`() = runTest {
+    val mockEngine = MockEngine {
+      respondOk()
+    }
+
+    val result = getAuthDataRepository(mockEngine).register(
+      username = registerRequestDto.username,
+      email = registerRequestDto.email,
+      password = registerRequestDto.password,
+    )
+
+    assertIs<Result.Success<Unit>>(result)
+    assertEquals(Unit, result.data)
   }
 }
