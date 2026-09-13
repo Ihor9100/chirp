@@ -31,31 +31,35 @@ class RegisterScreenViewModelTest {
   val email = "ihor.bohdanovskyi@gmail.com"
   val password = "Naruto*19890702"
 
-  fun initViewModel() {
+  fun setupViewModel() {
     fakeAuthRepository = FakeAuthRepository()
     viewModel = RegisterScreenViewModel(fakeAuthRepository)
   }
 
-  fun updateTextFields(
+  fun setTextFields(
     username: String = this.username,
     email: String = this.email,
     password: String = this.password
   ) {
     with(viewModel.screenUiState.value.uiState) {
-      usernameState.edit { append(username) }
-      emailState.edit { append(email) }
-      passwordState.edit { append(password) }
+      usernameState.edit { replace(0, length, username) }
+      emailState.edit { replace(0, length, email) }
+      passwordState.edit { replace(0, length, password) }
     }
+  }
+
+  fun TestScope.observeScreenUiState() {
+    backgroundScope.launch { viewModel.screenUiState.collect() }
+    advanceUntilIdle()
   }
 
   @Test
   fun `password secure toggle switches mode back and forth`() {
     runViewModelTest {
-      initViewModel()
+      setupViewModel()
       val getIsPasswordSecureMode = { viewModel.screenUiState.value.uiState.passwordIsSecureMode }
       val isPasswordSecureMode = getIsPasswordSecureMode()
-      backgroundScope.launch { viewModel.screenUiState.collect() }
-      advanceUntilIdle()
+      observeScreenUiState()
 
       viewModel.onAction(RegisterScreenAction.OnTextFieldSecureToggleClick)
 
@@ -72,11 +76,10 @@ class RegisterScreenViewModelTest {
   @Test
   fun `register with invalid email shows email error`() {
     runViewModelTest {
-      initViewModel()
-      backgroundScope.launch { viewModel.screenUiState.collect() }
-      updateTextFields(email = "ihor.bohdanovskyi.gmail.com")
-      advanceUntilIdle()
+      setupViewModel()
+      observeScreenUiState()
 
+      setTextFields(email = "ihor.bohdanovskyi.gmail.com")
       viewModel.onAction(RegisterScreenAction.OnPrimaryButtonClick)
 
       advanceUntilIdle()
@@ -89,8 +92,8 @@ class RegisterScreenViewModelTest {
   @Test
   fun `register triggers register request`() {
     runViewModelTest {
-      initViewModel()
-      updateTextFields()
+      setupViewModel()
+      setTextFields()
       fakeAuthRepository.registerResult = Result.Success(Unit)
 
       viewModel.onAction(RegisterScreenAction.OnPrimaryButtonClick)
@@ -106,8 +109,8 @@ class RegisterScreenViewModelTest {
   @Test
   fun `register emits success event`() {
     runViewModelTest {
-      initViewModel()
-      updateTextFields()
+      setupViewModel()
+      setTextFields()
       fakeAuthRepository.registerResult = Result.Success(Unit)
       val event = backgroundScope.async { viewModel.event.first() }
 
@@ -121,12 +124,11 @@ class RegisterScreenViewModelTest {
   @Test
   fun `register conflict error shows conflict error`() {
     runViewModelTest {
-      initViewModel()
+      setupViewModel()
       fakeAuthRepository.registerResult = Result.Failure(DataError.Remote.CONFLICT)
-      backgroundScope.launch { viewModel.screenUiState.collect() }
-      advanceUntilIdle()
+      observeScreenUiState()
 
-      updateTextFields()
+      setTextFields()
       viewModel.onAction(RegisterScreenAction.OnPrimaryButtonClick)
 
       advanceUntilIdle()

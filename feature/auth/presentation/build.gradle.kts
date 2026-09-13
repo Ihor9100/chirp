@@ -24,9 +24,16 @@ kotlin {
 
     androidMain {
       dependencies {
-        // Add Android-specific dependencies here. Note that this source set depends on
-        // commonMain by default and will correctly pull the Android artifacts of any KMP
-        // dependencies declared in commonMain.
+      }
+    }
+
+    androidDeviceTest {
+      dependencies {
+        implementation(libs.androidx.test.runner)
+        implementation(libs.androidx.test.ext.junit)
+        implementation(libs.androidx.test.espresso.core)
+        implementation(libs.androidx.compose.ui.test.junit4)
+        implementation(libs.androidx.compose.ui.test.manifest)
       }
     }
 
