@@ -11,6 +11,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -64,4 +65,12 @@ fun Modifier.windowInsetsPaddingOrMin(
     start = start,
     end = end,
   )
+}
+
+fun Modifier.testTagOrSame(testTag: String?): Modifier {
+  return if (testTag != null) {
+    testTag(testTag)
+  } else {
+    this
+  }
 }

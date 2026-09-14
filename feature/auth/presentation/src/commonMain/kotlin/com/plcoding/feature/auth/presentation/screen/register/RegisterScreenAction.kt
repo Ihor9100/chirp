@@ -7,7 +7,7 @@ sealed interface RegisterScreenAction {
     val inputField: RegisterScreenViewModel.InputField,
   ) : RegisterScreenAction
 
-  data object OnTextFieldSecureToggleClick : RegisterScreenAction
-  data object OnPrimaryButtonClick : RegisterScreenAction
-  data object OnSecondaryButtonClick : RegisterScreenAction
+  data object OnPasswordSecureIconClick : RegisterScreenAction
+  data object OnRegisterClick : RegisterScreenAction
+  data object OnLoginClick : RegisterScreenAction
 }

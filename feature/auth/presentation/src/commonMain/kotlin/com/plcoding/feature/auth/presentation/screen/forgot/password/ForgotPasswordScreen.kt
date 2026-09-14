@@ -62,24 +62,25 @@ private fun Content(
       logo = { AppLogo() },
       title = stringResource(uiState.titleRes),
       error = uiState.errorRes?.let { stringResource(it) },
-    ) {
-      TextFieldPlain(
-        modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(uiState.emailTopTitleRes),
-        textFieldState = uiState.emailState,
-        inputPlaceholder = stringResource(uiState.emailPlaceholderRes),
-        bottomTitle = null,
-        keyboardType = KeyboardType.Email,
-      )
-      Spacer(Modifier.height(32.dp))
-      Button(
-        modifier = Modifier.fillMaxWidth(),
-        text = stringResource(uiState.primaryButtonTitleRes),
-        style = uiState.primaryButtonStyle,
-        isEnabled = uiState.primaryButtonIsEnable,
-        onClick = { onAction(ForgotPasswordScreenAction.OnSubmitClick) },
-      )
-  }
+      form = {
+        TextFieldPlain(
+          modifier = Modifier.fillMaxWidth(),
+          topTitle = stringResource(uiState.emailTopTitleRes),
+          textFieldState = uiState.emailState,
+          inputPlaceholder = stringResource(uiState.emailPlaceholderRes),
+          bottomTitle = null,
+          keyboardType = KeyboardType.Email,
+        )
+        Spacer(Modifier.height(32.dp))
+        Button(
+          modifier = Modifier.fillMaxWidth(),
+          text = stringResource(uiState.primaryButtonTitleRes),
+          style = uiState.primaryButtonStyle,
+          isEnabled = uiState.primaryButtonIsEnable,
+          onClick = { onAction(ForgotPasswordScreenAction.OnSubmitClick) },
+        )
+      },
+    )
 }
 
 @Composable

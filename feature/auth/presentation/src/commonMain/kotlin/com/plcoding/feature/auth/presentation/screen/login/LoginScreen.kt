@@ -67,49 +67,50 @@ private fun Content(
     logo = { AppLogo() },
     title = stringResource(uiState.titleRes),
     error = uiState.errorRes?.let { stringResource(it) },
-  ) {
-    TextFieldPlain(
-      modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(uiState.emailTopTitleRes),
-      textFieldState = uiState.emailState,
-      inputPlaceholder = stringResource(uiState.emailPlaceholderRes),
-      bottomTitle = null,
-      keyboardType = KeyboardType.Text,
-    )
-    Spacer(Modifier.height(20.dp))
-    TextFieldPassword(
-      modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(uiState.passwordTopTitleRes),
-      textFieldState = uiState.passwordState,
-      inputPlaceholder = stringResource(uiState.passwordPlaceholderRes),
-      bottomTitle = null,
-      isSecureMode = uiState.passwordIsSecureMode,
-      onSecureToggleClick = { onAction(LoginScreenAction.OnTextFieldSecureToggleClick) }
-    )
-    Spacer(Modifier.height(20.dp))
-    Text(
-      modifier = Modifier
-        .align(Alignment.End)
-        .clickable { onAction(LoginScreenAction.OnForgotPasswordClick) },
-      text = stringResource(Res.string.forgot_password),
-      color = MaterialTheme.colorScheme.tertiary,
-      style = MaterialTheme.typography.bodySmall,
-    )
-    Spacer(Modifier.height(32.dp))
-    Button(
-      modifier = Modifier.fillMaxWidth(),
-      text = stringResource(uiState.primaryButtonTitleRes),
-      style = ButtonStyle.PRIMARY,
-      isEnabled = uiState.primaryButtonIsEnable,
-      onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
-    )
-    Button(
-      modifier = Modifier.fillMaxWidth(),
-      text = stringResource(uiState.secondaryButtonTitleRes),
-      style = ButtonStyle.SECONDARY,
-      onClick = { onAction(LoginScreenAction.OnSecondaryButtonClick) }
-    )
-  }
+    form = {
+      TextFieldPlain(
+        modifier = Modifier.fillMaxWidth(),
+        topTitle = stringResource(uiState.emailTopTitleRes),
+        textFieldState = uiState.emailState,
+        inputPlaceholder = stringResource(uiState.emailPlaceholderRes),
+        bottomTitle = null,
+        keyboardType = KeyboardType.Text,
+      )
+      Spacer(Modifier.height(20.dp))
+      TextFieldPassword(
+        modifier = Modifier.fillMaxWidth(),
+        topTitle = stringResource(uiState.passwordTopTitleRes),
+        textFieldState = uiState.passwordState,
+        inputPlaceholder = stringResource(uiState.passwordPlaceholderRes),
+        bottomTitle = null,
+        isSecureMode = uiState.passwordIsSecureMode,
+        onSecureToggleClick = { onAction(LoginScreenAction.OnTextFieldSecureToggleClick) }
+      )
+      Spacer(Modifier.height(20.dp))
+      Text(
+        modifier = Modifier
+          .align(Alignment.End)
+          .clickable { onAction(LoginScreenAction.OnForgotPasswordClick) },
+        text = stringResource(Res.string.forgot_password),
+        color = MaterialTheme.colorScheme.tertiary,
+        style = MaterialTheme.typography.bodySmall,
+      )
+      Spacer(Modifier.height(32.dp))
+      Button(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(uiState.primaryButtonTitleRes),
+        style = ButtonStyle.PRIMARY,
+        isEnabled = uiState.primaryButtonIsEnable,
+        onClick = { onAction(LoginScreenAction.OnPrimaryButtonClick) }
+      )
+      Button(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(uiState.secondaryButtonTitleRes),
+        style = ButtonStyle.SECONDARY,
+        onClick = { onAction(LoginScreenAction.OnSecondaryButtonClick) }
+      )
+    },
+  )
 }
 
 @Composable

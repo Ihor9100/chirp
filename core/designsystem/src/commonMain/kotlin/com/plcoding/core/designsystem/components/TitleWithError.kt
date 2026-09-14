@@ -13,10 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.extended
 
 @Composable
-fun Title(
+fun TitleWithError(
   text: String,
   textColor: Color = MaterialTheme.colorScheme.extended.textPrimary,
   error: String? = null,
+  errorTestTag: String? = null
 ) {
   Text(
     text = text,
@@ -25,14 +26,10 @@ fun Title(
     style = MaterialTheme.typography.headlineLarge,
   )
 
-  val showError = error != null
-
   AnimatedVisibility(
-    visible = showError
+    visible = error != null
   ) {
-    if (showError) {
-      Spacer(Modifier.height(4.dp))
-      ChirError(error)
-    }
+    Spacer(Modifier.height(4.dp))
+    Error(error!!, errorTestTag)
   }
 }

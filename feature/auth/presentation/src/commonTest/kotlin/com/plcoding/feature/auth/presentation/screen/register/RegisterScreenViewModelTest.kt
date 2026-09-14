@@ -61,12 +61,12 @@ class RegisterScreenViewModelTest {
       val isPasswordSecureMode = getIsPasswordSecureMode()
       observeScreenUiState()
 
-      viewModel.onAction(RegisterScreenAction.OnTextFieldSecureToggleClick)
+      viewModel.onAction(RegisterScreenAction.OnPasswordSecureIconClick)
 
       advanceUntilIdle()
       assertEquals(isPasswordSecureMode, !getIsPasswordSecureMode())
 
-      viewModel.onAction(RegisterScreenAction.OnTextFieldSecureToggleClick)
+      viewModel.onAction(RegisterScreenAction.OnPasswordSecureIconClick)
 
       advanceUntilIdle()
       assertEquals(isPasswordSecureMode, getIsPasswordSecureMode())
@@ -80,7 +80,7 @@ class RegisterScreenViewModelTest {
       observeScreenUiState()
 
       setTextFields(email = "ihor.bohdanovskyi.gmail.com")
-      viewModel.onAction(RegisterScreenAction.OnPrimaryButtonClick)
+      viewModel.onAction(RegisterScreenAction.OnRegisterClick)
 
       advanceUntilIdle()
       assertEquals(true, viewModel.screenUiState.value.uiState.emailIsError)
@@ -96,7 +96,7 @@ class RegisterScreenViewModelTest {
       setTextFields()
       fakeAuthRepository.registerResult = Result.Success(Unit)
 
-      viewModel.onAction(RegisterScreenAction.OnPrimaryButtonClick)
+      viewModel.onAction(RegisterScreenAction.OnRegisterClick)
 
       advanceUntilIdle()
       assertEquals(1, fakeAuthRepository.registerCallCount)
@@ -114,7 +114,7 @@ class RegisterScreenViewModelTest {
       fakeAuthRepository.registerResult = Result.Success(Unit)
       val event = backgroundScope.async { viewModel.event.first() }
 
-      viewModel.onAction(RegisterScreenAction.OnPrimaryButtonClick)
+      viewModel.onAction(RegisterScreenAction.OnRegisterClick)
 
       advanceUntilIdle()
       assertEquals(RegisterScreenEvent.Success(email), event.await())
@@ -129,7 +129,7 @@ class RegisterScreenViewModelTest {
       observeScreenUiState()
 
       setTextFields()
-      viewModel.onAction(RegisterScreenAction.OnPrimaryButtonClick)
+      viewModel.onAction(RegisterScreenAction.OnRegisterClick)
 
       advanceUntilIdle()
       assertEquals(Res.string.error_account_exists, viewModel.screenUiState.value.uiState.errorRes)

@@ -34,6 +34,7 @@ import chirp.core.designsystem.generated.resources.show_password
 import com.plcoding.core.designsystem.components.layout.TextFieldLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
+import com.plcoding.core.designsystem.utils.testTagOrSame
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -45,6 +46,8 @@ fun TextFieldPassword(
   textFieldState: TextFieldState,
   inputPlaceholder: String,
   bottomTitle: String?,
+  testTag: String? = null,
+  secureIconTestTag: String? = null,
   isError: Boolean = false,
   isEnabled: Boolean = true,
   isSecureMode: Boolean = false,
@@ -62,6 +65,7 @@ fun TextFieldPassword(
     BasicSecureTextField(
       state = textFieldState,
       modifier = Modifier
+        .testTagOrSame(testTag)
         .fillMaxWidth()
         .background(
           color = when {
@@ -91,8 +95,7 @@ fun TextFieldPassword(
           modifier = modifier.fillMaxWidth(),
         ) {
           Box(
-            modifier = Modifier
-              .weight(1f)
+            modifier = Modifier.weight(1f)
           ) {
             if (textFieldState.text.isBlank() && inputPlaceholder.isNotBlank()) {
               Text(
@@ -130,7 +133,8 @@ fun TextFieldPassword(
                   radius = 24.dp,
                 ),
                 onClick = onSecureToggleClick,
-              ),
+              )
+              .testTagOrSame(secureIconTestTag),
             tint = MaterialTheme.colorScheme.extended.textDisabled,
           )
         }

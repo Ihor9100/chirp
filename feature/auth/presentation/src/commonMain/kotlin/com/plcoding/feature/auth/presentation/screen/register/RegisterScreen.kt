@@ -8,9 +8,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import chirp.core.presentation.generated.resources.chirp
+import chirp.feature.auth.presentation.generated.resources.Res
+import chirp.feature.auth.presentation.generated.resources.email
+import chirp.feature.auth.presentation.generated.resources.log_in
+import chirp.feature.auth.presentation.generated.resources.password
+import chirp.feature.auth.presentation.generated.resources.register
+import chirp.feature.auth.presentation.generated.resources.username
+import chirp.feature.auth.presentation.generated.resources.welcome_to_chirp
 import com.plcoding.core.designsystem.components.AppLogo
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.button.ButtonStyle
@@ -24,6 +33,7 @@ import com.plcoding.core.presentation.utils.CollectEvent
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import chirp.core.presentation.generated.resources.Res as CoreRes
 
 @Composable
 fun RegisterScreen(
@@ -44,11 +54,11 @@ fun RegisterScreen(
     backgroundColor = MaterialTheme.colorScheme.background,
     isSafeDrawing = false,
   ) {
-    Content(
+    RegisterScreenContent(
       uiState = state.uiState,
       onAction = {
         when (it) {
-          RegisterScreenAction.OnSecondaryButtonClick -> openLogin()
+          RegisterScreenAction.OnLoginClick -> openLogin()
           else -> viewModel.onAction(it)
         }
       }
@@ -57,84 +67,93 @@ fun RegisterScreen(
 }
 
 @Composable
-private fun Content(
+fun RegisterScreenContent(
   uiState: RegisterScreenUiState,
   onAction: (RegisterScreenAction) -> Unit,
 ) {
-    AdaptiveFormLayout(
-      modifier = Modifier.fillMaxSize(),
-      logo = { AppLogo() },
-      title = stringResource(uiState.titleRes),
-      error = uiState.errorRes?.let { stringResource(it) },
-    ) {
-      TextFieldPlain(
-        modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(uiState.usernameTopTitleRes),
-        textFieldState = uiState.usernameState,
-        inputPlaceholder = stringResource(uiState.usernamePlaceholderRes),
-        bottomTitle = uiState.usernameBottomTitleRes?.let { stringResource(it) },
-        keyboardType = KeyboardType.Text,
-        isError = uiState.usernameIsError,
-        onFocusChanged = {
-          onAction(
-            RegisterScreenAction.OnTextFieldFocusGain(
-              isFocused = it,
-              inputField = RegisterScreenViewModel.InputField.USERNAME,
-            )
+  AdaptiveFormLayout(
+    modifier = Modifier.fillMaxSize(),
+    logo = { AppLogo() },
+    title = stringResource(Res.string.welcome_to_chirp),
+    error = uiState.errorRes?.let { stringResource(it) },
+    errorTestTag = RegisterScreenTestTag.ERROR.value,
+  ) {
+    TextFieldPlain(
+      modifier = Modifier.fillMaxWidth(),
+      topTitle = stringResource(Res.string.username),
+      textFieldState = uiState.usernameState,
+      inputPlaceholder = stringResource(CoreRes.string.chirp),
+      testTag = RegisterScreenTestTag.USERNAME_TEXT_FIELD.value,
+      bottomTitle = uiState.usernameBottomTitleRes?.let { stringResource(it) },
+      keyboardType = KeyboardType.Text,
+      isError = uiState.usernameIsError,
+      onFocusChanged = {
+        onAction(
+          RegisterScreenAction.OnTextFieldFocusGain(
+            isFocused = it,
+            inputField = RegisterScreenViewModel.InputField.USERNAME,
           )
-        }
-      )
-      Spacer(Modifier.height(20.dp))
-      TextFieldPlain(
-        modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(uiState.emailTopTitleRes),
-        textFieldState = uiState.emailState,
-        inputPlaceholder = stringResource(uiState.emailPlaceholderRes),
-        bottomTitle = uiState.emailBottomTitleRes?.let { stringResource(it) },
-        keyboardType = KeyboardType.Text,
-        isError = uiState.emailIsError,
-        onFocusChanged = {
-          onAction(
-            RegisterScreenAction.OnTextFieldFocusGain(
-              isFocused = it,
-              inputField = RegisterScreenViewModel.InputField.EMAIL,
-            )
+        )
+      }
+    )
+    Spacer(Modifier.height(20.dp))
+    TextFieldPlain(
+      modifier = Modifier.fillMaxWidth(),
+      topTitle = stringResource(Res.string.email),
+      textFieldState = uiState.emailState,
+      inputPlaceholder = stringResource(Res.string.email),
+      testTag = RegisterScreenTestTag.EMAIL_TEXT_FIELD.value,
+      bottomTitle = uiState.emailBottomTitleRes?.let { stringResource(it) },
+      keyboardType = KeyboardType.Text,
+      isError = uiState.emailIsError,
+      onFocusChanged = {
+        onAction(
+          RegisterScreenAction.OnTextFieldFocusGain(
+            isFocused = it,
+            inputField = RegisterScreenViewModel.InputField.EMAIL,
           )
-        }
-      )
-      Spacer(Modifier.height(20.dp))
-      TextFieldPassword(
-        modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(uiState.passwordTopTitleRes),
-        textFieldState = uiState.passwordState,
-        inputPlaceholder = stringResource(uiState.passwordPlaceholderRes),
-        bottomTitle = uiState.passwordBottomTitleRes?.let { stringResource(it) },
-        isError = uiState.passwordIsError,
-        isSecureMode = uiState.passwordIsSecureMode,
-        onFocusChanged = {
-          onAction(
-            RegisterScreenAction.OnTextFieldFocusGain(
-              isFocused = it,
-              inputField = RegisterScreenViewModel.InputField.PASSWORD,
-            )
+        )
+      }
+    )
+    Spacer(Modifier.height(20.dp))
+    TextFieldPassword(
+      modifier = Modifier.fillMaxWidth(),
+      topTitle = stringResource(Res.string.password),
+      textFieldState = uiState.passwordState,
+      inputPlaceholder = stringResource(Res.string.password),
+      bottomTitle = uiState.passwordBottomTitleRes?.let { stringResource(it) },
+      testTag = RegisterScreenTestTag.PASSWORD_TEXT_FIELD.value,
+      secureIconTestTag = RegisterScreenTestTag.PASSWORD_SECURE_ICON.value,
+      isError = uiState.passwordIsError,
+      isSecureMode = uiState.passwordIsSecureMode,
+      onFocusChanged = {
+        onAction(
+          RegisterScreenAction.OnTextFieldFocusGain(
+            isFocused = it,
+            inputField = RegisterScreenViewModel.InputField.PASSWORD,
           )
-        },
-        onSecureToggleClick = { onAction(RegisterScreenAction.OnTextFieldSecureToggleClick) }
-      )
-      Spacer(Modifier.height(32.dp))
-      Button(
-        modifier = Modifier.fillMaxWidth(),
-        text = stringResource(uiState.primaryButtonTitleRes),
-        style = ButtonStyle.PRIMARY,
-        onClick = { onAction(RegisterScreenAction.OnPrimaryButtonClick) }
-      )
-      Button(
-        modifier = Modifier.fillMaxWidth(),
-        text = stringResource(uiState.secondaryButtonTitleRes),
-        style = ButtonStyle.SECONDARY,
-        onClick = { onAction(RegisterScreenAction.OnSecondaryButtonClick) }
-      )
-    }
+        )
+      },
+      onSecureToggleClick = { onAction(RegisterScreenAction.OnPasswordSecureIconClick) }
+    )
+    Spacer(Modifier.height(32.dp))
+    Button(
+      modifier = Modifier
+        .fillMaxWidth()
+        .testTag(RegisterScreenTestTag.REGISTER_BUTTON.value),
+      text = stringResource(Res.string.register),
+      style = ButtonStyle.PRIMARY,
+      onClick = { onAction(RegisterScreenAction.OnRegisterClick) }
+    )
+    Button(
+      modifier = Modifier
+        .fillMaxWidth()
+        .testTag(RegisterScreenTestTag.LOGIN_BUTTON.value),
+      text = stringResource(Res.string.log_in),
+      style = ButtonStyle.SECONDARY,
+      onClick = { onAction(RegisterScreenAction.OnLoginClick) }
+    )
+  }
 }
 
 @Composable
@@ -148,7 +167,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState,
       backgroundColor = MaterialTheme.colorScheme.background,
     ) {
-      Content(
+      RegisterScreenContent(
         uiState = screenUiState.uiState,
         onAction = {}
       )
@@ -170,4 +189,14 @@ private fun DarkPreview() {
   Themed(
     isDarkTheme = true
   )
+}
+
+enum class RegisterScreenTestTag(val value: String) {
+  USERNAME_TEXT_FIELD("username_text_field"),
+  EMAIL_TEXT_FIELD("email_text_field"),
+  PASSWORD_TEXT_FIELD("password_text_field"),
+  PASSWORD_SECURE_ICON("password_text_field_secure_icon"),
+  REGISTER_BUTTON("register_button"),
+  LOGIN_BUTTON("login_button"),
+  ERROR("error"),
 }

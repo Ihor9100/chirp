@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.AppLogo
-import com.plcoding.core.designsystem.components.Title
+import com.plcoding.core.designsystem.components.TitleWithError
 import com.plcoding.core.designsystem.style.Theme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -74,7 +74,7 @@ fun FormLayoutThemed(
         .background(MaterialTheme.colorScheme.background),
       logo = { AppLogo(modifier = Modifier) },
       content = {
-        Title(
+        TitleWithError(
           text = "Welcome to Chirp!",
           error = "Error"
         )

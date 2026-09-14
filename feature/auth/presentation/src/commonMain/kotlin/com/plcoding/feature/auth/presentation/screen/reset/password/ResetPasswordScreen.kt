@@ -51,26 +51,27 @@ private fun Content(
     logo = { AppLogo() },
     title = stringResource(uiState.titleRes),
     error = uiState.errorRes?.let { stringResource(it) },
-  ) {
-    TextFieldPassword(
-      modifier = Modifier.fillMaxWidth(),
-      topTitle = stringResource(uiState.passwordTopTitleRes),
-      textFieldState = uiState.passwordState,
-      inputPlaceholder = stringResource(uiState.passwordPlaceholderRes),
-      bottomTitle = stringResource(uiState.passwordBottomTitleRes),
-      isError = uiState.passwordIsError,
-      isSecureMode = uiState.passwordIsSecureMode,
-      onSecureToggleClick = { onAction(ResetPasswordScreenAction.OnTextFieldSecureToggleClick) }
-    )
-    Spacer(Modifier.height(32.dp))
-    Button(
-      modifier = Modifier.fillMaxWidth(),
-      text = stringResource(uiState.primaryButtonTitleRes),
-      style = uiState.primaryButtonStyle,
-      isEnabled = uiState.primaryButtonIsEnable,
-      onClick = { onAction(ResetPasswordScreenAction.OnPrimaryButtonClick) }
-    )
-  }
+    form = {
+      TextFieldPassword(
+        modifier = Modifier.fillMaxWidth(),
+        topTitle = stringResource(uiState.passwordTopTitleRes),
+        textFieldState = uiState.passwordState,
+        inputPlaceholder = stringResource(uiState.passwordPlaceholderRes),
+        bottomTitle = stringResource(uiState.passwordBottomTitleRes),
+        isError = uiState.passwordIsError,
+        isSecureMode = uiState.passwordIsSecureMode,
+        onSecureToggleClick = { onAction(ResetPasswordScreenAction.OnTextFieldSecureToggleClick) }
+      )
+      Spacer(Modifier.height(32.dp))
+      Button(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(uiState.primaryButtonTitleRes),
+        style = uiState.primaryButtonStyle,
+        isEnabled = uiState.primaryButtonIsEnable,
+        onClick = { onAction(ResetPasswordScreenAction.OnPrimaryButtonClick) }
+      )
+    },
+  )
 }
 
 @Composable

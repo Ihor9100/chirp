@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.layout.TextFieldLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
+import com.plcoding.core.designsystem.utils.testTagOrSame
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -28,6 +29,7 @@ fun TextFieldPlain(
   topTitle: String? = null,
   textFieldState: TextFieldState,
   inputPlaceholder: String,
+  testTag: String? = null,
   bottomTitle: String? = null,
   keyboardType: KeyboardType = KeyboardType.Text,
   isError: Boolean = false,
@@ -46,6 +48,7 @@ fun TextFieldPlain(
     BasicTextField(
       state = textFieldState,
       modifier = Modifier
+        .testTagOrSame(testTag)
         .fillMaxWidth()
         .background(
           color = when {

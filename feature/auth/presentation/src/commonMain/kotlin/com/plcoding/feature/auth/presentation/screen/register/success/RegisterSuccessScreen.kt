@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.plcoding.core.designsystem.components.ChirError
+import com.plcoding.core.designsystem.components.Error
 import com.plcoding.core.designsystem.components.SuccessIcon
 import com.plcoding.core.designsystem.components.button.Button
 import com.plcoding.core.designsystem.components.layout.ResultLayout
@@ -79,7 +79,7 @@ private fun Content(
         )
         if (uiState.secondaryButtonErrorRes != null) {
           Spacer(Modifier.height(6.dp))
-          ChirError(error = stringResource(uiState.secondaryButtonErrorRes))
+          Error(error = stringResource(uiState.secondaryButtonErrorRes))
         }
       }
     )

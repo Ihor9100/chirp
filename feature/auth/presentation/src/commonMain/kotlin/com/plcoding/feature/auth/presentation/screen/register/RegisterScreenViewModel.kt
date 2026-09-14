@@ -31,8 +31,8 @@ class RegisterScreenViewModel(
   fun onAction(action: RegisterScreenAction) {
     when (action) {
       is RegisterScreenAction.OnTextFieldFocusGain -> clearInputFieldError(action)
-      is RegisterScreenAction.OnTextFieldSecureToggleClick -> handleTextFieldSecureToggleClick()
-      is RegisterScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
+      is RegisterScreenAction.OnPasswordSecureIconClick -> handlePasswordSecureIconClick()
+      is RegisterScreenAction.OnRegisterClick -> handleRegisterClick()
       else -> Unit
     }
   }
@@ -58,13 +58,13 @@ class RegisterScreenViewModel(
     }
   }
 
-  private fun handleTextFieldSecureToggleClick() {
+  private fun handlePasswordSecureIconClick() {
     updateUiState {
       copy(passwordIsSecureMode = !passwordIsSecureMode)
     }
   }
 
-  private fun handlePrimaryButtonClick() {
+  private fun handleRegisterClick() {
     if (!areFieldsValid()) return
 
     launchLoadable {

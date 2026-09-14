@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.components.AppLogo
-import com.plcoding.core.designsystem.components.Title
+import com.plcoding.core.designsystem.components.TitleWithError
 import com.plcoding.core.designsystem.components.layout.FormLayout
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.designsystem.style.extended
@@ -43,6 +43,7 @@ fun AdaptiveFormLayout(
   logo: @Composable () -> Unit,
   title: String,
   error: String?,
+  errorTestTag: String? = null,
   form: @Composable ColumnScope.() -> Unit,
 ) {
   val titleColor = if (deviceConfiguration == DeviceConfiguration.MOBILE_LANDSCAPE) {
@@ -57,10 +58,11 @@ fun AdaptiveFormLayout(
         modifier = modifier,
         logo = logo,
       ) {
-        Title(
+        TitleWithError(
           text = title,
           textColor = titleColor,
           error = error,
+          errorTestTag = errorTestTag,
         )
         Spacer(Modifier.height(32.dp))
         form()
@@ -85,10 +87,11 @@ fun AdaptiveFormLayout(
           Spacer(Modifier.height(32.dp))
           AppLogo()
           Spacer(Modifier.height(32.dp))
-          Title(
+          TitleWithError(
             text = title,
             textColor = titleColor,
             error = error,
+            errorTestTag = errorTestTag,
           )
         }
         FormLayout(
@@ -128,10 +131,11 @@ fun AdaptiveFormLayout(
           horizontalAlignment = Alignment.CenterHorizontally,
         ) {
           Spacer(Modifier.height(40.dp))
-          Title(
+          TitleWithError(
             text = title,
             textColor = titleColor,
             error = error,
+            errorTestTag = errorTestTag,
           )
           Spacer(Modifier.height(32.dp))
           form()
@@ -177,7 +181,7 @@ private fun Themed(
           color = MaterialTheme.colorScheme.extended.textPrimary,
           style = MaterialTheme.typography.bodySmall,
         )
-      }
+      },
     )
   }
 }
