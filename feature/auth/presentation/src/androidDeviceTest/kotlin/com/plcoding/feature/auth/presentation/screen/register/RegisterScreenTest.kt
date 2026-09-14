@@ -3,9 +3,12 @@ package com.plcoding.feature.auth.presentation.screen.register
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -24,7 +27,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
+@OptIn(ExperimentalAtomicApi::class, ExperimentalTestApi::class)
 @RunWith(AndroidJUnit4::class)
 class RegisterScreenTest {
 
@@ -204,15 +211,15 @@ class RegisterScreenTest {
   fun successRegistrationOpensRegisterSuccess() {
     val authRepositoryFake = AuthRepositoryFake()
     val viewModel = RegisterScreenViewModel(authRepositoryFake)
-    var openRegisterSuccessCalled = false
+    val openRegisterSuccessCalled = AtomicBoolean(false)
     val email = "ihor9100@example.com"
-    var capturedEmail: String? = null
+    var capturedEmail: AtomicReference<String>? = null
     composeTestRule.setContent {
       RegisterScreen(
         viewModel = viewModel,
         openRegisterSuccess = {
-          capturedEmail = it
-          openRegisterSuccessCalled = true
+          capturedEmail = AtomicReference(it)
+          openRegisterSuccessCalled.set(true)
         },
         openLogin = {}
       )
@@ -231,12 +238,11 @@ class RegisterScreenTest {
       .onNodeWithTag(RegisterScreenTestTag.REGISTER_BUTTON.value)
       .performClick()
 
-    composeTestRule.waitUntil(timeoutMillis = 5_000) {
-      openRegisterSuccessCalled
+    composeTestRule.waitUntil(5_000) {
+      openRegisterSuccessCalled.get()
     }
-
-    assertTrue(openRegisterSuccessCalled)
-    assertEquals(email, capturedEmail)
+    assertTrue(openRegisterSuccessCalled.get())
+    assertEquals(email, capturedEmail?.get())
   }
 
   @Test
@@ -248,7 +254,7 @@ class RegisterScreenTest {
     composeTestRule.setContent {
       RegisterScreen(
         viewModel = viewModel,
-        openRegisterSuccess = {openRegisterSuccessCalled = true},
+        openRegisterSuccess = { openRegisterSuccessCalled = true },
         openLogin = {}
       )
     }
@@ -266,9 +272,10 @@ class RegisterScreenTest {
       .onNodeWithTag(RegisterScreenTestTag.REGISTER_BUTTON.value)
       .performClick()
 
-    composeTestRule.waitUntil(timeoutMillis = 5_000) {
-      viewModel.screenUiState.value.uiState.errorRes != null
-    }
+    composeTestRule.waitUntilAtLeastOneExists(
+      matcher = hasTestTag(RegisterScreenTestTag.ERROR.value),
+      timeoutMillis = 5_000,
+    )
 
     assertFalse(openRegisterSuccessCalled)
     composeTestRule
