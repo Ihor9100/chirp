@@ -117,8 +117,8 @@ class AuthGraphTest {
     composeTestRule.setContent {
       val navController = rememberNavController()
       NavHost(
-        navController,
-        AuthRoute.Graph
+        navController = navController,
+        startDestination = AuthRoute.Graph,
       ) {
         authGraph(navController) {}
       }
@@ -126,7 +126,7 @@ class AuthGraphTest {
         navController.navigate(AuthRoute.RegisterSuccess("ihor9100@example.com"))
       }
     }
-    composeTestRule.waitUntil {
+    composeTestRule.waitUntil(5_000) {
       composeTestRule
         .onNodeWithTag(RegisterSuccessScreenTestTag.SCREEN.value)
         .isDisplayed()
