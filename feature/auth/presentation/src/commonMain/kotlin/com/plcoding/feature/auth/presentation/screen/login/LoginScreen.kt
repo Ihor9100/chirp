@@ -52,7 +52,7 @@ fun LoginScreen(
     backgroundColor = MaterialTheme.colorScheme.background,
     isSafeDrawing = false,
   ) {
-    Content(
+    LoginScreenContent(
       uiState = state.uiState,
       onAction = {
         when (it) {
@@ -66,7 +66,7 @@ fun LoginScreen(
 }
 
 @Composable
-private fun Content(
+fun LoginScreenContent(
   uiState: LoginUiState,
   onAction: (LoginScreenAction) -> Unit,
 ) {
@@ -136,7 +136,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState,
       backgroundColor = MaterialTheme.colorScheme.background,
     ) {
-      Content(
+      LoginScreenContent(
         uiState = screenUiState.uiState,
         onAction = {}
       )

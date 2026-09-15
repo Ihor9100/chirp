@@ -34,7 +34,7 @@ fun ResetPasswordScreen(
     backgroundColor = MaterialTheme.colorScheme.background,
     isSafeDrawing = false,
   ) {
-    Content(
+    ResetPasswordScreenContent(
       uiState = state.uiState,
       onAction = viewModel::onAction
     )
@@ -42,7 +42,7 @@ fun ResetPasswordScreen(
 }
 
 @Composable
-private fun Content(
+fun ResetPasswordScreenContent(
   uiState: ResetPasswordUiState,
   onAction: (ResetPasswordScreenAction) -> Unit,
 ) {
@@ -85,7 +85,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState,
       backgroundColor = MaterialTheme.colorScheme.background,
     ) {
-      Content(
+      ResetPasswordScreenContent(
         uiState = screenUiState.uiState,
         onAction = {}
       )

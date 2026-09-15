@@ -41,7 +41,7 @@ fun EmailVerificationScreen(
     backgroundColor = MaterialTheme.colorScheme.background,
     isSafeDrawing = false,
   ) {
-    Content(
+    EmailVerificationScreenContent(
       uiState = state.uiState,
       onAction = { openLogin() },
     )
@@ -49,7 +49,7 @@ fun EmailVerificationScreen(
 }
 
 @Composable
-private fun Content(
+fun EmailVerificationScreenContent(
   uiState: EmailVerificationUiState,
   onAction: (EmailVerificationScreenAction) -> Unit,
 ) {
@@ -148,7 +148,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState,
       backgroundColor = MaterialTheme.colorScheme.background,
     ) {
-      Content(
+      EmailVerificationScreenContent(
         uiState = screenUiState.uiState,
         onAction = {}
       )

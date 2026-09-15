@@ -122,7 +122,7 @@ fun ChatDetailsScreen(
     baseUiState = screenUiState.baseUiState,
     backgroundColor = null,
   ) {
-    Content(
+    ChatDetailsScreenContent(
       uiState = screenUiState.uiState,
       deviceConfiguration = deviceConfiguration,
       lazyListState = lazyListState,
@@ -146,7 +146,7 @@ fun ChatDetailsScreen(
 }
 
 @Composable
-private fun Content(
+fun ChatDetailsScreenContent(
   uiState: ChatDetailsScreenUiState,
   deviceConfiguration: DeviceConfiguration,
   lazyListState: LazyListState,
@@ -305,7 +305,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState,
       backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
-      Content(
+      ChatDetailsScreenContent(
         uiState = screenUiState.uiState,
         deviceConfiguration = deviceConfiguration,
         lazyListState = rememberLazyListState(),

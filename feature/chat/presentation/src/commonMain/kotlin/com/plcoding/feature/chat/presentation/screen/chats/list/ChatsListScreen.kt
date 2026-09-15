@@ -63,7 +63,7 @@ fun ChatsListScreen(
     baseUiState = state.baseUiState,
     backgroundColor = MaterialTheme.colorScheme.extended.surfaceLower,
   ) {
-    Content(
+    ChatsListScreenContent(
       uiState = state.uiState,
       onAction = {
         when (it) {
@@ -89,7 +89,7 @@ fun ChatsListScreen(
 }
 
 @Composable
-private fun Content(
+fun ChatsListScreenContent(
   uiState: ChatsListScreenUiState,
   onAction: (ChatsListScreenAction) -> Unit,
 ) {
@@ -151,7 +151,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState,
       backgroundColor = MaterialTheme.colorScheme.extended.surfaceLower,
     ) {
-      Content(
+      ChatsListScreenContent(
         uiState = screenUiState.uiState,
         onAction = {}
       )
