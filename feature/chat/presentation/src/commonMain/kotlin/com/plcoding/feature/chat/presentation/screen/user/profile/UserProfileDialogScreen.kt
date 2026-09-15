@@ -81,7 +81,7 @@ fun UserProfileDialogScreen(
     deviceConfiguration = deviceConfiguration,
     onDismiss = navController::popBackStack,
   ) {
-    Content(
+    UserProfileDialogScreenContent(
       uiState = screenUiState.uiState,
       onAction = {
         when (it) {
@@ -102,7 +102,7 @@ fun UserProfileDialogScreen(
 }
 
 @Composable
-private fun Content(
+fun UserProfileDialogScreenContent(
   uiState: UserProfileDialogScreenUiState,
   onAction: (UserProfileDialogScreenAction) -> Unit,
 ) {

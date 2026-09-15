@@ -55,7 +55,7 @@ fun ChatsScreen(
     backgroundColor = null,
     isSafeDrawing = false,
   ) {
-    Content(
+    ChatsScreenContent(
       navController = navController,
       scaffoldNavigator = scaffoldNavigator,
     )
@@ -63,7 +63,7 @@ fun ChatsScreen(
 }
 
 @Composable
-private fun Content(
+fun ChatsScreenContent(
   navController: NavController,
   scaffoldNavigator: ThreePaneScaffoldNavigator<String>,
 ) {
@@ -96,7 +96,7 @@ private fun Themed(
   scaffoldNavigator: ThreePaneScaffoldNavigator<String>,
 ) {
   Theme(isDarkTheme) {
-    Content(
+    ChatsScreenContent(
       navController = rememberNavController(),
       scaffoldNavigator = scaffoldNavigator,
     )

@@ -40,7 +40,7 @@ fun RegisterSuccessScreen(
     backgroundColor = MaterialTheme.colorScheme.background,
     isSafeDrawing = false,
   ) {
-    Content(
+    RegisterSuccessScreenContent(
       uiState = state.uiState,
       onAction = {
         when (it) {
@@ -53,7 +53,7 @@ fun RegisterSuccessScreen(
 }
 
 @Composable
-private fun Content(
+fun RegisterSuccessScreenContent(
   uiState: RegisterSuccessUiState,
   onAction: (RegisterSuccessScreenAction) -> Unit,
 ) {
@@ -107,7 +107,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState,
       backgroundColor = MaterialTheme.colorScheme.background,
     ) {
-      Content(
+      RegisterSuccessScreenContent(
         uiState = screenUiState.uiState,
         onAction = {}
       )

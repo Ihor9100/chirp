@@ -45,7 +45,7 @@ fun ForgotPasswordScreen(
     backgroundColor = MaterialTheme.colorScheme.background,
     isSafeDrawing = false,
   ) {
-    Content(
+    ForgotPasswordScreenContent(
       uiState = state.uiState,
       onAction = viewModel::onAction
     )
@@ -53,7 +53,7 @@ fun ForgotPasswordScreen(
 }
 
 @Composable
-private fun Content(
+fun ForgotPasswordScreenContent(
   uiState: ForgotPasswordUiState,
   onAction: (ForgotPasswordScreenAction) -> Unit,
 ) {
@@ -94,7 +94,7 @@ private fun Themed(
       baseUiState = screenUiState.baseUiState,
       backgroundColor = MaterialTheme.colorScheme.background
     ) {
-      Content(
+      ForgotPasswordScreenContent(
         uiState = screenUiState.uiState,
         onAction = {}
       )
