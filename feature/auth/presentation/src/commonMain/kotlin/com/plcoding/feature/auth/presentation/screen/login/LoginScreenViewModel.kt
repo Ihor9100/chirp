@@ -6,8 +6,8 @@ import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.error_email_not_verified
 import chirp.feature.auth.presentation.generated.resources.error_invalid_credentials
 import com.plcoding.core.domain.model.AuthInfo
-import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.repository.AuthRepository
+import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
@@ -52,15 +52,15 @@ class LoginScreenViewModel(
 
   fun onAction(action: LoginScreenAction) {
     when (action) {
-      is LoginScreenAction.OnTextFieldSecureToggleClick -> updateUiState {
+      is LoginScreenAction.OnPasswordSecureToggleClick -> updateUiState {
         copy(passwordIsSecureMode = !passwordIsSecureMode)
       }
-      is LoginScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
+      is LoginScreenAction.OnLoginClick -> handleLoginClick()
       else -> Unit
     }
   }
 
-  private fun handlePrimaryButtonClick() {
+  private fun handleLoginClick() {
     launchLoadable {
       authRepository
         .login(

@@ -17,15 +17,22 @@ class RegisterSuccessScreenViewModel(
   savedStateHandle: SavedStateHandle,
 ) : BaseScreenViewModel<RegisterSuccessUiState>() {
 
-  private val email = savedStateHandle.get<String>("email") ?: throw IllegalArgumentException()
+  private val email = savedStateHandle.get<String>("email")
 
   override fun getUiState(): RegisterSuccessUiState {
-    return RegisterSuccessUiState(
-      description = TextProvider.Resource(
-        id = Res.string.verification_email_sent_to_x,
-        args = listOf(email),
+    return RegisterSuccessUiState()
+  }
+
+  override fun onInitialize() {
+    super.onInitialize()
+    updateUiState {
+      copy(
+        description = TextProvider.Resource(
+          Res.string.verification_email_sent_to_x,
+          listOf(email!!),
+        ),
       )
-    )
+    }
   }
 
   fun onAction(action: RegisterSuccessScreenAction) {
@@ -38,7 +45,7 @@ class RegisterSuccessScreenViewModel(
   private fun resendVerificationEmail() {
     launchLoadable {
       authRepository
-        .resendVerificationEmail(email)
+        .resendVerificationEmail(email!!)
         .onFailure { handleFailure(it) }
         .onSuccess { showSnackbar(Res.string.resent_verification_email) }
     }

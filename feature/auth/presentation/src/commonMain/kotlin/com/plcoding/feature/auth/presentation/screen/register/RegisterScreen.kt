@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
@@ -192,11 +194,11 @@ private fun DarkPreview() {
 }
 
 enum class RegisterScreenTestTag(val value: String) {
-  USERNAME_TEXT_FIELD("username_text_field"),
-  EMAIL_TEXT_FIELD("email_text_field"),
-  PASSWORD_TEXT_FIELD("password_text_field"),
-  PASSWORD_SECURE_ICON("password_text_field_secure_icon"),
-  REGISTER_BUTTON("register_button"),
-  LOGIN_BUTTON("login_button"),
-  ERROR("error"),
+  USERNAME_TEXT_FIELD("register_screen_username_text_field"),
+  EMAIL_TEXT_FIELD("register_screen_email_text_field"),
+  PASSWORD_TEXT_FIELD("register_screen_password_text_field"),
+  PASSWORD_SECURE_ICON("register_screen_password_text_field_secure_icon"),
+  REGISTER_BUTTON("register_screen_register_button"),
+  LOGIN_BUTTON("register_screen_login_button"),
+  ERROR("register_screen_error"),
 }
