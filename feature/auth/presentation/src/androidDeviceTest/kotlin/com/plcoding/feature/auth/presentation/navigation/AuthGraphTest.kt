@@ -1,9 +1,11 @@
 package com.plcoding.feature.auth.presentation.navigation
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.navigation.compose.NavHost
@@ -67,7 +69,7 @@ class AuthGraphTest {
   }
 
   @Test
-  fun loginToRegisterSuccess() {
+  fun fromLoginToRegisterSuccess() {
     setupKoin()
     composeTestRule.setContent {
       val navController = rememberNavController()
@@ -78,6 +80,7 @@ class AuthGraphTest {
         authGraph(navController) {}
       }
     }
+    val email = "ihor9100@example.com"
 
     composeTestRule
       .onNodeWithTag(LoginScreenTestTag.REGISTER_BUTTON.value)
@@ -87,7 +90,7 @@ class AuthGraphTest {
       .performTextInput("Ihor9100")
     composeTestRule
       .onNodeWithTag(RegisterScreenTestTag.EMAIL_TEXT_FIELD.value)
-      .performTextInput("ihor9100@example.com")
+      .performTextInput(email)
     composeTestRule
       .onNodeWithTag(RegisterScreenTestTag.PASSWORD_TEXT_FIELD.value)
       .performTextInput("Password123!")
@@ -102,6 +105,39 @@ class AuthGraphTest {
     }
     composeTestRule
       .onNodeWithTag(RegisterSuccessScreenTestTag.SCREEN.value)
+      .assertIsDisplayed()
+    composeTestRule
+      .onNodeWithText(email, substring = true)
+      .assertIsDisplayed()
+  }
+
+  @Test
+  fun registerSuccessOpensLogin() {
+    setupKoin()
+    composeTestRule.setContent {
+      val navController = rememberNavController()
+      NavHost(
+        navController,
+        AuthRoute.Graph
+      ) {
+        authGraph(navController) {}
+      }
+      LaunchedEffect(Unit) {
+        navController.navigate(AuthRoute.RegisterSuccess("ihor9100@example.com"))
+      }
+    }
+    composeTestRule.waitUntil {
+      composeTestRule
+        .onNodeWithTag(RegisterSuccessScreenTestTag.SCREEN.value)
+        .isDisplayed()
+    }
+
+    composeTestRule
+      .onNodeWithTag(RegisterSuccessScreenTestTag.LOGIN_BUTTON.value)
+      .performClick()
+
+    composeTestRule
+      .onNodeWithTag(LoginScreenTestTag.SCREEN.value)
       .assertIsDisplayed()
   }
 }
@@ -136,7 +172,7 @@ private class AuthRepositoryFake : AuthRepository {
   ): Empty<DataError.Remote> {
     return Result.Success(Unit)
   }
-  
+
   override suspend fun resendVerificationEmail(email: String): Empty<DataError.Remote> {
     TODO("Not yet implemented")
   }

@@ -37,7 +37,7 @@ class RegisterSuccessScreenViewModel(
 
   fun onAction(action: RegisterSuccessScreenAction) {
     when (action) {
-      is RegisterSuccessScreenAction.SecondaryButtonClick -> resendVerificationEmail()
+      is RegisterSuccessScreenAction.OnResendClick -> resendVerificationEmail()
       else -> Unit
     }
   }

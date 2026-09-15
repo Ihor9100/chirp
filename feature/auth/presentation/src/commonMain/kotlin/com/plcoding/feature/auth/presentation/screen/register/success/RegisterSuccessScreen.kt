@@ -44,7 +44,7 @@ fun RegisterSuccessScreen(
       uiState = state.uiState,
       onAction = {
         when (it) {
-          is RegisterSuccessScreenAction.PrimaryButtonClick -> openLogin()
+          is RegisterSuccessScreenAction.OnLoginClick -> openLogin()
           else -> viewModel.onAction(it)
         }
       },
@@ -68,12 +68,14 @@ private fun Content(
       description = uiState.description?.get(),
       primaryButton = {
         Button(
-          modifier = Modifier.fillMaxWidth(),
+          modifier = Modifier
+            .testTag(RegisterSuccessScreenTestTag.LOGIN_BUTTON.value)
+            .fillMaxWidth(),
           text = stringResource(Res.string.log_in),
           style = ButtonStyle.PRIMARY,
           isLoading = false,
           isEnabled = !uiState.hasOngoingRequest,
-          onClick = { onAction(RegisterSuccessScreenAction.PrimaryButtonClick) }
+          onClick = { onAction(RegisterSuccessScreenAction.OnLoginClick) }
         )
       },
       secondaryButton = {
@@ -83,7 +85,7 @@ private fun Content(
           style = ButtonStyle.SECONDARY,
           isLoading = false,
           isEnabled = !uiState.hasOngoingRequest,
-          onClick = { onAction(RegisterSuccessScreenAction.SecondaryButtonClick) }
+          onClick = { onAction(RegisterSuccessScreenAction.OnResendClick) }
         )
         if (uiState.secondaryButtonErrorRes != null) {
           Spacer(Modifier.height(6.dp))
@@ -131,4 +133,5 @@ private fun DarkPreview() {
 
 enum class RegisterSuccessScreenTestTag(val value: String) {
   SCREEN("register_success_screen"),
+  LOGIN_BUTTON("register_success_screen_login_button"),
 }
