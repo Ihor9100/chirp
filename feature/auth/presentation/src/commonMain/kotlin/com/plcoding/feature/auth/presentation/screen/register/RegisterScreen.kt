@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
@@ -74,7 +72,9 @@ fun RegisterScreenContent(
   onAction: (RegisterScreenAction) -> Unit,
 ) {
   AdaptiveFormLayout(
-    modifier = Modifier.fillMaxSize(),
+    modifier = Modifier
+      .testTag(RegisterScreenTestTag.SCREEN.value)
+      .fillMaxSize(),
     logo = { AppLogo() },
     title = stringResource(Res.string.welcome_to_chirp),
     error = uiState.errorRes?.let { stringResource(it) },
@@ -194,6 +194,7 @@ private fun DarkPreview() {
 }
 
 enum class RegisterScreenTestTag(val value: String) {
+  SCREEN("register_screen"),
   USERNAME_TEXT_FIELD("register_screen_username_text_field"),
   EMAIL_TEXT_FIELD("register_screen_email_text_field"),
   PASSWORD_TEXT_FIELD("register_screen_password_text_field"),

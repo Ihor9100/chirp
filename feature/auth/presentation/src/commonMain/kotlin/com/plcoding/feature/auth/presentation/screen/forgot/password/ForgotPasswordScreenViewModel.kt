@@ -9,7 +9,6 @@ import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.core.domain.validator.EmailValidator
-import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.toStringRes
 import kotlinx.coroutines.flow.combine
@@ -36,7 +35,7 @@ class ForgotPasswordScreenViewModel(
       screenUiState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { email, isLoading ->
       updateUiState {
-        copy(primaryButtonIsEnable = EmailValidator.validate(email) && !isLoading)
+        copy(submitButtonIsEnabled = EmailValidator.validate(email) && !isLoading)
       }
     }.launchIn(viewModelScope)
   }
@@ -52,19 +51,13 @@ class ForgotPasswordScreenViewModel(
       authRepository
         .forgotPassword(screenUiState.value.uiState.emailState.text.toString())
         .onFailure(::handleFailure)
-        .onSuccess { handleSuccess() }
+        .onSuccess { showSnackbar(Res.string.forgot_password_email_sent_successfully) }
     }
   }
 
   private fun handleFailure(error: DataError.Remote) {
     updateUiState {
       copy(errorRes = error.toStringRes())
-    }
-  }
-
-  private fun handleSuccess() {
-    updateUiState {
-      copy(snackbarEvent = Event(Res.string.forgot_password_email_sent_successfully))
     }
   }
 }

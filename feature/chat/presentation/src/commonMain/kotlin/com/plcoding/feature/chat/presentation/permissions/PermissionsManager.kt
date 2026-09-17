@@ -1,5 +1,5 @@
 package com.plcoding.feature.chat.presentation.permissions
 
-expect class PermissionsManager {
+interface PermissionsManager {
   suspend fun requestPermission(permission: Permission): PermissionState
 }

@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -22,23 +24,25 @@ import com.plcoding.core.designsystem.utils.getDeviceConfiguration
 import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.core.presentation.utils.getPaneScaffoldDirective
 import com.plcoding.feature.chat.presentation.permissions.Permission
-import com.plcoding.feature.chat.presentation.permissions.rememberPermissionsManager
+import com.plcoding.feature.chat.presentation.permissions.PermissionsManagerFactory
 import com.plcoding.feature.chat.presentation.screen.chats.details.ChatDetailsScreen
 import com.plcoding.feature.chat.presentation.screen.chats.list.ChatsListScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ChatsScreen(
   chatId: String?,
   navController: NavController,
-  viewModel: ChatsScreenViewModel = koinViewModel()
+  viewModel: ChatsScreenViewModel = koinViewModel(),
+  permissionsManagerFactory: PermissionsManagerFactory = koinInject(),
 ) {
   val screenUiState by viewModel.screenUiState.collectAsStateWithLifecycle()
   val deviceConfiguration = getDeviceConfiguration()
   val scaffoldDirective = getPaneScaffoldDirective(deviceConfiguration, currentWindowAdaptiveInfo())
   val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<String>(scaffoldDirective)
-  val permissionsManager = rememberPermissionsManager()
+  val permissionsManager = permissionsManagerFactory.rememberPermissionsManager()
 
   if (chatId != null) {
     LaunchedEffect(chatId) {
@@ -68,6 +72,7 @@ fun ChatsScreenContent(
   scaffoldNavigator: ThreePaneScaffoldNavigator<String>,
 ) {
   ListDetailPaneScaffold(
+    modifier = Modifier.testTag(ChatsScreenTestTag.SCREEN.value),
     directive = getPaneScaffoldDirective(getDeviceConfiguration(), currentWindowAdaptiveInfo()),
     value = scaffoldNavigator.scaffoldValue,
     listPane = {
@@ -173,4 +178,8 @@ private fun DesktopDarkPreview() {
     isDarkTheme = true,
     scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<String>(),
   )
+}
+
+enum class ChatsScreenTestTag(val value: String) {
+  SCREEN("chats_screen"),
 }

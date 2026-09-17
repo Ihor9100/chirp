@@ -16,7 +16,7 @@ class EmailVerificationScreenViewModel(
   private val token = savedStateHandle.get<String>("token")
 
   override fun getUiState(): EmailVerificationUiState {
-    return EmailVerificationUiState.Loading()
+    return EmailVerificationUiState.Loading
   }
 
   override fun onInitialize() {
@@ -28,8 +28,8 @@ class EmailVerificationScreenViewModel(
     viewModelScope.launch {
       authRepository
         .verifyEmail(token ?: "")
-        .onFailure { updateUiState { EmailVerificationUiState.Failed() } }
-        .onSuccess { updateUiState { EmailVerificationUiState.Success() } }
+        .onFailure { updateUiState { EmailVerificationUiState.Failed } }
+        .onSuccess { updateUiState { EmailVerificationUiState.Success } }
     }
   }
 

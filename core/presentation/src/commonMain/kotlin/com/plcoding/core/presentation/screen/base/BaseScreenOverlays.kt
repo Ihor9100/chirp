@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.model.BaseUiState
@@ -82,7 +83,9 @@ fun BaseScreenOverlays(
 
           SnackbarHost(
             hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier
+              .testTag(BaseScreenOverlaysTestTag.SNACKBAR.value)
+              .align(Alignment.BottomCenter)
           )
         }
       }
@@ -117,4 +120,8 @@ private fun DarkPreview() {
   Themed(
     isDarkTheme = true,
   )
+}
+
+enum class BaseScreenOverlaysTestTag(val value: String) {
+  SNACKBAR("base_screen_overlays_snackbar"),
 }

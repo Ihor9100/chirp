@@ -45,7 +45,7 @@ class LoginScreenViewModel(
         !isLoading
 
       updateUiState {
-        copy(primaryButtonIsEnable = primaryButtonIsEnable)
+        copy(logInButtonIsEnabled = primaryButtonIsEnable)
       }
     }.launchIn(viewModelScope)
   }

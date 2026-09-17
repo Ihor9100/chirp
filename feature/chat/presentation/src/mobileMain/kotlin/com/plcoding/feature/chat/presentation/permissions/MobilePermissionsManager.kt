@@ -7,11 +7,11 @@ import dev.icerock.moko.permissions.RequestCanceledException
 import dev.icerock.moko.permissions.notifications.REMOTE_NOTIFICATION
 import dev.icerock.moko.permissions.Permission as MokoPermission
 
-actual class PermissionsManager(
+class MobilePermissionsManager(
   private val permissionsController: PermissionsController,
-) {
+): PermissionsManager {
 
-  actual suspend fun requestPermission(permission: Permission): PermissionState {
+  override suspend fun requestPermission(permission: Permission): PermissionState {
     return try {
       permissionsController.providePermission(permission.toMokoPermission())
       PermissionState.GRANTED

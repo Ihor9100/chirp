@@ -9,6 +9,6 @@ data class LoginUiState(
   val emailState: TextFieldState = TextFieldState(),
   val passwordState: TextFieldState = TextFieldState(),
   val passwordIsSecureMode: Boolean = false,
-  val primaryButtonIsEnable: Boolean = true,
+  val logInButtonIsEnabled: Boolean = true,
   val logInSuccessEvent: Event<Unit>? = null,
 )

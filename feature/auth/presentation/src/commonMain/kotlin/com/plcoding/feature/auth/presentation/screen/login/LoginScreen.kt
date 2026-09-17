@@ -83,6 +83,7 @@ fun LoginScreenContent(
         topTitle = stringResource(Res.string.username_or_email),
         textFieldState = uiState.emailState,
         inputPlaceholder = stringResource(CoreRes.string.chirp),
+        testTag = LoginScreenTestTag.USERNAME_OR_EMAIL_TEXT_FIELD.value,
         bottomTitle = null,
         keyboardType = KeyboardType.Text,
       )
@@ -92,6 +93,7 @@ fun LoginScreenContent(
         topTitle = stringResource(Res.string.password),
         textFieldState = uiState.passwordState,
         inputPlaceholder = stringResource(Res.string.password),
+        testTag = LoginScreenTestTag.PASSWORD_TEXT_FIELD.value,
         bottomTitle = null,
         isSecureMode = uiState.passwordIsSecureMode,
         onSecureToggleClick = { onAction(LoginScreenAction.OnPasswordSecureToggleClick) }
@@ -99,6 +101,7 @@ fun LoginScreenContent(
       Spacer(Modifier.height(20.dp))
       Text(
         modifier = Modifier
+          .testTag(LoginScreenTestTag.FORGOT_PASSWORD_BUTTON.value)
           .align(Alignment.End)
           .clickable { onAction(LoginScreenAction.OnForgotPasswordClick) },
         text = stringResource(Res.string.forgot_password),
@@ -107,10 +110,12 @@ fun LoginScreenContent(
       )
       Spacer(Modifier.height(32.dp))
       Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+          .testTag(LoginScreenTestTag.LOGIN_BUTTON.value)
+          .fillMaxWidth(),
         text = stringResource(Res.string.log_in),
         style = ButtonStyle.PRIMARY,
-        isEnabled = uiState.primaryButtonIsEnable,
+        isEnabled = uiState.logInButtonIsEnabled,
         onClick = { onAction(LoginScreenAction.OnLoginClick) }
       )
       Button(
@@ -162,6 +167,9 @@ private fun DarkPreview() {
 
 enum class LoginScreenTestTag(val value: String) {
   SCREEN("login_screen"),
+  USERNAME_OR_EMAIL_TEXT_FIELD("login_screen_username_or_email_text_field"),
+  PASSWORD_TEXT_FIELD("login_screen_password_text_field"),
   LOGIN_BUTTON("login_screen_login_button"),
   REGISTER_BUTTON("login_screen_register_button"),
+  FORGOT_PASSWORD_BUTTON("login_screen_forgot_password_button"),
 }

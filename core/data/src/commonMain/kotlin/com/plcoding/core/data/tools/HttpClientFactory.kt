@@ -4,8 +4,8 @@ import com.plcoding.core.data.BuildKonfig
 import com.plcoding.core.data.mapper.toDomain
 import com.plcoding.core.data.model.AuthInfoDto
 import com.plcoding.core.data.model.RefreshTokenDto
-import com.plcoding.core.data.repository.PreferencesDataRepository
 import com.plcoding.core.domain.model.AuthInfo
+import com.plcoding.core.domain.repository.PreferencesRepository
 import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import io.ktor.client.HttpClient
@@ -32,7 +32,7 @@ import io.ktor.client.plugins.logging.Logger as KtorLogger
 class HttpClientFactory(
   private val json: Json,
   private val chirpLogger: ChirpLogger,
-  private val preferencesLocalDataRepository: PreferencesDataRepository,
+  private val preferencesRepository: PreferencesRepository,
   private val httpClientEngine: HttpClientEngine,
 ) {
 
@@ -78,7 +78,7 @@ class HttpClientFactory(
             val authInfo = getAuthInfo()
 
             if (authInfo?.refreshToken.isNullOrBlank()) {
-              preferencesLocalDataRepository.saveAuthInfo(null)
+              preferencesRepository.saveAuthInfo(null)
               return@refreshTokens null
             }
 
@@ -89,10 +89,10 @@ class HttpClientFactory(
               request = RefreshTokenDto(authInfo.refreshToken),
               builder = { markAsRefreshTokenRequest() }
             ).onSuccess {
-              preferencesLocalDataRepository.saveAuthInfo(it.toDomain())
+              preferencesRepository.saveAuthInfo(it.toDomain())
               bearerTokens = BearerTokens(it.accessToken, it.refreshToken)
             }.onFailure {
-              preferencesLocalDataRepository.saveAuthInfo(null)
+              preferencesRepository.saveAuthInfo(null)
             }
 
             bearerTokens
@@ -103,7 +103,7 @@ class HttpClientFactory(
   }
 
   private suspend fun getAuthInfo(): AuthInfo? {
-    return preferencesLocalDataRepository
+    return preferencesRepository
       .observeAuthInfo()
       .firstOrNull()
   }

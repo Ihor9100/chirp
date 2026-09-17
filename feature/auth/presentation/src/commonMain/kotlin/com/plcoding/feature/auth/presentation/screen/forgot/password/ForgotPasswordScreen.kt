@@ -5,24 +5,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import chirp.feature.auth.presentation.generated.resources.Res
+import chirp.feature.auth.presentation.generated.resources.email
+import chirp.feature.auth.presentation.generated.resources.forgot_password
+import chirp.feature.auth.presentation.generated.resources.submit
 import com.plcoding.core.designsystem.components.AppLogo
 import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPlain
 import com.plcoding.core.designsystem.style.Theme
 import com.plcoding.core.presentation.model.ScreenUiState
 import com.plcoding.core.presentation.screen.base.BaseScreen
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -32,13 +33,6 @@ fun ForgotPasswordScreen(
   viewModel: ForgotPasswordScreenViewModel = koinViewModel()
 ) {
   val state by viewModel.screenUiState.collectAsStateWithLifecycle()
-  val snackbarHostState = remember { SnackbarHostState() }
-
-  rememberCoroutineScope().launch {
-    state.uiState.snackbarEvent?.consumeAsync {
-      snackbarHostState.showSnackbar(getString(it))
-    }
-  }
 
   BaseScreen(
     baseUiState = state.baseUiState,
@@ -58,25 +52,30 @@ fun ForgotPasswordScreenContent(
   onAction: (ForgotPasswordScreenAction) -> Unit,
 ) {
     AdaptiveFormLayout(
-      modifier = Modifier.fillMaxSize(),
+      modifier = Modifier
+        .testTag(ForgotPasswordScreenTestTag.SCREEN.value)
+        .fillMaxSize(),
       logo = { AppLogo() },
-      title = stringResource(uiState.titleRes),
+      title = stringResource(Res.string.forgot_password),
       error = uiState.errorRes?.let { stringResource(it) },
       form = {
         TextFieldPlain(
           modifier = Modifier.fillMaxWidth(),
-          topTitle = stringResource(uiState.emailTopTitleRes),
+          topTitle = stringResource(Res.string.email),
           textFieldState = uiState.emailState,
-          inputPlaceholder = stringResource(uiState.emailPlaceholderRes),
+          inputPlaceholder = stringResource(Res.string.email),
+          testTag = ForgotPasswordScreenTestTag.EMAIL_TEXT_FIELD.value,
           bottomTitle = null,
           keyboardType = KeyboardType.Email,
         )
         Spacer(Modifier.height(32.dp))
         Button(
-          modifier = Modifier.fillMaxWidth(),
-          text = stringResource(uiState.primaryButtonTitleRes),
-          style = uiState.primaryButtonStyle,
-          isEnabled = uiState.primaryButtonIsEnable,
+          modifier = Modifier
+            .testTag(ForgotPasswordScreenTestTag.SUBMIT_BUTTON.value)
+            .fillMaxWidth(),
+          text = stringResource(Res.string.submit),
+          style = ButtonStyle.PRIMARY,
+          isEnabled = uiState.submitButtonIsEnabled,
           onClick = { onAction(ForgotPasswordScreenAction.OnSubmitClick) },
         )
       },
@@ -116,4 +115,10 @@ private fun DarkPreview() {
   Themed(
     isDarkTheme = true,
   )
+}
+
+enum class ForgotPasswordScreenTestTag(val value: String) {
+  SCREEN("forgot_password_screen"),
+  EMAIL_TEXT_FIELD("forgot_password_screen_email_text_field"),
+  SUBMIT_BUTTON("forgot_password_screen_submit_button"),
 }

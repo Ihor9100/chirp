@@ -16,6 +16,20 @@ kotlin {
       implementation(libs.androidx.compose.ui.tooling)
       implementation(libs.androidx.compose.ui.tooling.preview)
     }
+    androidDeviceTest.dependencies {
+      implementation(libs.androidx.test.runner)
+      implementation(libs.androidx.test.ext.junit)
+      implementation(libs.androidx.test.espresso.core)
+      implementation(libs.androidx.compose.ui.test.junit4)
+      implementation(libs.androidx.compose.ui.test.manifest)
+
+      implementation(libs.ktor.client.core)
+      implementation(libs.ktor.serialization.kotlinx.json)
+      implementation(libs.ktor.client.mock)
+
+      implementation(libs.datastore)
+      implementation(libs.datastore.preferences)
+    }
     commonMain.dependencies {
       implementation(projects.core.data)
       implementation(projects.core.domain)

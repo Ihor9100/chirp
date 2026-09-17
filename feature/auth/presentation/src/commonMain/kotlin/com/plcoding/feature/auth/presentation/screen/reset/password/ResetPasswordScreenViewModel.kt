@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import chirp.feature.auth.presentation.generated.resources.Res
 import chirp.feature.auth.presentation.generated.resources.error_reset_password_token_invalid
 import chirp.feature.auth.presentation.generated.resources.error_same_password
-import chirp.feature.auth.presentation.generated.resources.forgot_password_email_sent_successfully
+import chirp.feature.auth.presentation.generated.resources.reset_password_successfully
 import com.plcoding.core.domain.repository.AuthRepository
 import com.plcoding.core.domain.result.DataError
 import com.plcoding.core.domain.result.onFailure
@@ -42,27 +42,26 @@ class ResetPasswordScreenViewModel(
       screenUiState.map { it.hasLoader() }.distinctUntilChanged(),
     ) { password, isLoading ->
       updateUiState {
-        copy(primaryButtonIsEnable = PasswordValidator.validate(password) && !isLoading)
+        copy(submitButtonIsEnabled = PasswordValidator.validate(password) && !isLoading)
       }
     }.launchIn(viewModelScope)
   }
 
   fun onAction(action: ResetPasswordScreenAction) {
     when (action) {
-      is ResetPasswordScreenAction.OnTextFieldSecureToggleClick -> handleTextFieldSecureToggleClick()
-      is ResetPasswordScreenAction.OnPrimaryButtonClick -> handlePrimaryButtonClick()
+      is ResetPasswordScreenAction.OnPasswordSecureToggleClick -> handlePasswordSecureToggleClick()
+      is ResetPasswordScreenAction.OnSubmitButtonClick -> handleSubmitClick()
     }
   }
 
-  private fun handleTextFieldSecureToggleClick() {
+  private fun handlePasswordSecureToggleClick() {
     updateUiState {
       copy(passwordIsSecureMode = !passwordIsSecureMode)
     }
   }
 
-  private fun handlePrimaryButtonClick() {
+  private fun handleSubmitClick() {
     launchLoadable {
-      handleSuccess()
       authRepository
         .resetPassword(screenUiState.value.uiState.passwordState.text.toString(), token)
         .onFailure(::handleFailure)
@@ -82,7 +81,7 @@ class ResetPasswordScreenViewModel(
   }
 
   private fun handleSuccess() {
-    showSnackbar(Res.string.forgot_password_email_sent_successfully) {
+    showSnackbar(Res.string.reset_password_successfully) {
       updateUiState { copy(navigateToLoginEvent = Event(Unit)) }
     }
   }

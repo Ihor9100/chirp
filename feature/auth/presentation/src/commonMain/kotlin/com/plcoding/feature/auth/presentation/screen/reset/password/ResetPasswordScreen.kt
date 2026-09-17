@@ -8,10 +8,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import chirp.feature.auth.presentation.generated.resources.Res
+import chirp.feature.auth.presentation.generated.resources.hint_password
+import chirp.feature.auth.presentation.generated.resources.new_password
+import chirp.feature.auth.presentation.generated.resources.password
+import chirp.feature.auth.presentation.generated.resources.set_new_password
+import chirp.feature.auth.presentation.generated.resources.submit
 import com.plcoding.core.designsystem.components.AppLogo
 import com.plcoding.core.designsystem.components.button.Button
+import com.plcoding.core.designsystem.components.button.ButtonStyle
 import com.plcoding.core.designsystem.components.layout.adaptive.AdaptiveFormLayout
 import com.plcoding.core.designsystem.components.textfields.TextFieldPassword
 import com.plcoding.core.designsystem.style.Theme
@@ -47,28 +55,33 @@ fun ResetPasswordScreenContent(
   onAction: (ResetPasswordScreenAction) -> Unit,
 ) {
   AdaptiveFormLayout(
-    modifier = Modifier.fillMaxSize(),
+    modifier = Modifier
+      .testTag(ResetPasswordScreenTag.SCREEN.value)
+      .fillMaxSize(),
     logo = { AppLogo() },
-    title = stringResource(uiState.titleRes),
+    title = stringResource(Res.string.set_new_password),
     error = uiState.errorRes?.let { stringResource(it) },
     form = {
       TextFieldPassword(
         modifier = Modifier.fillMaxWidth(),
-        topTitle = stringResource(uiState.passwordTopTitleRes),
+        topTitle = stringResource(Res.string.new_password),
         textFieldState = uiState.passwordState,
-        inputPlaceholder = stringResource(uiState.passwordPlaceholderRes),
-        bottomTitle = stringResource(uiState.passwordBottomTitleRes),
+        inputPlaceholder = stringResource(Res.string.password),
+        bottomTitle = stringResource(Res.string.hint_password),
+        testTag = ResetPasswordScreenTag.PASSWORD_TEXT_FIELD.value,
         isError = uiState.passwordIsError,
         isSecureMode = uiState.passwordIsSecureMode,
-        onSecureToggleClick = { onAction(ResetPasswordScreenAction.OnTextFieldSecureToggleClick) }
+        onSecureToggleClick = { onAction(ResetPasswordScreenAction.OnPasswordSecureToggleClick) }
       )
       Spacer(Modifier.height(32.dp))
       Button(
-        modifier = Modifier.fillMaxWidth(),
-        text = stringResource(uiState.primaryButtonTitleRes),
-        style = uiState.primaryButtonStyle,
-        isEnabled = uiState.primaryButtonIsEnable,
-        onClick = { onAction(ResetPasswordScreenAction.OnPrimaryButtonClick) }
+        modifier = Modifier
+          .testTag(ResetPasswordScreenTag.SUBMIT_BUTTON.value)
+          .fillMaxWidth(),
+        text = stringResource(Res.string.submit),
+        style = ButtonStyle.PRIMARY,
+        isEnabled = uiState.submitButtonIsEnabled,
+        onClick = { onAction(ResetPasswordScreenAction.OnSubmitButtonClick) }
       )
     },
   )
@@ -107,4 +120,10 @@ private fun DarkPreview() {
   Themed(
     isDarkTheme = true
   )
+}
+
+enum class ResetPasswordScreenTag(val value: String) {
+  SCREEN("reset_password_screen"),
+  PASSWORD_TEXT_FIELD("reset_password_screen_password_text_field"),
+  SUBMIT_BUTTON("reset_password_screen_submit_button"),
 }
