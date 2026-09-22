@@ -35,6 +35,12 @@ fun ChatMessageAndMember.toUi(yourId: String?): ChatMessageUi {
         sender = chatMember.username,
         date = DateUtils.formatToDateTime(chatMessage.createdAt),
         message = chatMessage.content,
+        attachments = chatMessage.attachments.map {
+          com.plcoding.feature.chat.presentation.model.ChatMessageAttachmentUi(
+            id = it.id,
+            url = it.url,
+          )
+        },
         colorToken = ColorToken.get(chatMember.userId),
       ),
       chatMessageStatusUi = when (chatMessage.deliveryStatus) {
@@ -57,6 +63,12 @@ fun ChatMessageAndMember.toUi(yourId: String?): ChatMessageUi {
         sender = chatMember.username,
         date = DateUtils.formatToDateTime(chatMessage.createdAt),
         message = chatMessage.content,
+        attachments = chatMessage.attachments.map {
+          com.plcoding.feature.chat.presentation.model.ChatMessageAttachmentUi(
+            id = it.id,
+            url = it.url,
+          )
+        },
         colorToken = ColorToken.get(chatMember.userId),
       ),
     )

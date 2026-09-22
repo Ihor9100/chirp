@@ -18,6 +18,9 @@ import chirp.feature.chat.presentation.generated.resources.select_chat_subtitle
 import chirp.feature.chat.presentation.generated.resources.success
 import chirp.feature.chat.presentation.generated.resources.today
 import chirp.feature.chat.presentation.generated.resources.yesterday
+import chirp.feature.chat.presentation.generated.resources.error_image_too_large
+import chirp.feature.chat.presentation.generated.resources.error_invalid_file_type
+import chirp.feature.chat.presentation.generated.resources.error_max_photos
 import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.paging.Paginator
@@ -29,6 +32,7 @@ import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.core.presentation.screen.base.BaseScreenViewModel
 import com.plcoding.core.presentation.utils.toStringRes
 import com.plcoding.feature.chat.domain.model.ChatMessage
+import com.plcoding.feature.chat.domain.model.ChatMessageAttachment
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 import com.plcoding.feature.chat.domain.model.ConnectionState
 import com.plcoding.feature.chat.domain.repository.ChatRepository
@@ -39,6 +43,8 @@ import com.plcoding.feature.chat.presentation.mapper.toUiList
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
 import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
+import com.plcoding.feature.chat.presentation.model.ImagePreviewUi
+import com.plcoding.feature.chat.presentation.model.SelectedPhotoUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
@@ -64,6 +70,11 @@ class ChatDetailsScreenViewModel(
   private val chatRepository: ChatRepository,
   private val liveChatRepository: LiveChatRepository,
 ) : BaseScreenViewModel<ChatDetailsScreenUiState>() {
+
+  private companion object {
+    const val MAX_PHOTO_COUNT = 3
+    const val MAX_PHOTO_SIZE_BYTES = 1024 * 1024
+  }
 
   private val _chatId = MutableStateFlow<String?>(null)
 
@@ -137,9 +148,11 @@ class ChatDetailsScreenViewModel(
   }
 
   private fun observeCanSendMessage() {
-    snapshotFlow { screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString() }
-      .combine(liveChatRepository.connectionState) { text, connectionState ->
-        text.isNotBlank() && connectionState == ConnectionState.CONNECTED
+    val textFlow = snapshotFlow { screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString() }
+    val selectedPhotosFlow = snapshotFlow { screenUiState.value.uiState.selectedPhotos.isNotEmpty() }
+
+    combine(textFlow, selectedPhotosFlow, liveChatRepository.connectionState) { text, hasPhotos, connectionState ->
+        (text.isNotBlank() || hasPhotos) && connectionState == ConnectionState.CONNECTED
       }
       .onEach { canSendMessage ->
         updateUiState {
@@ -217,6 +230,22 @@ class ChatDetailsScreenViewModel(
       is ChatDetailsScreenAction.OnSendClick -> {
         sendMessage()
       }
+      is ChatDetailsScreenAction.OnPhotosPicked -> {
+        addSelectedPhotos(action.results)
+      }
+      is ChatDetailsScreenAction.OnRemoveSelectedPhotoClick -> updateUiState {
+        copy(selectedPhotos = selectedPhotos.filterNot { it.id == action.photoId })
+      }
+      is ChatDetailsScreenAction.OnSelectedPhotoClick -> {
+        val photo = screenUiState.value.uiState.selectedPhotos.firstOrNull { it.id == action.photoId }
+        updateUiState { copy(imagePreviewUi = photo?.let { ImagePreviewUi.Local(it.byteArray) }) }
+      }
+      is ChatDetailsScreenAction.OnMessageImageClick -> updateUiState {
+        copy(imagePreviewUi = ImagePreviewUi.Remote(action.url))
+      }
+      is ChatDetailsScreenAction.OnImagePreviewDismiss -> updateUiState {
+        copy(imagePreviewUi = null)
+      }
       is ChatDetailsScreenAction.OnScroll -> {
         loadNextChatMessages(action.lazyListScrollInfo)
         toggleScrollToStart(action.lazyListScrollInfo)
@@ -230,6 +259,49 @@ class ChatDetailsScreenViewModel(
         loadNextChatMessages()
       }
       else -> Unit
+    }
+  }
+
+  private fun addSelectedPhotos(results: List<com.plcoding.feature.chat.presentation.screen.user.profile.image.picker.ImagePickerResult>) {
+    val selectedPhotos = screenUiState.value.uiState.selectedPhotos
+    val remainingCount = MAX_PHOTO_COUNT - selectedPhotos.size
+
+    if (remainingCount <= 0 || results.size > remainingCount) {
+      showSnackbar(Res.string.error_max_photos)
+    }
+
+    val newPhotos = results
+      .take(remainingCount.coerceAtLeast(0))
+      .mapNotNull { result ->
+        val byteArray = result.byteArray
+        val mimeType = result.mimeType
+
+        when {
+          result.isTooLarge -> {
+            showSnackbar(Res.string.error_image_too_large)
+            null
+          }
+          byteArray == null || mimeType == null || !mimeType.startsWith("image/") -> {
+            showSnackbar(Res.string.error_invalid_file_type)
+            null
+          }
+          byteArray.size > MAX_PHOTO_SIZE_BYTES -> {
+            showSnackbar(Res.string.error_image_too_large)
+            null
+          }
+          else -> SelectedPhotoUi(
+            id = Uuid.random().toString(),
+            byteArray = byteArray,
+            mimeType = mimeType,
+            sizeBytes = byteArray.size.toLong(),
+          )
+        }
+      }
+
+    if (newPhotos.isEmpty()) return
+
+    updateUiState {
+      copy(selectedPhotos = selectedPhotos + newPhotos)
     }
   }
 
@@ -318,20 +390,58 @@ class ChatDetailsScreenViewModel(
 
       if (chatId == null || senderId == null) return@launch
 
+      val messageId = Uuid.random().toString()
+      val selectedPhotos = screenUiState.value.uiState.selectedPhotos
+      val attachments = uploadSelectedPhotos(
+        messageId = messageId,
+        selectedPhotos = selectedPhotos,
+      ) ?: return@launch
+
       val chatMessage = ChatMessage(
-        id = Uuid.random().toString(),
+        id = messageId,
         chatId = chatId,
         senderId = senderId,
-        content = screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString(),
+        content = screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text
+          .toString()
+          .takeIf { it.isNotBlank() },
+        attachments = attachments,
         createdAt = Clock.System.now(),
         deliveryStatus = ChatMessageDeliveryStatus.SENDING,
       )
 
       liveChatRepository
         .sendMessage(chatMessage)
-        .onSuccess { screenUiState.value.uiState.multilineTextFieldUi.textFieldState.clearText() }
+        .onSuccess {
+          screenUiState.value.uiState.multilineTextFieldUi.textFieldState.clearText()
+          updateUiState { copy(selectedPhotos = emptyList()) }
+        }
         .onFailure { showSnackbar(it.toStringRes()) }
     }
+  }
+
+  private suspend fun uploadSelectedPhotos(
+    messageId: String,
+    selectedPhotos: List<SelectedPhotoUi>,
+  ): List<ChatMessageAttachment>? {
+    if (selectedPhotos.isEmpty()) return emptyList()
+
+    val attachments = mutableListOf<ChatMessageAttachment>()
+
+    selectedPhotos.forEach { photo ->
+      chatRepository
+        .uploadMessageAttachment(
+          messageId = messageId,
+          byteArray = photo.byteArray,
+          mimeType = photo.mimeType,
+        )
+        .onSuccess { attachments.add(it) }
+        .onFailure {
+          showSnackbar(it.toStringRes())
+          return null
+        }
+    }
+
+    return attachments
   }
 
   private fun resendMessage(messageId: String) {

@@ -10,6 +10,7 @@ import com.plcoding.core.domain.result.onFailure
 import com.plcoding.core.domain.result.onSuccess
 import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
 import com.plcoding.feature.chat.data.mapper.toDomain
+import com.plcoding.feature.chat.data.mapper.toAttachmentEntities
 import com.plcoding.feature.chat.data.mapper.toDto
 import com.plcoding.feature.chat.data.mapper.toEntity
 import com.plcoding.feature.chat.data.mapper.toOutgoingMessageDto
@@ -55,10 +56,23 @@ class WebSocketChatRepository(
   override suspend fun sendMessage(chatMessage: ChatMessage): Empty<DataError> {
     return dbSafeCall {
       val chatMessageEntity = chatMessage.toEntity()
-      localDataSource.upsertChatMessage(chatMessageEntity)
-
       val outgoingMessageDto = chatMessage.toOutgoingMessageDto()
       val rawWebSocketMessage = WebSocketMessageDto.encodeToString(outgoingMessageDto, json)
+
+      if (chatMessage.attachments.isNotEmpty()) {
+        return ktorWebSocketConnector
+          .sendMessage(rawWebSocketMessage)
+          .onSuccess {
+            coroutineScope.launch {
+              localDataSource.upsertChatMessage(
+                chatMessageEntity.copy(status = ChatMessageDeliveryStatus.SENT.name),
+                chatMessage.toAttachmentEntities(),
+              )
+            }.join()
+          }
+      }
+
+      localDataSource.upsertChatMessage(chatMessageEntity, chatMessage.toAttachmentEntities())
 
       return ktorWebSocketConnector
         .sendMessage(rawWebSocketMessage)
@@ -66,7 +80,7 @@ class WebSocketChatRepository(
           coroutineScope.launch {
             val chatMessageEntity =
               chatMessageEntity.copy(status = ChatMessageDeliveryStatus.FAILED.name)
-            localDataSource.upsertChatMessage(chatMessageEntity)
+            localDataSource.upsertChatMessage(chatMessageEntity, chatMessage.toAttachmentEntities())
           }.join()
         }
     }
@@ -131,7 +145,10 @@ class WebSocketChatRepository(
       chatRepository.syncChat(incomingMessageDto.chatId)
     }
 
-    localDataSource.upsertChatMessage(incomingMessageDto.toEntity())
+    localDataSource.upsertChatMessage(
+      incomingMessageDto.toEntity(),
+      incomingMessageDto.toAttachmentEntities(),
+    )
   }
 
   private suspend fun handleProfilePictureUpdatedDto(

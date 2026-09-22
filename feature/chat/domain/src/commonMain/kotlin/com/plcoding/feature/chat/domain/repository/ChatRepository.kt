@@ -7,6 +7,7 @@ import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.model.ChatMessage
+import com.plcoding.feature.chat.domain.model.ChatMessageAttachment
 import com.plcoding.feature.chat.domain.model.ChatMessageAndMember
 import kotlinx.coroutines.flow.Flow
 
@@ -34,5 +35,10 @@ interface ChatRepository {
   suspend fun deleteChatMessage(messageId: String): Empty<DataError.Remote>
   suspend fun changePassword(oldPassword: String, newPassword: String): Empty<DataError.Remote>
   suspend fun uploadProfileImage(byteArray: ByteArray, mimeType: String): Empty<DataError>
+  suspend fun uploadMessageAttachment(
+    messageId: String,
+    byteArray: ByteArray,
+    mimeType: String,
+  ): Result<ChatMessageAttachment, DataError>
   suspend fun deleteProfileImage(): Empty<DataError.Remote>
 }

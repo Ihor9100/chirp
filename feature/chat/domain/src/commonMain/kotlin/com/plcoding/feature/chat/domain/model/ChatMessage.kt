@@ -7,7 +7,8 @@ data class ChatMessage(
   val id: String,
   val chatId: String,
   val senderId: String,
-  val content: String,
+  val content: String?,
+  val attachments: List<ChatMessageAttachment>,
   val createdAt: Instant,
   val deliveryStatus: ChatMessageDeliveryStatus,
 ) {
@@ -20,6 +21,7 @@ data class ChatMessage(
           chatId = "${it + 1}",
           senderId = "${it + 2}",
           content = "Test TestTest TestTest TestTestTe stTestTest TestTestTestTest TestTes tTestTestTest",
+          attachments = emptyList(),
           createdAt = Clock.System.now(),
           deliveryStatus = ChatMessageDeliveryStatus.SENT
         )

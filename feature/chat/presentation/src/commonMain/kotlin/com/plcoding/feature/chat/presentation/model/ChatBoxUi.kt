@@ -8,7 +8,8 @@ data class ChatBoxUi(
   val anchorPositionUi: AnchorPositionUi,
   val sender: String,
   val date: TextProvider,
-  val message: String,
+  val message: String?,
+  val attachments: List<ChatMessageAttachmentUi>,
   val colorToken: ColorToken,
 ) {
 
@@ -20,6 +21,7 @@ data class ChatBoxUi(
           sender = "Friend",
           date = TextProvider.Dynamic("Today"),
           message = "Hello",
+          attachments = emptyList(),
           colorToken = ColorToken.get("1"),
         ),
         ChatBoxUi(
@@ -27,6 +29,7 @@ data class ChatBoxUi(
           sender = "You",
           date = TextProvider.Dynamic("Today"),
           message = "Hello",
+          attachments = emptyList(),
           colorToken = ColorToken.get("2"),
         ),
       )

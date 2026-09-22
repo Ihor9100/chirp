@@ -44,6 +44,7 @@ interface ChatMessagesDao {
   @Query("SELECT * FROM chat_messages WHERE id = :id")
   suspend fun get(id: String): ChatMessageEntity?
 
+  @Transaction
   @Query("SELECT * FROM chat_messages WHERE chatId = :chatId ORDER BY timestamp DESC")
   fun observe(chatId: String): Flow<List<ChatMessageAndMemberRelation>>
 

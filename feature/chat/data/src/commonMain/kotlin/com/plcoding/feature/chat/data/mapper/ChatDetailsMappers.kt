@@ -11,6 +11,7 @@ fun ChatAndMembersAndMessagesRelation.toDomain(): ChatDetails {
     chat = chatEntity.toDomain(
       chatMemberEntities = chatMemberEntities,
       chatLastMessage = sorted.firstOrNull()?.chatMessageEntity,
+      chatLastMessageAttachments = sorted.firstOrNull()?.attachmentEntities.orEmpty(),
     ),
     chatMessagesAndMembers = chatMessageAndMemberRelations
       .map { it.toDomain() }

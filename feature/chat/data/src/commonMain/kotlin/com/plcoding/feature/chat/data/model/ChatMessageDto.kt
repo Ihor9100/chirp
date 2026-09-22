@@ -7,6 +7,7 @@ data class ChatMessageDto(
   val id: String,
   val chatId: String,
   val senderId: String,
-  val content: String,
+  val content: String? = null,
+  val attachments: List<ChatMessageAttachmentDto> = emptyList(),
   val createdAt: String,
 )

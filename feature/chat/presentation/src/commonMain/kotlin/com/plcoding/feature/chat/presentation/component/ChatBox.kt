@@ -1,20 +1,28 @@
 package com.plcoding.feature.chat.presentation.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.plcoding.core.designsystem.model.AnchorPositionUi
 import com.plcoding.core.designsystem.shape.ChatMessageShape
 import com.plcoding.core.designsystem.style.Theme
@@ -26,6 +34,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ChatBox(
   modifier: Modifier = Modifier,
   chatBoxUi: ChatBoxUi,
+  onAttachmentClick: (String) -> Unit = {},
   status: @Composable (() -> Unit)? = null,
 ) {
   val horizontalPadding = 16.dp
@@ -77,12 +86,27 @@ fun ChatBox(
         color = MaterialTheme.colorScheme.extended.textSecondary
       )
     }
-    Text(
-      modifier = Modifier,
-      text = chatBoxUi.message,
-      style = MaterialTheme.typography.bodyLarge,
-      color = MaterialTheme.colorScheme.extended.textPrimary
-    )
+    if (!chatBoxUi.message.isNullOrBlank()) {
+      Text(
+        modifier = Modifier,
+        text = chatBoxUi.message,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.extended.textPrimary
+      )
+    }
+    chatBoxUi.attachments.forEach { attachment ->
+      AsyncImage(
+        modifier = Modifier
+          .widthIn(max = 240.dp)
+          .heightIn(max = 240.dp)
+          .aspectRatio(1f)
+          .clip(RoundedCornerShape(8.dp))
+          .clickable { onAttachmentClick(attachment.url) },
+        model = attachment.url,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+      )
+    }
     status?.invoke()
   }
 }

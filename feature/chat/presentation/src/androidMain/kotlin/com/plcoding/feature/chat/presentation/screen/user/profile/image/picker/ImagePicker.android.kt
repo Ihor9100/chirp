@@ -11,31 +11,45 @@ import kotlinx.coroutines.launch
 
 @Composable
 actual fun rememberImagePickerLauncher(
-  onResult: (ImagePickerResult) -> Unit,
+  selectionLimit: Int,
+  maxSizeBytes: Long?,
+  onResult: (List<ImagePickerResult>) -> Unit,
 ): ImagePickerLauncher {
   val context = LocalContext.current
   val coroutineScope = rememberCoroutineScope()
 
-  val launcher = rememberLauncherForActivityResult(
+  val singleLauncher = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.PickVisualMedia()
   ) { uri ->
     coroutineScope.launch {
       uri ?: return@launch
 
       val contentUriParser = ContentUriParser(context)
-      val imagePickerResult = ImagePickerResult(
-        contentUriParser.parseUri(uri),
-        contentUriParser.getMimeType(uri),
-      )
+      onResult(listOf(contentUriParser.parseImage(uri, maxSizeBytes)))
+    }
+  }
 
-      onResult(imagePickerResult)
+  val multipleLauncher = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.PickMultipleVisualMedia(maxItems = selectionLimit.coerceAtLeast(2))
+  ) { uris ->
+    coroutineScope.launch {
+      val contentUriParser = ContentUriParser(context)
+      val results = uris.map { uri ->
+        contentUriParser.parseImage(uri, maxSizeBytes)
+      }
+
+      onResult(results)
     }
   }
 
   return remember {
     ImagePickerLauncher {
       val filter = ActivityResultContracts.PickVisualMedia.ImageOnly
-      launcher.launch(PickVisualMediaRequest(filter))
+      if (selectionLimit <= 1) {
+        singleLauncher.launch(PickVisualMediaRequest(filter))
+      } else {
+        multipleLauncher.launch(PickVisualMediaRequest(filter))
+      }
     }
   }
 }

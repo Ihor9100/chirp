@@ -5,7 +5,7 @@ import com.plcoding.feature.chat.domain.model.ChatMessageAndMember
 import com.plcoding.feature.chat.domain.model.ChatMessageDeliveryStatus
 
 fun ChatMessageAndMemberRelation.toDomain(): ChatMessageAndMember = ChatMessageAndMember(
-  chatMessage = chatMessageEntity.toDomain(),
+  chatMessage = chatMessageEntity.toDomain(attachmentEntities),
   chatMember = chatMemberEntity.toDomain(),
   deliveryStatus = ChatMessageDeliveryStatus.SENT,
 )

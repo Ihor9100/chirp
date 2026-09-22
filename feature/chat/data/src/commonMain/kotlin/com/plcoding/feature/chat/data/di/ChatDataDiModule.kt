@@ -13,6 +13,7 @@ import com.plcoding.feature.chat.data.repository.WebSocketChatRepository
 import com.plcoding.feature.chat.database.ChirpDatabase
 import com.plcoding.feature.chat.database.ChirpDatabaseBuilderFactory
 import com.plcoding.feature.chat.database.dao.ChatAndMemberDao
+import com.plcoding.feature.chat.database.dao.ChatMessageAttachmentsDao
 import com.plcoding.feature.chat.database.dao.ChatMembersDao
 import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.database.dao.ChatsDao
@@ -48,5 +49,6 @@ val chatDataDiModule = module {
   single<ChatsDao> { get<ChirpDatabase>().chatsDao }
   single<ChatMembersDao> { get<ChirpDatabase>().chatMembersDao }
   single<ChatMessagesDao> { get<ChirpDatabase>().chatMessagesDao }
+  single<ChatMessageAttachmentsDao> { get<ChirpDatabase>().chatMessageAttachmentsDao }
   single<ChatAndMemberDao> { get<ChirpDatabase>().chatAndMemberDao }
 }

@@ -3,6 +3,7 @@ package com.plcoding.feature.chat.data.mapper
 import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatEntity
+import com.plcoding.feature.chat.database.entity.ChatMessageAttachmentEntity
 import com.plcoding.feature.chat.database.entity.ChatMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersRelation
@@ -28,16 +29,19 @@ fun ChatDto.toEntities(): List<ChatAndMemberEntity> = participants.map {
 fun ChatEntity.toDomain(
   chatMemberEntities: List<ChatMemberEntity>,
   chatLastMessage: ChatMessageEntity?,
+  chatLastMessageAttachments: List<ChatMessageAttachmentEntity> = emptyList(),
 ): Chat = Chat(
   id = id,
   members = chatMemberEntities.map { it.toDomain() },
   lastActivityAt = Instant.fromEpochMilliseconds(lastActivityAt),
-  lastMessage = chatLastMessage?.toDomain(),
+  lastMessage = chatLastMessage?.toDomain(chatLastMessageAttachments),
 )
 
 fun ChatAndMembersRelation.toDomain(): Chat = Chat(
   id = chatEntity.id,
   members = chatMemberEntities.map { it.toDomain() },
   lastActivityAt = Instant.fromEpochMilliseconds(chatEntity.lastActivityAt),
-  lastMessage = chatLastMessageView?.toDomain(),
+  lastMessage = chatLastMessage?.let {
+    it.chatLastMessageView.toDomain(it.attachmentEntities)
+  },
 )

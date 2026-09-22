@@ -14,6 +14,7 @@ import com.plcoding.feature.chat.data.model.ChatMemberDto
 import com.plcoding.feature.chat.data.model.ChatMembersDto
 import com.plcoding.feature.chat.data.model.ChatMessageDto
 import com.plcoding.feature.chat.data.model.ConfirmProfileImageDto
+import com.plcoding.feature.chat.data.model.MessageAttachmentUploadDto
 import com.plcoding.feature.chat.data.model.ProfileImageUploadDto
 import com.plcoding.feature.chat.domain.utils.ChatsConstants
 import io.ktor.client.HttpClient
@@ -114,6 +115,14 @@ class ChatsKtorRemoteDataSource(
     )
   }
 
+  override suspend fun createMessageAttachmentUpload(mimeType: String): Result<MessageAttachmentUploadDto, DataError.Remote> {
+    return httpClient.post(
+      route = "/message-attachments/upload",
+      request = Unit,
+      params = mapOf("mimeType" to mimeType),
+    )
+  }
+
   override suspend fun uploadProfileImage(
     publicUrl: String,
     byteArray: ByteArray,
@@ -122,6 +131,20 @@ class ChatsKtorRemoteDataSource(
     return apiSafeCall {
       httpClient.put {
         url(publicUrl)
+        setBody(byteArray)
+        headers.forEach { (key, value) -> header(key, value) }
+      }
+    }
+  }
+
+  override suspend fun uploadMessageAttachment(
+    uploadUrl: String,
+    byteArray: ByteArray,
+    headers: Map<String, String>
+  ): Result<Unit, DataError.Remote> {
+    return apiSafeCall {
+      httpClient.put {
+        url(uploadUrl)
         setBody(byteArray)
         headers.forEach { (key, value) -> header(key, value) }
       }

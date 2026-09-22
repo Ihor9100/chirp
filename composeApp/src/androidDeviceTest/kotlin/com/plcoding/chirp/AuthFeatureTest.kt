@@ -44,6 +44,7 @@ import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.model.ChatMessage
+import com.plcoding.feature.chat.domain.model.ChatMessageAttachment
 import com.plcoding.feature.chat.domain.model.ChatMessageAndMember
 import com.plcoding.feature.chat.domain.model.ConnectionState
 import com.plcoding.feature.chat.domain.repository.ChatRepository
@@ -478,6 +479,14 @@ private class ChatRepositoryFake : ChatRepository {
     mimeType: String
   ): Empty<DataError> {
     return Result.Success(Unit)
+  }
+
+  override suspend fun uploadMessageAttachment(
+    messageId: String,
+    byteArray: ByteArray,
+    mimeType: String
+  ): Result<ChatMessageAttachment, DataError> {
+    return Result.Failure(DataError.Remote.UNKNOWN)
   }
 
   override suspend fun deleteProfileImage(): Empty<DataError.Remote> {

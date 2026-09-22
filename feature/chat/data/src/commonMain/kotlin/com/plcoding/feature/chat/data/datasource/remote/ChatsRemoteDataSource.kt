@@ -6,6 +6,7 @@ import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.data.model.ChatMemberDto
 import com.plcoding.feature.chat.data.model.ChatMessageDto
+import com.plcoding.feature.chat.data.model.MessageAttachmentUploadDto
 import com.plcoding.feature.chat.data.model.ProfileImageUploadDto
 
 interface ChatsRemoteDataSource {
@@ -41,8 +42,16 @@ interface ChatsRemoteDataSource {
 
   suspend fun createProfileImageUpload(mimeType: String): Result<ProfileImageUploadDto, DataError.Remote>
 
+  suspend fun createMessageAttachmentUpload(mimeType: String): Result<MessageAttachmentUploadDto, DataError.Remote>
+
   suspend fun uploadProfileImage(
     publicUrl: String,
+    byteArray: ByteArray,
+    headers: Map<String, String>,
+  ): Result<Unit, DataError.Remote>
+
+  suspend fun uploadMessageAttachment(
+    uploadUrl: String,
     byteArray: ByteArray,
     headers: Map<String, String>,
   ): Result<Unit, DataError.Remote>

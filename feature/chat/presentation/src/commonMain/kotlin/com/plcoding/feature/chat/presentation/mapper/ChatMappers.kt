@@ -2,6 +2,7 @@ package com.plcoding.feature.chat.presentation.mapper
 
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.group_chat
+import chirp.feature.chat.presentation.generated.resources.photo
 import chirp.feature.chat.presentation.generated.resources.you_and_others
 import chirp.feature.chat.presentation.generated.resources.your_message
 import com.plcoding.core.designsystem.style.ColorToken
@@ -63,9 +64,12 @@ private fun getChatDescription(yourId: String?, members: List<ChatMember>): Text
 private fun getLastMessageContent(chat: Chat, yourId: String?): TextProvider? {
   val lastMessage = chat.lastMessage ?: return null
   val sender = chat.members.firstOrNull { it.userId == lastMessage.senderId }
+  val preview = lastMessage.content?.takeIf { it.isNotBlank() }
+    ?: return TextProvider.Resource(Res.string.photo)
+
   return if (sender?.userId == yourId) {
-    TextProvider.Resource(Res.string.your_message, listOf(lastMessage.content))
+    TextProvider.Resource(Res.string.your_message, listOf(preview))
   } else {
-    TextProvider.Dynamic("${sender?.username}: ${lastMessage.content}")
+    TextProvider.Dynamic("${sender?.username}: $preview")
   }
 }

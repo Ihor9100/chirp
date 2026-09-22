@@ -7,19 +7,25 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -36,12 +42,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import chirp.feature.chat.presentation.generated.resources.Res
 import chirp.feature.chat.presentation.generated.resources.ic_arrow_left
 import chirp.feature.chat.presentation.generated.resources.ic_dots
+import coil3.compose.AsyncImage
 import com.plcoding.core.designsystem.components.DropDownMenu
 import com.plcoding.core.designsystem.components.button.IconButton
 import com.plcoding.core.designsystem.components.textfields.MultilineTextField
@@ -54,12 +65,17 @@ import com.plcoding.core.presentation.screen.base.BaseScreen
 import com.plcoding.feature.chat.presentation.component.ChatEmptyState
 import com.plcoding.feature.chat.presentation.component.ChatHeader
 import com.plcoding.feature.chat.presentation.component.ChatMessages
+import com.plcoding.feature.chat.presentation.model.ImagePreviewUi
+import com.plcoding.feature.chat.presentation.model.SelectedPhotoUi
 import com.plcoding.feature.chat.presentation.navigation.ChatRoute
+import com.plcoding.feature.chat.presentation.screen.user.profile.image.picker.rememberImagePickerLauncher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import chirp.core.designsystem.generated.resources.Res as CoreRes
+import chirp.core.designsystem.generated.resources.ic_plus
 
 @Composable
 fun ChatDetailsScreen(
@@ -72,6 +88,13 @@ fun ChatDetailsScreen(
   val deviceConfiguration = getDeviceConfiguration()
   val coroutineScope = rememberCoroutineScope()
   val lazyListState = rememberLazyListState()
+  val remainingPhotoCount = (3 - screenUiState.uiState.selectedPhotos.size).coerceAtLeast(1)
+  val imagePickerLauncher = rememberImagePickerLauncher(
+    selectionLimit = remainingPhotoCount,
+    maxSizeBytes = 1024L * 1024L,
+  ) {
+    viewModel.handleAction(ChatDetailsScreenAction.OnPhotosPicked(it))
+  }
 
   BackHandler(scaffoldNavigator.canNavigateBack()) {
     coroutineScope.launch {
@@ -136,6 +159,7 @@ fun ChatDetailsScreen(
               scaffoldNavigator.navigateBack()
             }
           }
+          is ChatDetailsScreenAction.OnAddPhotoClick -> imagePickerLauncher()
           else -> {
             viewModel.handleAction(it)
           }
@@ -228,6 +252,7 @@ fun ChatDetailsScreenContent(
             onMenuItemClick = { onAction(ChatDetailsScreenAction.OnMessageMenuItemClick(it)) },
             onMenuDismiss = { onAction(ChatDetailsScreenAction.OnMessageMenuDismiss) },
             onMessageRetryClick = { onAction(ChatDetailsScreenAction.OnMessageRetryClick(it)) },
+            onImageClick = { onAction(ChatDetailsScreenAction.OnMessageImageClick(it)) },
             onPageRetryClick = { onAction(ChatDetailsScreenAction.OnPageRetryClick) }
           )
           this@Column.AnimatedVisibility(
@@ -265,15 +290,134 @@ fun ChatDetailsScreenContent(
           }
         }
       }
-      MultilineTextField(
+      ChatComposer(
         modifier = if (deviceConfiguration.isWideScreen) {
           Modifier.padding(top = 8.dp)
         } else {
           Modifier.padding(horizontal = 16.dp)
         },
         deviceConfiguration = deviceConfiguration,
-        multilineTextFieldPm = uiState.multilineTextFieldUi,
-        onClick = { onAction(ChatDetailsScreenAction.OnSendClick) },
+        selectedPhotos = uiState.selectedPhotos,
+        multilineTextFieldUi = uiState.multilineTextFieldUi,
+        onAddPhotoClick = { onAction(ChatDetailsScreenAction.OnAddPhotoClick) },
+        onRemovePhotoClick = { onAction(ChatDetailsScreenAction.OnRemoveSelectedPhotoClick(it)) },
+        onPhotoClick = { onAction(ChatDetailsScreenAction.OnSelectedPhotoClick(it)) },
+        onSendClick = { onAction(ChatDetailsScreenAction.OnSendClick) },
+      )
+    }
+  }
+
+  ImagePreviewDialog(
+    imagePreviewUi = uiState.imagePreviewUi,
+    onDismiss = { onAction(ChatDetailsScreenAction.OnImagePreviewDismiss) },
+  )
+}
+
+@Composable
+private fun ChatComposer(
+  modifier: Modifier,
+  deviceConfiguration: DeviceConfiguration,
+  selectedPhotos: List<SelectedPhotoUi>,
+  multilineTextFieldUi: com.plcoding.core.designsystem.model.MultilineTextFieldUi,
+  onAddPhotoClick: () -> Unit,
+  onRemovePhotoClick: (String) -> Unit,
+  onPhotoClick: (String) -> Unit,
+  onSendClick: () -> Unit,
+) {
+  Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    if (selectedPhotos.isNotEmpty()) {
+      FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+      ) {
+        selectedPhotos.forEach { photo ->
+          Box(
+            modifier = Modifier
+              .size(72.dp)
+              .clip(RoundedCornerShape(8.dp))
+              .clickable { onPhotoClick(photo.id) },
+          ) {
+            AsyncImage(
+              modifier = Modifier.fillMaxSize(),
+              model = photo.byteArray,
+              contentDescription = null,
+              contentScale = ContentScale.Crop,
+            )
+            Box(
+              modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(4.dp)
+                .size(24.dp)
+                .background(
+                  color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                  shape = RoundedCornerShape(8.dp),
+                )
+                .clickable { onRemovePhotoClick(photo.id) },
+              contentAlignment = Alignment.Center,
+            ) {
+              Icon(
+                modifier = Modifier.size(16.dp),
+                imageVector = Icons.Default.Close,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.extended.textPrimary,
+              )
+            }
+          }
+        }
+      }
+    }
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      verticalAlignment = Alignment.Bottom,
+    ) {
+      IconButton(
+        modifier = Modifier,
+        iconRes = CoreRes.drawable.ic_plus,
+        onClick = onAddPhotoClick,
+      )
+      MultilineTextField(
+        modifier = Modifier.weight(1f),
+        deviceConfiguration = deviceConfiguration,
+        multilineTextFieldPm = multilineTextFieldUi,
+        onClick = onSendClick,
+      )
+    }
+  }
+}
+
+@Composable
+private fun ImagePreviewDialog(
+  imagePreviewUi: ImagePreviewUi?,
+  onDismiss: () -> Unit,
+) {
+  if (imagePreviewUi == null) return
+
+  Dialog(
+    onDismissRequest = onDismiss,
+    properties = DialogProperties(usePlatformDefaultWidth = false),
+  ) {
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.92f))
+        .clickable { onDismiss() },
+      contentAlignment = Alignment.Center,
+    ) {
+      val model = when (imagePreviewUi) {
+        is ImagePreviewUi.Local -> imagePreviewUi.byteArray
+        is ImagePreviewUi.Remote -> imagePreviewUi.url
+      }
+      AsyncImage(
+        modifier = Modifier
+          .fillMaxSize(),
+        model = model,
+        contentDescription = null,
+        contentScale = ContentScale.Fit,
       )
     }
   }

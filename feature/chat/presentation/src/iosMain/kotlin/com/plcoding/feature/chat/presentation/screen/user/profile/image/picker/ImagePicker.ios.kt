@@ -29,7 +29,9 @@ import platform.posix.memcpy
 
 @Composable
 actual fun rememberImagePickerLauncher(
-  onResult: (ImagePickerResult) -> Unit
+  selectionLimit: Int,
+  maxSizeBytes: Long?,
+  onResult: (List<ImagePickerResult>) -> Unit
 ): ImagePickerLauncher {
   val scope = rememberCoroutineScope()
   val delegate = remember {
@@ -41,6 +43,8 @@ actual fun rememberImagePickerLauncher(
 
         val dispatchGroup = dispatch_group_create()
         val imageDataList = mutableListOf<ImagePickerResult>()
+
+        if (results.isEmpty()) return
 
         for (result in results) {
           dispatch_group_enter(dispatchGroup)
@@ -69,6 +73,18 @@ actual fun rememberImagePickerLauncher(
           ) { nsData, nsError ->
             scope.launch {
               nsData?.let {
+                if (maxSizeBytes != null && it.length.toLong() > maxSizeBytes) {
+                  imageDataList.add(
+                    ImagePickerResult(
+                      byteArray = null,
+                      mimeType = mimeType,
+                      isTooLarge = true,
+                    )
+                  )
+                  dispatch_group_leave(dispatchGroup)
+                  return@launch
+                }
+
                 val bytes = ByteArray(it.length.toInt())
 
                 withContext(Dispatchers.Default) {
@@ -86,12 +102,11 @@ actual fun rememberImagePickerLauncher(
             }
           }
 
-          dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
-            scope.launch {
-              imageDataList.firstOrNull()?.let { item ->
-                onResult(item)
-              }
-            }
+        }
+
+        dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
+          scope.launch {
+            onResult(imageDataList)
           }
         }
       }
@@ -101,7 +116,7 @@ actual fun rememberImagePickerLauncher(
   return remember {
     val pickerViewController = PHPickerViewController(
       configuration = PHPickerConfiguration().apply {
-        setSelectionLimit(1)
+        setSelectionLimit(selectionLimit.toULong())
         setFilter(PHPickerFilter.imagesFilter)
         setSelection(PHPickerConfigurationSelectionOrdered)
       }

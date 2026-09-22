@@ -11,7 +11,8 @@ sealed interface WebSocketPayloadDto {
     val id: String,
     val chatId: String,
     val senderId: String,
-    val content: String,
+    val content: String? = null,
+    val attachments: List<ChatMessageAttachmentDto> = emptyList(),
     val createdAt: String,
     override val messageType: WebSocketMessageType = WebSocketMessageType.NEW_MESSAGE,
   ) : WebSocketPayloadDto
@@ -20,7 +21,8 @@ sealed interface WebSocketPayloadDto {
   data class OutgoingMessageDto(
     val chatId: String,
     val messageId: String,
-    val content: String,
+    val content: String? = null,
+    val attachments: List<ChatMessageAttachmentDto> = emptyList(),
     override val messageType: WebSocketMessageType = WebSocketMessageType.NEW_MESSAGE,
   ) : WebSocketPayloadDto
 

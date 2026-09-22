@@ -3,17 +3,11 @@ package com.plcoding.feature.chat.database.relation
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.plcoding.feature.chat.database.entity.ChatMessageAttachmentEntity
-import com.plcoding.feature.chat.database.entity.ChatMemberEntity
-import com.plcoding.feature.chat.database.entity.ChatMessageEntity
+import com.plcoding.feature.chat.database.view.ChatLastMessageView
 
-data class ChatMessageAndMemberRelation(
+data class ChatLastMessageAndAttachmentsRelation(
   @Embedded
-  val chatMessageEntity: ChatMessageEntity,
-  @Relation(
-    parentColumn = "senderId",
-    entityColumn = "id",
-  )
-  val chatMemberEntity: ChatMemberEntity,
+  val chatLastMessageView: ChatLastMessageView,
   @Relation(
     parentColumn = "id",
     entityColumn = "messageId",

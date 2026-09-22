@@ -4,11 +4,13 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.plcoding.feature.chat.database.dao.ChatAndMemberDao
+import com.plcoding.feature.chat.database.dao.ChatMessageAttachmentsDao
 import com.plcoding.feature.chat.database.dao.ChatMembersDao
 import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.database.dao.ChatsDao
 import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatEntity
+import com.plcoding.feature.chat.database.entity.ChatMessageAttachmentEntity
 import com.plcoding.feature.chat.database.entity.ChatMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.view.ChatLastMessageView
@@ -18,6 +20,7 @@ import com.plcoding.feature.chat.database.view.ChatLastMessageView
     ChatEntity::class,
     ChatMemberEntity::class,
     ChatMessageEntity::class,
+    ChatMessageAttachmentEntity::class,
     ChatAndMemberEntity::class,
   ],
   views = [
@@ -35,5 +38,6 @@ abstract class ChirpDatabase : RoomDatabase() {
   abstract val chatsDao: ChatsDao
   abstract val chatMembersDao: ChatMembersDao
   abstract val chatMessagesDao: ChatMessagesDao
+  abstract val chatMessageAttachmentsDao: ChatMessageAttachmentsDao
   abstract val chatAndMemberDao: ChatAndMemberDao
 }

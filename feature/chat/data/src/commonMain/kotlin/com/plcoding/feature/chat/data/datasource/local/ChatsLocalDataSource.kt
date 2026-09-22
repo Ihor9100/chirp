@@ -5,6 +5,7 @@ import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatEntity
+import com.plcoding.feature.chat.database.entity.ChatMessageAttachmentEntity
 import com.plcoding.feature.chat.database.entity.ChatMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
@@ -20,15 +21,22 @@ interface ChatsLocalDataSource {
   fun observeChatAndMembersAndMessages(chatId: String): Flow<ChatAndMembersAndMessagesRelation?>
 
   suspend fun updateChatMember(id: String, avatarUrl: String?): Empty<DataError.Local>
-  suspend fun upsertChatMessage(entity: ChatMessageEntity): Empty<DataError.Local>
-  suspend fun upsertChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local>
+  suspend fun upsertChatMessage(
+    entity: ChatMessageEntity,
+    attachments: List<ChatMessageAttachmentEntity>,
+  ): Empty<DataError.Local>
+  suspend fun upsertChatMessages(
+    entities: List<ChatMessageEntity>,
+    attachments: List<ChatMessageAttachmentEntity>,
+  ): Empty<DataError.Local>
   suspend fun updateChatMessage(id: String, deliveryStatus: ChatMessageDeliveryStatus)
 
   suspend fun deleteChats()
   suspend fun deleteChatMessage(id: String)
   suspend fun replaceChatMessages(
     chatId: String,
-    entities: List<ChatMessageEntity>
+    entities: List<ChatMessageEntity>,
+    attachments: List<ChatMessageAttachmentEntity>,
   ): Empty<DataError.Local>
 
   suspend fun hasChat(id: String): Result<Boolean, DataError.Local>
@@ -38,6 +46,7 @@ interface ChatsLocalDataSource {
     chat: ChatEntity,
     chatMembers: List<ChatMemberEntity>,
     chatMessages: List<ChatMessageEntity>,
+    chatMessageAttachments: List<ChatMessageAttachmentEntity>,
     chatsAndMembers: List<ChatAndMemberEntity>,
   ): Empty<DataError.Local>
 
@@ -45,6 +54,7 @@ interface ChatsLocalDataSource {
     chats: List<ChatEntity>,
     chatMembers: List<ChatMemberEntity>,
     chatMessages: List<ChatMessageEntity>,
+    chatMessageAttachments: List<ChatMessageAttachmentEntity>,
     chatsAndMembers: List<ChatAndMemberEntity>,
   ): Empty<DataError.Local>
 

@@ -7,6 +7,8 @@ import com.plcoding.core.presentation.model.TextProvider
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
 import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
+import com.plcoding.feature.chat.presentation.model.ImagePreviewUi
+import com.plcoding.feature.chat.presentation.model.SelectedPhotoUi
 import org.jetbrains.compose.resources.StringResource
 
 data class ChatDetailsScreenUiState(
@@ -26,6 +28,8 @@ data class ChatDetailsScreenUiState(
   val showScrollToStartButton: Boolean,
   val scrollToStart: Event<Unit>?,
   val multilineTextFieldUi: MultilineTextFieldUi,
+  val selectedPhotos: List<SelectedPhotoUi>,
+  val imagePreviewUi: ImagePreviewUi?,
 ) {
 
   companion object {
@@ -47,6 +51,8 @@ data class ChatDetailsScreenUiState(
         showScrollToStartButton = false,
         scrollToStart = null,
         multilineTextFieldUi = MultilineTextFieldUi.mock,
+        selectedPhotos = emptyList(),
+        imagePreviewUi = null,
       )
   }
 }

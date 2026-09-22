@@ -41,6 +41,7 @@ fun ChatMessages(
   onMenuItemClick: (DropDownItemUi) -> Unit,
   onMenuDismiss: () -> Unit,
   onMessageRetryClick: (messageId: String) -> Unit,
+  onImageClick: (url: String) -> Unit,
   onPageRetryClick: () -> Unit,
 ) {
   LazyColumn(
@@ -65,10 +66,12 @@ fun ChatMessages(
           onMenuClick = onMenuItemClick,
           onMenuDismiss = onMenuDismiss,
           onRetry = onMessageRetryClick,
+          onImageClick = onImageClick,
         )
         is ChatMessageUi.RemoteMessageUi -> RemoteMessage(
           modifier = Modifier,
           remoteMessagePm = it,
+          onImageClick = onImageClick,
         )
       }
     }
@@ -120,6 +123,7 @@ private fun Themed(
       onMenuItemClick = {},
       onMenuDismiss = {},
       onMessageRetryClick = {},
+      onImageClick = {},
       onPageRetryClick = {},
     )
   }

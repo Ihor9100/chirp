@@ -7,11 +7,13 @@ import com.plcoding.core.domain.result.Empty
 import com.plcoding.core.domain.result.Result
 import com.plcoding.feature.chat.database.ChirpDatabase
 import com.plcoding.feature.chat.database.dao.ChatAndMemberDao
+import com.plcoding.feature.chat.database.dao.ChatMessageAttachmentsDao
 import com.plcoding.feature.chat.database.dao.ChatMembersDao
 import com.plcoding.feature.chat.database.dao.ChatMessagesDao
 import com.plcoding.feature.chat.database.dao.ChatsDao
 import com.plcoding.feature.chat.database.entity.ChatAndMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatEntity
+import com.plcoding.feature.chat.database.entity.ChatMessageAttachmentEntity
 import com.plcoding.feature.chat.database.entity.ChatMemberEntity
 import com.plcoding.feature.chat.database.entity.ChatMessageEntity
 import com.plcoding.feature.chat.database.relation.ChatAndMembersAndMessagesRelation
@@ -26,6 +28,7 @@ class ChatsRoomLocalDataSource(
   private val chatsDao: ChatsDao,
   private val chatMembersDao: ChatMembersDao,
   private val chatMessagesDao: ChatMessagesDao,
+  private val chatMessageAttachmentsDao: ChatMessageAttachmentsDao,
   private val chatAndMemberDao: ChatAndMemberDao,
 ) : ChatsLocalDataSource {
 
@@ -51,15 +54,29 @@ class ChatsRoomLocalDataSource(
     }
   }
 
-  override suspend fun upsertChatMessage(entity: ChatMessageEntity): Empty<DataError.Local> {
+  override suspend fun upsertChatMessage(
+    entity: ChatMessageEntity,
+    attachments: List<ChatMessageAttachmentEntity>,
+  ): Empty<DataError.Local> {
     return dbSafeCall {
-      chatMessagesDao.upsert(entity)
+      chirpDatabase.useWriterConnection {
+        chatMessagesDao.upsert(entity)
+        chatMessageAttachmentsDao.deleteForMessages(listOf(entity.id))
+        chatMessageAttachmentsDao.upsert(attachments)
+      }
     }
   }
 
-  override suspend fun upsertChatMessages(entities: List<ChatMessageEntity>): Empty<DataError.Local> {
+  override suspend fun upsertChatMessages(
+    entities: List<ChatMessageEntity>,
+    attachments: List<ChatMessageAttachmentEntity>,
+  ): Empty<DataError.Local> {
     return dbSafeCall {
-      chatMessagesDao.upsert(entities)
+      chirpDatabase.useWriterConnection {
+        chatMessagesDao.upsert(entities)
+        chatMessageAttachmentsDao.deleteForMessages(entities.map { it.id })
+        chatMessageAttachmentsDao.upsert(attachments)
+      }
     }
   }
 
@@ -79,9 +96,17 @@ class ChatsRoomLocalDataSource(
     chatMessagesDao.delete(id)
   }
 
-  override suspend fun replaceChatMessages(chatId: String, entities: List<ChatMessageEntity>): Empty<DataError.Local> {
+  override suspend fun replaceChatMessages(
+    chatId: String,
+    entities: List<ChatMessageEntity>,
+    attachments: List<ChatMessageAttachmentEntity>,
+  ): Empty<DataError.Local> {
     return dbSafeCall {
-      chatMessagesDao.replace(chatId, entities)
+      chirpDatabase.useWriterConnection {
+        chatMessageAttachmentsDao.deleteForChat(chatId)
+        chatMessagesDao.replace(chatId, entities)
+        chatMessageAttachmentsDao.upsert(attachments)
+      }
     }
   }
 
@@ -99,6 +124,7 @@ class ChatsRoomLocalDataSource(
     chat: ChatEntity,
     chatMembers: List<ChatMemberEntity>,
     chatMessages: List<ChatMessageEntity>,
+    chatMessageAttachments: List<ChatMessageAttachmentEntity>,
     chatsAndMembers: List<ChatAndMemberEntity>
   ): Empty<DataError.Local> {
     return dbSafeCall {
@@ -106,6 +132,8 @@ class ChatsRoomLocalDataSource(
         chatsDao.upsert(chat)
         chatMembersDao.upsert(chatMembers)
         chatMessagesDao.upsert(chatMessages)
+        chatMessageAttachmentsDao.deleteForMessages(chatMessages.map { it.id })
+        chatMessageAttachmentsDao.upsert(chatMessageAttachments)
         chatAndMemberDao.upsert(chatsAndMembers)
       }
     }
@@ -115,6 +143,7 @@ class ChatsRoomLocalDataSource(
     chats: List<ChatEntity>,
     chatMembers: List<ChatMemberEntity>,
     chatMessages: List<ChatMessageEntity>,
+    chatMessageAttachments: List<ChatMessageAttachmentEntity>,
     chatsAndMembers: List<ChatAndMemberEntity>
   ): Empty<DataError.Local> {
     return dbSafeCall {
@@ -122,6 +151,8 @@ class ChatsRoomLocalDataSource(
         chatsDao.replace(chats)
         chatMembersDao.replace(chatMembers)
         chatMessagesDao.replace(chatMessages)
+        chatMessageAttachmentsDao.deleteAll()
+        chatMessageAttachmentsDao.upsert(chatMessageAttachments)
         chatAndMemberDao.replace(chatsAndMembers)
       }
     }

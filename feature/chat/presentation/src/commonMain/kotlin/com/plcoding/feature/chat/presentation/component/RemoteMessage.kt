@@ -16,6 +16,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun RemoteMessage(
   modifier: Modifier,
   remoteMessagePm: ChatMessageUi.RemoteMessageUi,
+  onImageClick: (url: String) -> Unit,
 ) {
   Row(
     modifier = modifier.fillMaxWidth(),
@@ -29,6 +30,7 @@ fun RemoteMessage(
     ChatBox(
       modifier = Modifier,
       chatBoxUi = remoteMessagePm.chatBoxUi,
+      onAttachmentClick = onImageClick,
     )
   }
 }
@@ -41,6 +43,7 @@ private fun Themed(
     RemoteMessage(
       modifier = Modifier,
       remoteMessagePm = ChatMessageUi.RemoteMessageUi.mock,
+      onImageClick = {},
     )
   }
 }

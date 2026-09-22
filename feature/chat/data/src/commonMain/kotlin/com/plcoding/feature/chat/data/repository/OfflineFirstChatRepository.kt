@@ -13,18 +13,24 @@ import com.plcoding.feature.chat.data.datasource.local.ChatsLocalDataSource
 import com.plcoding.feature.chat.data.datasource.remote.ChatsRemoteDataSource
 import com.plcoding.feature.chat.data.mapper.toDomain
 import com.plcoding.feature.chat.data.mapper.toEntities
+import com.plcoding.feature.chat.data.mapper.toAttachmentEntities
 import com.plcoding.feature.chat.data.mapper.toEntity
 import com.plcoding.feature.chat.data.model.ChatDto
 import com.plcoding.feature.chat.domain.model.Chat
 import com.plcoding.feature.chat.domain.model.ChatDetails
 import com.plcoding.feature.chat.domain.model.ChatMember
 import com.plcoding.feature.chat.domain.model.ChatMessage
+import com.plcoding.feature.chat.domain.model.ChatMessageAttachment
+import com.plcoding.feature.chat.domain.model.ChatMessageAttachmentType
 import com.plcoding.feature.chat.domain.model.ChatMessageAndMember
 import com.plcoding.feature.chat.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 class OfflineFirstChatRepository(
   private val localDataSource: ChatsLocalDataSource,
   private val remoteDataSource: ChatsRemoteDataSource,
@@ -82,6 +88,7 @@ class OfflineFirstChatRepository(
       chatDto.toEntity(),
       chatDto.participants.map { it.toEntity() },
       listOfNotNull(chatDto.lastMessage).map { it.toEntity() },
+      listOfNotNull(chatDto.lastMessage).flatMap { it.toAttachmentEntities() },
       chatDto.toEntities(),
     )
   }
@@ -114,12 +121,13 @@ class OfflineFirstChatRepository(
       .getChatMessages(chatId, before)
       .flatMap { dtos ->
         val entities = dtos.map { it.toEntity() }
+        val attachmentEntities = dtos.flatMap { it.toAttachmentEntities() }
 
         // Remove all messages of particular chat if it is the first page
         if (before == null) {
-          localDataSource.replaceChatMessages(chatId, entities)
+          localDataSource.replaceChatMessages(chatId, entities, attachmentEntities)
         } else {
-          localDataSource.upsertChatMessages(entities)
+          localDataSource.upsertChatMessages(entities, attachmentEntities)
         }
 
         Result.Success(dtos.map { it.toDomain() })
@@ -134,6 +142,7 @@ class OfflineFirstChatRepository(
           chats = dtos.map { it.toEntity() },
           chatMembers = dtos.flatMap { it.participants }.map { it.toEntity() },
           chatMessages = dtos.mapNotNull { it.lastMessage }.map { it.toEntity() },
+          chatMessageAttachments = dtos.mapNotNull { it.lastMessage }.flatMap { it.toAttachmentEntities() },
           chatsAndMembers = dtos.flatMap { it.toEntities() },
         )
       }
@@ -193,6 +202,36 @@ class OfflineFirstChatRepository(
     return remoteDataSource
       .confirmProfileImageUpload(publicUrl)
       .onSuccess { updateAuthInfoUser { copy(profilePictureUrl = publicUrl) } }
+  }
+
+  override suspend fun uploadMessageAttachment(
+    messageId: String,
+    byteArray: ByteArray,
+    mimeType: String,
+  ): Result<ChatMessageAttachment, DataError> {
+    val createUploadResult = remoteDataSource.createMessageAttachmentUpload(mimeType)
+
+    if (createUploadResult is Result.Failure) return createUploadResult
+
+    val uploadDto = (createUploadResult as Result.Success).data
+    val uploadResult = remoteDataSource.uploadMessageAttachment(
+      uploadUrl = uploadDto.uploadUrl,
+      byteArray = byteArray,
+      headers = uploadDto.headers,
+    )
+
+    if (uploadResult is Result.Failure) return uploadResult
+
+    return Result.Success(
+      ChatMessageAttachment(
+        id = Uuid.random().toString(),
+        messageId = messageId,
+        url = uploadDto.publicUrl,
+        mimeType = mimeType,
+        sizeBytes = byteArray.size.toLong(),
+        type = ChatMessageAttachmentType.IMAGE,
+      )
+    )
   }
 
   override suspend fun deleteProfileImage(): Empty<DataError.Remote> {

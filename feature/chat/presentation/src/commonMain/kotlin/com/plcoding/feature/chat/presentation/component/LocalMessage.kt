@@ -36,6 +36,7 @@ fun LocalMessage(
   onMenuClick: (DropDownItemUi) -> Unit,
   onMenuDismiss: () -> Unit,
   onRetry: (messageId: String) -> Unit,
+  onImageClick: (url: String) -> Unit,
 ) {
   Row(
     modifier = modifier
@@ -52,6 +53,7 @@ fun LocalMessage(
     ) {
       ChatBox(
         chatBoxUi = localMessageUi.chatBoxUi,
+        onAttachmentClick = onImageClick,
       ) {
         localMessageUi.chatMessageStatusUi?.let {
           Row(
@@ -116,6 +118,7 @@ private fun Themed(
       onMenuClick = {},
       onMenuDismiss = {},
       onRetry = {},
+      onImageClick = {},
     )
   }
 }
