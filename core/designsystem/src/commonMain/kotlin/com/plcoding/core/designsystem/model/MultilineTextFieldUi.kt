@@ -14,9 +14,12 @@ data class MultilineTextFieldUi(
   val buttonTitleRes: StringResource,
   val connectionIconRes: DrawableResource?,
   val isButtonEnabled: Boolean,
+  val characterLimit: Int? = null,
 ) {
 
   companion object {
+    const val MESSAGE_CHARACTER_LIMIT = 500
+
     val mock
       get() = MultilineTextFieldUi(
         textFieldState = TextFieldState(),
@@ -24,6 +27,7 @@ data class MultilineTextFieldUi(
         buttonTitleRes = Res.string.sent,
         connectionIconRes = Res.drawable.ic_cloud_off,
         isButtonEnabled = false,
+        characterLimit = MESSAGE_CHARACTER_LIMIT,
       )
   }
 }

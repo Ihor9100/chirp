@@ -19,6 +19,7 @@ import chirp.feature.chat.presentation.generated.resources.success
 import chirp.feature.chat.presentation.generated.resources.today
 import chirp.feature.chat.presentation.generated.resources.yesterday
 import com.plcoding.core.designsystem.model.DropDownItemUi
+import com.plcoding.core.designsystem.model.MultilineTextFieldUi.Companion.MESSAGE_CHARACTER_LIMIT
 import com.plcoding.core.designsystem.style.ColorToken
 import com.plcoding.core.domain.paging.Paginator
 import com.plcoding.core.domain.repository.PreferencesRepository
@@ -315,14 +316,17 @@ class ChatDetailsScreenViewModel(
     viewModelScope.launch {
       val chatId = _chatId.value
       val senderId = preferencesRepository.observeAuthInfo().first()?.user?.id
+      val content = screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString()
 
-      if (chatId == null || senderId == null) return@launch
+      if (chatId == null || senderId == null || content.isBlank() || content.length > MESSAGE_CHARACTER_LIMIT) {
+        return@launch
+      }
 
       val chatMessage = ChatMessage(
         id = Uuid.random().toString(),
         chatId = chatId,
         senderId = senderId,
-        content = screenUiState.value.uiState.multilineTextFieldUi.textFieldState.text.toString(),
+        content = content,
         createdAt = Clock.System.now(),
         deliveryStatus = ChatMessageDeliveryStatus.SENDING,
       )
