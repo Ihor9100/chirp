@@ -14,6 +14,7 @@ data class MultilineTextFieldUi(
   val buttonTitleRes: StringResource,
   val connectionIconRes: DrawableResource?,
   val isButtonEnabled: Boolean,
+  val maxLength: Int? = null,
 ) {
 
   companion object {
