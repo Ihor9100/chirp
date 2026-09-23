@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -73,6 +75,9 @@ fun MultilineTextField(
     BasicTextField(
       state = multilineTextFieldPm.textFieldState,
       modifier = Modifier.fillMaxWidth(),
+      inputTransformation = multilineTextFieldPm.maxLength?.let {
+        InputTransformation.maxLength(it)
+      },
       textStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.extended.textPrimary
       ),

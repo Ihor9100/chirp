@@ -4,6 +4,7 @@ import com.plcoding.core.designsystem.model.DropDownItemUi
 import com.plcoding.core.designsystem.model.MultilineTextFieldUi
 import com.plcoding.core.presentation.event.Event
 import com.plcoding.core.presentation.model.TextProvider
+import com.plcoding.feature.chat.domain.utils.ChatsConstants.MESSAGE_MAX_LENGTH
 import com.plcoding.feature.chat.presentation.model.ChatEmptyStateUi
 import com.plcoding.feature.chat.presentation.model.ChatHeaderUi
 import com.plcoding.feature.chat.presentation.model.ChatMessageUi
@@ -46,7 +47,7 @@ data class ChatDetailsScreenUiState(
         longPressedMessageId = null,
         showScrollToStartButton = false,
         scrollToStart = null,
-        multilineTextFieldUi = MultilineTextFieldUi.mock,
+        multilineTextFieldUi = MultilineTextFieldUi.mock.copy(maxLength = MESSAGE_MAX_LENGTH),
       )
   }
 }
