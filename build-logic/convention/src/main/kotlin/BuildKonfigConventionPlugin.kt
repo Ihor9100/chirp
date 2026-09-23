@@ -23,7 +23,7 @@ class BuildKonfigConventionPlugin : Plugin<Project> {
           buildConfigField(
             FieldSpec.Type.STRING,
             API_KEY,
-            gradleLocalProperties(rootDir, providers).getProperty(API_KEY),
+            gradleLocalProperties(rootDir, providers).getProperty(API_KEY) ?: "",
           )
         }
       }

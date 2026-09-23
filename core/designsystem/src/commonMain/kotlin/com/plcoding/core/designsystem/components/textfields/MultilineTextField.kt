@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,6 +37,9 @@ fun MultilineTextField(
   multilineTextFieldPm: MultilineTextFieldUi,
   onClick:() -> Unit,
 ) {
+  val characterLimit = multilineTextFieldPm.characterLimit
+  val currentLength = multilineTextFieldPm.textFieldState.text.length
+
   Column(
     modifier = modifier
       .fillMaxWidth()
@@ -73,6 +78,7 @@ fun MultilineTextField(
     BasicTextField(
       state = multilineTextFieldPm.textFieldState,
       modifier = Modifier.fillMaxWidth(),
+      inputTransformation = characterLimit?.let { InputTransformation.maxLength(it) },
       textStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.extended.textPrimary
       ),
@@ -93,6 +99,14 @@ fun MultilineTextField(
       horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
       verticalAlignment = Alignment.CenterVertically,
     ) {
+      if (characterLimit != null) {
+        Text(
+          modifier = Modifier.weight(1f),
+          text = "$currentLength / $characterLimit",
+          style = MaterialTheme.typography.labelSmall,
+          color = MaterialTheme.colorScheme.extended.textPlaceholder,
+        )
+      }
       if (multilineTextFieldPm.connectionIconRes != null) {
         Icon(
           modifier = modifier.size(24.dp),
